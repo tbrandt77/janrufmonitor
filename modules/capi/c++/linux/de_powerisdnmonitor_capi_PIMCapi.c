@@ -31,22 +31,15 @@ JNIEXPORT jstring JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nGetImplementati
 JNIEXPORT jint JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nInstalled
   (JNIEnv *, jclass) {
 
-	return (jint)(*capi20_isinstalled)();
+	return (jint)capi20_isinstalled();
 }
 
 JNIEXPORT jstring JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nGetManufacturer
   (JNIEnv *env, jclass, jint contr) {
 
 	char buf[128];
-	if (capi20_get_manufacturer)
-	{
-		(*capi20_get_manufacturer)(contr, (unsigned char *)buf);
-		return env->NewStringUTF(buf);
-	}
-	else
-	{
-		return env->NewStringUTF((char *)getErrorMessage(ERR_METHOD_NOT_AVAILABLE));
-	}
+	capi20_get_manufacturer(contr, (unsigned char *)buf);
+	return env->NewStringUTF(buf);
 }  
 
 JNIEXPORT jstring JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nGetSerialNumber
@@ -56,15 +49,8 @@ JNIEXPORT jstring JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nGetSerialNumber
 	jint * jap;
 	jint rc;
 
-	if (capi20_get_serial_number)
-	{
-		rc = (jint)(*capi20_get_serial_number)(contr, (unsigned char *)&sn);
-//		printf("DEBUG: serialnumber <%s>\n", sn);
-	}
-	else
-	{
-		rc = ERR_METHOD_NOT_AVAILABLE;
-	}
+	rc = capi20_get_serial_number(contr, (unsigned char *)&sn);
+//	printf("DEBUG: serialnumber <%s>\n", sn);
 	jap = env->GetIntArrayElements(p_rc, 0);
 	if (env->GetArrayLength(p_rc) > (jsize)0)
 //		jap[0] = rc;
@@ -88,26 +74,19 @@ JNIEXPORT jint JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nGetVersion
 	jsize jal = env->GetArrayLength(ja);
 	if (jal<(jsize)l) l=(int)jal;
 
-	if (capi20_get_version)
+	rc = (jint)capi20_get_version(contr, (unsigned char *)&ca);
+//	if (rc == (jint)0)
+	if (rc != (jint)0)
 	{
-		rc = (jint)(*capi20_get_version)(contr, (unsigned char *)&ca);
-//		if (rc == (jint)0)
-		if (rc != (jint)0)
-		{
-			jap = env->GetIntArrayElements(ja, 0);
-			for (i=0; i<l; i++)
-				jap[i] = (jint)ca[i];
-			env->ReleaseIntArrayElements(ja, jap, 0);	/* under control of JVM */
-			return 0;
-		}
-		else
-		{
-			return ERR_GET_VERSION;
-		}	
+		jap = env->GetIntArrayElements(ja, 0);
+		for (i=0; i<l; i++)
+			jap[i] = (jint)ca[i];
+		env->ReleaseIntArrayElements(ja, jap, 0);	/* under control of JVM */
+		return 0;
 	}
 	else
 	{
-		return ERR_METHOD_NOT_AVAILABLE;
+		return ERR_GET_VERSION;
 	}
 }  
 
@@ -121,31 +100,17 @@ JNIEXPORT jint JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nRegister
 	{
 		return ERR_NO_APPID;
 	}
-	else if (capi20_register)
-	{
-		rc = (jint)(*capi20_register)((unsigned int)maxcon,(unsigned int)maxblocks,(unsigned int)maxlen,&appid);
-		jap = env->GetIntArrayElements(ja, 0);
-		*jap = (jint)appid;
-		env->ReleaseIntArrayElements(ja, jap, 0);	/* under control of JVM */
-		return rc;
-	}
-	else
-	{
-		return ERR_METHOD_NOT_AVAILABLE;
-	}
+	rc = (jint)capi20_register((unsigned int)maxcon,(unsigned int)maxblocks,(unsigned int)maxlen,&appid);
+	jap = env->GetIntArrayElements(ja, 0);
+	*jap = (jint)appid;
+	env->ReleaseIntArrayElements(ja, jap, 0);	/* under control of JVM */
+	return rc;
 }  
 
 JNIEXPORT jint JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nRelease
   (JNIEnv *, jclass, jint appid) {
 
-	if (capi20_release)
-	{
-		return (jint)(*capi20_release)((unsigned)appid);
-	}
-	else
-	{
-		return ERR_METHOD_NOT_AVAILABLE;
-	}
+	return (jint)capi20_release((unsigned)appid);
 }  
 
 JNIEXPORT jint JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nGetProfile
@@ -158,22 +123,15 @@ JNIEXPORT jint JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nGetProfile
 	jsize jal = env->GetArrayLength(ja);
 	if (jal<(jsize)l) l=(int)jal;
 
-	if (capi20_get_profile)
+	rc = (jint)capi20_get_profile((unsigned)buf,(unsigned char*)ctrnr);
+	if (rc == (jint)0)
 	{
-		rc = (jint)(*capi20_get_profile)((unsigned)buf,(unsigned char*)ctrnr);
-		if (rc == (jint)0)
-		{
-			jap = env->GetByteArrayElements(ja, 0);
-			for (i=0; i<l; i++)
-				jap[i] = buf[i];
-			env->ReleaseByteArrayElements(ja, (jbyte *)jap, 0);	/* under control of JVM */
-		}
-		return rc;
+		jap = env->GetByteArrayElements(ja, 0);
+		for (i=0; i<l; i++)
+			jap[i] = buf[i];
+		env->ReleaseByteArrayElements(ja, (jbyte *)jap, 0);	/* under control of JVM */
 	}
-	else
-	{
-		return ERR_METHOD_NOT_AVAILABLE;
-	}
+	return rc;
 }
 
 JNIEXPORT jint JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nPutMessage
@@ -182,18 +140,11 @@ JNIEXPORT jint JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nPutMessage
 	jbyte *msg;
 	jint rc;
 
-	if (capi20_put_message)
-	{
-		msg = env->GetByteArrayElements(ja, 0);
-		rc = (jint)(*capi20_put_message)((unsigned int)appid,(unsigned char *)msg);
-		env->ReleaseByteArrayElements(ja, msg, 0);
-		// after call of CapiPutMessage the CAPI works with it's own copy of the message
-		return rc;
-	}
-	else
-	{
-		return ERR_METHOD_NOT_AVAILABLE;
-	}
+	msg = env->GetByteArrayElements(ja, 0);
+	rc = (jint)capi20_put_message((unsigned int)appid,(unsigned char *)msg);
+	env->ReleaseByteArrayElements(ja, msg, 0);
+	// after call of CapiPutMessage the CAPI works with it's own copy of the message
+	return rc;
 }  
 
 JNIEXPORT jbyteArray JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nGetMessage
@@ -206,14 +157,7 @@ JNIEXPORT jbyteArray JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nGetMessage
 	unsigned short size;
 	jbyteArray jb;
 
-	if (capi20_get_message)
-	{
-		rc = (jint)(*capi20_get_message)((unsigned int)appid,(unsigned char **)&msg);
-	}
-	else
-	{
-		rc = ERR_METHOD_NOT_AVAILABLE;
-	}
+	rc = (jint)capi20_get_message((unsigned int)appid,(unsigned char **)&msg);
 	jap = env->GetIntArrayElements(p_rc, 0);
 	if (env->GetArrayLength(p_rc) > (jsize)0)
 		jap[0] = rc;
@@ -269,14 +213,7 @@ JNIEXPORT void JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nReleaseData
 JNIEXPORT jint JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nWaitForSignal
   (JNIEnv *, jclass, jint appid) {
 
-	if (capi20_waitformessage)
-	{
-		return (jint)(*capi20_waitformessage)((unsigned int)appid, NULL); // ToDo: Timeout
-	}
-	else
-	{
-		return ERR_METHOD_NOT_AVAILABLE;
-	}
+	return (jint)capi20_waitformessage((unsigned int)appid, NULL); // ToDo: Timeout
 }
 
 JNIEXPORT void JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_init
