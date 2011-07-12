@@ -25,7 +25,7 @@ JNIEXPORT jint JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nInstalled
  * Signature: ()Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nGetManufacturer
-  (JNIEnv *, jclass, jint);
+  (JNIEnv *, jclass, jint, jintArray);
 
 /*
  * Class:     de_powerisdnmonitor_capi_PIMCapi

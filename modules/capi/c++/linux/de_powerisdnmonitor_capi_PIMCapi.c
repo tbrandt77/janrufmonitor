@@ -35,7 +35,7 @@ JNIEXPORT jint JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nInstalled
 }
 
 JNIEXPORT jstring JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nGetManufacturer
-  (JNIEnv *env, jclass, jint contr) {
+  (JNIEnv *env, jclass, jint contr, jintArray p_rc) {
 
 	char buf[128];
 	if (!capi20_get_manufacturer(contr, (unsigned char *)buf))
