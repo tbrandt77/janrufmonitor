@@ -225,8 +225,3 @@ JNIEXPORT jstring JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nGetErrorMessage
   
 	return env->NewStringUTF(getErrorMessage(rc));
 }  
-
-int main(char** args) {
-
-	return 0;
-}
