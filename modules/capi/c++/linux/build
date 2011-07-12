@@ -1,0 +1,4 @@
+g++ -Wall -I /usr/lib/jvm/java-1.6.0-openjdk/include -I /usr/lib/jvm/java-1.6.0-openjdk/include/linux -c de_powerisdnmonitor_capi_PIMCapi.c
+
+g++ -Wall -shared -lcapi20 -o libpimcapi.so de_powerisdnmonitor_capi_PIMCapi.o
+
