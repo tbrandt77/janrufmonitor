@@ -7,6 +7,7 @@
 #define ERR_NOT_SUPPORTED (jint)-3
 #define ERR_SERIAL_NUMBER (jint)-100 // ToDo: Exceptionhandling
 #define ERR_GET_VERSION (jint)-101 // ToDo: Exceptionhandling
+#define ERR_GET_MANUFACTURER (jint)-102 // ToDo: Exceptionhandling
 #define INFO "Linux native interface version 1.0"
 
 static const char *getErrorMessage(jint rc)
@@ -20,6 +21,15 @@ static const char *getErrorMessage(jint rc)
 	}
 
 	return err;
+}
+
+static void setError(JNIEnv *env, jintArray p_rc, jint error) {
+	jint* jap = env->GetIntArrayElements(p_rc, 0);
+	if (env->GetArrayLength(p_rc) > (jsize)0)
+	{
+		jap[0] = error;
+	}
+	env->ReleaseIntArrayElements(p_rc, jap, 0);	/* under control of JVM */
 }
 
 JNIEXPORT jstring JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nGetImplementationInfo
@@ -38,8 +48,13 @@ JNIEXPORT jstring JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nGetManufacturer
   (JNIEnv *env, jclass, jint contr, jintArray p_rc) {
 
 	char buf[128];
-	if (!capi20_get_manufacturer(contr, (unsigned char *)buf))
+	if (capi20_get_manufacturer(contr, (unsigned char *)buf))
 	{
+		setError(env, p_rc, 0);
+	}
+	else
+	{
+		setError(env, p_rc, ERR_GET_MANUFACTURER);
 		buf[0] = 0; // empty string in case of error
 	}
 	return env->NewStringUTF(buf);
@@ -49,22 +64,17 @@ JNIEXPORT jstring JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nGetSerialNumber
   (JNIEnv *env, jclass, jint contr, jintArray p_rc) {
 
 	char sn[8];
-	jint * jap;
-	bool rc;
 
-	rc = capi20_get_serial_number(contr, (unsigned char *)&sn);
-//	printf("DEBUG: serialnumber <%s>\n", sn);
-	jap = env->GetIntArrayElements(p_rc, 0);
-	if (env->GetArrayLength(p_rc) > (jsize)0)
+	if (capi20_get_serial_number(contr, (unsigned char *)&sn)) 
 	{
-		if (rc)
-			jap[0] = 0;
-		else
-			jap[0] = ERR_SERIAL_NUMBER;
+//		printf("DEBUG: serialnumber <%s>\n", sn);
+		setError(env, p_rc, ERR_SERIAL_NUMBER);
 	}
-	env->ReleaseIntArrayElements(p_rc, jap, 0);	/* under control of JVM */
-	if (!rc)
+	else
+	{
+		setError(env, p_rc, 0);
 		sn[0] = (char)0;		/* empty string */
+	}
 	return env->NewStringUTF(sn);
 } 
 
