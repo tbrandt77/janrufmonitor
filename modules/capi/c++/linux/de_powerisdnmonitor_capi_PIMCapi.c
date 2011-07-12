@@ -9,9 +9,9 @@
 #define ERR_GET_VERSION (jint)-101 // ToDo: Exceptionhandling
 #define INFO "Linux native interface version 1.0"
 
-static char *getErrorMessage(jint rc)
+static const char *getErrorMessage(jint rc)
 {
-	char *err = "unknown";
+	const char *err = "unknown";
 	switch (rc)
 	{
 		case ERR_METHOD_NOT_AVAILABLE 	: err="JCC01 error: CAPI not loaded or method not available"; break;
