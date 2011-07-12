@@ -70,14 +70,12 @@ JNIEXPORT jint JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nGetVersion
   (JNIEnv *env, jclass, jint contr, jintArray ja) {
 
 	unsigned int ca[4];
-	jint rc, *jap;
+	jint *jap;
 	int i,l=4;
 	jsize jal = env->GetArrayLength(ja);
 	if (jal<(jsize)l) l=(int)jal;
 
-	rc = (jint)capi20_get_version(contr, (unsigned char *)&ca);
-//	if (rc == (jint)0)
-	if (rc != (jint)0)
+	if (capi20_get_version(contr, (unsigned char *)&ca))
 	{
 		jap = env->GetIntArrayElements(ja, 0);
 		for (i=0; i<l; i++)
