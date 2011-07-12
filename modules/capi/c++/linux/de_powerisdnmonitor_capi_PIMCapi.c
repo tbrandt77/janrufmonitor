@@ -183,7 +183,7 @@ JNIEXPORT jint JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nGetAddress
 	jbyte *jap;
 	jap = env->GetByteArrayElements(ja, 0);
 	//(*env)->ReleaseByteArrayElements(env, ja, jap, 0);
-	return (jint)jap;
+	return (jlong)jap;
 }  
 
 JNIEXPORT jbyteArray JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nGetData
