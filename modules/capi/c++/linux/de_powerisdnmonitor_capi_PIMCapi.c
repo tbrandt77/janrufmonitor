@@ -50,19 +50,17 @@ JNIEXPORT jstring JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nGetSerialNumber
 
 	char sn[8];
 	jint * jap;
-	jint rc;
+	bool rc;
 
 	rc = capi20_get_serial_number(contr, (unsigned char *)&sn);
 //	printf("DEBUG: serialnumber <%s>\n", sn);
 	jap = env->GetIntArrayElements(p_rc, 0);
 	if (env->GetArrayLength(p_rc) > (jsize)0)
-//		jap[0] = rc;
 		if (rc)
 			jap[0] = 0;
 		else
 			jap[0] = ERR_SERIAL_NUMBER;
 	env->ReleaseIntArrayElements(p_rc, jap, 0);	/* under control of JVM */
-//	if (rc!=0)
 	if (!rc)
 		sn[0] = (char)0;		/* empty string */
 	return env->NewStringUTF(sn);
