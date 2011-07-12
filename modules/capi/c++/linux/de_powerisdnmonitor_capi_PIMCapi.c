@@ -38,7 +38,10 @@ JNIEXPORT jstring JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nGetManufacturer
   (JNIEnv *env, jclass, jint contr) {
 
 	char buf[128];
-	capi20_get_manufacturer(contr, (unsigned char *)buf);
+	if (!capi20_get_manufacturer(contr, (unsigned char *)buf))
+	{
+		buf[0] = 0; // empty string in case of error
+	}
 	return env->NewStringUTF(buf);
 }  
 
