@@ -113,7 +113,7 @@ JNIEXPORT jint JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nRelease
 }  
 
 JNIEXPORT jint JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nGetProfile
-  (JNIEnv *env, jclass, jint ctrnr, jbyteArray ja) {
+  (JNIEnv *env, jclass, jint contr, jbyteArray ja) {
 
 	  char buf[64];
 	  jbyte *jap;
@@ -122,7 +122,7 @@ JNIEXPORT jint JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nGetProfile
 	jsize jal = env->GetArrayLength(ja);
 	if (jal<(jsize)l) l=(int)jal;
 
-	rc = (jint)capi20_get_profile((unsigned)buf,(unsigned char*)ctrnr);
+	rc = (jint)capi20_get_profile((unsigned)contr,(unsigned char*)buf);
 	if (rc == (jint)0)
 	{
 		jap = env->GetByteArrayElements(ja, 0);
