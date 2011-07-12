@@ -56,10 +56,12 @@ JNIEXPORT jstring JNICALL Java_de_powerisdnmonitor_capi_PIMCapi_nGetSerialNumber
 //	printf("DEBUG: serialnumber <%s>\n", sn);
 	jap = env->GetIntArrayElements(p_rc, 0);
 	if (env->GetArrayLength(p_rc) > (jsize)0)
+	{
 		if (rc)
 			jap[0] = 0;
 		else
 			jap[0] = ERR_SERIAL_NUMBER;
+	}
 	env->ReleaseIntArrayElements(p_rc, jap, 0);	/* under control of JVM */
 	if (!rc)
 		sn[0] = (char)0;		/* empty string */
