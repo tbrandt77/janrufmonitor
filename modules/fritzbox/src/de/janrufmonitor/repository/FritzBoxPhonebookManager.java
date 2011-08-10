@@ -18,6 +18,7 @@ import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.fritzbox.firmware.AbstractFritzBoxFirmware;
 import de.janrufmonitor.fritzbox.firmware.FirmwareManager;
 import de.janrufmonitor.fritzbox.firmware.AbstractFritzBoxFirmware.PhonebookEntry;
+import de.janrufmonitor.fritzbox.firmware.HTMLUtil;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxLoginException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallerListException;
 import de.janrufmonitor.repository.db.ICallerDatabaseHandler;
@@ -31,6 +32,7 @@ import de.janrufmonitor.repository.zip.ZipArchiveException;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.util.io.PathResolver;
+import de.janrufmonitor.util.string.StringEscapeUtils;
 import de.janrufmonitor.util.string.StringUtils;
 
 public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
@@ -149,7 +151,12 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 						attributes = getRuntime().getCallerFactory().createAttributeMap();
 						phones = new ArrayList(3);
 						attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CALLERMANAGER, FritzBoxPhonebookManager.ID));
-						attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_LASTNAME, pe.getName()));
+						try {
+							attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_LASTNAME, StringEscapeUtils.unescapeHtml(pe.getName())));
+						} catch (Exception ex) {
+							m_logger.log(Level.WARNING, ex.getMessage(), ex);
+							attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_LASTNAME, pe.getName()));
+						}
 						Map phs = pe.getPhones();
 						Iterator entries = phs.keySet().iterator();
 						String key = null;
