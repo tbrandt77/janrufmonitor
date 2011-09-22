@@ -10,7 +10,7 @@ installer.InstallerEngine\:title\:label\:de=Installationsmodul
 installer.InstallerEngine\:null\:label\:de=Es wurde ein Bugfix oder eine Konfigurations\u00E4nderung installiert. Es kann erforderlich sein, jAnrufmonitor neu zu starten, bevor die \u00C4nderungen wirksam werden.
 installer.InstallerEngine\:moduleversionrule\:label\:de=Es wurde eine \u00E4ltere Modulversion entdeckt, die das Aktualisieren auf die neue Version verhindert. Die alte Modulversion muss zuerst deinstalliert werden.
 installer.InstallerEngine\:pimversionrule\:label\:de=Das Modul kann in dieser jAnrufmonitor Version nicht installiert werden. Aktualisieren Sie die Programmversion zuerst und installieren Sie das Modul danach erneut.
-installer.InstallerEngine\:dependencyrule\:label\:de=Das Modul kann nicht installiert werden, da mindestens ein abhängiges Modul nicht vorhanden ist. Entnehmen Sie der Installationsbeschreibung, welche Module zuerst installiert werden m\u00FCssen und f\u00FChren Sie die Installation danach erneut aus.
+installer.InstallerEngine\:dependencyrule\:label\:de=Das Modul kann nicht installiert werden, da mindestens ein abh\u00E4ngiges Modul nicht vorhanden ist. Entnehmen Sie der Installationsbeschreibung, welche Module zuerst installiert werden m\u00FCssen und f\u00FChren Sie die Installation danach erneut aus.
 installer.InstallerEngine\:invaliddescriptor\:label\:de=Es konnte keine Modulbeschreibung f\u00FCr das ausgew\u00E4hlte Modul ermittelt werden. Installieren Sie das Modul erneut um den Fehler zu beheben.
 installer.InstallerEngine\:conflictrule\:label\:de=Das Modul kann nicht installiert werden, da mindestens ein Modul vorhanden ist, welches nicht in Kombination mit diesem Modul betrieben werden kann.
 

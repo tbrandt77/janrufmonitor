@@ -155,7 +155,16 @@ public class PhonenumberAnalyzer {
     		if (this.m_logger.isLoggable(Level.INFO)) {
     			this.m_logger.info("PhonenumberAnalyzer detected telephone system prefix: ["+number+"]");
     		}
-    		number = "0" + PhonenumberInfo.truncateTelephoneSystemPrefix(number);
+    		// 2011/09/22 added synthetic prefix for non area-code numbers.
+    		number = PhonenumberInfo.truncateTelephoneSystemPrefix(number);
+			int truncate = PhonenumberInfo.getTruncateNumber(msn);
+			if (truncate>0 && PhonenumberInfo.isMissingAreacode(number) && !PhonenumberInfo.containsSpecialChars(number)) {
+				for (int i = 0; i<truncate; i++)
+					number = "0"+number;
+	    		if (this.m_logger.isLoggable(Level.INFO)) {
+	    			this.m_logger.info("PhonenumberAnalyzer added truncated leading zeros ["+truncate+"]: ["+number+"]");
+	    		}
+			}
     		if (this.m_logger.isLoggable(Level.INFO)) {
     			this.m_logger.info("PhonenumberAnalyzer removed telephone system prefix: ["+number+"]");
     		}
@@ -168,17 +177,6 @@ public class PhonenumberAnalyzer {
     		}
 
     		int truncate = PhonenumberInfo.getTruncateNumber(msn);
-
-    		if (!PhonenumberInfo.isMissingAreacode(number.substring((truncate))) && number.length()>(truncate) && number.substring((truncate)).startsWith("0"+PhonenumberInfo.getPrefix())) {
-    			if (this.m_logger.isLoggable(Level.INFO)) {
-        			this.m_logger.info("PhonenumberAnalyzer detected number starts with international prefix: ["+number+"]");
-        		}
-    			number = number.substring(truncate+1);
-    			if (this.m_logger.isLoggable(Level.INFO)) {
-        			this.m_logger.info("PhonenumberAnalyzer removed international prefix from number: ["+number+"]");
-        		}
-    			return getRuntime().getCallerFactory().createPhonenumber(number);   
-    		}
     		
     		// check for national call number
     		if (truncate>0) {
@@ -189,6 +187,17 @@ public class PhonenumberAnalyzer {
     			if (this.m_logger.isLoggable(Level.INFO)) {
         			this.m_logger.info("PhonenumberAnalyzer truncated number to ["+number+"]");
         		}
+    		}
+
+    		if (!PhonenumberInfo.isMissingAreacode(number) && number.startsWith("0"+PhonenumberInfo.getPrefix())) {
+    			if (this.m_logger.isLoggable(Level.INFO)) {
+        			this.m_logger.info("PhonenumberAnalyzer detected number starts with international prefix: ["+number+"]");
+        		}
+    			number = number.substring(1);
+    			if (this.m_logger.isLoggable(Level.INFO)) {
+        			this.m_logger.info("PhonenumberAnalyzer removed international prefix from number: ["+number+"]");
+        		}
+    			return getRuntime().getCallerFactory().createPhonenumber(number);   
     		}
     		
     		if (!number.startsWith("0")) { // needed for Fritz!Box variant

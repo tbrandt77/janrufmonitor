@@ -1,4 +1,24 @@
-﻿===
+===
+
+jAnrufmonitor 5.0.31 (01.07.2011)
+---------------------------------
+
+Neu:
+- Adressbuch: neuer CSV Kontakt Importfilter
+
+Bugfix:
+- Adressbuch: Erkennung von internen Anlagenrufnummern beim vCard Import
+
+Module:
+- MySQL Modul: Unterstützung für lange MSNs (> 8 Zeichen)
+- Fritz!Box-Überwachung: Unicode Anpassung
+- Fritz!Box-Überwachung: Unterstützung für AVM Fritz!Box Fon 7340 und 5124 Annex A
+- Fritz!Box-Überwachung: AVM Fritz!Box Fon Synchronizer auf Geschwindigkeit optimiert
+- CAPI Überwachung: Unicode Anpassung
+- TAPI Überwachung: Unicode Anpassung
+
+
+===
 
 jAnrufmonitor 5.0.30 (01.04.2011)
 ---------------------------------
