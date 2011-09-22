@@ -238,7 +238,10 @@ public abstract class AbstractFilterSerializer {
 						m.add(getRuntime().getCallFactory().createAttribute(t[0], t[1]));
 					}
 					return new AttributeFilter(m);
-				}					
+				}	
+				if (ft.equals(FilterType.CHARACTER)) {
+					return new CharacterFilter(st.nextToken().trim());
+				}	
 				// TODO: more filters to be added here
 			}
 		}
@@ -359,6 +362,11 @@ public abstract class AbstractFilterSerializer {
 					}
 				}
 			}			
+			if (ft.equals(FilterType.CHARACTER)) {
+				sb.append(ft.toString());
+				sb.append(",");
+				sb.append(((CharacterFilter)f).getCharacter());
+			}	
 			// TODO: more filters to be added here
 		}
 		return sb.toString();

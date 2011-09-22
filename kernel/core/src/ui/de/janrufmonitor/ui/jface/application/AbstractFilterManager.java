@@ -198,7 +198,8 @@ public abstract class AbstractFilterManager extends AbstractFilterSerializer imp
 			if (shorten>-1 && shorten<s.length()) {
 					return s.substring(0, Math.min(shorten, s.length())) + "...";
 			}
-			return s;
+			if (s.trim().length()>0)
+				return s;
 		}
 		return this.getI18nManager().getString(this.getNamespace(), "view_all",
 				"label", this.getLanguage());

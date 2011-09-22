@@ -35,6 +35,7 @@ public class FilterType {
 	public static FilterType UUID = new FilterType(8); 
 	public static FilterType USERDEFINED = new FilterType(9); 
 	public static FilterType ITEMCOUNT = new FilterType(10); 
+	public static FilterType CHARACTER = new FilterType(11); 
 	
 	private int _type;
 	

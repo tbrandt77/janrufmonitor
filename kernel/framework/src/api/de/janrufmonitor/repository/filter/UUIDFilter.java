@@ -23,7 +23,7 @@ public class UUIDFilter extends AbstractFilter {
 	 * 
 	 * @return a valid string array object.
 	 */
-	public String[] getCaller() {
+	public String[] getUUID() {
 		return (String[])this.m_filter;
 	}
 
