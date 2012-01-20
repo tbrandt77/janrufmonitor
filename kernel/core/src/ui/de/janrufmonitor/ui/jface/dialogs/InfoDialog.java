@@ -256,7 +256,7 @@ public class InfoDialog extends TitleAreaDialog {
 		
 		l = new Label(composite, SWT.RIGHT);
 		l.setText(
-			"(c) 2008 - 2011 by Thilo Brandt      "
+			"(c) 2008 - 2012 by Thilo Brandt      "
 		);
 		l.setLayoutData(gd);
 		

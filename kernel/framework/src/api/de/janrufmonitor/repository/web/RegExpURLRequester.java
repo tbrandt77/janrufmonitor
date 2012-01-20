@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -142,7 +143,8 @@ public class RegExpURLRequester extends AbstractURLRequester {
 				if (group!=null && group.length()>0) {
 					//group = StringUtils.replaceString(group, "&amp;", "&");
 					// added 2010/04/01: added HTML decoding routine
-					group = StringEscapeUtils.unescapeHtml(this.encodeNonUnicode(group));
+					// added 2012/01/20: URLDecode
+					group = URLDecoder.decode(StringEscapeUtils.unescapeHtml(this.encodeNonUnicode(group)));
 					this.m.add(
 						m_runtime.getCallerFactory().createAttribute(
 							IJAMConst.ATTRIBUTE_NAME_LASTNAME,
@@ -162,7 +164,9 @@ public class RegExpURLRequester extends AbstractURLRequester {
 				if (group!=null && group.length()>0) {
 					//group = StringUtils.replaceString(group, "&amp;", "&");
 					// added 2010/04/01: added HTML decoding routine
-					group = StringEscapeUtils.unescapeHtml(group);
+					// added 2012/01/20: URLDecode
+					group = URLDecoder.decode(StringEscapeUtils.unescapeHtml(this.encodeNonUnicode(group)));
+
 					this.m.add(
 						m_runtime.getCallerFactory().createAttribute(
 							IJAMConst.ATTRIBUTE_NAME_FIRSTNAME,
@@ -183,7 +187,8 @@ public class RegExpURLRequester extends AbstractURLRequester {
 				if (group!=null && group.length()>0){
 					//group = StringUtils.replaceString(group, "&amp;", "&");
 					// added 2010/04/01: added HTML decoding routine
-					group = StringEscapeUtils.unescapeHtml(group);
+					// added 2012/01/20: URLDecode
+					group = URLDecoder.decode(StringEscapeUtils.unescapeHtml(this.encodeNonUnicode(group)));
 					this.m.add(
 						m_runtime.getCallerFactory().createAttribute(
 							IJAMConst.ATTRIBUTE_NAME_ADDITIONAL,
@@ -205,7 +210,8 @@ public class RegExpURLRequester extends AbstractURLRequester {
 				if (group!=null && group.length()>0) {
 					//group = StringUtils.replaceString(group, "&amp;", "&");
 					// added 2010/04/01: added HTML decoding routine
-					group = StringEscapeUtils.unescapeHtml(group);
+					// added 2012/01/20: URLDecode
+					group = URLDecoder.decode(StringEscapeUtils.unescapeHtml(this.encodeNonUnicode(group)));
 					this.m.add(
 						m_runtime.getCallerFactory().createAttribute(
 							IJAMConst.ATTRIBUTE_NAME_STREET,
@@ -259,7 +265,8 @@ public class RegExpURLRequester extends AbstractURLRequester {
 				if (group!=null && group.length()>0) {
 					//group = StringUtils.replaceString(group, "&amp;", "&");
 					// added 2010/04/01: added HTML decoding routine
-					group = StringEscapeUtils.unescapeHtml(group);
+					// added 2012/01/20: URLDecode
+					group = URLDecoder.decode(StringEscapeUtils.unescapeHtml(this.encodeNonUnicode(group)));
 					this.m.add(
 						m_runtime.getCallerFactory().createAttribute(
 							IJAMConst.ATTRIBUTE_NAME_CITY,

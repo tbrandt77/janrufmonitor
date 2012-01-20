@@ -1,5 +1,29 @@
 ===
 
+jAnrufmonitor 5.0.33 (01.02.2012)
+---------------------------------
+
+Bugfix:
+- Identifizierung: Umlaute und Sonderzeichen werden korrekt dargestellt.
+
+
+===
+
+jAnrufmonitor 5.0.32 (01.10.2011)
+---------------------------------
+
+Bugfix:
+- Überwachungskomponente: Erkennung von Rufnummern ohne Vorwahl verbessert
+- Überwachungskomponente: Erkennung von internen Anlagenrufnummern verbessert
+- Überwachungskomponente: Erkennung von internationales Rufnummern korrigiert
+
+Module:
+- Fritz!Box-Überwachung: HTML-Enconding im Fritz!Box internen Adressbuch aktualisiert
+- CAPI Überwachung: 64-bit Adaption für Linux 
+
+
+===
+
 jAnrufmonitor 5.0.31 (01.07.2011)
 ---------------------------------
 
@@ -10,12 +34,12 @@ Bugfix:
 - Adressbuch: Erkennung von internen Anlagenrufnummern beim vCard Import
 
 Module:
-- MySQL Modul: Unterst√ºtzung f√ºr lange MSNs (> 8 Zeichen)
-- Fritz!Box-√úberwachung: Unicode Anpassung
-- Fritz!Box-√úberwachung: Unterst√ºtzung f√ºr AVM Fritz!Box Fon 7340 und 5124 Annex A
-- Fritz!Box-√úberwachung: AVM Fritz!Box Fon Synchronizer auf Geschwindigkeit optimiert
-- CAPI √úberwachung: Unicode Anpassung
-- TAPI √úberwachung: Unicode Anpassung
+- MySQL Modul: Unterstützung für lange MSNs (> 8 Zeichen)
+- Fritz!Box-Überwachung: Unicode Anpassung
+- Fritz!Box-Überwachung: Unterstützung für AVM Fritz!Box Fon 7340 und 5124 Annex A
+- Fritz!Box-Überwachung: AVM Fritz!Box Fon Synchronizer auf Geschwindigkeit optimiert
+- CAPI Überwachung: Unicode Anpassung
+- TAPI Überwachung: Unicode Anpassung
 
 
 ===
@@ -24,12 +48,12 @@ jAnrufmonitor 5.0.30 (01.04.2011)
 ---------------------------------
 
 Neu:
-- √úberwachung: Unterst√ºtzung f√ºr LANCOM LANCAPI
-- Neue VM Option: -Djam.monitor.secure=true f√ºr sichere √úberwachung bei einigen TAPI Treibern
+- Überwachung: Unterstützung für LANCOM LANCAPI
+- Neue VM Option: -Djam.monitor.secure=true f√ºr sichere Überwachung bei einigen TAPI Treibern
 - Erkennung von Spoofing Rufnummern aus dem Ausland (Spam-Anrufe)
 
 Bugfix:
-- Adressbuch: "Kontakte zusammenf√ºhren" scheitert bei mehreren gleichen Rufnummern
+- Adressbuch: "Kontakte zusammenführen" scheitert bei mehreren gleichen Rufnummern
 - Adressbuch: vCard Filter exportiert keine Fotos
 
 Module:
@@ -45,22 +69,22 @@ jAnrufmonitor 5.0.29 (01.02.2011)
 ---------------------------------
 
 Neu:
-- Adressbuch/Journal: Unterst√ºtzung f√ºr zentrale Bildverwaltung
+- Adressbuch/Journal: Unterst√ºtzung für zentrale Bildverwaltung
 
 Bugfix:
-- √úberwachungskomponente: Erkennung von Rufnummern ohne Vorwahl verbessert
-- Adressbuch: "Kontakte zusammenf√ºhren" scheitert bei gleichen Rufnummern
-- Adressbuch: "Kontakte zusammenf√ºhren" ignoriert Rufnummerntyp
+- Überwachungskomponente: Erkennung von Rufnummern ohne Vorwahl verbessert
+- Adressbuch: "Kontakte zusammenführen" scheitert bei gleichen Rufnummern
+- Adressbuch: "Kontakte zusammenführen" ignoriert Rufnummerntyp
 
 Module:
-- CAPI √úberwachung: √úberarbeitung der CAPI-Anbindung unter Linux
-- Fritz!Box-√úberwachung: Synchronisations- und Verbindungsprobleme
-- Fritz!Box-√úberwachung: Timeout-Problem bei der Firmware
-- Fritz!Box-√úberwachung: Unterst√ºtzung f√ºr Fritz!Box Fon 7320
+- CAPI Überwachung: Überarbeitung der CAPI-Anbindung unter Linux
+- Fritz!Box-Überwachung: Synchronisations- und Verbindungsprobleme
+- Fritz!Box-Überwachung: Timeout-Problem bei der Firmware
+- Fritz!Box-Überwachung: Unterstützung für Fritz!Box Fon 7320
 - Emailbenachrichtigung: Email-Vorlagen zeigen keine Bilder mehr an
 - HTML/XML Journal: Keine Bilder im HTML Journal
 - HTML/XML Journal: Keine Bilder beim Export ins HTML Format
-- Online-Telefonausk√ºnfte: Webseiten Timouts verhindern Identifizierung
+- Online-Telefonauskünfte: Webseiten Timeouts verhindern Identifizierung
 
 
 ===
