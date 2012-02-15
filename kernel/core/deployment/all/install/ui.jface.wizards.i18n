@@ -67,6 +67,7 @@ ui.jface.wizards.pages.CallerPage\:ln\:label\:de=Nachname
 ui.jface.wizards.pages.CallerPage\:add\:label\:de=Zusatzangaben
 ui.jface.wizards.pages.CallerPage\:str\:label\:de=Strasse
 ui.jface.wizards.pages.CallerPage\:no\:label\:de=Nr.
+ui.jface.wizards.pages.CallerPage\:email\:label\:de=Email
 ui.jface.wizards.pages.CallerPage\:pcode\:label\:de=PLZ
 ui.jface.wizards.pages.CallerPage\:city\:label\:de=Stadt/Gemeinde
 ui.jface.wizards.pages.CallerPage\:cntry\:label\:de=Land/Region

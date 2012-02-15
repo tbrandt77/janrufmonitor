@@ -25,9 +25,8 @@ import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.ICallerList;
 import de.janrufmonitor.framework.IName;
 import de.janrufmonitor.framework.IPhonenumber;
-import de.janrufmonitor.repository.CallerNotFoundException;
-import de.janrufmonitor.repository.ICallerManager;
-import de.janrufmonitor.repository.types.IIdentifyCallerRepository;
+import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
+import de.janrufmonitor.repository.identify.Identifier;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.util.formatter.Formatter;
 import de.janrufmonitor.util.io.Base64Decoder;
@@ -386,24 +385,21 @@ public class VcfParser30 {
 
 	protected IPhonenumber parsePhonenumber(String n) {
 		Formatter f = Formatter.getInstance(PIMRuntime.getInstance());
-		String normalizedNumber = f.normalizePhonenumber(n.trim());
-		ICallerManager mgr = PIMRuntime.getInstance().getCallerManagerFactory()
-				.getCallerManager("CountryDirectory");
-		if (mgr != null && mgr instanceof IIdentifyCallerRepository) {
-			ICaller c = null;
-			try {
-				c = ((IIdentifyCallerRepository) mgr)
-						.getCaller(PIMRuntime.getInstance()
-								.getCallerFactory()
-								.createPhonenumber(normalizedNumber));
-			} catch (CallerNotFoundException ex) {
-				m_logger.warning("Normalized number "
-						+ normalizedNumber + " not identified.");
-			}
+		IPhonenumber pn = PhonenumberAnalyzer.getInstance().createClirPhonenumberFromRaw(f.normalizePhonenumber(n.trim()));
+		if (pn!=null) return pn;
+		
+		// if no CLIR call, check internal
+		pn =  PhonenumberAnalyzer.getInstance().createInternalPhonenumberFromRaw(f.normalizePhonenumber(n.trim()), null);
+		if (pn!=null) return pn;
+		
+		// if no internal call, check regular
+		pn = PhonenumberAnalyzer.getInstance().createPhonenumberFromRaw(f.normalizePhonenumber(n.trim()), null);
 
-			if (c != null) {
-				return c.getPhoneNumber();				
-			} 
+		if (pn != null) {
+			ICaller c = Identifier.identifyDefault(PIMRuntime.getInstance(), pn);
+			if (c!=null) {
+				return c.getPhoneNumber();
+			}
 		}
 		return null;
 	}

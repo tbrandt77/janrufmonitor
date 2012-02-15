@@ -67,6 +67,7 @@ ui.jface.wizards.pages.CallerPage\:ln\:label\:en=Lastname
 ui.jface.wizards.pages.CallerPage\:add\:label\:en=Additional
 ui.jface.wizards.pages.CallerPage\:str\:label\:en=Street
 ui.jface.wizards.pages.CallerPage\:no\:label\:en=no
+ui.jface.wizards.pages.CallerPage\:email\:label\:en=Email
 ui.jface.wizards.pages.CallerPage\:pcode\:label\:en=Postal code
 ui.jface.wizards.pages.CallerPage\:city\:label\:en=City
 ui.jface.wizards.pages.CallerPage\:cntry\:label\:en=Country
