@@ -9,6 +9,10 @@ public class BusinessMacAddressBookMapping extends DefaultMacAddressBookMapping 
 		return DefaultMacAddressBookMapping.WORK;
 	}
 	
+	public String getSupportedEmailType() {
+		return DefaultMacAddressBookMapping.WORK;
+	}
+	
 	public List getSupportedNumbers() {
 		List<String> l = new ArrayList <String>(6);
 		l.add(DefaultMacAddressBookMapping.WORK);

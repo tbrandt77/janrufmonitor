@@ -13,4 +13,6 @@ public interface IMacAddressBookAddressMapping extends IMacAddressBookConst {
 	
 	public String getSupportedAddressType();
 	
+	public String getSupportedEmailType();
+	
 }

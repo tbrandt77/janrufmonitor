@@ -15,7 +15,7 @@ public class DefaultMacAddressBookMapping implements IMacAddressBookMapping {
 		l.add(DefaultMacAddressBookMapping.HOME);
 		l.add(DefaultMacAddressBookMapping.HOME_FAX);
 		l.add(DefaultMacAddressBookMapping.WORK);
-		l.add(DefaultMacAddressBookMapping.WORK_FAX);
+		l.add(DefaultMacAddressBookMapping.WORK_FAX); 
 		l.add(DefaultMacAddressBookMapping.MOBILE);
 		l.add(DefaultMacAddressBookMapping.PAGER);
 		l.add(DefaultMacAddressBookMapping.MAIN);
@@ -55,6 +55,7 @@ public class DefaultMacAddressBookMapping implements IMacAddressBookMapping {
 		if (macabField.equalsIgnoreCase(DefaultMacAddressBookMapping.ZIP)) return IJAMConst.ATTRIBUTE_NAME_POSTAL_CODE;
 		if (macabField.equalsIgnoreCase(DefaultMacAddressBookMapping.CITY)) return IJAMConst.ATTRIBUTE_NAME_CITY;
 		if (macabField.equalsIgnoreCase(DefaultMacAddressBookMapping.COUNTRY)) return IJAMConst.ATTRIBUTE_NAME_COUNTRY;
+		if (macabField.equalsIgnoreCase(DefaultMacAddressBookMapping.EMAIL)) return IJAMConst.ATTRIBUTE_NAME_EMAIL;
 		return null;
 	}
 
@@ -66,6 +67,7 @@ public class DefaultMacAddressBookMapping implements IMacAddressBookMapping {
 		if (jamField.equalsIgnoreCase(IJAMConst.ATTRIBUTE_NAME_POSTAL_CODE)) return DefaultMacAddressBookMapping.ZIP;
 		if (jamField.equalsIgnoreCase(IJAMConst.ATTRIBUTE_NAME_CITY)) return DefaultMacAddressBookMapping.CITY;
 		if (jamField.equalsIgnoreCase(IJAMConst.ATTRIBUTE_NAME_COUNTRY)) return DefaultMacAddressBookMapping.COUNTRY;
+		if (jamField.equalsIgnoreCase(IJAMConst.ATTRIBUTE_NAME_EMAIL)) return DefaultMacAddressBookMapping.EMAIL;
 		return null;
 	}
 
@@ -104,6 +106,10 @@ public class DefaultMacAddressBookMapping implements IMacAddressBookMapping {
 	}
 
 	public String getSupportedAddressType() {
+		return DefaultMacAddressBookMapping.HOME;
+	}
+
+	public String getSupportedEmailType() {
 		return DefaultMacAddressBookMapping.HOME;
 	}
 

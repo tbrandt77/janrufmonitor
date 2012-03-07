@@ -189,6 +189,19 @@ public class MacAddressBookMappingManager {
 				}
 			}
 			
+			if (oCaller.containsKey(IMacAddressBookAddressMapping.EMAIL)) {
+				jamField = om.mapToJamField(IMacAddressBookAddressMapping.EMAIL); 
+				a = createAttribute(jamField,
+						this.getRawEmail((List) oCaller.get(IMacAddressBookAddressMapping.EMAIL), om.getSupportedEmailType()));
+					
+				if (a!=null) {
+					m.add(a);
+					if (this.m_logger.isLoggable(Level.INFO)) {
+						this.m_logger.info("Added attribute "+a.toString());
+					}
+				}			
+			}
+			
 			for (int i=0,j=macContacFieldMappings.size();i<j;i++) {
 				field = (String) macContacFieldMappings.get(i);
 				jamField = om.mapToJamField(field); 
@@ -387,6 +400,15 @@ public class MacAddressBookMappingManager {
 				if (addressdata.containsKey(field)) {
 					return ((String) addressdata.get(field)).trim();
 				}
+			}
+		}
+		return null;
+	}
+	
+	private String getRawEmail(List mails, String type) {
+		for (Object entry : mails) {
+			if (entry instanceof Map <?,?> && ((Map) entry).containsKey(type)) {
+				return ((String)((Map)entry).get(type));
 			}
 		}
 		return null;
