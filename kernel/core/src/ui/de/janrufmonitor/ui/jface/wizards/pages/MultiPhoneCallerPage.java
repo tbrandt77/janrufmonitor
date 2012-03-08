@@ -410,6 +410,8 @@ public class MultiPhoneCallerPage extends AbstractPage {
 		this.renderAsText(addressGroup, getAttribute(IJAMConst.ATTRIBUTE_NAME_CITY), 345, 2, this.m_callerReadonly);
 		
 		this.renderAsText(addressGroup, getAttribute(IJAMConst.ATTRIBUTE_NAME_COUNTRY), 0, 3, this.m_callerReadonly);
+		
+		this.renderAsText(addressGroup, getAttribute(IJAMConst.ATTRIBUTE_NAME_EMAIL), 0, 4, this.m_callerReadonly);
 
 		Composite t = new Composite(c, SWT.NONE);
 		t.setLayout(new GridLayout(2, false));
