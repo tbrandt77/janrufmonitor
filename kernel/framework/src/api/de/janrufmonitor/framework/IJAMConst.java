@@ -24,12 +24,12 @@ public interface IJAMConst {
 	/**
 	 * Patch level
 	 */
-	public final static String VERSION_PATCH = "33";
+	public final static String VERSION_PATCH = "34";
 	
 	/**
 	 * Build number
 	 */
-	public final static String VERSION_BUILD = "20120201";
+	public final static String VERSION_BUILD = "20120301";
 
 	/**
 	 * Display version
@@ -397,6 +397,10 @@ public interface IJAMConst {
 	 */
 	public final static String ATTRIBUTE_NAME_IMAGEBINARY = "imagebinary";
 	
+	/**
+	 * Attribute name for caller e-mail attribute. 
+	 */
+	public final static String ATTRIBUTE_NAME_EMAIL = "email";
 	
 	// CALL ATTRIBUTES
 	
