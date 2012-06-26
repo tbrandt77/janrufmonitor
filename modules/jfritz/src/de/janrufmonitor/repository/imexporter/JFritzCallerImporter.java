@@ -275,6 +275,11 @@ public class JFritzCallerImporter implements ICallerImporter {
 			}
 			String[] splittedCaller = removeQuotes(this.m_caller).split(";");
 
+			if (splittedCaller.length<15) {
+				m_logger.warning("Invalid migration entry. Less then 15 tokens: "+this.m_caller);
+				return;
+			}
+			
 			if (m_logger.isLoggable(Level.INFO)) {
 				m_logger.info("Migrating JFritz contact: "+removeQuotes(this.m_caller));	
 			}
@@ -532,13 +537,16 @@ public class JFritzCallerImporter implements ICallerImporter {
 			boolean isJFRitz0741 = false;
 			while (bufReader.ready()) {
 				line = bufReader.readLine();
+				this.m_logger.info("Line: "+line);
 				if (line.startsWith("\"Private\";") && line.indexOf("Picture")>0) isJFRitz0741 = true;
 				if (!line.startsWith("\"Private\";") && !isJFRitz0741) {
+					this.m_logger.info("Using MigratorThread");
 					new MigratorThread(
 							this.m_callerList, line).run();
 
 				}
 				if (!line.startsWith("\"Private\";") && isJFRitz0741) {
+					this.m_logger.info("Using MigratorThread2");
 					new MigratorThread2(
 							this.m_callerList, line).run();
 
