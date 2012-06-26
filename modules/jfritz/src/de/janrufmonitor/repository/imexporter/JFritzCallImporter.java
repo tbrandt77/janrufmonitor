@@ -60,6 +60,10 @@ public class JFritzCallImporter implements ICallImporter {
 				return;
 			}
 			String[] splittedCall = removeQuotes(this.m_call).split(";");
+			if (splittedCall.length<12) {
+				m_logger.warning("Invalid migration entry. Less then 12 tokens: "+this.m_call);
+				return;
+			}
 			
 			if(splittedCall[3].trim().length()>0 && !splittedCall[3].trim().startsWith("+")) {
 				m_logger.warning("Invalid JFritz call: "+removeQuotes(this.m_call));

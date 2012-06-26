@@ -245,6 +245,220 @@ public class JFritzCallerImporter implements ICallerImporter {
 		}
 	}
 
+	private class MigratorThread2 implements Runnable {
+
+		/**
+		 * "Private";"Last Name";"First Name";"Company";"Street";"ZIP Code";"City";"E-Mail";"Picture";"Home";"Mobile";"Homezone";"Business";"Other";"Fax";"Sip";"Main"
+		 * "NO";"Bartholomä";"Dieter";"";"Wittumstr. 11";"74889";"Sinsheim-Eschelbach";"";"";"+497265315";"";"";"";"";"";"";""
+		 * "NO";"Baumgärtner";"Bianca";"";"Rathausstr. 1";"74934";"Reichartshausen";"";"";"";"+491786011100";"";"";"";"";"";""
+		 * "NO";"Baumgärtner";"Hilde";"";"Ringstr. 7";"74934";"Reichartshausen";"";"";"+4962626007";"";"";"";"";"";"";""
+		 * "NO";"Baumgärtner";"Steffen";"";"Ringstr. 7";"74934";"Reichartshausen, Baden-Württemberg";"";"";"+49626295470";"+491777569679";"";"";"";"";"";""
+		 * 
+		 */
+		
+		private ICallerList m_cl;
+
+		private String m_caller;
+
+		private ICallerFactory m_clf;
+
+		public MigratorThread2(ICallerList cl, String line) {
+			this.m_cl = cl;
+			this.m_caller = line;
+			this.m_clf = getRuntime().getCallerFactory();
+		}
+
+		public void run() {
+			if (this.m_caller == null) {
+				m_logger.warning("Invalid migration entry.");
+				return;
+			}
+			String[] splittedCaller = removeQuotes(this.m_caller).split(";");
+
+			if (m_logger.isLoggable(Level.INFO)) {
+				m_logger.info("Migrating JFritz contact: "+removeQuotes(this.m_caller));	
+			}
+			
+			IAttributeMap m = this.m_clf.createAttributeMap();
+			
+			if (splittedCaller[1].trim().length()>0)
+				m.add(
+					getRuntime().getCallerFactory().createAttribute(
+					IJAMConst.ATTRIBUTE_NAME_LASTNAME, 
+					splittedCaller[1].trim()
+					)
+				);
+			
+			m.add(
+				getRuntime().getCallerFactory().createAttribute(
+				IJAMConst.ATTRIBUTE_NAME_FIRSTNAME, 
+				splittedCaller[2].trim()
+				)
+			);
+				
+			m.add(
+				getRuntime().getCallerFactory().createAttribute(
+				IJAMConst.ATTRIBUTE_NAME_ADDITIONAL, 
+				splittedCaller[3].trim()
+				)
+			);
+						
+			m.add(
+				getRuntime().getCallerFactory().createAttribute(
+				IJAMConst.ATTRIBUTE_NAME_STREET, 
+				splittedCaller[4].trim()
+				)
+			);				
+
+			m.add(
+				getRuntime().getCallerFactory().createAttribute(
+				IJAMConst.ATTRIBUTE_NAME_POSTAL_CODE, 
+				splittedCaller[5].trim()
+				)
+			);
+			if (splittedCaller[6].trim().length()>0)
+				m.add(
+					getRuntime().getCallerFactory().createAttribute(
+					IJAMConst.ATTRIBUTE_NAME_CITY, 
+					splittedCaller[6].trim()
+					)
+				);	
+			
+			List phones = new ArrayList(3);
+			
+			// homenumber
+			IPhonenumber pn = getPhone(splittedCaller[9].trim());
+			if (pn!=null) {
+				m.add(getRuntime().getCallerFactory().createAttribute(
+				IJAMConst.ATTRIBUTE_NAME_NUMBER_TYPE + pn.getTelephoneNumber(), 
+				IJAMConst.ATTRIBUTE_VALUE_LANDLINE_TYPE
+				));
+				phones.add(pn);
+			}
+			
+			pn = getPhone(splittedCaller[10].trim());
+			if (pn!=null) {
+				m.add(getRuntime().getCallerFactory().createAttribute(
+				IJAMConst.ATTRIBUTE_NAME_NUMBER_TYPE + pn.getTelephoneNumber(), 
+				IJAMConst.ATTRIBUTE_VALUE_MOBILE_TYPE
+				));
+				phones.add(pn);
+			}
+			
+			pn = getPhone(splittedCaller[11].trim());
+			if (pn!=null) {
+				m.add(getRuntime().getCallerFactory().createAttribute(
+				IJAMConst.ATTRIBUTE_NAME_NUMBER_TYPE + pn.getTelephoneNumber(), 
+				IJAMConst.ATTRIBUTE_VALUE_LANDLINE_TYPE
+				));
+				phones.add(pn);
+			}	
+			
+			pn = getPhone(splittedCaller[12].trim());
+			if (pn!=null) {
+				m.add(getRuntime().getCallerFactory().createAttribute(
+				IJAMConst.ATTRIBUTE_NAME_NUMBER_TYPE + pn.getTelephoneNumber(), 
+				IJAMConst.ATTRIBUTE_VALUE_LANDLINE_TYPE
+				));
+				phones.add(pn);
+			}	
+			
+			pn = getPhone(splittedCaller[13].trim());
+			if (pn!=null) {
+				m.add(getRuntime().getCallerFactory().createAttribute(
+				IJAMConst.ATTRIBUTE_NAME_NUMBER_TYPE + pn.getTelephoneNumber(), 
+				IJAMConst.ATTRIBUTE_VALUE_LANDLINE_TYPE
+				));
+				phones.add(pn);
+			}	
+			
+			pn = getPhone(splittedCaller[14].trim());
+			if (pn!=null) {
+				m.add(getRuntime().getCallerFactory().createAttribute(
+				IJAMConst.ATTRIBUTE_NAME_NUMBER_TYPE + pn.getTelephoneNumber(), 
+				IJAMConst.ATTRIBUTE_VALUE_FAX_TYPE
+				));
+				phones.add(pn);
+			}			
+			
+			pn = getPhone(splittedCaller[15].trim());
+			if (pn!=null) {
+				m.add(getRuntime().getCallerFactory().createAttribute(
+				IJAMConst.ATTRIBUTE_NAME_NUMBER_TYPE + pn.getTelephoneNumber(), 
+				IJAMConst.ATTRIBUTE_VALUE_LANDLINE_TYPE
+				));
+				phones.add(pn);
+			}	
+			
+			if (!m.contains(IJAMConst.ATTRIBUTE_NAME_LASTNAME) && 
+				!m.contains(IJAMConst.ATTRIBUTE_NAME_CITY) ) {
+			
+					m_logger.warning("No lastname or country field available for caller: "+removeQuotes(this.m_caller));	
+					if (phones.size()>0)
+						m.add(getRuntime().getCallerFactory().createAttribute(
+								IJAMConst.ATTRIBUTE_NAME_CITY, 
+								getCity((IPhonenumber) phones.get(0))
+						));
+				
+			}
+			
+			if (phones.size()>0) {
+				ICaller c = this.m_clf.createCaller(this.m_clf.createName("", ""), phones);
+				c.getAttributes().addAll(m);
+				this.m_cl.add(c);	
+			}
+
+		}
+		
+		private String getCity(IPhonenumber p) {
+			ICallerManager mgr = getRuntime().getCallerManagerFactory()
+					.getCallerManager("CountryDirectory");
+			if (mgr != null && mgr instanceof IIdentifyCallerRepository) {
+				
+				try {
+					ICaller c = ((IIdentifyCallerRepository) mgr)
+							.getCaller(p);
+					IAttribute city = c.getAttribute(IJAMConst.ATTRIBUTE_NAME_CITY);
+					return (city!=null ? city.getValue() : "");
+				} catch (CallerNotFoundException ex) {
+					return "";
+				}
+			}	
+			return "";
+		}
+		
+		private IPhonenumber getPhone(String p) {
+			if (p.trim().length()==0) return null;
+			
+			if (!p.trim().startsWith("+")) return null;
+			
+			Formatter f = Formatter.getInstance(getRuntime());
+			String normalizedNumber = f.normalizePhonenumber(p);
+			ICallerManager mgr = getRuntime().getCallerManagerFactory()
+					.getCallerManager("CountryDirectory");
+			if (mgr != null && mgr instanceof IIdentifyCallerRepository) {
+				
+				try {
+					ICaller c = ((IIdentifyCallerRepository) mgr)
+							.getCaller(getRuntime()
+									.getCallerFactory()
+									.createPhonenumber(normalizedNumber));
+					
+				return c.getPhoneNumber();
+				} catch (CallerNotFoundException ex) {
+					m_logger.warning("Normalized number "
+							+ normalizedNumber + " not identified.");
+					return null;
+				}
+			}	
+			return null;
+		}
+		
+		private String removeQuotes(String s) {
+			return StringUtils.replaceString(s, "\"", " ");
+		}
+	}
+	
 	private String ID = "JFritzCallerImporter";
 
 	private String NAMESPACE = "repository.JFritzCallerImporter";
@@ -315,10 +529,17 @@ public class JFritzCallerImporter implements ICallerImporter {
 			FileReader dbReader = new FileReader(jfritzfile);
 			BufferedReader bufReader = new BufferedReader(dbReader);
 			String line = null;
+			boolean isJFRitz0741 = false;
 			while (bufReader.ready()) {
 				line = bufReader.readLine();
-				if (!line.startsWith("\"Private\";")) {
+				if (line.startsWith("\"Private\";") && line.indexOf("Picture")>0) isJFRitz0741 = true;
+				if (!line.startsWith("\"Private\";") && !isJFRitz0741) {
 					new MigratorThread(
+							this.m_callerList, line).run();
+
+				}
+				if (!line.startsWith("\"Private\";") && isJFRitz0741) {
+					new MigratorThread2(
 							this.m_callerList, line).run();
 
 				}
