@@ -161,9 +161,6 @@ public class PhonenumberAnalyzer {
 			if (truncate>0 && PhonenumberInfo.isMissingAreacode(number) && !PhonenumberInfo.containsSpecialChars(number)) {
 				for (int i = 0; i<truncate; i++)
 					number = "0"+number;
-	    		if (this.m_logger.isLoggable(Level.INFO)) {
-	    			this.m_logger.info("PhonenumberAnalyzer added truncated leading zeros ["+truncate+"]: ["+number+"]");
-	    		}
 			}
     		if (this.m_logger.isLoggable(Level.INFO)) {
     			this.m_logger.info("PhonenumberAnalyzer removed telephone system prefix: ["+number+"]");

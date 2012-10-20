@@ -52,5 +52,6 @@
 	<classpathentry kind="lib" path="/jAnrufmonitor Monitor TAPI/build"/>
 	<classpathentry kind="var" path="JAM_LIB/modules/mysql.jar"/>
 	<classpathentry kind="var" path="JAM_LIB/modules/itext.jar"/>
+	<classpathentry kind="var" path="JAM_LIB/modules/jmork.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

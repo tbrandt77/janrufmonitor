@@ -207,18 +207,7 @@ public class DatabaseI18nManager implements II18nManager, IConfigurable {
 	        	}
 	            return (value == null ? parameter : value);
 			} catch (SQLException e) {
-				// retry 2nd time, if first fails
-				if (this.m_logger.isLoggable(Level.WARNING))
-					this.m_logger.warning("Try 2nd time to fetch: "+namespace+", "+parameter+", "+identifier+", "+language);
-				try {
-		        	String value = this.m_dh.getI18nEntry(namespace, parameter, identifier, language);
-					if (value!=null && value.length()==0) {
-		        		value = this.m_dh.getI18nEntry(namespace, parameter, identifier, this.m_configuration.getProperty(this.CONFIG_LANG));
-		        	}
-		            return (value == null ? parameter : value);
-				} catch (SQLException ex) {
-					this.m_logger.log(Level.SEVERE, ex.getMessage(), ex);
-				}
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 			}
         }
         this.m_logger.warning("Identifier {" + identifier + "} is not valid.");
