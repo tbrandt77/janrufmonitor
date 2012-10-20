@@ -136,6 +136,7 @@ ui.jface.application.editor.rendering.ImagePath\:%userhome%\:label\:de=[Benutzer
 ui.jface.application.editor.rendering.CallerManager\:name\:label\:de=Telefonbuch
 ui.jface.application.editor.rendering.CreationDate\:name\:label\:de=Erstellt am
 ui.jface.application.editor.rendering.Creator\:name\:label\:de=Ersteller
+ui.jface.application.editor.rendering.Email\:name\:label\:de=Email
 ui.jface.application.editor.rendering.Category\:name\:label\:de=Kategorie
 ui.jface.application.editor.rendering.Machine\:name\:label\:de=Ersteller Rechner
 ui.jface.application.editor.rendering.ReadOnly\:name\:label\:de=Schreibschutz

@@ -126,6 +126,7 @@ ui.jface.application.editor.rendering.Image\:yes\:label\:en=Yes
 ui.jface.application.editor.rendering.CallerManager\:name\:label\:en=Phone book
 ui.jface.application.editor.rendering.CreationDate\:name\:label\:en=Created on 
 ui.jface.application.editor.rendering.Creator\:name\:label\:en=Creator
+ui.jface.application.editor.rendering.Email\:name\:label\:en=Email
 ui.jface.application.editor.rendering.Category\:name\:label\:en=Category
 ui.jface.application.editor.rendering.Machine\:name\:label\:en=Machine
 ui.jface.application.editor.rendering.ReadOnly\:name\:label\:en=write-proteced
