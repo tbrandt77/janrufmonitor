@@ -28,6 +28,7 @@ import com.google.gdata.data.contacts.ContactFeed;
 import com.google.gdata.data.contacts.ContactGroupEntry;
 import com.google.gdata.data.contacts.ContactGroupFeed;
 import com.google.gdata.data.contacts.GroupMembershipInfo;
+import com.google.gdata.data.extensions.Email;
 import com.google.gdata.data.extensions.ExtendedProperty;
 import com.google.gdata.data.extensions.FamilyName;
 import com.google.gdata.data.extensions.FormattedAddress;
@@ -497,6 +498,14 @@ public class GoogleContactsProxy implements IGoogleContactsConst {
 				entry.setName(name);
 				
 				entry.addStructuredPostalAddress(createPostalAddress(m));
+				
+				if (m.contains(IJAMConst.ATTRIBUTE_NAME_EMAIL)) {
+					String emails = m.get(IJAMConst.ATTRIBUTE_NAME_EMAIL).getValue();
+					Email email = new Email();
+					email.setAddress(emails);
+					entry.addEmailAddress(email);
+				}
+				
 				if (m.contains(IJAMConst.ATTRIBUTE_NAME_CATEGORY)) {
 					String cat = m.get(IJAMConst.ATTRIBUTE_NAME_CATEGORY).getValue();
 					if (this.m_reverseCategories.containsKey(cat)) {
@@ -660,6 +669,17 @@ public class GoogleContactsProxy implements IGoogleContactsConst {
 
 			entry.getStructuredPostalAddresses().clear();
 			entry.addStructuredPostalAddress(createPostalAddress(m));
+			
+			if (m.contains(IJAMConst.ATTRIBUTE_NAME_EMAIL)) {
+				List emaillist = entry.getEmailAddresses();
+				if (emaillist.size()>0) {
+					entry.getEmailAddresses().remove(0);
+				}
+				Email email = new Email();
+				email.setAddress(m.get(IJAMConst.ATTRIBUTE_NAME_EMAIL).getValue());
+				entry.addEmailAddress(email);
+			}
+			
 			if (m.contains(IJAMConst.ATTRIBUTE_NAME_CATEGORY)) {
 				String cat = m.get(IJAMConst.ATTRIBUTE_NAME_CATEGORY).getValue();
 				if (this.m_reverseCategories.containsKey(cat)) {
@@ -874,6 +894,15 @@ public class GoogleContactsProxy implements IGoogleContactsConst {
 			StructuredPostalAddress pa = (StructuredPostalAddress) e.getStructuredPostalAddresses().get(0);
 			m.addAll(parseAddress(pa));
 		}
+		
+		// 2012/10/20: added email support
+		if (e.hasEmailAddresses()) {
+			List emaillist = e.getEmailAddresses();
+			if (emaillist.size()>0) {
+				Email email = (Email) emaillist.get(0);
+				m.add(parseEmail(email));
+			}
+		}
 
 		List gphones = e.getPhoneNumbers();
 		List pl = new ArrayList(gphones.size());
@@ -942,6 +971,10 @@ public class GoogleContactsProxy implements IGoogleContactsConst {
 		return getRuntime().getCallerFactory().createCaller(uuid, null, pl, m);
 	}
 	
+	private IAttribute parseEmail(Email email) {
+		return getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_EMAIL, email.getAddress());
+	}
+
 	private IAttributeMap parseName(ContactEntry e) {
 		IAttributeMap m = getRuntime().getCallerFactory().createAttributeMap();
 
@@ -1067,6 +1100,8 @@ public class GoogleContactsProxy implements IGoogleContactsConst {
 		}
 		return nt;
 	}
+	
+	
 	
 	/**
 	 * Parsing the address field
