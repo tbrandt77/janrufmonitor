@@ -83,6 +83,7 @@ public class OrderAction extends AbstractAction implements JournalConfigConst {
 		if (columnId.equalsIgnoreCase("name") || columnId.equalsIgnoreCase("namedetail")) return 2;
 		if (columnId.equalsIgnoreCase("number")) return 3;
 		if (columnId.equalsIgnoreCase("cip")) return 4;
+		if (columnId.equalsIgnoreCase("category")) return 8;
 		
 		return -1;
 	}

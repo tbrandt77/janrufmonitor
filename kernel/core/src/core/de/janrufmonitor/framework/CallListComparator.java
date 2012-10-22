@@ -17,6 +17,8 @@ public class CallListComparator implements Comparator {
     public final static int ORDER_CALLERNUMBER = 3;
     
     public final static int ORDER_CIP = 4;
+    
+    public final static int ORDER_CATEGORY = 8;
 
     private int order = 0;
     
@@ -51,6 +53,13 @@ public class CallListComparator implements Comparator {
                 return this.getCompareNumber(aNum).compareTo(this.getCompareNumber(bNum));
             case ORDER_CIP:
                 return aCall.getCIP().getCIP().compareTo(bCall.getCIP().getCIP());
+            case ORDER_CATEGORY:
+            	IAttribute cata = aCall.getCaller().getAttribute(IJAMConst.ATTRIBUTE_NAME_CATEGORY);
+            	IAttribute catb = bCall.getCaller().getAttribute(IJAMConst.ATTRIBUTE_NAME_CATEGORY);
+            	if (cata==null && catb==null) return 0;
+                if (cata==null && catb!=null) return -1;
+                if (cata!=null && catb==null) return 1;
+                return cata.getValue().compareTo(catb.getValue());
         }
 
         return 0;
