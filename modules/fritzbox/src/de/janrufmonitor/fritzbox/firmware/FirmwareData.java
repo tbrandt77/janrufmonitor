@@ -80,6 +80,20 @@ public class FirmwareData {
             return "FRITZ!Box Fon 7170 (Annex A)";  
         case IFritzBoxFirmware.TYPE_FRITZBOX_7340:
             return "FRITZ!Box Fon 7340";  
+        case IFritzBoxFirmware.TYPE_FRITZBOX_6840_LTE:
+            return "FRITZ!Box Fon 6840 LTE";  
+        case IFritzBoxFirmware.TYPE_FRITZBOX_7330:
+            return "FRITZ!Box Fon 7330";
+        case IFritzBoxFirmware.TYPE_FRITZBOX_7360_SL:
+            return "FRITZ!Box Fon 7360 SL";
+        case IFritzBoxFirmware.TYPE_FRITZBOX_7360:
+            return "FRITZ!Box Fon 7360";  
+        case IFritzBoxFirmware.TYPE_FRITZBOX_6340_CABLE:
+            return "FRITZ!Box Fon 6340 (Kabel)"; 
+        case IFritzBoxFirmware.TYPE_FRITZBOX_7330_SL:
+            return "FRITZ!Box Fon 7330 SL";
+        case IFritzBoxFirmware.TYPE_FRITZBOX_7312:
+            return "FRITZ!Box Fon 7312"; 
 		default:			
 		}
 		return "unknown";
