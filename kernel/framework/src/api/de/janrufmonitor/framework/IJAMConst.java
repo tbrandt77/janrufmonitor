@@ -29,7 +29,7 @@ public interface IJAMConst {
 	/**
 	 * Build number
 	 */
-	public final static String VERSION_BUILD = "20120301";
+	public final static String VERSION_BUILD = "20121101";
 
 	/**
 	 * Display version
