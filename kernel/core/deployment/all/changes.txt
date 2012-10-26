@@ -1,5 +1,23 @@
 ===
 
+jAnrufmonitor 5.0.34 (01.11.2012)
+---------------------------------
+
+Neu:
+- Adressbuch: Email Adresse als Informationszusatz
+- Journal: Email Adresse als Informationszusatz
+- Journal: Sortieren nach Kategorie
+
+Bugfix:
+- Adressbuch: Verbesserter vCard (VCF) Import für interner Telefonanlagenrufnummern
+
+Module:
+- Fritz!Box-Überwachung: Unterstützung für AVM Fritz!Box Fon 6340 Cable, 6840 LTE, 7330 SL, 7360 SL, 7312
+- JFritz Journal und Telefonbuch Import: Korrigierter Datenimport für JFritz 0.7.4.1 
+- Apple Mac Adressbuch: Unterstützung für Email Adresse
+
+===
+
 jAnrufmonitor 5.0.33 (01.02.2012)
 ---------------------------------
 
@@ -49,7 +67,7 @@ jAnrufmonitor 5.0.30 (01.04.2011)
 
 Neu:
 - Überwachung: Unterstützung für LANCOM LANCAPI
-- Neue VM Option: -Djam.monitor.secure=true f√ºr sichere Überwachung bei einigen TAPI Treibern
+- Neue VM Option: -Djam.monitor.secure=true für sichere Überwachung bei einigen TAPI Treibern
 - Erkennung von Spoofing Rufnummern aus dem Ausland (Spam-Anrufe)
 
 Bugfix:
@@ -69,7 +87,7 @@ jAnrufmonitor 5.0.29 (01.02.2011)
 ---------------------------------
 
 Neu:
-- Adressbuch/Journal: Unterst√ºtzung für zentrale Bildverwaltung
+- Adressbuch/Journal: Unterstützung für zentrale Bildverwaltung
 
 Bugfix:
 - Überwachungskomponente: Erkennung von Rufnummern ohne Vorwahl verbessert
@@ -93,35 +111,35 @@ jAnrufmonitor 5.0.28 (01.01.2011)
 ---------------------------------
 
 Neu:
-- Proxy-Einstellungen: Benutzer und Passwort f√ºr Authentifizierung m√∂glich
-- Unicode-Unterst√ºtzung f√ºr alle Basiskomponenten
+- Proxy-Einstellungen: Benutzer und Passwort für Authentifizierung möglich
+- Unicode-Unterstützung für alle Basiskomponenten
 
 Bugfix:
-- √úberwachungskomponente: Timeout f√ºr Aktivpr√ºfung erh√∂ht
-- √úberwachungskomponente: Rufnummernerkennung √ºberarbeitet
-- √úberwachungskomponente: Optimierter Algorithmus f√ºr internationale Rufnummern
-- √úberwachungskomponente: Optimierter Algorithmus f√ºr interne Anlagenrufnummern
+- Überwachungskomponente: Timeout für Aktivprüfung erhöht
+- Überwachungskomponente: Rufnummernerkennung überarbeitet
+- Überwachungskomponente: Optimierter Algorithmus für internationale Rufnummern
+- Überwachungskomponente: Optimierter Algorithmus für interne Anlagenrufnummern
 - Adressbuch: Verbesserter vCard (VCF) Im- und Export
 - Archivierung: Speicherplatzoptimierung nach einer erfolgreichen Archivierung
 
 Module:
 - Anrufsimulator: Verbesserte Erkennung von internationalen Rufnummern
-- Abweisungsdienst: Abweisen Aktion im Journal hinzugef√ºgt
-- Server Erweiterung: Unterst√ºtzung f√ºr "W√§hlen vom Client"
+- Abweisungsdienst: Abweisen Aktion im Journal hinzugefügt
+- Server Erweiterung: Unterstützung für "Wählen vom Client"
 - Server Erweiterung: Aktualisieren von Kontakte im serverbasierten Adressbuch erzeugt falsche Daten auf Server
 - Server Erweiterung: Verbesserte Serialisierung der Bild-Vorschau
-- Client Erweiterung: Unterst√ºtzung f√ºr "W√§hlen vom Client"
-- Client Erweiterung: Unterst√ºtzung f√ºr "W√§hlen vom Client"
+- Client Erweiterung: Unterstützung für "Wählen vom Client"
+- Client Erweiterung: Unterstützung für "Wählen vom Client"
 - Client Erweiterung: Optimierte Bild-Vorschau (Caching)
 - Client Erweiterung: Aktualisieren von Kontakte im serverbasierten Adressbuch erzeugt falsche Daten auf Server
-- Client Erweiterung: Konfiguration des serverbasierten Adressbuch/Journals √ºber Einstellungen m√∂glich
-- CAPI √úberwachung: CONNECT_ACT_IND Erkennung bei abgewiesenen Anrufen
-- CAPI √úberwachung: Automatische Vorwahlerg√§nzung f√ºr lokale Rufnummern
-- TAPI √úberwachung: Unterst√ºtzung f√ºr "W√§hlen vom Client"
-- TAPI √úberwachung: Sonderzeichenerkennung in Rufnummern
-- TAPI √úberwachung: Automatische Vorwahlerg√§nzung f√ºr lokale Rufnummern
-- Fritz!Box-√úberwachung: Unterst√ºtzung f√ºr "W√§hlen vom Client"
-- Fritz!Box-√úberwachung: √úberwachung nach Einstellungs√§nderungen deaktiv
+- Client Erweiterung: Konfiguration des serverbasierten Adressbuch/Journals über Einstellungen möglich
+- CAPI Überwachung: CONNECT_ACT_IND Erkennung bei abgewiesenen Anrufen
+- CAPI Überwachung: Automatische Vorwahlergänzung für lokale Rufnummern
+- TAPI Überwachung: Unterstützung für "Wählen vom Client"
+- TAPI Überwachung: Sonderzeichenerkennung in Rufnummern
+- TAPI Überwachung: Automatische Vorwahlergänzung für lokale Rufnummern
+- Fritz!Box-Überwachung: Unterstützung für "Wählen vom Client"
+- Fritz!Box-Überwachung: Überwachung nach Einstellungsänderungen deaktiv
 - LDAP-basiertes Adressbuch: Verbessertes Laden von Kontakt-Fotos
 - Apple Mac Adressbuch: verbesserte Rufnummern Zuordnung
 - Google Kontakte: Verbesserter Ladeprozess der Kontakte beim Programmstart
@@ -139,18 +157,18 @@ Neu:
 
 Bugfix:
 - Journal & Adressbuch: Spalten-Selektionsdialog mit Scrollbalken
-- √úberwachung: nationale italienische Anrufe (L√§nderkennung 0039) werden falsch erkannt
-- Unicode und Sonderzeichen-Unterst√ºtzung f√ºr alle Online-Telefonausk√ºnfte
+- Überwachung: nationale italienische Anrufe (Länderkennung 0039) werden falsch erkannt
+- Unicode und Sonderzeichen-Unterstützung für alle Online-Telefonauskünfte
 
 Module:
-- Fritz!Box-√úberwachung: Unterst√ºtzung f√ºr "Letzte Anrufe"-Dialog integriert
-- TAPI √úberwachung: Unterst√ºtzung f√ºr "Letzte Anrufe"-Dialog integriert
-- TAPI √úberwachung: W√§hlen von internen Telefonanlagenrufnummern m√∂glich
-- TAPI √úberwachung: F√ºhrende Null bei ausgehenden Anrufen entfernt
-- Notizen: Aktualisierungen an der Benutzeroberfl√§che
-- Server Erweiterung: Unicode Unterst√ºtzung
-- Apple Mac Adressbuch: Unterst√ºtzung f√ºr alle Rufnummernarten
-- Emailbenachrichtigung: Verarbeitung von verpassten, ausgehenden Anrufen ge√§ndert
+- Fritz!Box-Überwachung: Unterstützung für "Letzte Anrufe"-Dialog integriert
+- TAPI Überwachung: Unterstützung für "Letzte Anrufe"-Dialog integriert
+- TAPI Überwachung: Wählen von internen Telefonanlagenrufnummern möglich
+- TAPI Überwachung: Führende Null bei ausgehenden Anrufen entfernt
+- Notizen: Aktualisierungen an der Benutzeroberfläche
+- Server Erweiterung: Unicode Unterstützung
+- Apple Mac Adressbuch: Unterstützung für alle Rufnummernarten
+- Emailbenachrichtigung: Verarbeitung von verpassten, ausgehenden Anrufen geändert
 - Telefonauskunft Modul Assistent: Drag&Drop von Modulen in den Editier-Modus
 - Telefonauskunft Modul Assistent: Markieren fehlerhafter Regular Expressions im Dialog
 - Telefonauskunft www.klicktel.de: Neues Modul
@@ -163,7 +181,7 @@ jAnrufmonitor 5.0.26 (01.11.2010)
 ---------------------------------
 
 Neu:
-- Journal & Adressbuch: Bedingtes Formatieren von Platzhaltern m√∂glich
+- Journal & Adressbuch: Bedingtes Formatieren von Platzhaltern möglich
 - Adressbuch: Verbesserte Ladezeiten bei MySQL- und MS Outlook Kontakte Nutzung
 
 Bugfix:
@@ -171,12 +189,12 @@ Bugfix:
 - Dialog: Rufnummerndarstellung im Dialog teilweise fehlerhaft
 - VCF-Import: Fehlerhaftes Exception Handling beim Import von Kontakten mit Umlauten
 - Defektes Icon im Tray bei MacOS X Version
-- Unicode Problem beim Nutzen von Windows Journale/Adressb√ºcher unter MacOS X
+- Unicode Problem beim Nutzen von Windows Journale/Adressbücher unter MacOS X
 
 Module:
 - Moony-Importer: Sonderzeichen im Kontakt verursachen Absturz
-- TAPI √úberwachung: Erkennen von ausgehenden Anrufen (nur wenn von TAPI unterst√ºtzt)
-- TAPI √úberwachung: Erkennen des Gespr√§chsende und Gespr√§chszeit
+- TAPI Überwachung: Erkennen von ausgehenden Anrufen (nur wenn von TAPI unterstützt)
+- TAPI Überwachung: Erkennen des Gesprächsende und Gesprächszeit
 - Apple Mac Adressbuch: neues Modul
 
 
@@ -186,19 +204,19 @@ jAnrufmonitor 5.0.25 (01.10.2010)
 ---------------------------------
 
 Neu:
-- jAnrufmonitor f√ºr AVM Fritz!Box Fon auf MacOS X portiert
+- jAnrufmonitor für AVM Fritz!Box Fon auf MacOS X portiert
 - Adressbuch: Kategorien im- und exportieren
 - Neue SWT Grafikbibliothek Version 3.7
 
 Bugfix:
-- Journal: Anrufer-Foto und Status-Icon k√∂nnen nicht parallel dargestellt werden
+- Journal: Anrufer-Foto und Status-Icon können nicht parallel dargestellt werden
 
 Module:
-- Fritz!Box-√úberwachung: Erkennung der Fritz!Box Fon 6360
-- Fritz!Box-√úberwachung: Anrufliste auf Fritz!Box L√∂schen mit Firmware xx.04.86
+- Fritz!Box-Überwachung: Erkennung der Fritz!Box Fon 6360
+- Fritz!Box-Überwachung: Anrufliste auf Fritz!Box Löschen mit Firmware xx.04.86
 - Telefonauskunft tel.search.ch: Erkennung nach API Update geht nicht
-- Notizen: Aktualisierungen an der Benutzeroberfl√§che
-- Client Erweiterung: Aktualisierungen an der Benutzeroberfl√§che
+- Notizen: Aktualisierungen an der Benutzeroberfläche
+- Client Erweiterung: Aktualisierungen an der Benutzeroberfläche
 
 
 ===
@@ -207,18 +225,18 @@ jAnrufmonitor 5.0.24 (10.07.2010)
 ---------------------------------
 
 Neu:
-- Geocoding Optionen f√ºr Adressdetails
+- Geocoding Optionen für Adressdetails
 - Export von Firmennamen im VCF 3.0 Format
 
 Bugfix:
-- Rufnummern mit Sonderzeichen werden im L√§nder- und Vorwahlverzeichnis nicht verarbeitet
+- Rufnummern mit Sonderzeichen werden im Länder- und Vorwahlverzeichnis nicht verarbeitet
 - mehrfaches Laden der Kontaktliste bei Regel-Assistent und Filter-Dialog behoben
 - Java 6 (JDK 1.6) spezifische Anpassungen beim Classloading (Programm-Start)
 
 Module:
-- Fritz!Box-√úberwachung: Statusmeldungen bei ausgehenden Anrufen werden im TrayIcon angezeigt
-- Fritz!Box-√úberwachung: doppeltes W√§hlpr√§fix bei ausgehenden Anrufen
-- TAPI √úberwachung: doppeltes W√§hlpr√§fix bei ausgehenden Anrufen
+- Fritz!Box-Überwachung: Statusmeldungen bei ausgehenden Anrufen werden im TrayIcon angezeigt
+- Fritz!Box-Überwachung: doppeltes Wählpräfix bei ausgehenden Anrufen
+- TAPI Überwachung: doppeltes Wählpräfix bei ausgehenden Anrufen
 - MS Outlook Kontaktverzeichnis: Optimierung des Caches
 - Telefonauskunft 118000.fr: Neues Modul
 
@@ -229,19 +247,19 @@ jAnrufmonitor 5.0.23 (01.06.2010)
 ---------------------------------
 
 Neu:
-- Adressbuch: vCard 3.0 (VCF) Unterst√ºtzung f√ºr Im- und Export integriert
+- Adressbuch: vCard 3.0 (VCF) Unterstützung für Im- und Export integriert
 
 Bugfix:
-- Geokodierung: Regel f√ºr Geokodierung im Regel-Assistenten korrigiert
+- Geokodierung: Regel für Geokodierung im Regel-Assistenten korrigiert
 - Journal/Adressbuch: Spaltenauswahl vereinfacht
 - UpdateManager: Probleme beim Update von Modulen behoben
 
 Module:
 - Emailbenachrichtigung: Emailbenachrichtigung versendet keine Testmail
-- Fritz!Box-√úberwachung: Synchronizer √ºberschreibt Geokodierung bei neuen Anrufen
-- Fritz!Box-√úberwachung: Call-By-Call Pr√§fixauswahl bei W√§hlhilfe
-- Client Erweiterung: Zentrale Bildverwaltung zu Client Adressbuch hinzugef√ºgt
-- Server Erweiterung: Zentrale Bildverwaltung f√ºr Clients zum Server hinzugef√ºgt
+- Fritz!Box-Überwachung: Synchronizer überschreibt Geokodierung bei neuen Anrufen
+- Fritz!Box-Überwachung: Call-By-Call Präfixauswahl bei Wählhilfe
+- Client Erweiterung: Zentrale Bildverwaltung zu Client Adressbuch hinzugefügt
+- Server Erweiterung: Zentrale Bildverwaltung für Clients zum Server hinzugefügt
 
 
 ===
@@ -250,19 +268,19 @@ jAnrufmonitor 5.0.22 (01.05.2010)
 ---------------------------------
 
 Neu:
-- Geokodierung: Neuer Dienst hinzugef√ºgt
+- Geokodierung: Neuer Dienst hinzugefügt
 - Identifizierung: TrayIcon Tooltip komplett abschaltbar
-- √úberwachung: Sprachabh√§ngige Fehlermeldung bei doppeltem Programmstart
+- Überwachung: Sprachabhängige Fehlermeldung bei doppeltem Programmstart
 
 Bugfix:
 - Identifizierung: Rufnummern mit Vorwahl 049xx werden falsch erkannt ("Aurich"-Bug)
-- Identifizierung: HTML-Dekodierung von Umlauten bei Online-Telefonausk√ºnften
+- Identifizierung: HTML-Dekodierung von Umlauten bei Online-Telefonauskünften
 - Adressbuch: Fehler beim Anlegen von Kontakten mit Telefonanlagennummern
 
 Module:
 - Emailbenachrichtigung: SMTP Port konfigurierbar
-- Fritz!Box-√úberwachung: TrayIcon Tooltip erscheint nicht mehr wenn keine Anrufe synchronisiert wurden
-- TAPI Wahlhilfe f√ºr CAPI Variante: neues Modul
+- Fritz!Box-Überwachung: TrayIcon Tooltip erscheint nicht mehr wenn keine Anrufe synchronisiert wurden
+- TAPI Wahlhilfe für CAPI Variante: neues Modul
 - HTML/XML Journal: Vorlagenbasierte Journal-Generierung
 
 
@@ -272,21 +290,21 @@ jAnrufmonitor 5.0.21 (01.04.2010)
 ---------------------------------
 
 Neu:
-- √úberwachung: Wahlpr√§fix f√ºr ausgehende Anrufe
-- Journal: Filterung nach mehreren MSNs m√∂glich
-- Identifizierung: Rufnummernformate nach E.123 nat./int. und DIN 5008 werden unterst√ºtzt
+- Überwachung: Wahlpräfix für ausgehende Anrufe
+- Journal: Filterung nach mehreren MSNs möglich
+- Identifizierung: Rufnummernformate nach E.123 nat./int. und DIN 5008 werden unterstützt
 
 Bugfix:
-- √úberwachung: Interne Anlagenrufnummern mit Sonderzeichen werden erkannt 
+- Überwachung: Interne Anlagenrufnummern mit Sonderzeichen werden erkannt 
 
 Module:
 - Anrufsimulator: Simulieren von Rufnummern mit Sonderzeichen
-- CAPI √úberwachung: Unterst√ºtzung von Rufnummern mit Sonderzeichen
-- TAPI √úberwachung: Unterst√ºtzung von Rufnummern mit Sonderzeichen
-- Fritz!Box-√úberwachung: Unterst√ºtzung von Rufnummern mit Sonderzeichen
+- CAPI Überwachung: Unterstützung von Rufnummern mit Sonderzeichen
+- TAPI Überwachung: Unterstützung von Rufnummern mit Sonderzeichen
+- Fritz!Box-Überwachung: Unterstützung von Rufnummern mit Sonderzeichen
 - NT Dienst Integration: Dienst mit initialem Speichern von 16MB starten
 - Erweiterung zum Starten externer Anwendungen: Auf ausgehende Anrufe reagieren
-- Erweiterung zum Starten externer Anwendungen: HTTP Kommandos m√∂glich
+- Erweiterung zum Starten externer Anwendungen: HTTP Kommandos möglich
 - Emailbenachrichtigung: Emailversand zum Testen der Einstellungen in der Konfiguration
 
 
@@ -296,21 +314,21 @@ jAnrufmonitor 5.0.20 (01.03.2010)
 ---------------------------------
 
 Neu:
-- Journal: Kommentarfunktion hinzugef√ºgt
+- Journal: Kommentarfunktion hinzugefügt
 - Journal: eigene Spalten im Journal definieren
-- TrayIcon: Tray Status hinzugef√ºgt
+- TrayIcon: Tray Status hinzugefügt
 
 Bugfix:
 - VCF-Import: Adressverarbeitung neu implementiert
-- Setup-Asssistent: Existierende Dateien werden ohne Benutzerbest√§tigung √ºberschrieben
-- Adressbuch/Journal: Zu letzt gew√§hltes Verzeichnis beim Speichern.../√ñffnen... Dialog wird nicht beibehalten
+- Setup-Asssistent: Existierende Dateien werden ohne Benutzerbestätigung überschrieben
+- Adressbuch/Journal: Zu letzt gewähltes Verzeichnis beim Speichern.../√ñffnen... Dialog wird nicht beibehalten
 
 Module:
 - MS Outlook Kontaktverzeichnis: verbesserter Sync bei "nur Identifizieren" Modus
-- HTML/XML Journal: content-type f√ºr IE Kompatibilit√§t hinzugef√ºgt
+- HTML/XML Journal: content-type für IE Kompatibilität hinzugefügt
 - Telefonauskunft DasTelefonbuch.de: Adaption auf neue Seitenstruktur
 - Telefonauskunft 11880.com: Adaption auf neue Seitenstruktur
-- Abweisungsdienst: Unterst√ºtzung f√ºr komplette Rufnummern und Rufnummernfragmente in der Konfiguration
+- Abweisungsdienst: Unterstützung für komplette Rufnummern und Rufnummernfragmente in der Konfiguration
 
 
 ===
@@ -319,23 +337,23 @@ jAnrufmonitor 5.0.19 (01.02.2010)
 ---------------------------------
 
 Neu:
-- Journal: "Alles ausw√§hlen" im Journal hinzugef√ºgt
-- Journal: Anruferhistorie √ºber Journal abrufbar
+- Journal: "Alles auswählen" im Journal hinzugefügt
+- Journal: Anruferhistorie über Journal abrufbar
 - Dialog: MSN Farbauswahl vom Journal im Dialog anzeigen
 
 Bugfix:
 - Journal: NPE im Namenszuweisungsdialog
 - Adressbuch: Falsches Datum bei "Zuletzt angerufen" Spalte in Verbindung mit Textdatei-basierten Journal
-- Update Manager: Update-Anfragen bei ausgeschaltener Option "automatische Updatepr√ºfung"
+- Update Manager: Update-Anfragen bei ausgeschaltener Option "automatische Updateprüfung"
 - Console Version: jam.sh bash-Zeile mit falscher Syntax
 
 Module:
-- Fritz!Box-√úberwachung: Unterst√ºtzung f√ºr AVM Fritz!Box Fon 7390
-- Fritz!Box-√úberwachung: Deutsche Umlauten im AVM Fritz!Box Fon Adressbuch werden nicht dargestellt
-- CAPI √úberwachung: Bugfix in einer interner Copy-Funktion
-- RSS Add-on: Unterst√ºtzung f√ºr Atom 1.0 Feeds hinzugef√ºgt
+- Fritz!Box-Überwachung: Unterstützung für AVM Fritz!Box Fon 7390
+- Fritz!Box-Überwachung: Deutsche Umlauten im AVM Fritz!Box Fon Adressbuch werden nicht dargestellt
+- CAPI Überwachung: Bugfix in einer interner Copy-Funktion
+- RSS Add-on: Unterstützung für Atom 1.0 Feeds hinzugefügt
 - Google Kontakte: NPE beim Einlesen von Rufnummerntypen
-- Google Kontakte: Schreibzugriff f√ºr Google Kontakte integriert
+- Google Kontakte: Schreibzugriff für Google Kontakte integriert
 
 
 ===
@@ -344,18 +362,18 @@ jAnrufmonitor 5.0.18 (04.01.2010)
 ---------------------------------
 
 Neu:
-- Konfiguration: Rufnummerformatauswahl unter Einstellungen -> Grundeinstellungen -> Rufnummerneinstellungen w√§hlbar
+- Konfiguration: Rufnummerformatauswahl unter Einstellungen -> Grundeinstellungen -> Rufnummerneinstellungen wählbar
 
 Bugfix:
-- Journal: Rechtschreibfehler in Men√ºtexten
-- Journal: Einzelner Journaleintrag nachtr√§glich identifizierbar
-- √úberwachung: NullPointerException beim Abruf des Beschreibungstextes
+- Journal: Rechtschreibfehler in Menütexten
+- Journal: Einzelner Journaleintrag nachträglich identifizierbar
+- Überwachung: NullPointerException beim Abruf des Beschreibungstextes
 
 Module:
-- Fritz!Box-√úberwachung: Annex A Firmware Erkennung hinzugef√ºgt
-- TAPI-√úberwachung: Letzte TAPI-Line bei ausgehenden Anrufen wird zur Vorauswahl gespeichert
-- Telefonauskunft Modul Assistent: L√§ndercode in der Konfiguration sichtbar gemacht
-- Telefonauskunft Modul Assistent: L√§ndercode-unabh√§ngiges Modul mit L√§ndercode 00 erzeugbar
+- Fritz!Box-Überwachung: Annex A Firmware Erkennung hinzugefügt
+- TAPI-Überwachung: Letzte TAPI-Line bei ausgehenden Anrufen wird zur Vorauswahl gespeichert
+- Telefonauskunft Modul Assistent: Ländercode in der Konfiguration sichtbar gemacht
+- Telefonauskunft Modul Assistent: Ländercode-unabhängiges Modul mit Ländercode 00 erzeugbar
 - Fritz!X Import Filter: neues Modul
 
 
@@ -365,19 +383,19 @@ jAnrufmonitor 5.0.17 (30.11.2009)
 ---------------------------------
 
 Neu:
-- Adressbuch & Dialog: Anrufhistorie zum aktuellen Anrufer bzw. zum ausgew√§hlten Kontakt
+- Adressbuch & Dialog: Anrufhistorie zum aktuellen Anrufer bzw. zum ausgewählten Kontakt
 - Adressbuch: Vorschau der Adressdaten im Kontakte-Dialog ausblendbar
-- Journal: Erneute Erkennung von bereits existierenden Eintr√§gen m√∂glich
+- Journal: Erneute Erkennung von bereits existierenden Einträgen möglich
 
 Bugfix:
-- Startreihenfolge der Dienste und Telefonb√ºcher ge√§ndert
+- Startreihenfolge der Dienste und Telefonbücher geändert
 
 Module:
-- Fritz!Box-√úberwachung: Fritz!Box Fon internes Telefonbuch im jAnrufmonitor nutzbar (nur f√ºr AVM Fritz!Box Fon Hardware mit neuer Login-Firmware)
-- Fritz!Box-√úberwachung: Rufnummer aus Journal und Adressbuch in die Fritz!Box Fon Sperrliste aufnehmen  (nur f√ºr AVM Fritz!Box Fon Hardware mit neuer Login-Firmware)
-- Fritz!Box-√úberwachung: Rufnummer w√§hlen f√ºr Console Version hinzugef√ºgt
-- Fritz!Box-√úberwachung: Unterst√ºtzung f√ºr Fritz!Box Fon Anrufer Sperre im Adressbuch (nur f√ºr AVM Fritz!Box Fon Hardware mit neuer Login-Firmware)
-- Telefonauskunft Modul Assistent: M√∂glichkeit zum Konfigurations-Update eingef√ºgt
+- Fritz!Box-Überwachung: Fritz!Box Fon internes Telefonbuch im jAnrufmonitor nutzbar (nur für AVM Fritz!Box Fon Hardware mit neuer Login-Firmware)
+- Fritz!Box-Überwachung: Rufnummer aus Journal und Adressbuch in die Fritz!Box Fon Sperrliste aufnehmen  (nur für AVM Fritz!Box Fon Hardware mit neuer Login-Firmware)
+- Fritz!Box-Überwachung: Rufnummer wählen für Console Version hinzugefügt
+- Fritz!Box-Überwachung: Unterstützung für Fritz!Box Fon Anrufer Sperre im Adressbuch (nur für AVM Fritz!Box Fon Hardware mit neuer Login-Firmware)
+- Telefonauskunft Modul Assistent: Möglichkeit zum Konfigurations-Update eingefügt
 
 
 ===
@@ -386,18 +404,18 @@ jAnrufmonitor 5.0.16 (02.11.2009)
 ---------------------------------
 
 Neu:
-- Journal & Adressbuch: Als Toplevel Anwendung unter Windows ausf√ºhrbar (Java VM Parameter: jam.ui.toplevel=true)
+- Journal & Adressbuch: Als Toplevel Anwendung unter Windows ausführbar (Java VM Parameter: jam.ui.toplevel=true)
 
 Bugfix:
-- Journal & Adressbuch: DropDown-Men√º f√ºr Ansichtseektion mit kleinerem Scrollbereich
+- Journal & Adressbuch: DropDown-Menü für Ansichtseektion mit kleinerem Scrollbereich
 
 Module:
 - Abweisungsdienst: Vorwahlen in der Konfiguration bei gro√üer DPI Einstellung nicht lesbar
-- TAPI-√úberwachung: W√§hloption f√ºr interne Anlagenrufnummern
-- TAPI-√úberwachung: UNKNOWN Anrufe werden als CLIR Anrufe (- - - - -) erkannt
-- Fritz!Box-√úberwachung: Erkennung neuer AVM Fritz!Box Hardware
+- TAPI-Überwachung: Wähloption für interne Anlagenrufnummern
+- TAPI-Überwachung: UNKNOWN Anrufe werden als CLIR Anrufe (- - - - -) erkannt
+- Fritz!Box-Überwachung: Erkennung neuer AVM Fritz!Box Hardware
 - Google Kontakte: Deutscher Beschreibungstext korrigiert und angepasst
-- Telefonauskunft DasTelefonbuch.de: Erkennung des Namens schl√§gt fehl
+- Telefonauskunft DasTelefonbuch.de: Erkennung des Namens schlägt fehl
 
 
 ===
@@ -406,18 +424,18 @@ jAnrufmonitor 5.0.15 (02.09.2009)
 ---------------------------------
 
 Neu:
-- Rufnummerneinstellungen: dedizierte Einstellungsm√∂glichkeit f√ºr Rufnummern, z.B. Pr√§fix-Entfernung etc.
+- Rufnummerneinstellungen: dedizierte Einstellungsmöglichkeit für Rufnummern, z.B. Präfix-Entfernung etc.
 
 Bugfix:
-- Identifizierung: Zuf√§lliges L√∂schen der Option "Anzahl der zu entfernenden f√ºhrenden Ziffern"
-- Identifizierung: Zuf√§lliges L√∂schen der Option "Pr√§fix f√ºr internatioanle Anrufe"
+- Identifizierung: Zufälliges Löschen der Option "Anzahl der zu entfernenden führenden Ziffern"
+- Identifizierung: Zufälliges Löschen der Option "Präfix für internatioanle Anrufe"
 - Adressbuch: gro√üe Kontakt-Fotos verursachen Dialogabsturz
 
 Module:
-- Fritz!Box-√úberwachung: Automatische Session-ID Erneuerung bei neuer AVM Firmware unterbunden (Zuviele Logeintr√§ge auf der Fritz!Box Fon)
-- Fritz!Box-√úberwachung: Verbesserte Erkennung von redundanten Informationen beim Synchronisieren der AVM Fritz!Box Fon
+- Fritz!Box-Überwachung: Automatische Session-ID Erneuerung bei neuer AVM Firmware unterbunden (Zuviele Logeinträge auf der Fritz!Box Fon)
+- Fritz!Box-Überwachung: Verbesserte Erkennung von redundanten Informationen beim Synchronisieren der AVM Fritz!Box Fon
 - Google Kontakte: Verbesserungen bei der Handhabung des Google-Caches
-- TAPI-√úberwachung: Erkennung von internen Anlagenrufnummern nicht m√∂glich
+- TAPI-Überwachung: Erkennung von internen Anlagenrufnummern nicht möglich
 - LDAP-Adressbuch: Neues Modul
 
 
@@ -427,15 +445,15 @@ jAnrufmonitor 5.0.14 (01.08.2009)
 ---------------------------------
 
 Neu:
-- Update Manager: Registrierungsschl√ºsselverarbeitung f√ºr zuk√ºnftige Dienste
+- Update Manager: Registrierungsschlüsselverarbeitung für zukünftige Dienste
 
 Bugfix:
-- Identifikation: Erkennung von *31# Rufnummern (Fallweise Rufnummernunterdr√ºckung)
+- Identifikation: Erkennung von *31# Rufnummern (Fallweise Rufnummernunterdrückung)
 - Regel-Assistent: √ñffnen des Regel-Dialogs dauert bei vielen Kontakten sehr lange
 
 Module:
-- TAPI-√úberwachung: Telefonate aus dem Journal und Adressbuch starten
-- Server-Erweiterung: Telefonate auf TAPI Ger√§te starten via URL (http://<server>:<port>/callto?dial=<number>&extension=<extension>) 
+- TAPI-Überwachung: Telefonate aus dem Journal und Adressbuch starten
+- Server-Erweiterung: Telefonate auf TAPI Geräte starten via URL (http://<server>:<port>/callto?dial=<number>&extension=<extension>) 
 
 
 ===
@@ -444,26 +462,26 @@ jAnrufmonitor 5.0.13 (04.07.2009)
 ---------------------------------
 
 Neu:
-- Journal: Archivierung von Journal-Eintr√§gen in eine "nur-lesen" Archiv-Datei
-- Adressbuch: Kategorie-abh√§ngiger Import von neuen Kontakten
+- Journal: Archivierung von Journal-Einträgen in eine "nur-lesen" Archiv-Datei
+- Adressbuch: Kategorie-abhängiger Import von neuen Kontakten
 - Adressbuch: Vorwahlfilter zeigt Ortsinformation an
-- L√§ndercode und Vorwahlverzeichnis: Auslieferung mit DACH-Vorwahlen (Deutschland, √ñsterreich, Schweiz)
-- L√§ndercode und Vorwahlverzeichnis: Verbesserter Installationsprozess f√ºr neue Vorwahldateien
+- Ländercode und Vorwahlverzeichnis: Auslieferung mit DACH-Vorwahlen (Deutschland, √ñsterreich, Schweiz)
+- Ländercode und Vorwahlverzeichnis: Verbesserter Installationsprozess für neue Vorwahldateien
 - Console Version: Update Manger integriert
 - Update Manager: aktuelle installiertse Version und neue Version des Moduls werden angezeigt
 
 Bugfix:
-- Regel-Assistent: Laden von Kontakten dauert bei Nutzung mehrerer Telefonb√ºcher zu lange
+- Regel-Assistent: Laden von Kontakten dauert bei Nutzung mehrerer Telefonbücher zu lange
 - Console Version: Stabilisierung beim Programmstart, Vermeidung von NoClassDefFoundError-Meldungen
 
 Module:
 - MS Outlook Kontaktverzeichnis: Doppelte Kontakte nach Neuanlage aus dem jAnrufmonitor Adressbuch
 - MS Outlook Kontaktverzeichnis: Verbesserter Kontakte-Import bei Kategoriezuweiung
-- MS Outlook Kontaktverzeichnis: Unterst√ºtzung f√ºr interne Anlagenrufnummern
-- Fritz!Box-√úberwachung: Session ID Unterst√ºtzung f√ºr neue AVM Fritz!Box Fon Firmware (7270, 7240)
-- Fritz!Box-√úberwachung: Detailierte Fehlerbeschreibung bei Verbindungsproblemen mit der Fritz!Box Hardware
-- Fritz!Box-√úberwachung: Zeitverschiebung der Fritz!Box f√ºhrt zu falschen Synchronisationseintr√§gen
-- Fritz!Box-√úberwachung: Finden pro Minute mehere Anrufversuche zur gleichen Zielrufnummer statt, wird nur der letzte Anruf synchronisiert
+- MS Outlook Kontaktverzeichnis: Unterstützung für interne Anlagenrufnummern
+- Fritz!Box-Überwachung: Session ID Unterstützung für neue AVM Fritz!Box Fon Firmware (7270, 7240)
+- Fritz!Box-Überwachung: Detailierte Fehlerbeschreibung bei Verbindungsproblemen mit der Fritz!Box Hardware
+- Fritz!Box-Überwachung: Zeitverschiebung der Fritz!Box führt zu falschen Synchronisationseinträgen
+- Fritz!Box-Überwachung: Finden pro Minute mehere Anrufversuche zur gleichen Zielrufnummer statt, wird nur der letzte Anruf synchronisiert
 - Telefonauskunft www.dasoertliche.de: Auf neue HTML-Struktur angepasst und optimierte Datenabfrage umgestellt
 - Telefonauskunft www.goyellow.de: Auf optimierte Datenabfrage umgestellt
 - Telefonauskunft www.gelbeseiten.de: Auf optimierte Datenabfrage umgestellt
@@ -479,14 +497,14 @@ jAnrufmonitor 5.0.12 (01.05.2009)
 ---------------------------------
 
 Neu:
-- Regel-Assistent: Interne Anlagenrufnummern im Regel-Assistent ausw√§hlbar
+- Regel-Assistent: Interne Anlagenrufnummern im Regel-Assistent auswählbar
 
 Module:
-- Fritz!Box-√úberwachung: DECT-Nebenstellen f√ºr ausgehende Anrufe w√§hlbar
-- Fritz!Box-√úberwachung: Verbesserte Erkennung von doppelten Journal-Eintr√§gen bei der Synchronisierung
+- Fritz!Box-Überwachung: DECT-Nebenstellen für ausgehende Anrufe wählbar
+- Fritz!Box-Überwachung: Verbesserte Erkennung von doppelten Journal-Einträgen bei der Synchronisierung
 - Google Kontakte: Neues Modul
-- Erweiterung zum Starten von Anwendungen: Pfadaufl√∂sung f√ºr %userhome% Variable funktioniert nicht
-- Emailbenachrichtigung: Emailversand auf gel√∂schten MSNs unterbunden
+- Erweiterung zum Starten von Anwendungen: Pfadauflösung für %userhome% Variable funktioniert nicht
+- Emailbenachrichtigung: Emailversand auf gelöschten MSNs unterbunden
 
 
 ===
@@ -495,19 +513,19 @@ jAnrufmonitor 5.0.11 (04.04.2009)
 ---------------------------------
 
 Neu:
-- Adressbuch: Cache ein-/ausschaltbar f√ºr Online-Telefonausk√ºnfte
+- Adressbuch: Cache ein-/ausschaltbar für Online-Telefonauskünfte
 
 
 Bugfix:
 - Konfiguration: Konvertierung von PowerISDNMonitor-Konfiguration zu jAnrufmonitor-Konfiguration verbessert
 - Konfiguration: Unbenutze PowerISDNMonitor-Konfiguration entfern
-- Console Version: Schreibfehler im Men√º entfernt
+- Console Version: Schreibfehler im Menü entfernt
 
 
 Module:
-- Fritz!Box-√úberwachung: Allgemeine Vorwahl und Vorwahl des Fritz!Box Standortes angepasst
-- Fritz!Box-√úberwachung: Backup vor Entfernen der redundanten Informationen beim Benutzen des AVM Fritz!Box Fon Synchronizer
-- MS Outlook Kontaktverzeichnis: Kontakte aus Journal heraus anlegen nicht m√∂glich
+- Fritz!Box-Überwachung: Allgemeine Vorwahl und Vorwahl des Fritz!Box Standortes angepasst
+- Fritz!Box-Überwachung: Backup vor Entfernen der redundanten Informationen beim Benutzen des AVM Fritz!Box Fon Synchronizer
+- MS Outlook Kontaktverzeichnis: Kontakte aus Journal heraus anlegen nicht möglich
 - Server-Erweiterung: Socket-Probleme unter Linux 
 - Server-Erweiterung: Neue callto-Action (http://<server>:<port>/callto?dial=<number>) nutzbar, wenn AVM Fritz!Box Fon Variante installiert ist.
 
@@ -518,20 +536,20 @@ jAnrufmonitor 5.0.10 (01.03.2009)
 ---------------------------------
 
 Neu:
-- Adressbuch/Journal: Zuletzt ge√∂ffnet... Option eingef√ºgt
+- Adressbuch/Journal: Zuletzt geöffnet... Option eingefügt
 
 
 Bugfix:
-- L√§nder- und Vorwahlverzeichnis liefert keine Identifizierung bei Online-Modulen
+- Länder- und Vorwahlverzeichnis liefert keine Identifizierung bei Online-Modulen
 
 
 Module:
-- Fritz!Box-√úberwachung: Ausgehende Anrufe zeigen keine Gespr√§chsdauer an
-- Fritz!Box-√úberwachung: Standort-Vorwahl aus Konfigurationswizard √ºbernehmen
-- Ruhezustand Erkennung: f√ºr TAPI und Fritz!Box erweitert
+- Fritz!Box-Überwachung: Ausgehende Anrufe zeigen keine Gesprächsdauer an
+- Fritz!Box-Überwachung: Standort-Vorwahl aus Konfigurationswizard übernehmen
+- Ruhezustand Erkennung: für TAPI und Fritz!Box erweitert
 - MS Outlook Kontaktverzeichnis: Nebenstellen und Zentralnummern werden nicht erkannt
-- J√∂rg Heuers ISDNMoni Import-Filter f√ºr Journal: Datenbanken mit mehr als 10000 Eintr√§gen werden nicht unterst√ºtzt
-- Moony Import-Filter: Datenbanken mit mehr als 10000 Eintr√§gen werden nicht unterst√ºtzt
+- Jörg Heuers ISDNMoni Import-Filter für Journal: Datenbanken mit mehr als 10000 Einträgen werden nicht unterstützt
+- Moony Import-Filter: Datenbanken mit mehr als 10000 Einträgen werden nicht unterstützt
 - Client Erweiterung: Auto-Reconnect funktioniert nicht
 
 
@@ -541,24 +559,24 @@ jAnrufmonitor 5.0.9 (01.02.2009)
 --------------------------------
 
 Neu:
-- Setup-Wizard erm√∂glicht Auswahl des Rufnummernformates
-- Setup-Wizard erm√∂glicht Auswahl der L√§nderkennung und Vorwahl
+- Setup-Wizard ermöglicht Auswahl des Rufnummernformates
+- Setup-Wizard ermöglicht Auswahl der Länderkennung und Vorwahl
 
 
 Bugfix:
-- Adressbuch: keine alphabethische Sortierung der Ansicht m√∂glich
+- Adressbuch: keine alphabethische Sortierung der Ansicht möglich
 - Journal: Darstellung von internen Telfonanlagenrufnummern ist falsch
 
 
 Module:
-- Telefonauskunft 11880.com: Neue Website-Struktur bei der Identifizierung ber√ºcksichtigt
+- Telefonauskunft 11880.com: Neue Website-Struktur bei der Identifizierung berücksichtigt
 - HTML/XML Journal: Status-Platzhalter nutzbar
-- Emailbenachrichtigung: Email-Betreff ist √ºbersetzbar
+- Emailbenachrichtigung: Email-Betreff ist übersetzbar
 - Emailbenachrichtigung: ausgehende angenommene Anrufe werden erkannt
 - MS Outlook Kontaktverzeichnis: Bildzuweisung im Client/Server Betrieb nutzbar
-- MS Outlook Kontaktverzeichnis: Kategorie-Import √ºber Men√º nutzbar
-- Fritz!Box-√úberwachung: zeitgesteuerte Synchronisierungsm√∂glichkeit
-- Fritz!Box-√úberwachung: Emailbenachrichtigung nach Synchronisation (Modul Emailbenachrichtigung muss installiert sein)
+- MS Outlook Kontaktverzeichnis: Kategorie-Import über Menü nutzbar
+- Fritz!Box-Überwachung: zeitgesteuerte Synchronisierungsmöglichkeit
+- Fritz!Box-Überwachung: Emailbenachrichtigung nach Synchronisation (Modul Emailbenachrichtigung muss installiert sein)
 
 
 ===
@@ -567,7 +585,7 @@ jAnrufmonitor 5.0.8 (06.12.2008)
 --------------------------------
 
 Neu:
-- Status verpasste Anrufe im Journal hinzugef√ºgt
+- Status verpasste Anrufe im Journal hinzugefügt
 
 
 Bugfix:
@@ -580,7 +598,7 @@ Bugfix:
 Module:
 - Emailbenachrichtigung: Text- und HTML-Vorlagen mit Platzhalter
 - Emailbenachrichtigung: Neue JavaMail Bibliotheken
-- Fritz!Box-√úberwachung: automatische Synchronisierungsm√∂glichkeit nach Gespr√§chsende
+- Fritz!Box-Überwachung: automatische Synchronisierungsmöglichkeit nach Gesprächsende
 - JFritz Journal und Telefonbuch Import: Status-Import angepasst
 - Abweisungsdienst: Status-Erkennung angepasst
 - Client Erweiterung: Status-Erkennung angepasst
@@ -592,8 +610,8 @@ jAnrufmonitor 5.0.7 (02.11.2008)
 --------------------------------
 
 Bugfix:
-- Adressbuch: Neue Kontakte werden unvollst√§ndig gespeichert
-- Journal/Adressbuch: Datenbankzugriff wird in unregelm√§√üigen Intervallen gesperrt
+- Adressbuch: Neue Kontakte werden unvollständig gespeichert
+- Journal/Adressbuch: Datenbankzugriff wird in unregelmä√üigen Intervallen gesperrt
 
 
 ===
@@ -603,11 +621,11 @@ jAnrufmonitor 5.0.6 (31.08.2008)
 
 Neu:
 - Zentrale Bildverwaltung durch das Adressbuch
-- Erkennung von Rufnummern ohne Vorwahl m√∂glich (nur Telefonanlagenbetrieb)
+- Erkennung von Rufnummern ohne Vorwahl möglich (nur Telefonanlagenbetrieb)
 
 
 Bugfix:
-- Update Manager: Versionsabh√§ngige Update Module
+- Update Manager: Versionsabhängige Update Module
 - Update Manager: User-agent Signatur angepasst
 - Sprachmodul: Sprachmodul verhindert Neustart nach Update: jAnrufmonitor already started!
 - jAnrufmonitor blockiert Windows-Abmeldung/Benutzerwechsel
@@ -620,7 +638,7 @@ Module:
 - MS Outlook Kontaktverzeichnis: Schnellerer Outlook Zugriff
 - MS Outlook Kontaktverzeichnis: Problem in Cache Aktualisierung gefixt
 - MS Outlook Kontaktverzeichnis: Eindeutige Feldzuweisung von Outlook und jAnrufmonitor Felder
-- MS Outlook Kontaktverzeichnis: Spalte Rufnummerntyp (Outlook) im Adressbuch neu hinzugef√ºgt
+- MS Outlook Kontaktverzeichnis: Spalte Rufnummerntyp (Outlook) im Adressbuch neu hinzugefügt
 - MS Outlook Kontaktverzeichnis: Darstellungsfehler mit Rufnummerntyp behoben
 
 
@@ -631,20 +649,20 @@ jAnrufmonitor 5.0.5 (01.08.2008)
 
 Neu:
 - Adressbuch: VCF-Export
-- Journal: CSV-Export f√ºr Statistiken
+- Journal: CSV-Export für Statistiken
 
 
 Bugfix:
-- Adressbuch/Journal: Fortschrittsanzeige bleibt h√§ngen
+- Adressbuch/Journal: Fortschrittsanzeige bleibt hängen
 
 
 Module:
 - Telefonauskunft tel.search.ch: neues Modul
 - Telefonauskunft www.directories.ch: neues Modul
-- Telefonauskunft Modul Assistent: englische √úbersetzung hinzugef√ºgt
+- Telefonauskunft Modul Assistent: englische Übersetzung hinzugefügt
 - MS Outlook Kontakverzeichnis: Schreibzugriff auf Kontakte
 - MS Outlook Kontakverzeichnis: Verbesserter Kontakte-Import
-- Fritz!Box-√úberwachung: Nebenstelle f√ºr ausgehende Anrufe ausw√§hlbar
+- Fritz!Box-Überwachung: Nebenstelle für ausgehende Anrufe auswählbar
 
 
 ===
@@ -653,18 +671,18 @@ jAnrufmonitor 5.0.4 (01.07.2008)
 --------------------------------
 
 Neu:
-- Adressb√ºcher und Journale mit vorgegebener ID k√∂nnen genutzt werden
+- Adressbücher und Journale mit vorgegebener ID können genutzt werden
 
 
 Bugfix:
-- Journal: Rufnummerfilter funktioniert nur eingeschr√§nkt
+- Journal: Rufnummerfilter funktioniert nur eingeschränkt
 - Konfiguration: In der Konfiguration werden Module mit title angezeigt
 
 
 Module:
 - Telefonauskunft Modul Assistent: neues Modul 
 - Mozilla Thunderbird Adressbuch: Textbeschreibung im Modul fehlt
-- Client Erweiterung: Filterung f√ºr Telefonanlagennummern im Adressbuch geht nicht
+- Client Erweiterung: Filterung für Telefonanlagennummern im Adressbuch geht nicht
 - Client Erweiterung: "Zuletzt angerufen" im serverbasierten Adressbuch geht nicht
 - Client Erweiterung: Doppelte Kontakte im serverbasierten Adressbuch
 
@@ -675,22 +693,22 @@ jAnrufmonitor 5.0.3 (01.06.2008)
 --------------------------------
 
 Neu:
-- Adressbuch/Journal: L√§nderspezifische Icons m√∂glich ([L√§ndercode].jpg)
+- Adressbuch/Journal: Länderspezifische Icons möglich ([Ländercode].jpg)
 
 
 Bugfix:
-- L√§ndercode und Vorwahlverzeichnis: Datenbank Timeout, wenn Verbindung zu lange ungenutzt
+- Ländercode und Vorwahlverzeichnis: Datenbank Timeout, wenn Verbindung zu lange ungenutzt
 - Adressbuch/Journal: Erster Anrufer in einem neu angelegten Journal wird nicht gespeichert
 
 
 Module:
 - Mozilla Thunderbird Adressbuch: neues Modul
 - JFritz Journal und Telefonbuch Import: Bezeichner beim Import angepasst
-- Server Erweiterung: nicht alle MSN-abh√§ngige Clients werden √ºber eingehende Anrufe benachrichtigt
+- Server Erweiterung: nicht alle MSN-abhängige Clients werden über eingehende Anrufe benachrichtigt
 - Server Erweiterung: Port-Anzeige beim Console Server Status
-- Server Erweiterung: Anzahl-Filter ben√∂tigt zu viele Systemressourcen beim Filtern
+- Server Erweiterung: Anzahl-Filter benötigt zu viele Systemressourcen beim Filtern
 - Client Erweiterung: Installation ist ausgeschlossen bei gleichzeitigem Nutzen des AVM Fritz!Box Fon Moduls
-- Client Erweiterung: Filterung im Serverbasierten Journal wird auch auf dem Client durchgef√ºhrt
+- Client Erweiterung: Filterung im Serverbasierten Journal wird auch auf dem Client durchgeführt
 
 
 ===
@@ -708,20 +726,20 @@ Neu:
 Bugfix:
 - Update Manager: fehlerhafte Downloads bei Beschreibungstexten
 - Update Manager: falsche oder gar keine Signatur
-- Regel Assistent: Regelauswahl bei Identifizierung f√ºr MSN schl√§gt fehl
-- Regel Assistent: Auswahl von Kontakten mit mehreren Rufnummern nicht m√∂glich
-- Startverz√∂gerung: Programmabbruch beim Lesen eines ung√ºltigen Start-Wertes
+- Regel Assistent: Regelauswahl bei Identifizierung für MSN schlägt fehl
+- Regel Assistent: Auswahl von Kontakten mit mehreren Rufnummern nicht möglich
+- Startverzögerung: Programmabbruch beim Lesen eines ungültigen Start-Wertes
 - Identifizierung: Zentralnummern (TK-Anlagen/Firmen) werden nicht erkannt
 - Dialog: Position ausserhalb des Bildschirmbereiches
 - Statistiken: Anrufername wird nicht korrekt dargestellt
-- vCard Import-Filter: optimiert f√ºr MS Outlook VCF und Lotus Notes VCF
-- vCard Import-Filter: Kontaktbild via Foto-URL m√∂glich
+- vCard Import-Filter: optimiert für MS Outlook VCF und Lotus Notes VCF
+- vCard Import-Filter: Kontaktbild via Foto-URL möglich
 - vCard Import-Filter: Auswertung des ORG-Attributes (Firma)
 
 Module:
-- Fritz!Box-√úberwachung: Option "Anzahl der zu entfernenden f√ºhrenden Ziffer" wird ignoriert
-- Fritz!Box-√úberwachung: Synchronisationsdialog beim Starten unterbinden
-- Fritz!Box-√úberwachung: Konfigurationseinstellungen optimiert
+- Fritz!Box-Überwachung: Option "Anzahl der zu entfernenden führenden Ziffer" wird ignoriert
+- Fritz!Box-Überwachung: Synchronisationsdialog beim Starten unterbinden
+- Fritz!Box-Überwachung: Konfigurationseinstellungen optimiert
 - HTML-Journal: RSS-Erweiterung
 
 
@@ -741,12 +759,12 @@ Bugfix:
 - TrayIcon unter KDE 3.x nicht sichtbar
 
 Module:
-- Fritz!Box-√úberwachung: Tooltip des TrayIcons mit Synchronisierungsinformationen versehen
-- Fritz!Box-√úberwachung: Anzeige der Anzahl synchronisierter Journaleintr√§ge
-- Fritz!Box-√úberwachung: Erweiterte Statistiken im Journal: Nebenstellen-Statistik, Call-by-Call Statistik
+- Fritz!Box-Überwachung: Tooltip des TrayIcons mit Synchronisierungsinformationen versehen
+- Fritz!Box-Überwachung: Anzeige der Anzahl synchronisierter Journaleinträge
+- Fritz!Box-Überwachung: Erweiterte Statistiken im Journal: Nebenstellen-Statistik, Call-by-Call Statistik
 - JFritz Journal und Telefonbuch Import: neues Modul
-- Gebeld.nl Telefonauskunft: Englische √úbersetzung vervollst√§ndigt
-- Emailbenachrichtigung: √úberwachung von ausgehenden Telefonaten
+- Gebeld.nl Telefonauskunft: Englische Übersetzung vervollständigt
+- Emailbenachrichtigung: Überwachung von ausgehenden Telefonaten
 - Client Erweiterung: Mehrfachregistrierung am Server gefixt
 - Abweisungsdienst: neues Modul
 - HTML-Journal: footer.jam.html und header.jam.html angepasst
@@ -758,35 +776,35 @@ jAnrufmonitor 5.0.0 (17.03.2008)
 --------------------------------
 
 Neu:
-- Anruferkennung f√ºr TAPI-f√§hige Endger√§te, CAPI-ISDN-Ger√§te und AVM Fritz!Box Fon
-- Java Datenbank hSQLDB (www.hsqldb.org) als Persistenz f√ºr Adressbuch, Journal, Caches und Sprachinformationen
-- Eigene, cache-basierte ClassLoader-Infrastruktur f√ºr Java Klassen
-- Effizientere Erkennung von Rufnummern mittels L√§ndercode-Datenbank
-- Zuverl√§ssigere automatische Vorwahlerkennung
-- Unterst√ºtzung mehrerer Rufnummern pro Kontakt im Adressbuch
-- Adressen zusammenf√ºhren im Adressbuch
+- Anruferkennung für TAPI-fähige Endgeräte, CAPI-ISDN-Geräte und AVM Fritz!Box Fon
+- Java Datenbank hSQLDB (www.hsqldb.org) als Persistenz für Adressbuch, Journal, Caches und Sprachinformationen
+- Eigene, cache-basierte ClassLoader-Infrastruktur für Java Klassen
+- Effizientere Erkennung von Rufnummern mittels Ländercode-Datenbank
+- Zuverlässigere automatische Vorwahlerkennung
+- Unterstützung mehrerer Rufnummern pro Kontakt im Adressbuch
+- Adressen zusammenführen im Adressbuch
 - Angepasste Spaltenauswahl in Adressbuch und Journal
-- Deaktive Menup√ºnkte im Journal und Adressbuch, wenn Funktion von Datenablage nicht unterst√ºtzt wird
+- Deaktive Menupünkte im Journal und Adressbuch, wenn Funktion von Datenablage nicht unterstützt wird
 - Reduktion der Programm-Neustarts nach Modul-Installation
-- Versionsverwaltung der Datenbanken f√ºr Adressbuch und Journal
-- Adressbuch- und Journal-Dateiauswahl √ºber Men√ºstruktur
+- Versionsverwaltung der Datenbanken für Adressbuch und Journal
+- Adressbuch- und Journal-Dateiauswahl über Menüstruktur
 - Erweiterte Statistik-Funktionen im Journal
-- Automatische √úberwachungserkennung
-- Unterst√ºtzung f√ºr Windows Vista und Windows 2008 Server
+- Automatische Überwachungserkennung
+- Unterstützung für Windows Vista und Windows 2008 Server
 
 Module:
-- Fritz!Box-√úberwachung: POTS/SIPx Erkennung beim Synchronisieren
-- Fritz!Box-√úberwachung: Konfiguration der Nebenstelle f√ºr abgehende Gespr√§che mit der QuickDial-Funktion
-- Fritz!Box-√úberwachung: Fritz!Box Synchronizer kann Anrufliste auf Fritz!Box nach einer Synchronisation l√∂schen
-- TAPI-√úberwachung: Mustererkennung von Anrufen bei TAPI-Telefonanlagen
+- Fritz!Box-Überwachung: POTS/SIPx Erkennung beim Synchronisieren
+- Fritz!Box-Überwachung: Konfiguration der Nebenstelle für abgehende Gespräche mit der QuickDial-Funktion
+- Fritz!Box-Überwachung: Fritz!Box Synchronizer kann Anrufliste auf Fritz!Box nach einer Synchronisation löschen
+- TAPI-Überwachung: Mustererkennung von Anrufen bei TAPI-Telefonanlagen
 - MS Outlook Kontakverzeichnis: Erkennung der Kontakt-Attribute in MS Outlook 200x/XP
-- MS Outlook Kontakverzeichnis: Trennung von privaten und Gesch√§ftskontakten
-- MS Outlook Kontakverzeichnis: Neue Cache-Synchronisation f√ºr Kontakt-Informationen
+- MS Outlook Kontakverzeichnis: Trennung von privaten und Geschäftskontakten
+- MS Outlook Kontakverzeichnis: Neue Cache-Synchronisation für Kontakt-Informationen
 - MS Outlook Kontakverzeichnis: benutzerdefinierte Outlook Kontakteordner synchronisieren
 - MySQL Modul: Journal und Adressbuch als MySQL Datenbank
 - PDF-Export-Filter: Anpassung der Spaltenbreite bei exportierten Journal-Ansichten
 - Notizenverwaltung: Export aller Notizen eines Anrufers in das PDF-Format
 - Notizenverwaltung: Attributvergabe bei einzelnen Notizen
-- Server Erweiterung: Web-basierte Konfigurationsoberfl√§che
+- Server Erweiterung: Web-basierte Konfigurationsoberfläche
 - Client Erweiterung: Optimierte Zugriffe auf serverbasierte Ablagen
-- Email-Benachrichtigungsdienst: Emails geb√ºndelt nach Zeitintervall versenden.
+- Email-Benachrichtigungsdienst: Emails gebündelt nach Zeitintervall versenden.
