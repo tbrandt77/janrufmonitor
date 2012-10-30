@@ -46,7 +46,9 @@ public class VcfParser30 {
 	protected static final String[] ADR_TYPES = {"home", "work"};
 	
 	protected static final String TEL= "TEL;".toLowerCase();
-	protected static final String[] TEL_TYPES = {"home", "work", "cell", "fax", "isdn"};	
+	protected static final String[] TEL_TYPES = {"home", "work", "cell", "fax", "isdn"};
+	protected static final String EMAIL= "EMAIL;".toLowerCase();
+	protected static final String[] EMAIL_TYPES = {"home", "work"};
 	protected static final String ORG = "ORG;".toLowerCase();
 	protected static final String TITLE = "TITLE:".toLowerCase();
 	protected static final String ORG2 = "ORG:".toLowerCase();
@@ -234,7 +236,34 @@ public class VcfParser30 {
 								this.m_logger.log(Level.SEVERE, ex.getMessage(), ex);
 							}							
 						}
-					}					
+					}	
+					if (line.toLowerCase().startsWith(EMAIL)) {
+						value = line.split(":");											
+						if (value.length==2 && value[1].trim().length()>0) {
+							boolean isBusiness = false;
+							String[] attributes = value[0].split(";");
+							for (int k=0;k<attributes.length;k++) {
+								if (attributes[k].toLowerCase().startsWith(ATTRIBUTE_TYPE)) {
+									String[] values = attributes[k].toLowerCase().substring(ATTRIBUTE_TYPE.length()).split(",");
+									for (int l=0;l<values.length;l++) {
+										if (values[l].equalsIgnoreCase(EMAIL_TYPES[1])) {
+											isBusiness = true;
+										}
+									}
+								}
+								if (attributes[k].toLowerCase().startsWith(EMAIL_TYPES[1])) {
+									isBusiness = true;
+								}
+							}
+							if (isBusiness) {
+								this.m_logger.info("Set attribute work");
+								bussiness_attributes.add(PIMRuntime.getInstance().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_EMAIL, value[1]));
+							} else {
+								this.m_logger.info("Set attribute home");
+								private_attributes.add(PIMRuntime.getInstance().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_EMAIL, value[1]));
+							}					
+						}
+					}	
 					if (line.toLowerCase().startsWith(GEO)) {
 						value = line.split(":");
 						if (value.length==2) {

@@ -80,6 +80,9 @@ public class VcfFileCallerExporter implements ICallerExporter {
 					vcf.append("ORG;CHARSET=ISO-8859-1:");vcf.append(c.getName().getAdditional());vcf.append(CRLF);
 				vcf.append("SORT-STRING:");vcf.append(c.getName().getLastname());vcf.append(CRLF);
 				vcf.append("CLASS:PRIVATE");vcf.append(CRLF);
+				if (c.getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_EMAIL)) {
+					vcf.append("EMAIL;TYPE=home:");vcf.append(c.getAttribute(IJAMConst.ATTRIBUTE_NAME_EMAIL).getValue());vcf.append(CRLF);
+				}
 				vcf.append("ADR;TYPE=home;CHARSET=ISO-8859-1:;;");vcf.append(this.getAttribute(c, IJAMConst.ATTRIBUTE_NAME_STREET));vcf.append(" ");vcf.append(this.getAttribute(c, IJAMConst.ATTRIBUTE_NAME_STREET_NO));vcf.append(";");vcf.append(this.getAttribute(c, IJAMConst.ATTRIBUTE_NAME_CITY));vcf.append(";;");vcf.append(this.getAttribute(c, IJAMConst.ATTRIBUTE_NAME_POSTAL_CODE));vcf.append(";");vcf.append(this.getAttribute(c, IJAMConst.ATTRIBUTE_NAME_COUNTRY));vcf.append(CRLF);
 				
 				if (c instanceof IMultiPhoneCaller) {
