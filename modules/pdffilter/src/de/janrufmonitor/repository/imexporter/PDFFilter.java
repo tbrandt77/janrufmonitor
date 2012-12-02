@@ -59,7 +59,7 @@ public class PDFFilter implements ICallExporter{
 	}
 
 	public boolean doExport() {
-		Document document = new Document(PageSize.A4.rotate());
+		Document document = new Document(PageSize.A4.rotate(), 20, 20, 20, 20);
 		document.addCreationDate();
 		document.addCreator("jAnrufmonitor");
 		
