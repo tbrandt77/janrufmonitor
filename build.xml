@@ -390,12 +390,12 @@
               icon="./kernel/core/deployment/macosx64/images/jam.icns"
               jvmversion="1.4+"
               version="${jam.version}"
-              infostring="jAnrufmonitor 5.0, copyright 2008 - 2011"
+              infostring="jAnrufmonitor 5.0, copyright 2008 - 2012"
               build="${jam.version}"
               bundleid="de.janrufmonitor.core" 
               startOnMainThread="true"
               developmentregion="German"
-              vmoptions="-Djam.ui.toplevel=false -Djam.ui.trayitem=true"> 
+              vmoptions="-Djam.ui.toplevel=false -Djam.ui.trayitem=true -Xms16m -Xmx256m"> 
                 
         <!-- Adjust the look, feel and behavior -->
     
@@ -471,12 +471,12 @@
               icon="./kernel/core/deployment/macosx64/images/jam.icns"
               jvmversion="1.4+"
               version="${jam.version}"
-              infostring="jAnrufmonitor 5.0, copyright 2008 - 2011"
+              infostring="jAnrufmonitor 5.0, copyright 2008 - 2012"
               build="${jam.version}"
               bundleid="de.janrufmonitor.core" 
               startOnMainThread="true"
               developmentregion="German"
-              vmoptions="-Djam.ui.toplevel=false -Djam.ui.trayitem=true"> 
+              vmoptions="-Djam.ui.toplevel=false -Djam.ui.trayitem=true -Xms16m -Xmx256m"> 
                 
         <!-- Adjust the look, feel and behavior -->
     
