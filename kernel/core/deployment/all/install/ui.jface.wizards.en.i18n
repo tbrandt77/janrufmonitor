@@ -214,8 +214,8 @@ ui.jface.wizards.pages.UpdatesPage\:refresh\:label\:en=Updating...
 ui.jface.wizards.pages.UpdatesPage\:noupdates\:label\:en=No updates available.
 ui.jface.wizards.pages.UpdatesPage\:task\:label\:en=Retrieving list with latest updates...
 ui.jface.wizards.pages.UpdatesPage\:modname\:label\:en=Module
-ui.jface.wizards.pages.UpdatesPage\:newversion\:label\:en=new
-ui.jface.wizards.pages.UpdatesPage\:currentversion\:label\:en=current
+ui.jface.wizards.pages.UpdatesPage\:newversion\:label\:en=available
+ui.jface.wizards.pages.UpdatesPage\:currentversion\:label\:en=installed
 
 
 # added 4.5.5

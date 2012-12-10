@@ -213,8 +213,8 @@ ui.jface.wizards.pages.UpdatesPage\:refresh\:label\:de=Aktualisieren...
 ui.jface.wizards.pages.UpdatesPage\:noupdates\:label\:de=Es sind keine Updates verf\u00FCgbar.
 ui.jface.wizards.pages.UpdatesPage\:task\:label\:de=Liste mit aktuellen Updates wird angefordert...
 ui.jface.wizards.pages.UpdatesPage\:modname\:label\:de=Modul
-ui.jface.wizards.pages.UpdatesPage\:newversion\:label\:de=neu
-ui.jface.wizards.pages.UpdatesPage\:currentversion\:label\:de=aktuell
+ui.jface.wizards.pages.UpdatesPage\:newversion\:label\:de=verf\u00FCgbar
+ui.jface.wizards.pages.UpdatesPage\:currentversion\:label\:de=installiert
 
 
 # added 4.5.5
