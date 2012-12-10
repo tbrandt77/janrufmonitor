@@ -39,7 +39,3 @@ e.g.
 bash>ant publish_win32
 or
 bash>ant publish_linux64
-
-
-
-
