@@ -201,7 +201,7 @@ public class RunUI {
 				MessageBox messageBox = new MessageBox (shell, style);
 				String lang = System.getProperty("user.language");
 				if (lang==null) lang = "de";									
-				messageBox.setMessage (lang.equalsIgnoreCase("de") ? "jAnrufmonitor muss neu gestartet werden, da eine Aktualisierung durchgeführt wurde." : "jAnrufmonitor needs to be restarted due to an update of the core component.");
+				messageBox.setMessage (lang.equalsIgnoreCase("de") ? "jAnrufmonitor muss neu gestartet werden, da eine Aktualisierung durchgef\u00FChrt wurde." : "jAnrufmonitor needs to be restarted due to an update of the core component.");
 				messageBox.setText(lang.equalsIgnoreCase("de") ? "jAnrufmonitor - Aktualisierung erfolgreich": "jAnrufmonitor - Update successfully installed");
 				if (messageBox.open () == SWT.OK) {
 					RunUI.m_logger.warning("Emergency restart: jAnrufmonitor needs to be restarted due to changes of the core component.");
