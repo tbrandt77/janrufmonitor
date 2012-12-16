@@ -132,7 +132,7 @@ ui.jface.wizards.pages.FilterCallTypePage\:outgoing\:label\:de=ausgehende Anrufe
 ui.jface.wizards.pages.FilterCallTypePage\:missed\:label\:de=verpasste Anrufe
 
 ui.jface.wizards.pages.FilterPhonesPage\:title\:label\:de=Rufnummern festlegen
-ui.jface.wizards.pages.FilterPhonesPage\:description\:label\:de=W\u00E4hlen Sie Rufnummern bei denen der Filter angewandt werden soll. Rufnummern m\u00FCssen im Adressbuch hinterlegt sein.
+ui.jface.wizards.pages.FilterPhonesPage\:description\:label\:de=W\u00E4hlen Sie Rufnummern bei denen der Filter angewandt werden soll. Rufnummern m\u00FCssen in den Kontakten hinterlegt sein.
 ui.jface.wizards.pages.FilterPhonesPage\:selectedphones\:label\:de=Filter bei diesen Rufnummern anwenden: 
 ui.jface.wizards.pages.FilterPhonesPage\:allphones\:label\:de=Verf\u00FCgbare Rufnummern: 
 ui.jface.wizards.pages.FilterPhonesPage\:*\:label\:de=Filter auf alle Rufnummern anwenden
@@ -153,7 +153,7 @@ ui.jface.wizards.pages.RuleCipPage\:name\:label\:de=Regel auf folgendes Dienstme
 ui.jface.wizards.pages.RuleCipPage\:*\:label\:de=Alle Dienstmerkmale
 
 ui.jface.wizards.pages.RuleExPhonesPage\:title\:label\:de=Rufnummern von Regel ausschliessen
-ui.jface.wizards.pages.RuleExPhonesPage\:description\:label\:de=W\u00E4hlen Sie Rufnummern die von dieser Regel ausgeschlossen werden sollen. Rufnummern m\u00FCssen im Adressbuch hinterlegt sein.
+ui.jface.wizards.pages.RuleExPhonesPage\:description\:label\:de=W\u00E4hlen Sie Rufnummern die von dieser Regel ausgeschlossen werden sollen. Rufnummern m\u00FCssen in den Kontakten hinterlegt sein.
 ui.jface.wizards.pages.RuleExPhonesPage\:selectedphones\:label\:de=Regel bei diesen Rufnummern ignorieren: 
 ui.jface.wizards.pages.RuleExPhonesPage\:allphones\:label\:de=Verf\u00FCgbare Rufnummern: 
 ui.jface.wizards.pages.RuleExPhonesPage\:*\:label\:de=Keine Rufnummern ignorieren
@@ -173,7 +173,7 @@ ui.jface.wizards.pages.RuleNamePage\:name\:label\:de=Regelname:
 ui.jface.wizards.pages.RuleNamePage\:nameerror\:label\:de=Der Regelname muss mind. 1 Zeichen enthalten. 
 
 ui.jface.wizards.pages.RulePhonesPage\:title\:label\:de=Rufnummern festlegen
-ui.jface.wizards.pages.RulePhonesPage\:description\:label\:de=W\u00E4hlen Sie Rufnummern bei denen die Regel angewandt werden soll. Rufnummern m\u00FCssen im Adressbuch hinterlegt sein.
+ui.jface.wizards.pages.RulePhonesPage\:description\:label\:de=W\u00E4hlen Sie Rufnummern bei denen die Regel angewandt werden soll. Rufnummern m\u00FCssen in den Kontakten hinterlegt sein.
 ui.jface.wizards.pages.RulePhonesPage\:selectedphones\:label\:de=Regel bei diesen Rufnummern anwenden: 
 ui.jface.wizards.pages.RulePhonesPage\:allphones\:label\:de=Verf\u00FCgbare Rufnummern: 
 ui.jface.wizards.pages.RulePhonesPage\:*\:label\:de=Regel auf alle Rufnummern anwenden
