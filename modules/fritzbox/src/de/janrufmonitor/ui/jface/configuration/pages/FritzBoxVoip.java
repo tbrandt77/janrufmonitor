@@ -75,12 +75,18 @@ public class FritzBoxVoip extends AbstractFieldEditorConfigPage {
 		}
 		
 		sfe = new StringFieldEditor(
+				getConfigNamespace()+SEPARATOR+"boxuser",
+			this.m_i18n.getString(this.getNamespace(), "boxuser", "label", this.m_language),
+			this.getFieldEditorParent()
+		);
+		addField(sfe);
+		
+		sfe = new StringFieldEditor(
 				getConfigNamespace()+SEPARATOR+"boxpassword",
 			this.m_i18n.getString(this.getNamespace(), "boxpassword", "label", this.m_language),
 			this.getFieldEditorParent()
 		);
 		sfe.getTextControl(this.getFieldEditorParent()).setEchoChar('*');
-
 		addField(sfe);
 		
 		if (isExpertMode()) {

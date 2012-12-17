@@ -142,25 +142,38 @@ public class FirmwareManager {
     
     private synchronized void createFirmwareInstance() throws FritzBoxInitializationException{
     	if (this.m_fw==null) {
-    		this.m_fw = new SessionIDFritzBoxFirmware(getFritzBoxAddress(), getFritzBoxPort(), getFritzBoxPassword());
+    		this.m_fw = new FritzOSFirmware(getFritzBoxAddress(), getFritzBoxPort(), getFritzBoxPassword(), getFritzBoxUser());
     		try {
 				this.m_fw.init();
 				if (this.m_logger.isLoggable(Level.INFO))
-					this.m_logger.info("Detected FritzBox Session ID firmware: "+this.m_fw.toString());
-			} catch (FritzBoxInitializationException ex) {
-				this.m_fw = new PasswordFritzBoxFirmware(getFritzBoxAddress(), getFritzBoxPort(), getFritzBoxPassword());
-				try {
+					this.m_logger.info("Detected Fritz!OS 05.50+ firmware: "+this.m_fw.toString());
+			} catch (FritzBoxInitializationException exp) {
+				if (this.m_logger.isLoggable(Level.INFO))
+					this.m_logger.info("No Fritz!OS 05.50+ Firmware detected.");
+	    		this.m_fw = new SessionIDFritzBoxFirmware(getFritzBoxAddress(), getFritzBoxPort(), getFritzBoxPassword());
+	    		try {
 					this.m_fw.init();
 					if (this.m_logger.isLoggable(Level.INFO))
-						this.m_logger.info("Detected FritzBox standard firmware (password protected): "+this.m_fw.toString());
-				} catch (FritzBoxInitializationException e) {
-					this.m_fw = null;
-					throw new FritzBoxInitializationException(e.getMessage());
+						this.m_logger.info("Detected FritzBox Session ID firmware: "+this.m_fw.toString());
+				} catch (FritzBoxInitializationException ex) {
+					if (this.m_logger.isLoggable(Level.INFO))
+						this.m_logger.info("No Session ID Firmware detected.");
+					this.m_fw = new PasswordFritzBoxFirmware(getFritzBoxAddress(), getFritzBoxPort(), getFritzBoxPassword());
+					try {
+						this.m_fw.init();
+						if (this.m_logger.isLoggable(Level.INFO))
+							this.m_logger.info("Detected FritzBox standard firmware (password protected): "+this.m_fw.toString());
+					} catch (FritzBoxInitializationException e) {
+						if (this.m_logger.isLoggable(Level.INFO))
+							this.m_logger.info("No FritzBox standard Firmware detected.");
+						this.m_fw = null;
+						throw new FritzBoxInitializationException(e.getMessage());
+					}
 				}
-			}
-			if (this.m_fw!=null) {
-				if (this.m_fw.getFirmwareTimeout()>0) {
-					this.launchTimeoutThread();
+				if (this.m_fw!=null) {
+					if (this.m_fw.getFirmwareTimeout()>0) {
+						this.launchTimeoutThread();
+					}
 				}
 			}
     	}
@@ -201,6 +214,10 @@ public class FirmwareManager {
     
     private String getFritzBoxAddress() {
     	return getRuntime().getConfigManagerFactory().getConfigManager().getProperty(FritzBoxMonitor.NAMESPACE, FritzBoxConst.CFG_IP);
+    }
+    
+    private String getFritzBoxUser() {
+    	return getRuntime().getConfigManagerFactory().getConfigManager().getProperty(FritzBoxMonitor.NAMESPACE, FritzBoxConst.CFG_USER);
     }
     
     private String getFritzBoxPassword() {

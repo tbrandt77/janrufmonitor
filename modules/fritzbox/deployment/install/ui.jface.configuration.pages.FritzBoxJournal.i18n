@@ -3,6 +3,7 @@ ui.jface.configuration.pages.FritzBoxVoip\:description\:label\:de=Die AVM Fritz!
 ui.jface.configuration.pages.FritzBoxVoip\:boxip\:label\:de=IP-Adresse der Fritz!Box Fon: 
 ui.jface.configuration.pages.FritzBoxVoip\:boxclickdial\:label\:de=Nebenstelle f\u00FCr ausgehende Telefonate: 
 ui.jface.configuration.pages.FritzBoxVoip\:boxpassword\:label\:de=Fritz!Box Fon-Passwort: 
+ui.jface.configuration.pages.FritzBoxVoip\:boxuser\:label\:de=Fritz!Box Fon-Benutzer: 
 ui.jface.configuration.pages.FritzBoxVoip\:boxport\:label\:de=Port: 
 ui.jface.configuration.pages.FritzBoxVoip\:boxareacode\:label\:de=Vorwahl des Fritz!Box Fon-Standorts:\n(mit f\u00FChrender Null) 
 ui.jface.configuration.pages.FritzBoxVoip\:boxdate\:label\:de=Datumsformat: 

@@ -87,15 +87,20 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 	protected String m_port;
 	protected String m_password;
 	protected String m_language;
+	protected String m_user; // new since Fritz!OS Version 05.50
 	
 	protected FirmwareData m_firmware;
 	
-	public AbstractFritzBoxFirmware(String box_address, String box_port, String box_password) {
+	public AbstractFritzBoxFirmware(String box_address, String box_port, String box_password, String box_user) {
 		this.m_logger = LogManager.getLogManager().getLogger(IJAMConst.DEFAULT_LOGGER);
 		this.m_address = box_address;
 		this.m_port = box_port;
 		this.m_password = box_password;
 		this.m_language = "de"; // default 
+	}
+	
+	public AbstractFritzBoxFirmware(String box_address, String box_port, String box_password) {
+		this(box_address, box_port, box_password, null);
 	}
 
 	public void init() throws FritzBoxInitializationException {
@@ -670,7 +675,7 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 		}
 	}
 	
-	private FirmwareData detectFritzBoxFirmware() throws FritzBoxDetectFirmwareException {
+	FirmwareData detectFritzBoxFirmware() throws FritzBoxDetectFirmwareException {
 		StringBuffer data = new StringBuffer();
 		String urlstr = "http://" + this.m_address +":" + this.m_port + "/cgi-bin/webcm";
 		boolean detected = false;
@@ -716,7 +721,7 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 		}
 		
 		if (!detected ) throw new FritzBoxDetectFirmwareException("Unable to detect FritzBox firmware.");
-		
+	
 		this.m_logger.info("Using firmware detection pattern: "+PATTERN_DETECT_FIRMWARE_3);
 		Pattern p = Pattern.compile(PATTERN_DETECT_FIRMWARE_3);
 		Matcher m = p.matcher(data);
@@ -743,7 +748,6 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 						"Could not detect FRITZ!Box firmware version."); 
 				}
 		}
-		
 	}
 	
 	abstract IFritzBoxAuthenticator getDetectFirmwareURLAuthenticator();

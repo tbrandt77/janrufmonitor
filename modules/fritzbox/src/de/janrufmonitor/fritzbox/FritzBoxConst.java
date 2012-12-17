@@ -5,6 +5,7 @@ public interface FritzBoxConst {
 	public String CFG_IP = "boxip";
 	public String CFG_PASSWORD = "boxpassword";
 	public String CFG_PORT = "boxport";
+	public String CFG_USER = "boxuser";
 	public String CFG_MONITOR_PORT = "boxmport";
 	//public String CFG_AREACODE = "boxareacode";
 	public String CFG_DATEFORMAT = "boxdate";
