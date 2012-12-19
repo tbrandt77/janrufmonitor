@@ -2,6 +2,7 @@ package de.janrufmonitor.fritzbox.firmware;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -14,6 +15,7 @@ import de.janrufmonitor.fritzbox.firmware.exception.DoBlockException;
 import de.janrufmonitor.fritzbox.firmware.exception.DoCallException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxInitializationException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxLoginException;
+import de.janrufmonitor.fritzbox.firmware.exception.GetAddressbooksException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetBlockedListException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallListException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallerListException;
@@ -86,6 +88,26 @@ public class FirmwareManager {
 				throw new GetCallerListException(e.getMessage());
 			}
 		return this.m_fw.getCallerList();
+    }
+    
+    public List getCallerList(int id, String name) throws GetCallerListException, IOException {
+    	if (this.m_fw==null)
+			try {
+				this.createFirmwareInstance();
+			} catch (FritzBoxInitializationException e) {
+				throw new GetCallerListException(e.getMessage());
+			}
+		return this.m_fw.getCallerList(id, name);
+    }
+    
+    public Map getAddressbooks() throws GetAddressbooksException, IOException {
+    	if (this.m_fw==null)
+			try {
+				this.createFirmwareInstance();
+			} catch (FritzBoxInitializationException e) {
+				throw new GetAddressbooksException(e.getMessage());
+			}
+		return this.m_fw.getAddressbooks();
     }
     
     public List getBlockedList() throws GetBlockedListException, IOException {

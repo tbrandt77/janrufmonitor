@@ -209,16 +209,9 @@ public class SessionIDFritzBoxFirmware extends AbstractFritzBoxFirmware {
 
 
 	String getClearPOSTData() {
-		//return "&var%3Alang=$LANG&var%3Apagename=foncalls&var%3Amenu=fon&telcfg%3Asettings/ClearJournal=1&sid=";
 		return "&var%3Alang=$LANG&var%3Apagename=foncalls&var%3Amenu=fon&telcfg%3Asettings%2FClearJournal=&telcfg%3Asettings%2FUseJournal=1&sid=";
 	}
-	/*
-	sid=0d6be2d5e6d3f6f6&getpage=..%2Fhtml%2Fde%2Fmenus%2Fmenu2.html&errorpage=..%2Fhtml%2Fde%2Fmenus%2Fmenu2.
-	html&var%3Apagename=foncalls&var%3Aerrorpagename=foncalls&var%3Amenu=fon&var%3Apagemaster=&time%3Asettings%2
-	Ftime=1284974936%2C-120&var%3AshowDialing=&var%3Atype=0&var%3AvonFoncalls=&var%3AcurrFonbookID=
-		&var%3APhonebookEntryNew=&var%3APhonebookEntryXCount=&var%3APhonebookEntryNumber=
-			&telcfg%3Asettings%2FClearJournal=&telcfg%3Asettings%2FUseJournal=1&var%3AWaehlhilfeVon=
-*/
+
 	IFritzBoxAuthenticator getClearURLAuthenticator() {
 		return new IFritzBoxAuthenticator() {
 

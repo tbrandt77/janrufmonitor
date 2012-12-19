@@ -16,6 +16,7 @@ import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.fritzbox.FritzBoxBlockedListManager;
 import de.janrufmonitor.fritzbox.FritzBoxConst;
 import de.janrufmonitor.fritzbox.firmware.FirmwareManager;
+import de.janrufmonitor.fritzbox.firmware.FritzOSFirmware;
 import de.janrufmonitor.fritzbox.firmware.SessionIDFritzBoxFirmware;
 import de.janrufmonitor.fritzbox.firmware.exception.DoBlockException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxLoginException;
@@ -144,7 +145,7 @@ public class Block extends AbstractAction implements FritzBoxConst {
 
 
 	public boolean isEnabled() {
-		return FirmwareManager.getInstance().isInstance(SessionIDFritzBoxFirmware.class);
+		return (FirmwareManager.getInstance().isInstance(SessionIDFritzBoxFirmware.class) || FirmwareManager.getInstance().isInstance(FritzOSFirmware.class));
 	}
 
 }

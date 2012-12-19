@@ -2,12 +2,14 @@ package de.janrufmonitor.fritzbox.firmware;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import de.janrufmonitor.fritzbox.firmware.exception.DeleteCallListException;
 import de.janrufmonitor.fritzbox.firmware.exception.DoBlockException;
 import de.janrufmonitor.fritzbox.firmware.exception.DoCallException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxInitializationException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxLoginException;
+import de.janrufmonitor.fritzbox.firmware.exception.GetAddressbooksException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetBlockedListException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallListException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallerListException;
@@ -62,6 +64,10 @@ public interface IFritzBoxFirmware {
     public List getCallList() throws GetCallListException, IOException;
     
     public List getCallerList() throws GetCallerListException, IOException;
+    
+    public List getCallerList(int addressbookId, String addressbookName) throws GetCallerListException, IOException;
+    
+    public Map getAddressbooks() throws GetAddressbooksException, IOException;
     
     public void deleteCallList() throws DeleteCallListException, IOException;
 	

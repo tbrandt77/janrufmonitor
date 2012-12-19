@@ -13,6 +13,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,7 @@ import de.janrufmonitor.fritzbox.firmware.exception.DoCallException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxDetectFirmwareException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxInitializationException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxLoginException;
+import de.janrufmonitor.fritzbox.firmware.exception.GetAddressbooksException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetBlockedListException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallListException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallerListException;
@@ -39,6 +41,7 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 	public class PhonebookEntry {
 		
 		String m_name;
+		String m_ab;
 		Map m_phones;
 		
 		public PhonebookEntry() {
@@ -49,12 +52,20 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 			this.m_name = name;
 		}
 		
+		public void setAddressbook(String ab) {
+			this.m_ab = ab;
+		}
+		
 		public void addNumber(String n, String type) {
 			m_phones.put(n, type);
 		}
 		
 		public String getName() {
 			return this.m_name;
+		}
+		
+		public String getAddressbook() {
+			return this.m_ab;
 		}
 		
 		public Map getPhones() {
@@ -80,7 +91,6 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 	private final static String CSV_FILE_DE = "FRITZ!Box_Anrufliste.csv";
 	
 	
-	
 	protected Logger m_logger;
 	
 	protected String m_address;
@@ -98,7 +108,7 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 		this.m_password = box_password;
 		this.m_language = "de"; // default 
 	}
-	
+
 	public AbstractFritzBoxFirmware(String box_address, String box_port, String box_password) {
 		this(box_address, box_port, box_password, null);
 	}
@@ -163,7 +173,7 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 		}
 
 		if (this.m_logger.isLoggable(Level.INFO))
-			this.m_logger.info("Blocked list from FritzBox succuessfully fetched. List size: "+result.size());
+			this.m_logger.info("Blocked list from FritzBox successfully fetched. List size: "+result.size());
 		
 		return result;
 	}
@@ -240,10 +250,19 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 		return result;
 	}
 	
+	public List getCallerList(int addressbookId, String addressbookName)
+			throws GetCallerListException, IOException {
+		return this.getCallerList();
+	}
+
+	public Map getAddressbooks() throws GetAddressbooksException, IOException {
+		return Collections.EMPTY_MAP;
+	}
+
 	public void deleteCallList() throws DeleteCallListException, IOException {
 		if (!this.isInitialized()) throw new DeleteCallListException("Could not delete call list from FritzBox: FritzBox firmware not initialized.");
 	
-		String urlstr = "http://" + this.m_address + ":" + this.m_port + "/cgi-bin/webcm"; 
+		String urlstr = "http://" + this.m_address + ":" + this.m_port + getBaseURL(); 
 		String postdata = (this.m_language.equalsIgnoreCase("en") ? getAccessMethodPOSTData()[1] : getAccessMethodPOSTData()[0])
 				+ this.getClearPOSTData().replaceAll("\\$LANG", this.m_language) + this.getClearURLAuthenticator().getAuthenticationToken();
 
@@ -258,7 +277,7 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 		if (this.getBlockPOSTData().trim().length()>0) {
 			int count = this.getBlockCount();
 						
-			String urlstr = "http://" + this.m_address + ":" + this.m_port + "/cgi-bin/webcm"; 
+			String urlstr = "http://" + this.m_address + ":" + this.m_port + getBaseURL(); 
 			String postdata = (this.m_language.equalsIgnoreCase("en") ? getAccessMethodPOSTData()[1] : getAccessMethodPOSTData()[0])
 					+ this.getBlockPOSTData().replaceAll("\\$LANG", this.m_language).replaceAll("\\$NUMBER", number).replaceAll("\\$COUNT", Integer.toString(count)) + this.getBlockURLAuthenticator().getAuthenticationToken();
 	
@@ -319,7 +338,7 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 
 			String urlstr = "http://"
 					+ this.m_address + ":" + this.m_port
-					+ "/cgi-bin/webcm";
+					+ getBaseURL();
 			this.executeURL(urlstr, postdata, false);
 			
 			if (this.m_logger.isLoggable(Level.INFO))
@@ -402,7 +421,7 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 				+ getListPOSTData().replaceAll("\\$LANG", this.m_language)
 				+ URLEncoder.encode(getListURLAuthenticator().getAuthenticationToken(), "ISO-8859-1");
 
-		String urlstr = "http://" + this.m_address +":" + this.m_port + "/cgi-bin/webcm";
+		String urlstr = "http://" + this.m_address +":" + this.m_port + getBaseURL();
 
 		try {
 			this.m_logger.info("Calling FritzBox URL: "+urlstr);
@@ -496,7 +515,7 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 		
 		// The list should be updated now
 		// Get the csv file for processing
-		String urlstr = "http://" + this.m_address + ":" + this.m_port + "/cgi-bin/webcm";
+		String urlstr = "http://" + this.m_address + ":" + this.m_port + getBaseURL();
 
 		URL url;
 		URLConnection urlConn;
@@ -557,7 +576,7 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 		
 		// The list should be updated now
 		// Get the csv file for processing
-		String urlstr = "http://" + this.m_address + ":" + this.m_port + "/cgi-bin/webcm";
+		String urlstr = "http://" + this.m_address + ":" + this.m_port + getBaseURL();
 
 		URL url;
 		URLConnection urlConn;
@@ -624,7 +643,7 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 		
 		// The list should be updated now
 		// Get the csv file for processing
-		String urlstr = "http://" + this.m_address + ":" + this.m_port + "/cgi-bin/webcm";
+		String urlstr = "http://" + this.m_address + ":" + this.m_port + getBaseURL();
 
 		URL url;
 		URLConnection urlConn;
@@ -675,9 +694,9 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 		}
 	}
 	
-	FirmwareData detectFritzBoxFirmware() throws FritzBoxDetectFirmwareException {
+	private FirmwareData detectFritzBoxFirmware() throws FritzBoxDetectFirmwareException {
 		StringBuffer data = new StringBuffer();
-		String urlstr = "http://" + this.m_address +":" + this.m_port + "/cgi-bin/webcm";
+		String urlstr = "http://" + this.m_address +":" + this.m_port + getBaseURL();
 		boolean detected = false;
 		
 		String[] access_method_postdata = this.getAccessMethodPOSTData();
@@ -698,7 +717,7 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 					throw new FritzBoxDetectFirmwareException("Could not detect fritzbox firmware: "+e.getMessage());
 				} 
 			
-				Pattern p = Pattern.compile(PATTERN_DETECT_LANGUAGE_DE);
+				Pattern p = Pattern.compile(getLanguagePattern());
 				Matcher m = p.matcher(data);
 				if (m.find()) {
 					this.m_language = "de";
@@ -774,6 +793,14 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 	
 	abstract IFritzBoxAuthenticator getCallURLAuthenticator();
 	abstract String getCallPOSTData();
+	
+	String getBaseURL() {
+		return "/cgi-bin/webcm"; 
+	}
+	
+	String getLanguagePattern() {
+		return PATTERN_DETECT_LANGUAGE_DE;
+	}
 	
 	protected String executeURL(String urlstr, String postdata, boolean retrieveData) throws IOException {
 		URL url = null;
