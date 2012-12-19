@@ -1,5 +1,24 @@
 ===
 
+jAnrufmonitor 5.0.35 (01.01.2013)
+---------------------------------
+
+Neu:
+- Kontakte: Adressbuch wurde in Kontakte umbenannt
+- Adressbuch: vCard (VCF) Import unterstützt Email-Adressen
+
+Bugfix:
+- Überwachungskomponente: Unicode Zeichenfehler beim Programmstart 
+- Neue Grafikbibliothek für MacOS X
+- VM Option: -Xmx für MacOS X hinzugefügt
+
+Module:
+- Fritz!Box-Überwachung: Untertsützung für Firmware xx.05.50
+- Fritz!Box-Überwachung: AVM Fritz!Box Fon Telefonbuch in Kontakte auswählbar
+- PDF-Export-Filter: Seitenränder angepasst
+
+===
+
 jAnrufmonitor 5.0.34 (01.11.2012)
 ---------------------------------
 
