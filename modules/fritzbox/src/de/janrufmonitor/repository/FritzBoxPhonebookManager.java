@@ -15,11 +15,12 @@ import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.ICallerList;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
+import de.janrufmonitor.framework.monitor.PhonenumberInfo;
 import de.janrufmonitor.fritzbox.firmware.AbstractFritzBoxFirmware;
 import de.janrufmonitor.fritzbox.firmware.FirmwareManager;
 import de.janrufmonitor.fritzbox.firmware.AbstractFritzBoxFirmware.PhonebookEntry;
-import de.janrufmonitor.fritzbox.firmware.HTMLUtil;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxLoginException;
+import de.janrufmonitor.fritzbox.firmware.exception.GetAddressbooksException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallerListException;
 import de.janrufmonitor.repository.db.ICallerDatabaseHandler;
 import de.janrufmonitor.repository.db.hsqldb.HsqldbMultiPhoneCallerDatabaseHandler;
@@ -31,6 +32,7 @@ import de.janrufmonitor.repository.zip.ZipArchive;
 import de.janrufmonitor.repository.zip.ZipArchiveException;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
+import de.janrufmonitor.util.formatter.Formatter;
 import de.janrufmonitor.util.io.PathResolver;
 import de.janrufmonitor.util.string.StringEscapeUtils;
 import de.janrufmonitor.util.string.StringUtils;
@@ -45,6 +47,8 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 	private static String CFG_COMMIT_COUNT = "commit";
 
 	private static String CFG_KEEP_ALIVE = "keepalive";
+	
+	private static String CFG_ADDRESSBOOK = "ab";
 
 	private IRuntime m_runtime;
 
@@ -140,8 +144,41 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 				FirmwareManager fwm = FirmwareManager.getInstance();
 				try {
 					fwm.login();
-					List callers = fwm.getCallerList();
-					if (callers.size()==0) return;
+					
+					// check if phonebook is configured
+					String abId = m_configuration.getProperty(CFG_ADDRESSBOOK, "0");
+					int id = Integer.parseInt(abId);
+					String name = null;
+					try {
+						Map abs = FirmwareManager.getInstance().getAddressbooks();
+						if (abs.containsKey(Integer.parseInt(abId))) {
+							name = (String) abs.get(Integer.parseInt(abId));
+						}
+					} catch (GetAddressbooksException e) {
+						m_logger.log(Level.WARNING, e.getMessage(), e);
+					}
+					
+					List callers = null;
+					if (name!=null) {
+						callers = fwm.getCallerList(id, name);
+					} else {
+						callers = fwm.getCallerList();
+					}
+					if (callers.size()==0) {
+						try {
+							getDatabaseHandler().deleteCallerList(getRuntime().getCallerFactory().createCallerList());
+							getDatabaseHandler().commit();
+						} catch (SQLException e) {
+							m_logger.log(Level.SEVERE, e.getMessage(), e);
+							try {
+								getDatabaseHandler().rollback();
+							} catch (SQLException e1) {
+								m_logger.log(Level.SEVERE, e1.getMessage(), e1);
+							}
+						}
+						
+						return;
+					}
 
 					List phones = null;
 					IAttributeMap attributes = null;
@@ -151,6 +188,9 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 						attributes = getRuntime().getCallerFactory().createAttributeMap();
 						phones = new ArrayList(3);
 						attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CALLERMANAGER, FritzBoxPhonebookManager.ID));
+						if (pe.getAddressbook()!=null && pe.getAddressbook().length()>0)
+							attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CATEGORY, pe.getAddressbook()));
+						
 						try {
 							attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_LASTNAME, StringEscapeUtils.unescapeHtml(pe.getName())));
 						} catch (Exception ex) {
@@ -163,11 +203,22 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 						ICaller identified = null;
 						while (entries.hasNext()) {
 							key = (String) entries.next();
-							identified = Identifier.identifyDefault(getRuntime(), getRuntime().getCallerFactory().createPhonenumber(key.substring(1)));
-							if (identified!=null) {
-								phones.add(identified.getPhoneNumber());
-								attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_NUMBER_TYPE+identified.getPhoneNumber().getTelephoneNumber(), (String) phs.get(key)));
+							String number = Formatter.getInstance(getRuntime()).normalizePhonenumber(key);
+							if (PhonenumberInfo.isInternalNumber((number.trim()))) {
+								identified = Identifier.identifyDefault(getRuntime(), getRuntime().getCallerFactory().createInternalPhonenumber(number.trim()));
+								if (identified!=null) {
+									phones.add(identified.getPhoneNumber());
+									attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_NUMBER_TYPE+identified.getPhoneNumber().getTelephoneNumber(), (String) phs.get(key)));
+								}
 							}
+							if (!PhonenumberInfo.containsSpecialChars(number.trim())) {
+								identified = Identifier.identifyDefault(getRuntime(), getRuntime().getCallerFactory().createPhonenumber(number.trim()));
+								if (identified!=null) {
+									phones.add(identified.getPhoneNumber());
+									attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_NUMBER_TYPE+identified.getPhoneNumber().getTelephoneNumber(), (String) phs.get(key)));
+								}
+							}
+							
 						}
 						if (phones.size()==0) continue;
 						

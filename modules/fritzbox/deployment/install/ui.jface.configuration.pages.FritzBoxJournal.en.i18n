@@ -31,3 +31,4 @@ ui.jface.configuration.pages.FritzBoxSynchronizer\:synctimer\:label\:en=Timebase
 ui.jface.configuration.pages.FritzBoxPhonebookManager\:title\:label\:en=AVM Fritz!Box Fon phonebook
 ui.jface.configuration.pages.FritzBoxPhonebookManager\:description\:label\:en=Identifies callers with the AVM Fritz!Box Fon phonebook. Hint: Newly created contacts on the AVM Fritz!Box Fon phonebook are only applied after program restart.
 ui.jface.configuration.pages.FritzBoxPhonebookManager\:enabled\:label\:en=Repository enabled
+ui.jface.configuration.pages.FritzBoxPhonebookManager\:ab\:label\:en=Available phonebooks: 

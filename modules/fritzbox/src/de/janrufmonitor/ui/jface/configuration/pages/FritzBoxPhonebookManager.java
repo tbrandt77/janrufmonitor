@@ -1,9 +1,16 @@
 package de.janrufmonitor.ui.jface.configuration.pages;
 
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
+
 import org.eclipse.jface.preference.BooleanFieldEditor;
+import org.eclipse.jface.preference.ComboFieldEditor;
 
 import de.janrufmonitor.fritzbox.firmware.FirmwareManager;
+import de.janrufmonitor.fritzbox.firmware.FritzOSFirmware;
 import de.janrufmonitor.fritzbox.firmware.SessionIDFritzBoxFirmware;
+import de.janrufmonitor.fritzbox.firmware.exception.GetAddressbooksException;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.ui.jface.configuration.AbstractServiceFieldEditorConfigPage;
@@ -55,8 +62,35 @@ public class FritzBoxPhonebookManager extends AbstractServiceFieldEditorConfigPa
 			label,
 			this.getFieldEditorParent()
 		);		
-		bfe.setEnabled(FirmwareManager.getInstance().isInstance(SessionIDFritzBoxFirmware.class), this.getFieldEditorParent());
+		bfe.setEnabled((FirmwareManager.getInstance().isInstance(SessionIDFritzBoxFirmware.class)||FirmwareManager.getInstance().isInstance(FritzOSFirmware.class)), this.getFieldEditorParent());
 		addField(bfe);
+		
+		if (FirmwareManager.getInstance().isInstance(FritzOSFirmware.class)) {
+			try {
+				Map adb = FirmwareManager.getInstance().getAddressbooks();
+				String[][] list = new String[adb.size()][2];
+				Iterator i = adb.keySet().iterator();
+				int c = 0;
+				while (i.hasNext()) {
+					list[c][1] = ((Integer) i.next()).toString();
+					list[c][0] = (String) adb.get(Integer.parseInt(list[c][1]));
+					c++;
+				}
+				ComboFieldEditor cfe = new ComboFieldEditor(
+					getConfigNamespace()+SEPARATOR+"ab",	
+					this.m_i18n.getString(this.getNamespace(), "ab", "label", this.m_language),
+					list,	
+					this.getFieldEditorParent()
+				);
+				addField(cfe);
+					
+			} catch (GetAddressbooksException e) {
+				this.m_logger.severe(e.getMessage());
+			} catch (IOException e) {
+				this.m_logger.severe(e.getMessage());
+			}
+		}
+		
 	}
 
 }

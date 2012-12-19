@@ -29,5 +29,6 @@ ui.jface.configuration.pages.FritzBoxSynchronizer\:syncnotification\:label\:de=E
 ui.jface.configuration.pages.FritzBoxSynchronizer\:synctimer\:label\:de=Zeitgesteuertes Synchronisieren [min]: 
 
 ui.jface.configuration.pages.FritzBoxPhonebookManager\:title\:label\:de=AVM Fritz!Box Fon Telefonbuch
-ui.jface.configuration.pages.FritzBoxPhonebookManager\:description\:label\:de=Identifiziert Anrufe direkt mit den Kontaktens des AVM Fritz!Box Fon Telefonbuch. Hinweis: Neue Kontakte, die \u00FCber die AVM Fritz!Box Fon angelegt werden, sind erst nach einem Programmneustart nutzbar.
+ui.jface.configuration.pages.FritzBoxPhonebookManager\:description\:label\:de=Identifiziert Anrufe direkt mit den Kontakten des AVM Fritz!Box Fon Telefonbuchs. Hinweis: Neue Kontakte, die \u00FCber die AVM Fritz!Box Fon angelegt werden, sind erst nach einem Programmneustart nutzbar.
 ui.jface.configuration.pages.FritzBoxPhonebookManager\:enabled\:label\:de=Datenablage aktiviert
+ui.jface.configuration.pages.FritzBoxPhonebookManager\:ab\:label\:de=Verf\u00FCgbare Telefonb\u00FCcher: 
