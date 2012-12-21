@@ -13,8 +13,9 @@ Bugfix:
 - VM Option: -Xmx für MacOS X hinzugefügt
 
 Module:
-- Fritz!Box-Überwachung: Untertsützung für Firmware xx.05.50
+- Fritz!Box-Überwachung: Unterstützung für Firmware xx.05.50
 - Fritz!Box-Überwachung: AVM Fritz!Box Fon Telefonbuch in Kontakte auswählbar
+- Fritz!Box-Überwachung: Synchronisation schneidet Vorwahl bei ausgehenden Rufnummern ab
 - PDF-Export-Filter: Seitenränder angepasst
 
 ===

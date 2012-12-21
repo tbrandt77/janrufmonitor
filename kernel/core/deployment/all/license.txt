@@ -1,5 +1,5 @@
 jAnrufmonitor
-Copyright (C) 1999 - 2011 Thilo Brandt
+Copyright (C) 1999 - 2013 Thilo Brandt
 
 
 SOFTWARE LIZENZVERTRAG *FREEWARE* (English version below)
@@ -46,7 +46,7 @@ WEIL EINIGE STAATEN/GERICHTSBARKEITEN DEN AUSSCHLUSS ODER DIE LIMITIERUNG DER HA
 
 Auf die vorliegende Lizenzvereinbarung finden ausschließlich deutsches Recht und internationale Verträge Anwendung. Gerichtsstand für Streitigkeiten aus diesem Lizenzvertrag ist Sinsheim, Elsenz. Diese Lizenz beruht auf den Gesetzen der Bundesrepublik Deutschland. Wird ein Teil dieser Lizenz durch ein Gericht mit kompetenter Rechtssprechung für gesetzeswidrig erklärt, bleibt der betreffende Teil der Lizenz bis zum erlaubten Grad rechtsgültig. Die verbleibenden Teile dieser Lizenz behalten ihre vollständige Gültigkeit bei.
 
-Februar 2011, Thilo Brandt, Softwareentwickler
+Januar 2013, Thilo Brandt, Softwareentwickler
 http://www.janrufmonitor.de
 
 #################################################
@@ -97,5 +97,5 @@ BECAUSE SOME STATES/JURISDICTIONS DO NOT ALLOW THE EXCLUSION OR LIMITATION OF LI
 
 This Agreement shall be governed by German laws and regulations and international treaties. Legal venue shall be Sinsheim Elsenz, Germany. This license based upon laws of the federal republic of Germany. If any part of this license should be declared antinomian by a court with competent jurisprudence the remaining parts keep their validity anyway.
 
-February 2011, Thilo Brandt, Softwareentwickler
+January 2013, Thilo Brandt, Softwareentwickler
 http://www.janrufmonitor.de
