@@ -74,6 +74,9 @@ public class FritzBoxCallCsv extends AbstractFritzBoxCall {
 					
 					// create caller data
 					int state = Integer.parseInt(call[0]);
+					// added with FritzOS 5.50 State 4 == State 3
+					if (state == 4) state = 3;
+					
 					String callByCall = null;
 					ICaller caller = null;
 
@@ -110,37 +113,6 @@ public class FritzBoxCallCsv extends AbstractFritzBoxCall {
 						}
 					}
 					caller = Identifier.identify(r, pn);
-					
-					/**
-					IPhonenumber pn = r.getCallerFactory().createPhonenumber(true);
-					if (!PhonenumberInfo.isClired(call[3].trim())) {
-						if (state != 3 && (PhonenumberInfo.isInternalNumber(call[3].trim()) || PhonenumberInfo.containsSpecialChars(call[3].trim()))) {
-							pn = r.getCallerFactory().createInternalPhonenumber(call[3].trim());
-						} else if (state==3){
-							// added 2006/08/10: trim call-by-call information
-							// only can occure on state 3 (out-going calls)
-							callByCall = getCallByCall(call[3]);
-							if (callByCall!=null) {
-								call[3] = call[3].substring(callByCall.length());
-							}
-							call[3] = call[3].trim().substring(PhonenumberInfo.getTruncateNumber(msn), call[3].trim().length());
-							
-							if (PhonenumberInfo.isInternalNumber(call[3].trim()) || PhonenumberInfo.containsSpecialChars(call[3].trim())){
-								// added 2010/03/03 if outgoing call is an internal call (rare, but could occure)
-								pn = r.getCallerFactory().createInternalPhonenumber(call[3].trim());
-							} else
-								pn =  r.getCallerFactory().createPhonenumber((call[3].startsWith("0") ? call[3].substring(1) : (getGeneralAreaCode() + call[3]).substring(1)));
-						} else {
-							if (!call[3].startsWith("0")) {
-								call[3] = "00"+call[3];
-							}
-							call[3] = call[3].trim().substring(PhonenumberInfo.getTruncateNumber(msn), call[3].trim().length());
-
-							pn =  r.getCallerFactory().createPhonenumber((call[3].startsWith("0") ? call[3].substring(1) : (getGeneralAreaCode() + call[3]).substring(1)));
-						}
-						caller = Identifier.identify(r, pn);
-					}
-					*/
 					
 					if (caller==null) {
 						caller = r.getCallerFactory().createCaller(pn);

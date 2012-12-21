@@ -177,6 +177,8 @@ public class FritzOSFirmware extends AbstractFritzBoxFirmware implements IFritzB
 		
 		while (bufReader.ready()) {
 			line = bufReader.readLine();
+			if (this.m_logger.isLoggable(Level.FINE))
+				this.m_logger.log(Level.FINE, line);
 			result.add(line);
 		}
 		bufReader.close();
