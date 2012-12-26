@@ -8,7 +8,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import de.janrufmonitor.framework.IAttributeMap;
 import de.janrufmonitor.framework.ICaller;
@@ -133,8 +136,13 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 
 	private void createCallerListFromFritzBoxPhonebook() {
 		Thread t = new Thread(new Runnable() {
+			
+			Logger m_logger;
 
 			public void run() {
+				this.m_logger = LogManager.getLogManager().getLogger(IJAMConst.DEFAULT_LOGGER);
+				if (this.m_logger.isLoggable(Level.FINE))
+					this.m_logger.fine("Starting JAM-FritzBoxPhonebookSync-Thread");
 				File mso_cache = new File(FBP_CACHE_PATH);
 				if (!mso_cache.exists())
 					mso_cache.mkdirs();
@@ -143,37 +151,50 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 				
 				FirmwareManager fwm = FirmwareManager.getInstance();
 				try {
+					if (this.m_logger.isLoggable(Level.INFO))
+						this.m_logger.info("FritzBox Firmware created.");
 					fwm.login();
 					
+					if (this.m_logger.isLoggable(Level.INFO))
+						this.m_logger.info("Login to FritzBox successfull.");
+					
 					// check if phonebook is configured
-					String abId = m_configuration.getProperty(CFG_ADDRESSBOOK, "0");
+					String abId = getConfiguration().getProperty(CFG_ADDRESSBOOK, "0");
+					if (this.m_logger.isLoggable(Level.INFO))
+						this.m_logger.info("Getting FritzBox phonebook ID: #"+abId);
 					int id = Integer.parseInt(abId);
 					String name = null;
 					try {
 						Map abs = FirmwareManager.getInstance().getAddressbooks();
 						if (abs.containsKey(Integer.parseInt(abId))) {
 							name = (String) abs.get(Integer.parseInt(abId));
+							if (this.m_logger.isLoggable(Level.INFO))
+								this.m_logger.info("Getting FritzBox phonebook name: "+name);
 						}
 					} catch (GetAddressbooksException e) {
-						m_logger.log(Level.WARNING, e.getMessage(), e);
+						this.m_logger.log(Level.WARNING, e.getMessage(), e);
 					}
 					
 					List callers = null;
 					if (name!=null) {
 						callers = fwm.getCallerList(id, name);
+						if (this.m_logger.isLoggable(Level.INFO))
+							this.m_logger.info("Getting FritzBox phonebook callers: "+callers.size());
 					} else {
 						callers = fwm.getCallerList();
+						if (this.m_logger.isLoggable(Level.INFO))
+							this.m_logger.info("Getting FritzBox default phonebook callers: "+callers.size());
 					}
 					if (callers.size()==0) {
 						try {
 							getDatabaseHandler().deleteCallerList(getRuntime().getCallerFactory().createCallerList());
 							getDatabaseHandler().commit();
 						} catch (SQLException e) {
-							m_logger.log(Level.SEVERE, e.getMessage(), e);
+							this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 							try {
 								getDatabaseHandler().rollback();
 							} catch (SQLException e1) {
-								m_logger.log(Level.SEVERE, e1.getMessage(), e1);
+								this.m_logger.log(Level.SEVERE, e1.getMessage(), e1);
 							}
 						}
 						
@@ -185,6 +206,8 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 					AbstractFritzBoxFirmware.PhonebookEntry pe = null;
 					for (int i=0,j=callers.size();i<j;i++) {
 						pe = (PhonebookEntry) callers.get(i);
+						if (this.m_logger.isLoggable(Level.INFO))
+							this.m_logger.info("Processing FritzBox phonebook caller: "+pe.toString());
 						attributes = getRuntime().getCallerFactory().createAttributeMap();
 						phones = new ArrayList(3);
 						attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CALLERMANAGER, FritzBoxPhonebookManager.ID));
@@ -194,7 +217,7 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 						try {
 							attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_LASTNAME, StringEscapeUtils.unescapeHtml(pe.getName())));
 						} catch (Exception ex) {
-							m_logger.log(Level.WARNING, ex.getMessage(), ex);
+							this.m_logger.log(Level.WARNING, ex.getMessage(), ex);
 							attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_LASTNAME, pe.getName()));
 						}
 						Map phs = pe.getPhones();
@@ -225,11 +248,13 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 						cl.add(getRuntime().getCallerFactory().createCaller(null, phones, attributes));						
 					}
 				} catch (FritzBoxLoginException e2) {
-					m_logger.log(Level.SEVERE, e2.getMessage(), e2);
+					this.m_logger.log(Level.SEVERE, e2.getMessage(), e2);
 				} catch (GetCallerListException e) {
-					m_logger.log(Level.SEVERE, e.getMessage(), e);
+					this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 				} catch (IOException e) {
-					m_logger.log(Level.SEVERE, e.getMessage(), e);
+					this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+				} catch (Throwable e) {
+					this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 				}
 
 				try {
@@ -237,13 +262,16 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 					getDatabaseHandler().insertOrUpdateCallerList(cl);
 					getDatabaseHandler().commit();
 				} catch (SQLException e) {
-					m_logger.log(Level.SEVERE, e.getMessage(), e);
+					this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 					try {
 						getDatabaseHandler().rollback();
 					} catch (SQLException e1) {
-						m_logger.log(Level.SEVERE, e1.getMessage(), e1);
+						this.m_logger.log(Level.SEVERE, e1.getMessage(), e1);
 					}
 				}
+				
+				if (this.m_logger.isLoggable(Level.FINE))
+					this.m_logger.fine("Stopping JAM-FritzBoxPhonebookSync-Thread");
 			}
 		});
 		t.setName("JAM-FritzBoxPhonebookSync-Thread-(non-deamon)");
@@ -295,6 +323,10 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 		}
 		return this.getRuntime().getCallerFactory().createCallerList();
+	}
+	
+	private Properties getConfiguration() {
+		return this.m_configuration;
 	}
 
 	private ICallerDatabaseHandler getDatabaseHandler() {
