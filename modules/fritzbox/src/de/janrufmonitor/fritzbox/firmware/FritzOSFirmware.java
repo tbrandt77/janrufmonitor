@@ -34,6 +34,7 @@ import de.janrufmonitor.fritzbox.FritzBoxMD5Handler;
 import de.janrufmonitor.fritzbox.firmware.exception.CreateSessionIDException;
 import de.janrufmonitor.fritzbox.firmware.exception.DeleteCallListException;
 import de.janrufmonitor.fritzbox.firmware.exception.DoBlockException;
+import de.janrufmonitor.fritzbox.firmware.exception.DoCallException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxDetectFirmwareException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxInitializationException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxLoginException;
@@ -44,7 +45,7 @@ import de.janrufmonitor.fritzbox.firmware.exception.GetCallerListException;
 import de.janrufmonitor.util.io.Stream;
 
 public class FritzOSFirmware extends AbstractFritzBoxFirmware implements IFritzBoxFirmware {
-	
+
 	private class XMLPeHandler extends DefaultHandler {
 		private List contacts = new ArrayList();;
 		private AbstractFritzBoxFirmware.PhonebookEntry currentPe;
@@ -454,6 +455,31 @@ public class FritzOSFirmware extends AbstractFritzBoxFirmware implements IFritzB
 			this.m_logger.info("Successfully added numer "+number+" to FritzBox block list.");
 	}
 
+	public void doCall(String number, String extension) throws DoCallException,
+			IOException {
+		if (!this.isInitialized()) throw new DoCallException("Could not dial number on FritzBox: FritzBox firmware not initialized.");
+		
+		StringBuffer data = new StringBuffer();
+		if (number.endsWith("#"))
+			number = number.substring(0, number.length()-1);
+		
+		String urlstr = "http://" + this.m_address +":" + this.m_port + "/fon_num/dial_foonbook.lua?sid="+this.m_sid+"&dial="+number+"&orig_port="+extension;
+
+		try {
+			data.append(this.executeURL(
+					urlstr,
+					null, true).trim());
+		} catch (UnsupportedEncodingException e) {
+			this.m_logger.log(Level.WARNING, e.getMessage(), e);
+		} catch (IOException e) {
+			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			throw new DoCallException("Could not dial numer on FritzBox: "+e.getMessage());
+		} 
+		
+		if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info("Data after call initialization: "+data.toString());
+	}
+
 	public long getFirmwareTimeout() {
 		return ((10 * 60 * 1000)-10000); // set to 10 mins minus 10 sec (buffer)
 	}
@@ -695,19 +721,15 @@ public class FritzOSFirmware extends AbstractFritzBoxFirmware implements IFritzB
 	String getClearPOSTData() {
 		return null;
 	}
-
+	
+	@Override
 	String getCallPOSTData() {
-		return "&sid=$PASSWORT&telcfg:settings/UseClickToDial=1&telcfg:settings/DialPort=$NEBENSTELLE&telcfg:command/Dial=$NUMMER";
+		return null;
 	}
-
+	
+	@Override
 	IFritzBoxAuthenticator getCallURLAuthenticator() {
-		return new IFritzBoxAuthenticator() {
-
-			public String getAuthenticationToken() {
-				return FritzOSFirmware.this.m_sid;
-			}
-			
-		};
+		return null;
 	}
 
 	@Override
