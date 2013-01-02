@@ -25,6 +25,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -258,7 +259,7 @@ public class FritzOSFirmware extends AbstractFritzBoxFirmware implements IFritzB
 		
 		List result = new ArrayList();
 		StringBuffer xml = new StringBuffer();
-		InputStreamReader inr = new InputStreamReader(in, "UTF-8");
+		InputStreamReader inr = new InputStreamReader(in, "iso-8859-1");
 		BufferedReader bufReader = new BufferedReader(inr);
 		
 		String line = bufReader.readLine(); // drop header
@@ -314,8 +315,10 @@ public class FritzOSFirmware extends AbstractFritzBoxFirmware implements IFritzB
 		try {
 			XMLPeHandler handler = new XMLPeHandler(ab);
 			SAXParser p = SAXParserFactory.newInstance().newSAXParser();
-			ByteArrayInputStream in = new ByteArrayInputStream(xml.toString().getBytes("ISO-8859-1"));
-			p.parse(in, handler);
+			ByteArrayInputStream in = new ByteArrayInputStream(xml.toString().getBytes("iso-8859-1"));
+			InputSource is = new InputSource(in);
+			is.setEncoding("iso-8859-1");
+			p.parse(is, handler);
 			return handler.getList();
 		} catch (SAXException e) {
 			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
@@ -324,6 +327,8 @@ public class FritzOSFirmware extends AbstractFritzBoxFirmware implements IFritzB
 		} catch (UnsupportedEncodingException e) {
 			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 		} catch (IOException e) {
+			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+		} catch (Throwable e) {
 			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 		}
 		return null;
