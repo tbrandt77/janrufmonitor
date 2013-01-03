@@ -504,10 +504,10 @@ public abstract class AbstractMultiPhoneCallerDatabaseHandler extends
 								this.m_logger.info("Found correct phonenumber match: "+p+" = "+cp.getTelephoneNumber());
 								((IMultiPhoneCaller)c).getPhonenumbers().clear();
 								c.setPhoneNumber(cp);
+								return c;
 							}
 						}
-					}
-					return c;			
+					}	
 				} catch (SerializerException e) {
 					this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 				} 
