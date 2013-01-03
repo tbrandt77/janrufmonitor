@@ -162,8 +162,7 @@ public class FritzBoxVoip extends AbstractFieldEditorConfigPage {
 						{"DECT 612", "62"},
 						{"DECT 613", "63"},
 						{"DECT 614", "64"},
-						
-										
+						{"DECT 615", "65"},	
 					},
 				this.getFieldEditorParent()
 			);
