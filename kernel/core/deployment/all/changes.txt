@@ -1,5 +1,23 @@
 ===
 
+jAnrufmonitor 5.0.36 (01.02.2013)
+---------------------------------
+
+Neu:
+- Adressbuch: vCard (VCF) Import an Microsoft Outlook 2010 VCF Format adaptiert
+- Java Checker Skript zur Prüfung der Java Voraussetzungen
+
+Bugfix:
+- Adressbuch: Interne Telefonanlagenrufnummern werden nicht immer identifiziert
+
+Module:
+- Fritz!Box-Überwachung: Umlaute im Fritz!Box Fon Telefonbuch werden als ? dargestellt
+- Fritz!Box-Überwachung: DECT 615 Nebenstelle zur Wahlhilfe hinzugefügt
+- Fritz!Box-Überwachung: Sync-Timer Reset über Konfiguration möglich
+
+===
+
+
 jAnrufmonitor 5.0.35 (01.01.2013)
 ---------------------------------
 
@@ -43,7 +61,6 @@ jAnrufmonitor 5.0.33 (01.02.2012)
 
 Bugfix:
 - Identifizierung: Umlaute und Sonderzeichen werden korrekt dargestellt.
-
 
 ===
 
