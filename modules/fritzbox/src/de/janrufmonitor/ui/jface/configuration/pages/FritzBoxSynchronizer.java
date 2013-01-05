@@ -81,20 +81,22 @@ public class FritzBoxSynchronizer extends AbstractServiceFieldEditorConfigPage {
 		);
 		addField(ife);
 		
-		StringButtonFieldEditor sbfe = new StringButtonFieldEditor(
-				this.getConfigNamespace()+SEPARATOR+"synctime",
-				this.m_i18n.getString(this.getNamespace(), "synctime", "label", this.m_language), 
-				this.getFieldEditorParent()
-		) {
-
-			@Override
-			protected String changePressed() {
-				return "0";
-			}
-			
-		};
-		sbfe.setChangeButtonText(this.m_i18n.getString(this.getNamespace(), "reset_synctime", "label", this.m_language));
-		addField(sbfe);
+		if (isExpertMode()) {
+			StringButtonFieldEditor sbfe = new StringButtonFieldEditor(
+					this.getConfigNamespace()+SEPARATOR+"synctime",
+					this.m_i18n.getString(this.getNamespace(), "synctime", "label", this.m_language), 
+					this.getFieldEditorParent()
+			) {
+	
+				@Override
+				protected String changePressed() {
+					return "0";
+				}
+				
+			};
+			sbfe.setChangeButtonText(this.m_i18n.getString(this.getNamespace(), "reset_synctime", "label", this.m_language));
+			addField(sbfe);
+		}
 	}
 
 }
