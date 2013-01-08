@@ -22,6 +22,7 @@ ui.jface.configuration.pages.BasicSettings\:intarea\:label\:de=L\u00E4ndercode:
 ui.jface.configuration.pages.BasicSettings\:autodetectdialog\:label\:de=Dialog zur automatischen Erkennung einblenden
 ui.jface.configuration.pages.BasicSettings\:delay\:label\:de=Verz\u00F6gerung f\u00FCr \u00DCberwachungsstart [in sec.]: 
 ui.jface.configuration.pages.BasicSettings\:areacode\:label\:de=Ortsnetzkennzahl:\n(mit f\u00FChrender Null)
+ui.jface.configuration.pages.BasicSettings\:hina_enabled\:label\:de=automatische Ruhezustandserkennung: 
 
 ui.jface.configuration.pages.Caller\:title\:label\:de=Telefonb\u00FCcher
 ui.jface.configuration.pages.Caller\:description\:label\:de=Telefonb\u00FCcher werden zur Identifizierung der Rufnummern verwendet. Sie werden in der unten stehenden Reihenfolge bei der Identifizierung ber\u00FCcksichtigt.

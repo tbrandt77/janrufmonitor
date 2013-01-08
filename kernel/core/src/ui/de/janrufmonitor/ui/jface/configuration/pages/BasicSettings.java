@@ -11,6 +11,7 @@ import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.ui.jface.configuration.AbstractConfigPage;
 import de.janrufmonitor.ui.jface.configuration.IConfigPage;
+import de.janrufmonitor.ui.jface.configuration.controls.BooleanFieldEditor;
 
 public class BasicSettings extends AbstractConfigPage {
 	
@@ -23,6 +24,7 @@ public class BasicSettings extends AbstractConfigPage {
 	StringFieldEditor intarea;
 	StringFieldEditor area;
 	StringFieldEditor delay;
+	BooleanFieldEditor hina; 
 
 	public String getParentNodeID() {
 		return IConfigPage.ROOT_NODE;
@@ -82,6 +84,14 @@ public class BasicSettings extends AbstractConfigPage {
 				3,
 				c);
 			delay.setStringValue(this.getPreferenceStore().getString("monitor.MonitorListener"+SEPARATOR+"delay"));
+			
+			hina = new BooleanFieldEditor(
+					"service.HibernateDetect"+SEPARATOR+"enabled",
+					this.m_i18n.getString(this.getNamespace(), "hina_enabled", "label", this.m_language),
+					1,
+					c);
+			hina.setPreferenceStore(this.getPreferenceStore());
+			hina.doLoad();
 
 		}
 		return c;
@@ -98,6 +108,7 @@ public class BasicSettings extends AbstractConfigPage {
 		area.setStringValue(this.getPreferenceStore().getDefaultString(area.getPreferenceName()));
 		if (isExpertMode()) {
 			delay.setStringValue(this.getPreferenceStore().getDefaultString(delay.getPreferenceName()));
+			hina.doLoadDefault();
 		}
 	}
 	
@@ -107,6 +118,7 @@ public class BasicSettings extends AbstractConfigPage {
 		this.getPreferenceStore().setValue(area.getPreferenceName(), area.getStringValue());
 		if (isExpertMode()) {
 			this.getPreferenceStore().setValue(delay.getPreferenceName(), delay.getStringValue());
+			this.getPreferenceStore().setValue(hina.getPreferenceName(), hina.getBooleanValue());
 		}
 		return super.performOk();
 	}

@@ -22,6 +22,7 @@ ui.jface.configuration.pages.BasicSettings\:intarea\:label\:en=Country code:
 ui.jface.configuration.pages.BasicSettings\:autodetectdialog\:label\:en=Show dialogue for automatic detection
 ui.jface.configuration.pages.BasicSettings\:delay\:label\:en=Delay for monitoring [in sec.]: 
 ui.jface.configuration.pages.BasicSettings\:areacode\:label\:en=Local area code:
+ui.jface.configuration.pages.BasicSettings\:hina_enabled\:label\:en=automatic hibernate detection: 
 
 ui.jface.configuration.pages.Caller\:title\:label\:en=Phone books
 ui.jface.configuration.pages.Caller\:description\:label\:en=Phone books are used for identifiing incoming calls. They are executed in the order shown beneath.
