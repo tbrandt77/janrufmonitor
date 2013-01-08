@@ -49,3 +49,13 @@ service.GeoCoding\:enabled\:type=boolean
 service.ServiceFactory\:service_geo\:value=de.janrufmonitor.service.geo.GeoCoding
 service.ServiceFactory\:service_geo\:access=system
 rules.RuleEngine\:Standard4_rule\:value=Standard \#4%GeoCoding%*%*%true%*%*%*
+
+#added 5.0.36
+service.HibernateDetect\:priority\:value=999
+service.HibernateDetect\:priority\:type=integer
+service.HibernateDetect\:enabled\:value=true
+service.HibernateDetect\:enabled\:type=boolean
+service.HibernateDetect\:delay\:value=60
+service.HibernateDetect\:delay\:type=integer
+service.ServiceFactory\:service_chibernate\:value=de.janrufmonitor.service.hibernate.HibernateDetect
+service.ServiceFactory\:service_chibernate\:access=system

@@ -84,4 +84,9 @@ public interface IEventConst {
 	 * Event type for retrieving full identified outgoing accepted calls.
 	 */
     public final static int EVENT_TYPE_IDENTIFIED_OUTGOING_CALL_ACCEPTED = 111;
+    
+	/**
+	 * Event type for returning from hibernate mode.
+	 */
+    public final static int EVENT_TYPE_RETURNED_HIBERNATE = 201;
 }

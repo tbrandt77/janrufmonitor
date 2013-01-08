@@ -14,3 +14,6 @@ service.AutoUpdateService\:title\:label\:en=Update Manager
 service.AutoUpdateService\:newupdates\:label\:en=New updates available!
 
 service.GeoCoding\:title\:label\:en=Geocoding
+
+service.HibernateDetect\:title\:label\:en=Hibernate Detection
+service.HibernateDetect\:hibernate\:label\:en=The hibernate mode of the OS interupted the line monitoring. Monitor observer is beeing restarted...

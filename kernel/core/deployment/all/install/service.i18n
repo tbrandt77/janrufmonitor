@@ -14,3 +14,6 @@ service.AutoUpdateService\:title\:label\:de=Update Manager
 service.AutoUpdateService\:newupdates\:label\:de=Es stehen neue Updates zum Download zur Verf\u00FCgung.
 
 service.GeoCoding\:title\:label\:de=Geokodierung
+
+service.HibernateDetect\:title\:label\:de=Ruhezustand Erkennung
+service.HibernateDetect\:hibernate\:label\:de=Der Ruhezustand des Betriebsystems (Hibernate Modus) hat die Anruf\u00FCberwachung unterbrochen. Die \u00DCberwachung wird jetzt neu gestartet...

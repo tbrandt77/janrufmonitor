@@ -207,6 +207,16 @@ public class MonitorListener extends AbstractMonitorListener implements IEventRe
         		m.reject((short)0);
         	}
         }
+        if (event.getType() == IEventConst.EVENT_TYPE_RETURNED_HIBERNATE) {
+        	if (this.isRunning()) {
+        		this.stop();
+        		try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+				}
+				this.start();
+        	}
+        }
     }
     
     public String getSenderID() {
@@ -307,6 +317,7 @@ public class MonitorListener extends AbstractMonitorListener implements IEventRe
             eventBroker.register(this);
             // register as EventReceiver
             eventBroker.register(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_CALLREJECTED));
+            eventBroker.register(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_RETURNED_HIBERNATE));
             this.running = true;
             this.m_logger.info("All monitors started on line.");
             for (int i=0;i<this.getCapiInformation().length;i++) {
@@ -332,6 +343,7 @@ public class MonitorListener extends AbstractMonitorListener implements IEventRe
             IEventBroker eventBroker = this.getRuntime().getEventBroker();
             eventBroker.unregister(this);
             eventBroker.unregister(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_CALLREJECTED));
+            eventBroker.unregister(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_RETURNED_HIBERNATE));
         	List monitors = this.getMonitors();
         	IMonitor m = null;
         	for (int i=0,j=monitors.size();i<j;i++) {
