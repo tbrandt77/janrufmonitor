@@ -10,6 +10,7 @@ Neu:
 
 Bugfix:
 - Adressbuch: Interne Telefonanlagenrufnummern werden nicht immer identifiziert
+- HTML Dekodierungsfehler für alle Online-Telefonauskünfte beseitigt
 
 Module:
 - Fritz!Box-Überwachung: Umlaute im Fritz!Box Fon Telefonbuch werden als ? dargestellt

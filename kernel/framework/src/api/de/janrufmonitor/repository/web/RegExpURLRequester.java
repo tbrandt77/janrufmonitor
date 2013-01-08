@@ -145,6 +145,11 @@ public class RegExpURLRequester extends AbstractURLRequester {
 					// added 2010/04/01: added HTML decoding routine
 					// added 2012/01/20: URLDecode
 					group = URLDecoder.decode(StringEscapeUtils.unescapeHtml(this.encodeNonUnicode(group)));
+					if (this.containsHTML(group)) {
+						if (this.m_logger.isLoggable(Level.INFO))
+							this.m_logger.info("Still found HTML tags in pattern value: "+group);
+						group = StringEscapeUtils.unescapeHtml(group);
+					}
 					this.m.add(
 						m_runtime.getCallerFactory().createAttribute(
 							IJAMConst.ATTRIBUTE_NAME_LASTNAME,
@@ -166,7 +171,11 @@ public class RegExpURLRequester extends AbstractURLRequester {
 					// added 2010/04/01: added HTML decoding routine
 					// added 2012/01/20: URLDecode
 					group = URLDecoder.decode(StringEscapeUtils.unescapeHtml(this.encodeNonUnicode(group)));
-
+					if (this.containsHTML(group)) {
+						if (this.m_logger.isLoggable(Level.INFO))
+							this.m_logger.info("Still found HTML tags in pattern value: "+group);
+						group = StringEscapeUtils.unescapeHtml(group);
+					}
 					this.m.add(
 						m_runtime.getCallerFactory().createAttribute(
 							IJAMConst.ATTRIBUTE_NAME_FIRSTNAME,
@@ -189,6 +198,11 @@ public class RegExpURLRequester extends AbstractURLRequester {
 					// added 2010/04/01: added HTML decoding routine
 					// added 2012/01/20: URLDecode
 					group = URLDecoder.decode(StringEscapeUtils.unescapeHtml(this.encodeNonUnicode(group)));
+					if (this.containsHTML(group)) {
+						if (this.m_logger.isLoggable(Level.INFO))
+							this.m_logger.info("Still found HTML tags in pattern value: "+group);
+						group = StringEscapeUtils.unescapeHtml(group);
+					}
 					this.m.add(
 						m_runtime.getCallerFactory().createAttribute(
 							IJAMConst.ATTRIBUTE_NAME_ADDITIONAL,
@@ -212,6 +226,11 @@ public class RegExpURLRequester extends AbstractURLRequester {
 					// added 2010/04/01: added HTML decoding routine
 					// added 2012/01/20: URLDecode
 					group = URLDecoder.decode(StringEscapeUtils.unescapeHtml(this.encodeNonUnicode(group)));
+					if (this.containsHTML(group)) {
+						if (this.m_logger.isLoggable(Level.INFO))
+							this.m_logger.info("Still found HTML tags in pattern value: "+group);
+						group = StringEscapeUtils.unescapeHtml(group);
+					}
 					this.m.add(
 						m_runtime.getCallerFactory().createAttribute(
 							IJAMConst.ATTRIBUTE_NAME_STREET,
@@ -267,6 +286,11 @@ public class RegExpURLRequester extends AbstractURLRequester {
 					// added 2010/04/01: added HTML decoding routine
 					// added 2012/01/20: URLDecode
 					group = URLDecoder.decode(StringEscapeUtils.unescapeHtml(this.encodeNonUnicode(group)));
+					if (this.containsHTML(group)) {
+						if (this.m_logger.isLoggable(Level.INFO))
+							this.m_logger.info("Still found HTML tags in pattern value: "+group);
+						group = StringEscapeUtils.unescapeHtml(group);
+					}
 					this.m.add(
 						m_runtime.getCallerFactory().createAttribute(
 							IJAMConst.ATTRIBUTE_NAME_CITY,
@@ -352,6 +376,17 @@ public class RegExpURLRequester extends AbstractURLRequester {
     	q = StringUtils.replaceString(q, "\u00FC", "&uuml;");
     	q = StringUtils.replaceString(q, "\u00DF", "&szlig;");
     	return q;
+	}
+	
+	private boolean containsHTML(String q) {
+		if (q.indexOf("&Auml;")>-1) return true;
+		if (q.indexOf("&auml;")>-1) return true;
+		if (q.indexOf("&Ouml;")>-1) return true;
+		if (q.indexOf("&ouml;")>-1) return true;
+		if (q.indexOf("&Uuml;")>-1) return true;
+		if (q.indexOf("&uuml;")>-1) return true;
+		if (q.indexOf("&szlig;")>-1) return true;
+		return false;
 	}
 
 }
