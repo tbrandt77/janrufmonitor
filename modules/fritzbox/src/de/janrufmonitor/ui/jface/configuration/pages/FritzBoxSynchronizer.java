@@ -95,6 +95,7 @@ public class FritzBoxSynchronizer extends AbstractServiceFieldEditorConfigPage {
 				
 			};
 			sbfe.setChangeButtonText(this.m_i18n.getString(this.getNamespace(), "reset_synctime", "label", this.m_language));
+			sbfe.setEmptyStringAllowed(false);
 			addField(sbfe);
 		}
 	}

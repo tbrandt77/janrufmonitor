@@ -109,6 +109,10 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 	public void startup() {
 		super.startup();
 		if (isEnabled()) {	
+			IEventBroker eventBroker = this.getRuntime().getEventBroker();
+			eventBroker.register(this, eventBroker
+					.createEvent(IEventConst.EVENT_TYPE_RETURNED_HIBERNATE));
+			
 			FirmwareManager.getInstance().startup();
 			new SWTExecuter() {
 				protected void execute() {
@@ -118,7 +122,6 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 			
 			boolean isRefreshAfterCallend = this.m_configuration.getProperty(CFG_REFRESH_AFTER_CALLEND, "false").equalsIgnoreCase("true");
 			if (isRefreshAfterCallend) {
-				IEventBroker eventBroker = this.getRuntime().getEventBroker();
 				eventBroker.register(this, eventBroker
 						.createEvent(IEventConst.EVENT_TYPE_IDENTIFIED_OUTGOING_CALL_ACCEPTED));
 				
@@ -138,6 +141,24 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 				this.m_logger.info("No rule assigned to execute this service for call: "+aCall);
 			}
 		} 
+		
+		if (event.getType() == IEventConst.EVENT_TYPE_RETURNED_HIBERNATE) {
+			this.cancelingTimebasedSyncing();
+			FirmwareManager.getInstance().shutdown();
+			
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+			}
+			
+			FirmwareManager.getInstance().startup();
+			new SWTExecuter() {
+				protected void execute() {
+					synchronize(false);
+				}}
+			.start();
+			timebasedSyncing();
+		}
 	}
 	
 	public void receivedValidRule(ICall aCall) {
@@ -158,9 +179,12 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 	public void shutdown() {
 		cancelingTimebasedSyncing();
 		
+		IEventBroker eventBroker = this.getRuntime().getEventBroker();
+		eventBroker.unregister(this, eventBroker
+				.createEvent(IEventConst.EVENT_TYPE_RETURNED_HIBERNATE));
+		
 		boolean isRefreshAfterCallend = this.m_configuration.getProperty(CFG_REFRESH_AFTER_CALLEND, "false").equalsIgnoreCase("true");
 		if (isRefreshAfterCallend) {
-			IEventBroker eventBroker = this.getRuntime().getEventBroker();
 			eventBroker.unregister(this, eventBroker
 					.createEvent(IEventConst.EVENT_TYPE_IDENTIFIED_OUTGOING_CALL_ACCEPTED));
 			
