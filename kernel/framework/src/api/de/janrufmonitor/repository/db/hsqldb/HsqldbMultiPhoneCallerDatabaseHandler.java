@@ -161,7 +161,7 @@ public abstract class HsqldbMultiPhoneCallerDatabaseHandler extends AbstractMult
 		// check database structure
 		Statement stmt = m_con.createStatement();
 		try {
-			stmt.executeQuery("SELECT count(*) FROM images;");
+			stmt.executeQuery("SELECT count(ref) FROM images;");
 		} catch (Exception e) {
 			this.m_logger.info("Detected database schema of version 5.0.27 and older.");
 			
@@ -213,8 +213,6 @@ public abstract class HsqldbMultiPhoneCallerDatabaseHandler extends AbstractMult
 							sql.append("'");
 						}
 					}
-					
-					
 				}
 				
 				if (f.getType()==FilterType.ATTRIBUTE) {
@@ -243,6 +241,9 @@ public abstract class HsqldbMultiPhoneCallerDatabaseHandler extends AbstractMult
 		}
 		
 		sql.append(";");
+		
+		if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info(sql.toString());
 		
 		ResultSet rs = stmt.executeQuery(sql.toString());
 		while (rs.next()) {

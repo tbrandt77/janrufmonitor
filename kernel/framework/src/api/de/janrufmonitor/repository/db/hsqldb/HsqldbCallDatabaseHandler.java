@@ -95,12 +95,12 @@ public abstract class HsqldbCallDatabaseHandler extends AbstractCallDatabaseHand
 		if (filters!=null && filters.length>0 && hasOnlyAttributeFilter(filters)) {
 			
 			if (isCounter) {
-				sql.append(" COUNT(*) ");
+				sql.append(" COUNT(calls.uuid) ");
 			} else {
 				sql.append(" content ");
 			}
 			
-			sql.append("FROM attributes JOIN calls ON calls.uuid=attributes.ref AND ");
+			sql.append("FROM attributes LEFT JOIN calls ON calls.uuid=attributes.ref AND ");
 			
 			IFilter f = null;
 			for (int i=0;i<filters.length;i++) {
@@ -141,7 +141,7 @@ public abstract class HsqldbCallDatabaseHandler extends AbstractCallDatabaseHand
 			}
 			
 			if (isCounter) {
-				sql.append(" COUNT(*) ");
+				sql.append(" COUNT(calls.uuid) ");
 			} else {
 				sql.append(" content ");
 			}
@@ -276,7 +276,7 @@ public abstract class HsqldbCallDatabaseHandler extends AbstractCallDatabaseHand
 			
 		} else {
 			if (isCounter) {
-				sql.append(" COUNT(*) ");
+				sql.append(" COUNT(calls.uuid) ");
 			} else {
 				sql.append(" content ");
 			}
@@ -295,8 +295,8 @@ public abstract class HsqldbCallDatabaseHandler extends AbstractCallDatabaseHand
 
 		sql.append(";");
 		
-		
-		this.m_logger.info(sql.toString());
+		if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info(sql.toString());
 		
 		return sql.toString();
 	}
