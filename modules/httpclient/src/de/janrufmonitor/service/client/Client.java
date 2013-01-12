@@ -82,6 +82,7 @@ public class Client extends AbstractReceiverConfigurableService {
 		IEventBroker eventBroker = this.getRuntime().getEventBroker();
 		eventBroker.unregister(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_CALLREJECTED));
 		eventBroker.unregister(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_IDENTIFIED_CALL));
+		eventBroker.unregister(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_RETURNED_HIBERNATE));
 
 		this.disconnect();
 		
@@ -96,6 +97,7 @@ public class Client extends AbstractReceiverConfigurableService {
 		IEventBroker eventBroker = this.getRuntime().getEventBroker();
 		eventBroker.register(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_CALLREJECTED));
 		eventBroker.register(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_IDENTIFIED_CALL));
+		eventBroker.register(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_RETURNED_HIBERNATE));
 		
 		// start HTTP Server
 		if (this.isAutoConnect()) {
@@ -250,6 +252,29 @@ public class Client extends AbstractReceiverConfigurableService {
 				this.m_logger.info("Updating call in ClienTCallMap: "+c);
 			}
 		}
+		if (event.getType() == IEventConst.EVENT_TYPE_RETURNED_HIBERNATE) {
+			if (this.m_logger.isLoggable(Level.INFO))
+				this.m_logger.info("Client detected hibernate return mode.");
+			
+			if (this.isConnected()) {
+				if (this.m_logger.isLoggable(Level.INFO))
+					this.m_logger.info("Client detected hibernate return mode, and client is connected.");
+				this.disconnect();
+				
+				if (this.connect()) {
+					ClientStateManager.getInstance().fireState(IClientStateMonitor.CONNECTION_OK, "");		
+					if (this.m_logger.isLoggable(Level.INFO))
+						this.m_logger.info("Client reconnected after hibernate return mode.");
+				} else {
+					ClientStateManager.getInstance().fireState(IClientStateMonitor.CONNECTION_CLOSED, "");
+					if (this.m_logger.isLoggable(Level.INFO))
+						this.m_logger.info("Client not reconnected after hibernate return mode.");
+				}
+			} else 
+				if (this.m_logger.isLoggable(Level.INFO))
+					this.m_logger.info("Client detected hibernate return mode, but is not connected. No re-connect.");
+		}
+		
 	}
 	
 	private void sendRequest(int event, IHttpRequest request) {
