@@ -55,6 +55,7 @@ public class TwitterService extends AbstractReceiverConfigurableService implemen
 			msg = msg.substring(0,139);
 			this.m_logger.warning("Message is more then 140 character. Truncated to: "+msg);
 		}
+		twitter.setSource("jAnrufmonitor "+IJAMConst.VERSION_DISPLAY+" Twitter Module");
 		twitter.setStatus(msg);
 	}
 
