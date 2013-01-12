@@ -192,10 +192,12 @@ public class FirmwareManager {
 						throw new FritzBoxInitializationException(e.getMessage());
 					}
 				}
-				if (this.m_fw!=null) {
-					if (this.m_fw.getFirmwareTimeout()>0) {
-						this.launchTimeoutThread();
-					}
+			}
+			if (this.m_fw!=null) {
+				if (this.m_fw.getFirmwareTimeout()>0) {
+					if (this.m_logger.isLoggable(Level.INFO))
+						this.m_logger.info("FritzBox timeout thread started.");
+					this.launchTimeoutThread();
 				}
 			}
     	}
@@ -217,9 +219,10 @@ public class FirmwareManager {
 					m_fw = null;
 					m_logger.info("Automatic FritzBox timeout for logout reached.");
 					if (getFritzBoxAutoReconnect()) {
-						m_logger.info("Automatic re-connect to FritzBox...");
+						m_logger.info("Trying automatic re-connect to FritzBox...");
 						try {
 							createFirmwareInstance();
+							m_logger.info("Automatic re-connect to FritzBox done...");
 						} catch (FritzBoxInitializationException e) {
 							m_logger.log(Level.SEVERE, e.getMessage(), e);
 						}
