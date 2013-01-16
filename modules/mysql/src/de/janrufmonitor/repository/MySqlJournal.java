@@ -17,6 +17,10 @@ import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.ICip;
 import de.janrufmonitor.framework.IMsn;
 import de.janrufmonitor.framework.IPhonenumber;
+import de.janrufmonitor.framework.event.IEvent;
+import de.janrufmonitor.framework.event.IEventBroker;
+import de.janrufmonitor.framework.event.IEventConst;
+import de.janrufmonitor.framework.event.IEventReceiver;
 import de.janrufmonitor.repository.db.AbstractCallDatabaseHandler;
 import de.janrufmonitor.repository.db.ICallDatabaseHandler;
 import de.janrufmonitor.repository.filter.AttributeFilter;
@@ -30,7 +34,7 @@ import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.util.io.Serializer;
 import de.janrufmonitor.util.io.SerializerException;
 
-public class MySqlJournal extends AbstractDatabaseCallManager implements IRemoteRepository {
+public class MySqlJournal extends AbstractDatabaseCallManager implements IRemoteRepository, IEventReceiver {
 
 	private class MySqlHandler extends AbstractCallDatabaseHandler {
 
@@ -414,5 +418,43 @@ public class MySqlJournal extends AbstractDatabaseCallManager implements IRemote
 		}	
 		return this.m_dbh;
 	}
+
+	public void received(IEvent event) {
+		if (event.getType() == IEventConst.EVENT_TYPE_RETURNED_HIBERNATE) {
+			if (this.m_logger.isLoggable(Level.INFO))
+				this.m_logger.info("Restarting MySQL connection for journal after hibernate mode.");
+			
+			if (this.m_dbh!=null) {
+				try {
+					this.m_dbh.disconnect();
+				} catch (SQLException e) {
+					this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+				}
+				this.m_dbh = null;
+			}
+		}
+	}
+
+	public String getReceiverID() {
+		return ID;
+	}
+	
+	@Override
+	public void shutdown() {
+		IEventBroker eb = getRuntime().getEventBroker();
+		eb.register(this, eb.createEvent(IEventConst.EVENT_TYPE_RETURNED_HIBERNATE));
+
+		super.shutdown();
+	}
+	
+	@Override
+	public void startup() {
+		super.startup();
+		
+		IEventBroker eb = getRuntime().getEventBroker();
+		eb.register(this, eb.createEvent(IEventConst.EVENT_TYPE_RETURNED_HIBERNATE));
+	}
+
+
 
 }

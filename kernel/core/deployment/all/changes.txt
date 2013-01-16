@@ -17,6 +17,8 @@ Module:
 - Fritz!Box-Überwachung: DECT 615 Nebenstelle zur Wahlhilfe hinzugefügt
 - Fritz!Box-Überwachung: Sync-Timer Reset über Konfiguration möglich
 - Ruhezustand Erkennung: Separates Ruhezustand Erkennung Modul wurde gelöscht
+- Client Erweiterung: Re-Connect mit Server nach Ruhezustand
+- MySQL Adressbuch / Journal: Re-Connect mit MySQL Server nach Ruhezustand
 
 ===
 

@@ -2,8 +2,13 @@ package de.janrufmonitor.repository;
 
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
 
 import de.janrufmonitor.framework.IJAMConst;
+import de.janrufmonitor.framework.event.IEvent;
+import de.janrufmonitor.framework.event.IEventBroker;
+import de.janrufmonitor.framework.event.IEventConst;
+import de.janrufmonitor.framework.event.IEventReceiver;
 import de.janrufmonitor.repository.db.ICallerDatabaseHandler;
 import de.janrufmonitor.repository.db.hsqldb.HsqldbMultiPhoneCallerDatabaseHandler;
 import de.janrufmonitor.repository.types.IRemoteRepository;
@@ -12,7 +17,7 @@ import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.util.io.ImageHandler;
 
 public class MySqlAddressbook extends AbstractDatabaseCallerManager implements
-		IRemoteRepository {
+		IRemoteRepository, IEventReceiver {
 
 	private static String ID = "MySqlAddressbook";
     private String NAMESPACE = "repository.MySqlAddressbook";
@@ -159,7 +164,43 @@ public class MySqlAddressbook extends AbstractDatabaseCallerManager implements
 			this.m_dbh.setKeepAlive((m_configuration.getProperty(CFG_KEEP_ALIVE, "false").equalsIgnoreCase("true")? true : false));
 		}	
 		return this.m_dbh;
+	}
+	
 
+	@Override
+	public void startup() {
+		super.startup();
+		
+		IEventBroker eb = getRuntime().getEventBroker();
+		eb.register(this, eb.createEvent(IEventConst.EVENT_TYPE_RETURNED_HIBERNATE));
+	}
+
+	@Override
+	public void shutdown() {
+		IEventBroker eb = getRuntime().getEventBroker();
+		eb.register(this, eb.createEvent(IEventConst.EVENT_TYPE_RETURNED_HIBERNATE));
+		
+		super.shutdown();
+	}
+
+	public void received(IEvent event) {
+		if (event.getType() == IEventConst.EVENT_TYPE_RETURNED_HIBERNATE) {
+			if (this.m_logger.isLoggable(Level.INFO))
+				this.m_logger.info("Restarting MySQL connection for address book after hibernate mode.");
+			
+			if (this.m_dbh!=null) {
+				try {
+					this.m_dbh.disconnect();
+				} catch (SQLException e) {
+					this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+				}
+				this.m_dbh = null;
+			}
+		}
+	}
+
+	public String getReceiverID() {
+		return ID;
 	}
 	
 }
