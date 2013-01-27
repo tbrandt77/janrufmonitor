@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/jAnrufmonitor Kernel Core"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/jAnrufmonitor Kernel Framework"/>
+	<classpathentry kind="var" path="JAM_LIB/kernel/allui/commands.jar"/>
+	<classpathentry kind="var" path="JAM_LIB/kernel/allui/i18n.jar"/>
+	<classpathentry kind="var" path="JAM_LIB/kernel/allui/jface.jar"/>
+	<classpathentry kind="var" path="JAM_LIB/kernel/allui/runtime.jar"/>
+	<classpathentry kind="var" path="JAM_OSDEPENDEND_LIB/swt.jar"/>
+	<classpathentry kind="output" path="build"/>
+</classpath>

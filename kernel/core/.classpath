@@ -60,5 +60,6 @@
 	<classpathentry kind="var" path="JAM_LIB/modules/google-collect-1.0.jar"/>
 	<classpathentry kind="var" path="JAM_LIB/modules/signpost-core-1.2.1.1.jar"/>
 	<classpathentry kind="var" path="JAM_LIB/modules/jtwitter.jar"/>
+	<classpathentry kind="lib" path="/jAnrufmonitor Module Tellows/build"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

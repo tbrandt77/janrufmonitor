@@ -1,0 +1,9 @@
+ui.jface.configuration.ConfigurationCommand\:page_tellows\:value=de.janrufmonitor.ui.jface.configuration.pages.Tellows
+ui.jface.configuration.ConfigurationCommand\:page_tellows\:access=system
+
+ui.jface.application.RendererRegistry\:renderer_tellowsscore\:value=de.janrufmonitor.ui.jface.application.tellows.rendering.TellowsScore
+ui.jface.application.RendererRegistry\:renderer_tellowsscore\:access=system
+ui.jface.application.RendererRegistry\:renderer_tellowssearches\:value=de.janrufmonitor.ui.jface.application.tellows.rendering.TellowsSearches
+ui.jface.application.RendererRegistry\:renderer_tellowssearches\:access=system
+ui.jface.application.RendererRegistry\:renderer_tellowscomments\:value=de.janrufmonitor.ui.jface.application.tellows.rendering.TellowsComments
+ui.jface.application.RendererRegistry\:renderer_tellowscomments\:access=system

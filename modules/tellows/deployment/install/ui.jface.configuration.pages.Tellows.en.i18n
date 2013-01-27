@@ -1,0 +1,10 @@
+ui.jface.configuration.pages.Tellows\:title\:label\:en=Tellows number scoring
+ui.jface.configuration.pages.Tellows\:description\:label\:en=Determines a score value (1 - 9) for a phone number which marks a number as trusted (1) or spam (9)
+ui.jface.configuration.pages.Tellows\:enabled\:label\:en=Service enabled
+
+ui.jface.application.tellows.rendering.TellowsScore\:name\:label\:en=spam score
+ui.jface.application.tellows.rendering.TellowsScore\:label\:label\:en=Tellows spam score
+ui.jface.application.tellows.rendering.TellowsSearches\:name\:label\:en=Tellows searches
+ui.jface.application.tellows.rendering.TellowsSearches\:label\:label\:en=Tellows spam searches
+ui.jface.application.tellows.rendering.TellowsComments\:name\:label\:en=Tellows comments
+ui.jface.application.tellows.rendering.TellowsComments\:label\:label\:en=Tellows spam comments
