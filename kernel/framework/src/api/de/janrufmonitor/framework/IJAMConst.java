@@ -530,6 +530,12 @@ public interface IJAMConst {
 	
 	public final static String ATTRIBUTE_NAME_GEO_ACC = "geo-acc";
 	
+	/**
+	 * Attribute name for spam color.
+	 */
+	public final static String ATTRIBUTE_NAME_SPAM_COLOR = "spamcolor";	
+	
+	
 	
 	// ATTRIBUTES VALUES
 	

@@ -43,6 +43,7 @@ public class Journaling extends AbstractReceiverConfigurableService implements I
 		eventBroker.unregister(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_CALLCLEARED));        
 		eventBroker.unregister(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_MANUALCALLACCEPTED));
 		eventBroker.unregister(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_CALLREJECTED));
+		eventBroker.unregister(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_CALLMARKEDSPAM));
 		eventBroker.unregister(this);
 		this.m_logger.info("Journaling is shut down ...");
 	}
@@ -58,6 +59,7 @@ public class Journaling extends AbstractReceiverConfigurableService implements I
 		eventBroker.register(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_CALLCLEARED));
 		eventBroker.register(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_MANUALCALLACCEPTED));
 		eventBroker.register(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_CALLREJECTED));
+		eventBroker.register(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_CALLMARKEDSPAM));
 		eventBroker.register(this);
 		this.m_logger.info("Journaling is started ...");
 	}
@@ -67,6 +69,7 @@ public class Journaling extends AbstractReceiverConfigurableService implements I
 		   event.getType() == IEventConst.EVENT_TYPE_CALLCLEARED ||
 		   event.getType() == IEventConst.EVENT_TYPE_MANUALCALLACCEPTED || 
 		   event.getType() == IEventConst.EVENT_TYPE_CALLREJECTED ||
+		   event.getType() == IEventConst.EVENT_TYPE_CALLMARKEDSPAM ||
 		   event.getType() == IEventConst.EVENT_TYPE_IDENTIFIED_OUTGOING_CALL_ACCEPTED) {
 			
 			// checks wether this service is available for the incoming MSN or not.

@@ -86,6 +86,11 @@ public interface IEventConst {
     public final static int EVENT_TYPE_IDENTIFIED_OUTGOING_CALL_ACCEPTED = 111;
     
 	/**
+	 * Event type for mark a call as spam.
+	 */
+    public final static int EVENT_TYPE_CALLMARKEDSPAM = 112;
+    
+	/**
 	 * Event type for returning from hibernate mode.
 	 */
     public final static int EVENT_TYPE_RETURNED_HIBERNATE = 201;

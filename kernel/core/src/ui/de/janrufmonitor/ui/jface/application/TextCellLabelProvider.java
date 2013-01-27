@@ -8,6 +8,8 @@ import java.util.StringTokenizer;
 import org.eclipse.swt.graphics.Color;
 
 import de.janrufmonitor.framework.ICall;
+import de.janrufmonitor.framework.ICaller;
+import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.repository.ICallManager;
 import de.janrufmonitor.repository.types.IReadCallRepository;
 import de.janrufmonitor.repository.types.IWriteCallRepository;
@@ -28,8 +30,7 @@ public class TextCellLabelProvider extends org.eclipse.jface.viewers.ColumnLabel
 	public TextCellLabelProvider(String rendererID) {
 		this.m_renderer = rendererID;
 	}
-	
-	
+
 	public String getText(Object o) {
 		ITableCellRenderer r = RendererRegistry.getInstance().getRenderer(
 			this.m_renderer
@@ -40,7 +41,22 @@ public class TextCellLabelProvider extends org.eclipse.jface.viewers.ColumnLabel
 		}
 		return "";
 	}
-
+	
+	public Color getBackground(Object o) {
+		if (o instanceof ICall) o = ((ICall) o).getCaller();
+		if (o instanceof ICaller) {
+			if (((ICaller)o).getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_SPAM_COLOR)) {
+				String color = ((ICaller)o).getAttribute(IJAMConst.ATTRIBUTE_NAME_SPAM_COLOR).getValue();
+				StringTokenizer cs = new StringTokenizer(color, ",");
+				if (cs.countTokens()==3)
+					return new Color(DisplayManager.getDefaultDisplay(),
+							Integer.parseInt(cs.nextToken()),
+							Integer.parseInt(cs.nextToken()),
+							Integer.parseInt(cs.nextToken()));
+			}
+		}
+ 		return null;
+	}
 
 	public Color getForeground(Object o) {
 		if (o instanceof ICall) {
