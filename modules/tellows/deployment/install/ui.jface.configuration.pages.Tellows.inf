@@ -7,3 +7,8 @@ ui.jface.application.RendererRegistry\:renderer_tellowssearches\:value=de.janruf
 ui.jface.application.RendererRegistry\:renderer_tellowssearches\:access=system
 ui.jface.application.RendererRegistry\:renderer_tellowscomments\:value=de.janrufmonitor.ui.jface.application.tellows.rendering.TellowsComments
 ui.jface.application.RendererRegistry\:renderer_tellowscomments\:access=system
+
+ui.jface.application.ActionRegistry\:action_opentellows\:value=de.janrufmonitor.ui.jface.application.tellows.action.OpenTellows
+ui.jface.application.ActionRegistry\:action_opentellows\:access=system
+
++ui.jface.application.journal.Journal\:popup_actions\:value=opentellows,

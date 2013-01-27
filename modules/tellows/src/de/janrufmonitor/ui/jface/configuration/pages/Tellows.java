@@ -1,5 +1,7 @@
 package de.janrufmonitor.ui.jface.configuration.pages;
 
+import org.eclipse.jface.preference.BooleanFieldEditor;
+
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.ui.jface.configuration.AbstractServiceFieldEditorConfigPage;
@@ -44,6 +46,14 @@ public class Tellows extends AbstractServiceFieldEditorConfigPage {
 		if (isExpertMode()) {
 			// do something...
 		}
+	
+		BooleanFieldEditor bfe = new BooleanFieldEditor(
+			this.getConfigNamespace()+SEPARATOR+"spamcolor",
+			this.m_i18n.getString(this.getNamespace(), "spamcolor", "label", this.m_language),
+			this.getFieldEditorParent()
+		);
+		addField(bfe);
+		
 	}
 
 }

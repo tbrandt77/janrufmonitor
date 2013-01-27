@@ -66,7 +66,7 @@ public class Tellows extends AbstractReceiverConfigurableService implements
 					qname.equalsIgnoreCase("scoreColor") ) {
 				this.tellowsAtt.setValue(currentValue);
 				this.tellowsAttributes.add(this.tellowsAtt);
-				if (qname.equalsIgnoreCase("scoreColor")) {
+				if (qname.equalsIgnoreCase("scoreColor") && isSpamColoring()) {
 					this.addSpamColor(currentValue);
 				}
 			}
@@ -89,12 +89,13 @@ public class Tellows extends AbstractReceiverConfigurableService implements
 		
 	}
 	
-
 	private final String ID = "Tellows";
 	private final String NAMESPACE = "service.Tellows";
 	
 	private final String TELLOWS_PARTNER = "test";
 	private final String TELLOWS_APIKEY = "test123";
+	
+	private final String CFG_SPAMCOLOR = "spamcolor";
 	
 	private IRuntime m_runtime;
 	
@@ -124,7 +125,6 @@ public class Tellows extends AbstractReceiverConfigurableService implements
     public void shutdown() {
     	super.shutdown();
         IEventBroker eventBroker = this.getRuntime().getEventBroker();
-//        eventBroker.unregister(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_UPDATE_CALL));
         eventBroker.unregister(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_IDENTIFIED_CALL));
         eventBroker.unregister(this);
         
@@ -134,7 +134,6 @@ public class Tellows extends AbstractReceiverConfigurableService implements
     public void startup() {
     	super.startup();
         IEventBroker eventBroker = this.getRuntime().getEventBroker();
-//        eventBroker.register(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_UPDATE_CALL));
         eventBroker.register(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_IDENTIFIED_CALL));
         eventBroker.register(this);
   
@@ -157,26 +156,6 @@ public class Tellows extends AbstractReceiverConfigurableService implements
 		}
 		
 	}
-	
-//	public void receivedOtherEventCall(IEvent event) {
-//		ICall aCall = (ICall)event.getData();
-//		if (aCall!=null) {
-//			if (getRuntime().getRuleEngine().validate(this.getID(), aCall.getMSN(), aCall.getCIP(), aCall.getCaller().getPhoneNumber())) {
-//				if (event.getType() == IEventConst.EVENT_TYPE_UPDATE_CALL) {
-//					String num = aCall.getCaller().getPhoneNumber().getTelephoneNumber();
-//					if (this.m_tellowsMap.containsKey(num)) {
-//						aCall.getCaller().getAttributes().addAll((IAttributeMap) this.m_tellowsMap.get(num));
-//						 IEventBroker eventBroker = this.getRuntime().getEventBroker();
-//						 eventBroker.send(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_CALLMARKEDSPAM, aCall));
-//					} else {
-//						this.m_logger.info("No tellows.de scoring detected for call: "+aCall);
-//					}
-//				}
-//			} else {
-//				this.m_logger.info("No rule assigned to execute this service for call: "+aCall);
-//			}
-//		} 
-//	}
 	
 	private IAttributeMap getTellowsDate(String number) {
 		IAttributeMap m = getRuntime().getCallerFactory().createAttributeMap();
@@ -241,6 +220,10 @@ public class Tellows extends AbstractReceiverConfigurableService implements
 			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 		} 
 		return m;
+	}
+	
+	private boolean isSpamColoring() {
+		return (this.m_configuration!=null && this.m_configuration.getProperty(CFG_SPAMCOLOR, "false").equalsIgnoreCase("true"));
 	}
 
 }
