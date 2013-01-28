@@ -1,6 +1,8 @@
 package de.janrufmonitor.ui.jface.configuration.pages;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
+import org.eclipse.jface.preference.ComboFieldEditor;
+import org.eclipse.jface.preference.StringFieldEditor;
 
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
@@ -54,6 +56,29 @@ public class Tellows extends AbstractServiceFieldEditorConfigPage {
 		);
 		addField(bfe);
 		
+		ComboFieldEditor cfe = new ComboFieldEditor(
+				this.getConfigNamespace()+SEPARATOR+"minscore",
+				this.m_i18n.getString(getNamespace(), "minscore", "label", this.m_language)
+				   , new String[][] {
+					   { "1", "1" }, 
+					   { "2", "2" },
+					   { "3", "3" },
+					   { "4", "4" },
+					   { "5", "5" },
+					   { "6", "6" },
+					   { "7", "7" },
+					   { "8", "8" },
+					   { "9", "9" },
+				   }, 
+				   this.getFieldEditorParent());
+		addField(cfe);
+		
+		StringFieldEditor u = new StringFieldEditor(
+				getConfigNamespace()+SEPARATOR+"apikey",
+			this.m_i18n.getString(this.getNamespace(), "apikey", "label", this.m_language),
+			this.getFieldEditorParent()
+		);
+		addField(u);
 	}
 
 }

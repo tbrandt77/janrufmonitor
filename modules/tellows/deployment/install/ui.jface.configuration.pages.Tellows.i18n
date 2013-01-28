@@ -1,13 +1,15 @@
-ui.jface.configuration.pages.Tellows\:title\:label\:de=Tellows Rufnummer Scoring
-ui.jface.configuration.pages.Tellows\:description\:label\:de=Bewertet Rufnummer mit einem Score (1-9) des Dienstes tellows.de und zeigt an, ob die Rufnummer SPAM oder vertrauensw\u00FCrdig ist.
+ui.jface.configuration.pages.Tellows\:title\:label\:de=tellows Rufnummer Scoring
+ui.jface.configuration.pages.Tellows\:description\:label\:de=Bewertet Rufnummer mit einem Score (1-9) des Dienstes tellows (tellows.de) und zeigt an, ob die Rufnummer SPAM oder vertrauensw\u00FCrdig ist.
 ui.jface.configuration.pages.Tellows\:enabled\:label\:de=Dienst aktiviert
-ui.jface.configuration.pages.Tellows\:spamcolor\:label\:de=Tellows SPAM-Farbcode im Journal verwenden
+ui.jface.configuration.pages.Tellows\:spamcolor\:label\:de=tellows SPAM-Farbcode im Journal verwenden
+ui.jface.configuration.pages.Tellows\:apikey\:label\:de=tellows API Key: 
+ui.jface.configuration.pages.Tellows\:minscore\:label\:de=min. Score\nf\u00FCr Anrufmarkierung: 
 
 ui.jface.application.tellows.rendering.TellowsScore\:name\:label\:de=SPAM-Score
-ui.jface.application.tellows.rendering.TellowsScore\:label\:label\:de=Tellows SPAM-Score
-ui.jface.application.tellows.rendering.TellowsSearches\:name\:label\:de=Tellows Anfragen
-ui.jface.application.tellows.rendering.TellowsSearches\:label\:label\:de=Tellows SPAM-Anfragen
-ui.jface.application.tellows.rendering.TellowsComments\:name\:label\:de=Tellows Kommentare
-ui.jface.application.tellows.rendering.TellowsComments\:label\:label\:de=Tellows SPAM-Kommentare
+ui.jface.application.tellows.rendering.TellowsScore\:label\:label\:de=tellows SPAM-Score
+ui.jface.application.tellows.rendering.TellowsSearches\:name\:label\:de=tellows Anfragen
+ui.jface.application.tellows.rendering.TellowsSearches\:label\:label\:de=tellows SPAM-Anfragen
+ui.jface.application.tellows.rendering.TellowsComments\:name\:label\:de=tellows Kommentare
+ui.jface.application.tellows.rendering.TellowsComments\:label\:label\:de=tellows SPAM-Kommentare
 
-ui.jface.application.tellows.action.OpenTellows\:title\:label\:de=Score und Kommentare auf Tellows anzeigen
+ui.jface.application.tellows.action.OpenTellows\:title\:label\:de=Score und Kommentare auf tellows.de anzeigen

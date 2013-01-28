@@ -1,1 +1,2 @@
-service.Tellows\:title\:label\:en=Tellows number scoring
+service.Tellows\:title\:label\:en=tellows number scoring
+service.Tellows\:no_api_key\:description\:en=The tellows number scoring was disabled, due to a missing tellows api key.

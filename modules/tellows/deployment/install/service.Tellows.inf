@@ -1,9 +1,14 @@
 service.ServiceFactory\:service_tellows\:access=system
 service.ServiceFactory\:service_tellows\:value=de.janrufmonitor.service.tellows.Tellows
 service.Tellows\:priority\:value=100
-service.Tellows\:enabled\:value=true
-service.Tellows\:enabled\:type=boolean
 service.Tellows\:priority\:type=integer
+service.Tellows\:enabled\:value=false
+service.Tellows\:enabled\:type=boolean
+service.Tellows\:minscore\:value=1
+service.Tellows\:minscore\:type=integer
+service.Tellows\:spamcolor\:value=false
+service.Tellows\:spamcolor\:type=boolean
+
 rules.RuleEngine\:tellows_rule\:value=Tellows%*%*%true%*%*
 rules.RuleEngine\:usestandard\:value=false
 rules.RuleEngine\:usestandard\:type=boolean
