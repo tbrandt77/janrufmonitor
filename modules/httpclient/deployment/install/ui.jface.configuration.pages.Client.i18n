@@ -1,12 +1,12 @@
 ui.jface.configuration.pages.Client\:title\:label\:de=Client Erweiterung
-ui.jface.configuration.pages.Client\:description\:label\:de=Mit Hilfe der Client Erweiterung können auch PCs mit Anrufer-Informationen versorgt werden, die keinen Anschluss ans Telefonnetz haben. Ein gültiger jAnrufmonitor-Server muss auf einem PC mit Telefonanschluss gestartet und konfiguriert sein.
+ui.jface.configuration.pages.Client\:description\:label\:de=Mit Hilfe der Client Erweiterung k\u00F6nnen auch PCs mit Anrufer-Informationen versorgt werden, die keinen Anschluss ans Telefonnetz haben. Ein g\u00FCltiger jAnrufmonitor-Server muss auf einem PC mit Telefonanschluss gestartet und konfiguriert sein.
 ui.jface.configuration.pages.Client\:enabled\:label\:de=Dienst aktiviert
 ui.jface.configuration.pages.Client\:server\:label\:de=Server (IP oder DNS): 
 ui.jface.configuration.pages.Client\:port\:label\:de=Server Port: 
 ui.jface.configuration.pages.Client\:cport\:label\:de=Client-Callback-Port: 
 ui.jface.configuration.pages.Client\:autoconnect\:label\:de=Client beim Starten automatisch mit Server verbinden
 ui.jface.configuration.pages.Client\:events\:label\:de=Client-Modus
-ui.jface.configuration.pages.Client\:fat\:label\:de=Server-Maintained-Modus: Der Server übernimmt die komplette Verwaltung der Daten.
+ui.jface.configuration.pages.Client\:fat\:label\:de=Server-Maintained-Modus: Der Server \u00FCbernimmt die komplette Verwaltung der Daten.
 ui.jface.configuration.pages.Client\:thin\:label\:de=Fast-Client-Modus (empfohlen): Anruferinformationen werden komplett auf dem Client verwaltet. 
 ui.jface.configuration.pages.Client\:remote_ab\:label\:de=Serverbasiertes Adressbuch:
 ui.jface.configuration.pages.Client\:callerdirectory\:label\:de=jAnrufmonitor Adressbuch
