@@ -8,6 +8,9 @@ service.Tellows\:minscore\:value=1
 service.Tellows\:minscore\:type=integer
 service.Tellows\:spamcolor\:value=false
 service.Tellows\:spamcolor\:type=boolean
+service.Tellows\:registry\:value=http://downloads.janrufmonitor.de/paid-registry
+service.Tellows\:registry\:access=system
+
 
 rules.RuleEngine\:tellows_rule\:value=Tellows%*%*%true%*%*
 rules.RuleEngine\:usestandard\:value=false

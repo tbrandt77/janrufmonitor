@@ -1,6 +1,18 @@
 package de.janrufmonitor.service.tellows;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import de.janrufmonitor.exception.Message;
 import de.janrufmonitor.exception.PropagationFactory;
@@ -18,10 +30,76 @@ import de.janrufmonitor.service.AbstractReceiverConfigurableService;
 public class Tellows extends AbstractReceiverConfigurableService implements
 		IEventSender {
 
+	private class URLRequester {
+		
+		private Logger m_logger;
+				
+		public URLRequester() {
+			this.m_logger = LogManager.getLogManager().getLogger(IJAMConst.DEFAULT_LOGGER);
+		}
+		
+		public void go() {
+			StringBuffer agent = new StringBuffer();
+			agent.append("jAnrufmonitor Module Tracker (tellows) ");
+			agent.append(IJAMConst.VERSION_DISPLAY);	
+			
+			if (m_logger.isLoggable(Level.INFO))
+				this.m_logger.info("User-Agent: "+agent.toString());
+			
+			try {
+				String key = getRuntime().getConfigManagerFactory().getConfigManager().getProperty("service.update.UpdateManager", "regkey");
+				URLConnection c = createRequestURL(agent, key);
+				c.connect();
+				
+				Object o = c.getContent();
+				if (o instanceof InputStream) {
+					InputStreamReader isr = new InputStreamReader((InputStream) o, "iso-8859-1");
+					BufferedReader br = new BufferedReader(isr);
+					
+					while (br.ready()) {
+						br.readLine();
+					}
+					
+					br.close();
+					isr.close();
+				}				
+			} catch (MalformedURLException e) {
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			} catch (IOException e) {
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);	
+			} 
+		}
+		
+		
+		private URLConnection createRequestURL(StringBuffer agent, String key) throws IOException {
+			StringBuffer reg = new StringBuffer();
+			reg.append(getTellowsRegistry());
+			reg.append("?k=");
+			try {
+				reg.append(URLEncoder.encode(key, "utf-8"));
+			} catch (UnsupportedEncodingException ex) {
+				this.m_logger.log(Level.SEVERE, ex.getMessage(), ex);
+			}
+			URL url = new URL(reg.toString());
+			if (m_logger.isLoggable(Level.INFO))
+				this.m_logger.info("Registry call: "+reg.toString());
+			URLConnection c = url.openConnection();
+			c.setDoInput(true);
+			c.setRequestProperty("User-Agent", agent.toString());
+			c.setRequestProperty("X-JAM-Module", NAMESPACE);
+			c.setRequestProperty("X-JAM-Module-Key", getTellowsApiKey());
+
+			return c;
+		}
+		
+	}
+
+	
 	private final String ID = "Tellows";
 	private final String NAMESPACE = "service.Tellows";
 	
 	private final String CFG_TELLOWS_APIKEY = "apikey";
+	private final String CFG_TELLOWS_REGISTRY = "registry";
 
 	private IRuntime m_runtime;
 	private String m_language;
@@ -80,7 +158,8 @@ public class Tellows extends AbstractReceiverConfigurableService implements
 							getLanguage()), 
 							new Exception(msg)),
 					"Tray");
-        }
+        } else 
+        	new URLRequester().go();
   
         this.m_logger.info("Tellows is started ...");            
     }
@@ -106,6 +185,14 @@ public class Tellows extends AbstractReceiverConfigurableService implements
 	public void setConfiguration(Properties configuration) {
 		super.setConfiguration(configuration);
 		TellowsProxy.invalidate();
+	}
+	
+	private String getTellowsRegistry() {
+		return this.m_configuration.getProperty(CFG_TELLOWS_REGISTRY, "");
+	}
+	
+	private String getTellowsApiKey() {
+		return this.m_configuration.getProperty(CFG_TELLOWS_APIKEY, "");
 	}
 	
 	private String getLanguage() {

@@ -5,11 +5,11 @@ ui.jface.configuration.pages.Tellows\:spamcolor\:label\:de=tellows SPAM-Farbcode
 ui.jface.configuration.pages.Tellows\:apikey\:label\:de=tellows API Key: 
 ui.jface.configuration.pages.Tellows\:minscore\:label\:de=min. Score\nf\u00FCr Anrufmarkierung: 
 
-ui.jface.application.tellows.rendering.TellowsScore\:name\:label\:de=SPAM-Score
+ui.jface.application.tellows.rendering.TellowsScore\:name\:label\:de=tellows Score
 ui.jface.application.tellows.rendering.TellowsScore\:label\:label\:de=tellows SPAM-Score
 ui.jface.application.tellows.rendering.TellowsSearches\:name\:label\:de=tellows Anfragen
 ui.jface.application.tellows.rendering.TellowsSearches\:label\:label\:de=tellows SPAM-Anfragen
 ui.jface.application.tellows.rendering.TellowsComments\:name\:label\:de=tellows Kommentare
 ui.jface.application.tellows.rendering.TellowsComments\:label\:label\:de=tellows SPAM-Kommentare
 
-ui.jface.application.tellows.action.OpenTellows\:title\:label\:de=Score und Kommentare auf tellows.de anzeigen
+ui.jface.application.tellows.action.OpenTellows\:title\:label\:de=Rufnummer auf tellows.de kommentieren...

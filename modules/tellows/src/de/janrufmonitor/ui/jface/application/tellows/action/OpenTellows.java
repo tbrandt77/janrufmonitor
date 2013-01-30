@@ -10,6 +10,8 @@ import de.janrufmonitor.framework.monitor.PhonenumberInfo;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.ui.jface.application.AbstractAction;
+import de.janrufmonitor.ui.jface.application.ApplicationImageDescriptor;
+import de.janrufmonitor.ui.swt.SWTImageManager;
 
 public class OpenTellows extends AbstractAction {
 	
@@ -27,6 +29,9 @@ public class OpenTellows extends AbstractAction {
 				this.getLanguage()
 			)
 		);
+		this.setImageDescriptor(new ApplicationImageDescriptor(
+			SWTImageManager.getInstance(this.getRuntime()).getImagePath("tellows.png")
+		));	
 	}
 	
 	public String getID() {
