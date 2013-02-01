@@ -169,7 +169,7 @@ public class FritzOSFirmware extends AbstractFritzBoxFirmware implements IFritzB
 		if (in==null) return new ArrayList(0);
 		
 		List result = new ArrayList();
-		InputStreamReader inr = new InputStreamReader(in, "iso-8859-1");
+		InputStreamReader inr = new InputStreamReader(in, "utf-8");
 		BufferedReader bufReader = new BufferedReader(inr);
 		
 		String line = bufReader.readLine(); // drop header
@@ -232,7 +232,7 @@ public class FritzOSFirmware extends AbstractFritzBoxFirmware implements IFritzB
 			this.m_logger.info("Fetching call list from FritzBox took "+(System.currentTimeMillis()-start)+"ms");
 			Stream.copy(urlConn.getInputStream(), bos);
 
-			ByteArrayInputStream bin = new ByteArrayInputStream(bos.toString("iso-8859-1").getBytes("iso-8859-1"));
+			ByteArrayInputStream bin = new ByteArrayInputStream(bos.toString("utf-8").getBytes("utf-8"));
 			//this.m_logger.info(bos.toString());
 			this.m_logger.info("Finished retrieving call list took "+(System.currentTimeMillis()-start)+"ms");
 			urlConn.getInputStream().close();
