@@ -167,11 +167,15 @@ public class Tellows extends AbstractReceiverConfigurableService implements
 	public void receivedValidRule(ICall aCall) {
 		// call is identified already
 		if (!PhonenumberInfo.isInternalNumber(aCall.getCaller().getPhoneNumber()) && 
-			!aCall.getCaller().getPhoneNumber().isClired() &&
-			aCall.getCaller().getPhoneNumber().getIntAreaCode().equalsIgnoreCase("49")) {
+			!aCall.getCaller().getPhoneNumber().isClired()) {
+			
+			if (!aCall.getCaller().getPhoneNumber().getIntAreaCode().equalsIgnoreCase("49") && !aCall.getCaller().getPhoneNumber().getIntAreaCode().equalsIgnoreCase("43") && !aCall.getCaller().getPhoneNumber().getIntAreaCode().equalsIgnoreCase("41")) {
+				if (this.m_logger.isLoggable(Level.INFO)) 
+					this.m_logger.info("Country code not supported by tellows: 00"+aCall.getCaller().getPhoneNumber().getIntAreaCode());
+			}
 			
 			String num = aCall.getCaller().getPhoneNumber().getTelephoneNumber();
-			IAttributeMap m = TellowsProxy.getInstance().getTellowsData(num);
+			IAttributeMap m = TellowsProxy.getInstance().getTellowsData(num, aCall.getCaller().getPhoneNumber().getIntAreaCode());
 			if (m.size()>0) {
 				aCall.getCaller().getAttributes().addAll(m);
 				IEventBroker eventBroker = this.getRuntime().getEventBroker();

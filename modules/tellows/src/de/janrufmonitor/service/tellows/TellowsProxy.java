@@ -140,10 +140,20 @@ public class TellowsProxy {
 		return Integer.parseInt(this.m_configuration.getProperty(CFG_MIN_SCORE, "1"));
 	}
 
-	public IAttributeMap getTellowsData(String number) {
+	public IAttributeMap getTellowsData(String number, String country) {
 		IAttributeMap m = getRuntime().getCallerFactory().createAttributeMap();
 		StringBuffer url_string = new StringBuffer();
-		url_string.append("http://www.tellows.de/basic/num/");
+		url_string.append("http://www.tellows.");
+		if (country.equalsIgnoreCase("49")) {
+			url_string.append("de");
+		} else if (country.equalsIgnoreCase("43")) {
+			url_string.append("at");
+		} else if (country.equalsIgnoreCase("41")) {
+			url_string.append("ch");
+		} else {
+			url_string.append("de");
+		} 
+		url_string.append("/basic/num/");
 		url_string.append((number.startsWith("0") ? number : "0"+number));
 		url_string.append("?xml=1&partner=");
 		url_string.append(TELLOWS_PARTNER);
