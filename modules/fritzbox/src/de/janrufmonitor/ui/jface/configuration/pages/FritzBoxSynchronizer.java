@@ -1,7 +1,6 @@
 package de.janrufmonitor.ui.jface.configuration.pages;
 
 import org.eclipse.jface.preference.IntegerFieldEditor;
-import org.eclipse.jface.preference.StringButtonFieldEditor;
 
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
@@ -81,23 +80,12 @@ public class FritzBoxSynchronizer extends AbstractServiceFieldEditorConfigPage {
 		);
 		addField(ife);
 		
-		if (isExpertMode()) {
-			StringButtonFieldEditor sbfe = new StringButtonFieldEditor(
-					this.getConfigNamespace()+SEPARATOR+"synctime",
-					this.m_i18n.getString(this.getNamespace(), "synctime", "label", this.m_language), 
-					this.getFieldEditorParent()
-			) {
-	
-				@Override
-				protected String changePressed() {
-					return "0";
-				}
-				
-			};
-			sbfe.setChangeButtonText(this.m_i18n.getString(this.getNamespace(), "reset_synctime", "label", this.m_language));
-			sbfe.setEmptyStringAllowed(false);
-			addField(sbfe);
-		}
+		sfe = new BooleanFieldEditor(
+			this.getConfigNamespace()+SEPARATOR+"syncall",
+			this.m_i18n.getString(this.getNamespace(), "syncall", "label", this.m_language),
+			this.getFieldEditorParent()
+		);
+		addField(sfe);
 	}
 
 }

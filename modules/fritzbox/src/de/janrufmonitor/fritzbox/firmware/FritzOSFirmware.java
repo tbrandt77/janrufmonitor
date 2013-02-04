@@ -94,13 +94,13 @@ public class FritzOSFirmware extends AbstractFritzBoxFirmware implements IFritzB
 				currentPe.setName(currentValue);
 			}
 			
-			if (qname.equalsIgnoreCase("number") && currentNumber!=null) {
+			if (qname.equalsIgnoreCase("number") && currentNumber!=null && currentPe!=null) {
 				currentNumber[1] = currentValue;
 				currentPe.addNumber(currentNumber[1], currentNumber[0]);
 				currentNumber = null;
 			}
 			
-			if (qname.equalsIgnoreCase("contact")) {
+			if (qname.equalsIgnoreCase("contact") && currentPe!=null) {
 				currentPe.setAddressbook(m_ab);
 				contacts.add(currentPe);
 				currentPe = null;

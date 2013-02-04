@@ -165,6 +165,12 @@ public class Refresh extends AbstractAction implements FritzBoxConst {
 									// added 2008/04/22: check sync point cleanup
 									Properties cfg = getRuntime().getConfigManagerFactory().getConfigManager().getProperties(NAMESPACE);
 									long synctime = Long.parseLong(cfg.getProperty(CFG_SYNCTIME, "-1"));
+									// added: 2013/02/04: check sync all
+									boolean syncall = cfg.getProperty(CFG_SYNCALL, "false").equalsIgnoreCase("true");
+									if (syncall) {
+										synctime = -1;
+										m_logger.info("Syncing all calls from Fritz!Box.");
+									}
 									boolean syncclean = cfg.getProperty(CFG_SYNCCLEAN, "false").equalsIgnoreCase("true");
 									if (syncclean && synctime>0 && cm.isSupported(IReadCallRepository.class) && cm.isSupported(IWriteCallRepository.class)) {
 										progressMonitor.setTaskName(getI18nManager()
@@ -348,7 +354,7 @@ public class Refresh extends AbstractAction implements FritzBoxConst {
 					ICall call = null;
 					for (int i=0,j=cl.size();i<j;i++) {
 						call = cl.get(i);
-						s.modifyObject(call.getCaller());
+						s.modifyObject(call);
 					}			
 				}
 			}
