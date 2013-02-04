@@ -4,9 +4,10 @@ import de.janrufmonitor.framework.IAttributeMap;
 import de.janrufmonitor.framework.ICall;
 import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.ui.jface.application.rendering.AbstractTableCellRenderer;
+import de.janrufmonitor.ui.jface.application.rendering.IEditorCellRenderer;
 import de.janrufmonitor.ui.jface.application.rendering.IJournalCellRenderer;
 
-public class TellowsSearches extends AbstractTableCellRenderer implements IJournalCellRenderer{
+public class TellowsSearches extends AbstractTableCellRenderer implements IJournalCellRenderer, IEditorCellRenderer {
 	
 	private static String NAMESPACE = "ui.jface.application.tellows.rendering.TellowsSearches";
 

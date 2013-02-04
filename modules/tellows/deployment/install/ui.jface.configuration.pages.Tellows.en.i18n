@@ -13,3 +13,5 @@ ui.jface.application.tellows.rendering.TellowsComments\:name\:label\:en=tellows 
 ui.jface.application.tellows.rendering.TellowsComments\:label\:label\:en=tellows spam comments
 
 ui.jface.application.tellows.action.OpenTellows\:title\:label\:en=Show score and comments on tellows
+ui.jface.application.tellows.action.ScoreNumberTellows\:title\:label\:en=Determine score on tellows..
+ui.jface.application.tellows.action.ScoreNumberTellows\:scoring\:label\:en=Determining score on tellows..

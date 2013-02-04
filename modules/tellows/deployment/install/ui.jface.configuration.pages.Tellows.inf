@@ -10,5 +10,8 @@ ui.jface.application.RendererRegistry\:renderer_tellowscomments\:access=system
 
 ui.jface.application.ActionRegistry\:action_opentellows\:value=de.janrufmonitor.ui.jface.application.tellows.action.OpenTellows
 ui.jface.application.ActionRegistry\:action_opentellows\:access=system
+ui.jface.application.ActionRegistry\:action_scorenumbertellows\:value=de.janrufmonitor.ui.jface.application.tellows.action.ScoreNumberTellows
+ui.jface.application.ActionRegistry\:action_scorenumbertellows\:access=system
 
-+ui.jface.application.journal.Journal\:popup_actions\:value=opentellows,
++ui.jface.application.journal.Journal\:popup_actions\:value=opentellows,scorenumbertellows,
++ui.jface.application.editor.Editor\:popup_actions\:value=opentellows,scorenumbertellows,

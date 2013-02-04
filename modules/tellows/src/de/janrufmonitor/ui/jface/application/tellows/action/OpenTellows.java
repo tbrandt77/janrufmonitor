@@ -1,5 +1,7 @@
 package de.janrufmonitor.ui.jface.application.tellows.action;
 
+import java.util.logging.Level;
+
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.program.Program;
@@ -9,6 +11,8 @@ import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.monitor.PhonenumberInfo;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
+import de.janrufmonitor.service.IService;
+import de.janrufmonitor.service.tellows.Tellows;
 import de.janrufmonitor.ui.jface.application.AbstractAction;
 import de.janrufmonitor.ui.jface.application.ApplicationImageDescriptor;
 import de.janrufmonitor.ui.swt.SWTImageManager;
@@ -61,17 +65,36 @@ public class OpenTellows extends AbstractAction {
 				if (o instanceof ICaller) {
 					if (!((ICaller) o).getPhoneNumber().isClired() && 
 						!PhonenumberInfo.isInternalNumber(((ICaller) o).getPhoneNumber()) &&
-						((ICaller) o).getPhoneNumber().getIntAreaCode().equalsIgnoreCase("49")
+						(((ICaller) o).getPhoneNumber().getIntAreaCode().equalsIgnoreCase("49") ||
+								((ICaller) o).getPhoneNumber().getIntAreaCode().equalsIgnoreCase("41")||
+								((ICaller) o).getPhoneNumber().getIntAreaCode().equalsIgnoreCase("43"))
 					   ) {
-						String url = "http://www.tellows.de/num/0"+((ICaller) o).getPhoneNumber().getTelephoneNumber();
-						if (url!=null && url.trim().length()>0) {
-							this.m_logger.info("Found valid web url to execute: "+url);
-							Program.launch(url);
-						}
+						StringBuffer url = new StringBuffer();
+						url.append("http://www.tellows.");
+						if (((ICaller) o).getPhoneNumber().getIntAreaCode().equalsIgnoreCase("49"))
+							url.append("de");
+						if (((ICaller) o).getPhoneNumber().getIntAreaCode().equalsIgnoreCase("43"))
+							url.append("at");
+						if (((ICaller) o).getPhoneNumber().getIntAreaCode().equalsIgnoreCase("41"))
+							url.append("ch");
+						url.append("/num/0");
+						url.append(((ICaller) o).getPhoneNumber().getTelephoneNumber());
+
+						if (this.m_logger.isLoggable(Level.INFO))
+							this.m_logger.info("Found valid web url to execute: "+url.toString());
+						Program.launch(url.toString());
 					}
 				}				
 			}
 		}
+	}
+	
+	public boolean isEnabled() {
+		IService tellows = getRuntime().getServiceFactory().getService(Tellows.ID);
+		if (tellows!=null && tellows.isEnabled() && tellows instanceof Tellows) {
+			return ((Tellows)tellows).isTellowsActivated();
+		}
+		return false;
 	}
 
 	

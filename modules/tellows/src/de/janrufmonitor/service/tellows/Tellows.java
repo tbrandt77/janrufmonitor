@@ -96,8 +96,7 @@ public class Tellows extends AbstractReceiverConfigurableService implements
 		
 	}
 
-	
-	private final String ID = "Tellows";
+	public static final String ID = "Tellows";
 	private final String NAMESPACE = "service.Tellows";
 	
 	private final String CFG_TELLOWS_APIKEY = "apikey";
@@ -144,7 +143,7 @@ public class Tellows extends AbstractReceiverConfigurableService implements
         eventBroker.register(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_IDENTIFIED_CALL));
         eventBroker.register(this);
         
-        if (this.m_configuration.getProperty(CFG_TELLOWS_APIKEY, "").trim().length()==0) {
+        if (!this.isTellowsActivated()) {
         	eventBroker.unregister(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_IDENTIFIED_CALL));
             eventBroker.unregister(this);
             this.m_logger.warning("No tellows API key found. Service will be stopped.");
@@ -201,6 +200,12 @@ public class Tellows extends AbstractReceiverConfigurableService implements
 		return this.m_configuration.getProperty(CFG_TELLOWS_APIKEY, "");
 	}
 	
+	public boolean isTellowsActivated() {
+		if (this.m_configuration!=null)
+			return this.m_configuration.getProperty(CFG_TELLOWS_APIKEY, "").trim().length()>0;
+		return false;
+	}
+	
 	private String getLanguage() {
 		if (this.m_language==null) {
 			this.m_language = 
@@ -213,6 +218,12 @@ public class Tellows extends AbstractReceiverConfigurableService implements
 	}
 
 	public void modifyObject(Object o) {
+		if (this.m_configuration.getProperty(CFG_TELLOWS_APIKEY, "").trim().length()==0) {
+			if (this.m_logger.isLoggable(Level.WARNING)) 
+				this.m_logger.warning("No tellows API key found. Service will be stopped.");
+			return; 
+		}
+		
 		if (o instanceof ICall) {
 			o = ((ICall)o).getCaller();
 		}
