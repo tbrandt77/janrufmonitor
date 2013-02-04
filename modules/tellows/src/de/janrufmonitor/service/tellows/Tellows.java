@@ -18,6 +18,7 @@ import de.janrufmonitor.exception.Message;
 import de.janrufmonitor.exception.PropagationFactory;
 import de.janrufmonitor.framework.IAttributeMap;
 import de.janrufmonitor.framework.ICall;
+import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.event.IEventBroker;
 import de.janrufmonitor.framework.event.IEventConst;
@@ -26,9 +27,10 @@ import de.janrufmonitor.framework.monitor.PhonenumberInfo;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.service.AbstractReceiverConfigurableService;
+import de.janrufmonitor.service.IModifierService;
 
 public class Tellows extends AbstractReceiverConfigurableService implements
-		IEventSender {
+		IEventSender, IModifierService {
 
 	private class URLRequester {
 		
@@ -208,6 +210,29 @@ public class Tellows extends AbstractReceiverConfigurableService implements
 				);
 		}
 		return this.m_language;
+	}
+
+	public void modifyObject(Object o) {
+		if (o instanceof ICall) {
+			o = ((ICall)o).getCaller();
+		}
+		if (o instanceof ICaller) { 
+			ICaller caller = (ICaller)o;
+			if (!PhonenumberInfo.isInternalNumber(caller.getPhoneNumber()) && 
+					!caller.getPhoneNumber().isClired()) {
+					
+					if (!caller.getPhoneNumber().getIntAreaCode().equalsIgnoreCase("49") && !caller.getPhoneNumber().getIntAreaCode().equalsIgnoreCase("43") && !caller.getPhoneNumber().getIntAreaCode().equalsIgnoreCase("41")) {
+						if (this.m_logger.isLoggable(Level.INFO)) 
+							this.m_logger.info("Country code not supported by tellows: 00"+caller.getPhoneNumber().getIntAreaCode());
+					}
+					
+					String num = caller.getPhoneNumber().getTelephoneNumber();
+					IAttributeMap m = TellowsProxy.getInstance().getTellowsData(num, caller.getPhoneNumber().getIntAreaCode());
+					if (m.size()>0) {
+						caller.getAttributes().addAll(m);
+					}			
+				}
+		}
 	}
 
 }
