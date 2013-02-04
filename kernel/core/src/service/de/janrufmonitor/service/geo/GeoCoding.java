@@ -101,6 +101,9 @@ public class GeoCoding extends AbstractReceiverConfigurableService implements IE
 	}
 
 	public void modifyObject(Object o) {
+		if (o instanceof ICall) {
+			o = ((ICall)o).getCaller();
+		}
 		if (o instanceof ICaller) {
 			ICaller caller = ((ICaller)o);
 			if (caller.getPhoneNumber().isClired()) return;
