@@ -84,6 +84,9 @@ public class FritzOSFirmware extends AbstractFritzBoxFirmware implements IFritzB
 				if (currentNumber[0].equalsIgnoreCase("fax_work")) {
 					currentNumber[0] = IJAMConst.ATTRIBUTE_VALUE_FAX_TYPE;
 				}
+				if (currentNumber[0].equalsIgnoreCase("work_fax")) {
+					currentNumber[0] = IJAMConst.ATTRIBUTE_VALUE_FAX_TYPE;
+				}
 			}
 
 		}

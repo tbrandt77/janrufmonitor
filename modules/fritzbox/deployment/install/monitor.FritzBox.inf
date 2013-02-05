@@ -3,6 +3,8 @@ monitor.MonitorListener\:monitor_fb\:access=system
 
 repository.ImExportFactory\:import_fritzbox\:value=de.janrufmonitor.repository.imexporter.FritzBoxCallListImporter
 repository.ImExportFactory\:import_fritzbox\:access=system
+repository.ImExportFactory\:export_fritzbox\:value=de.janrufmonitor.repository.imexporter.FritzBoxCallerExporter
+repository.ImExportFactory\:export_fritzbox\:access=system
 
 monitor.FritzBoxMonitor\:boxip\:value=fritz.box
 monitor.FritzBoxMonitor\:boxpassword\:value=

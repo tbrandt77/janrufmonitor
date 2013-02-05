@@ -4,6 +4,7 @@ monitor.FritzBoxMonitor\:connectlost\:label\:en=Connection lost\n\nThe connectio
 monitor.FritzBoxMonitor\:connect\:label\:en=No Connection\n\nConnection could not be established to Fritz!Box Fon due to network problems. Please check your network settings and make sure that the Fritz!Box Fon is reachable and activated for monitoring.\n\nConnection retries left: {%1}
 
 repository.FritzBoxCallListImporter\:filtername\:label\:en=AVM Fritz!Box Fon call list (*.csv)
+repository.FritzBoxCallerExporter\:filtername\:label\:en=AVM Fritz!Box Fon phonebook (*.xml)
 ui.jface.dialogs.InfoDialog\:edition\:label\:en=(AVM Fritz!Box Fon edition)
 
 repository.FritzBoxPhonebookManager\:title\:label\:en=AVM Fritz!Box Fon phonebook
