@@ -468,12 +468,15 @@ public class FritzOSFirmware extends AbstractFritzBoxFirmware implements IFritzB
 		if (number.endsWith("#"))
 			number = number.substring(0, number.length()-1);
 		
-		String urlstr = "http://" + this.m_address +":" + this.m_port + "/fon_num/dial_foonbook.lua?sid="+this.m_sid+"&dial="+number+"&orig_port="+extension;
+		// 2013/02/05: removed dial via wahlhilfe only
+		//String urlstr = "http://" + this.m_address +":" + this.m_port + "/fon_num/fonbook_list.lua?sid="+this.m_sid+"&dial="+number+"&xhr=1";
 
+		String urlstr = "http://fritz.box/cgi-bin/webcm";
+		
 		try {
 			data.append(this.executeURL(
 					urlstr,
-					null, true).trim());
+					"&sid="+this.m_sid+"telcfg:settings/UseClickToDial=1&telcfg:settings/DialPort="+extension+"&telcfg:command/Dial="+number, true).trim());
 		} catch (UnsupportedEncodingException e) {
 			this.m_logger.log(Level.WARNING, e.getMessage(), e);
 		} catch (IOException e) {

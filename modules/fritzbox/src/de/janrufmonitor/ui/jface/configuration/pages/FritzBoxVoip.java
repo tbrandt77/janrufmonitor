@@ -100,14 +100,6 @@ public class FritzBoxVoip extends AbstractFieldEditorConfigPage {
 		}
 
 		if (isExpertMode()) {
-//			sfe = new StringFieldEditor(
-//					getConfigNamespace()+SEPARATOR+"boxdate",
-//				this.m_i18n.getString(this.getNamespace(), "boxdate", "label", this.m_language),
-//				this.getFieldEditorParent()
-//			);
-//			sfe.setEmptyStringAllowed(false);
-//			addField(sfe);	
-			
 			sfe = new StringFieldEditor(
 					getConfigNamespace()+SEPARATOR+"festnetzalias",
 				this.m_i18n.getString(this.getNamespace(), "festnetzalias", "label", this.m_language),
@@ -167,14 +159,6 @@ public class FritzBoxVoip extends AbstractFieldEditorConfigPage {
 				this.getFieldEditorParent()
 			);
 			addField(cfe);	
-			
-//			ife = new IntegerFieldEditor(
-//				getConfigNamespace()+SEPARATOR+"boxclickdial",
-//				this.m_i18n.getString(this.getNamespace(), "boxclickdial", "label", this.m_language),
-//				this.getFieldEditorParent()
-//			);
-//			ife.setTextLimit(2);
-//			addField(ife);
 		}
 		
 		IMonitor fbMonitor = this.getRuntime().getMonitorListener().getMonitor("FritzBoxMonitor");
