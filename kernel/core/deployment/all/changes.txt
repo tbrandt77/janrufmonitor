@@ -1,5 +1,26 @@
 ===
 
+jAnrufmonitor 5.0.37 (01.03.2013)
+---------------------------------
+
+Neu:
+- Geokodierung: Anruferverarbeitung optimiert
+- Journal: Einfärben von SPAM-Anrufen möglich
+
+Bugfix:
+- 
+
+Module:
+- Fritz!Box-Überwachung: Umlaute in Fritz!Box Fon Anrufliste werden als ? dargestellt
+- Fritz!Box-Überwachung: Wahlproblem für DECT Telefone behoben
+- Fritz!Box-Überwachung: Wahlproblem für Nebenstellenauswahl behoben
+- Fritz!Box-Überwachung: Option "Immer gesamte Anrufliste synchronieren" hinzugefügt
+- tellows Rufnummer Scoring: Neues Modul
+
+
+===
+
+
 jAnrufmonitor 5.0.36 (01.02.2013)
 ---------------------------------
 
