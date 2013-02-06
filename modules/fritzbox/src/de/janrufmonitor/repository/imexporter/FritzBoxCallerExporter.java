@@ -117,6 +117,13 @@ public class FritzBoxCallerExporter implements ICallerExporter {
 		}
 		s.append("</numbers>");s.append(IJAMConst.CRLF);
 		s.append("<services>");s.append(IJAMConst.CRLF);
+		
+		if (c.getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_EMAIL)) {
+			s.append("<email classifier=\"private\">");
+			s.append(c.getAttribute(IJAMConst.ATTRIBUTE_NAME_EMAIL).getValue());
+			s.append("</email>");s.append(IJAMConst.CRLF);
+		}
+		
 		s.append("</services>");s.append(IJAMConst.CRLF);
 		s.append("</contact>");s.append(IJAMConst.CRLF);
 	}

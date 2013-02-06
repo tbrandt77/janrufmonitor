@@ -43,6 +43,7 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 		String m_name;
 		String m_ab;
 		Map m_phones;
+		String m_email;
 		
 		public PhonebookEntry() {
 			m_phones = new HashMap(3);
@@ -56,12 +57,20 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 			this.m_ab = ab;
 		}
 		
+		public void setEmail(String e) {
+			this.m_email = e;
+		}
+		
 		public void addNumber(String n, String type) {
 			m_phones.put(n, type);
 		}
 		
 		public String getName() {
 			return this.m_name;
+		}
+		
+		public String getEmail() {
+			return this.m_email;
 		}
 		
 		public String getAddressbook() {

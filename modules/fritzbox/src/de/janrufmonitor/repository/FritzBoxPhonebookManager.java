@@ -213,13 +213,16 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 						attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CALLERMANAGER, FritzBoxPhonebookManager.ID));
 						if (pe.getAddressbook()!=null && pe.getAddressbook().length()>0)
 							attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CATEGORY, pe.getAddressbook()));
-						
 						try {
 							attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_LASTNAME, StringEscapeUtils.unescapeHtml(pe.getName())));
 						} catch (Exception ex) {
 							this.m_logger.log(Level.WARNING, ex.getMessage(), ex);
 							attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_LASTNAME, pe.getName()));
 						}
+						if (pe.getEmail()!=null && pe.getEmail().length()>0) {
+							attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_EMAIL, pe.getEmail()));
+						}
+						
 						Map phs = pe.getPhones();
 						Iterator entries = phs.keySet().iterator();
 						String key = null;

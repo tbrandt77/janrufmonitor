@@ -88,7 +88,6 @@ public class FritzOSFirmware extends AbstractFritzBoxFirmware implements IFritzB
 					currentNumber[0] = IJAMConst.ATTRIBUTE_VALUE_FAX_TYPE;
 				}
 			}
-
 		}
 		
 		public void endElement(String uri, String name, String qname)
@@ -107,6 +106,10 @@ public class FritzOSFirmware extends AbstractFritzBoxFirmware implements IFritzB
 				currentPe.setAddressbook(m_ab);
 				contacts.add(currentPe);
 				currentPe = null;
+			}
+			
+			if (qname.equalsIgnoreCase("email") && currentPe!=null) {
+				currentPe.setEmail(currentValue);
 			}
 
 		}
