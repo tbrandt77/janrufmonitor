@@ -13,6 +13,10 @@ import de.janrufmonitor.framework.IAttributeMap;
 import de.janrufmonitor.framework.ICall;
 import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.monitor.PhonenumberInfo;
+import de.janrufmonitor.repository.ICallManager;
+import de.janrufmonitor.repository.ICallerManager;
+import de.janrufmonitor.repository.types.IWriteCallRepository;
+import de.janrufmonitor.repository.types.IWriteCallerRepository;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.service.IService;
@@ -132,7 +136,17 @@ public class ScoreNumberTellows extends AbstractAction {
 	public boolean isEnabled() {
 		IService tellows = getRuntime().getServiceFactory().getService(Tellows.ID);
 		if (tellows!=null && tellows.isEnabled() && tellows instanceof Tellows) {
-			return ((Tellows)tellows).isTellowsActivated();
+			if (((Tellows)tellows).isTellowsActivated()) {
+				if (this.m_app!=null && this.m_app.getController()!=null) {
+					Object o = this.m_app.getController().getRepository();
+					if (o instanceof ICallerManager) {
+						return ((ICallerManager)o).isSupported(IWriteCallerRepository.class);
+					}
+					if (o instanceof ICallManager) {
+						return ((ICallManager)o).isSupported(IWriteCallRepository.class);
+					}
+				}
+			}
 		}
 		return false;
 	}

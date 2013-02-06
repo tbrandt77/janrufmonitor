@@ -8,9 +8,10 @@ Neu:
 - Journal: Einfärben von SPAM-Anrufen möglich
 
 Bugfix:
-- 
+- Konfiguration: Schreibfehler entfernt
 
 Module:
+- Fritz!Box-Überwachung: XML-Exportdatei für Fritz!Box Telefonbuch
 - Fritz!Box-Überwachung: Umlaute in Fritz!Box Fon Anrufliste werden als ? dargestellt
 - Fritz!Box-Überwachung: Wahlproblem für DECT Telefone behoben
 - Fritz!Box-Überwachung: Wahlproblem für Nebenstellenauswahl behoben
