@@ -132,6 +132,7 @@ public class Tellows extends AbstractReceiverConfigurableService implements
     	super.shutdown();
         IEventBroker eventBroker = this.getRuntime().getEventBroker();
         eventBroker.unregister(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_IDENTIFIED_CALL));
+        eventBroker.unregister(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_IDENTIFIED_OUTGOING_CALL));
         eventBroker.unregister(this);
         
         this.m_logger.info("Tellows is shut down ...");
@@ -141,10 +142,12 @@ public class Tellows extends AbstractReceiverConfigurableService implements
     	super.startup();
         IEventBroker eventBroker = this.getRuntime().getEventBroker();
         eventBroker.register(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_IDENTIFIED_CALL));
+        eventBroker.register(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_IDENTIFIED_OUTGOING_CALL));
         eventBroker.register(this);
         
         if (!this.isTellowsActivated()) {
         	eventBroker.unregister(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_IDENTIFIED_CALL));
+        	eventBroker.unregister(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_IDENTIFIED_OUTGOING_CALL));
             eventBroker.unregister(this);
             this.m_logger.warning("No tellows API key found. Service will be stopped.");
             String msg = getRuntime().getI18nManagerFactory().getI18nManager().getString(
