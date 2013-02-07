@@ -69,6 +69,49 @@ public class RunUI {
 					RunUI.m_logger.fine(key + " = "+env.getProperty(key));
 				}
 			}
+			
+			boolean isJavaVersionOK = false;
+			String javaversion = System.getProperty("java.specification.version");
+			if (javaversion!=null && javaversion.compareTo("1.6")>=0) isJavaVersionOK = true;
+			
+			javaversion = System.getProperty("java.version").substring(0,3);
+			if (!isJavaVersionOK && javaversion.compareTo("1.6")>=0) isJavaVersionOK = true;
+			
+			if (!isJavaVersionOK) {
+				Thread t = new Thread () {
+					public void run () {
+						Display.getDefault().syncExec(
+							new Runnable () {
+								public void run () {
+									Shell shell = new Shell(Display.getDefault());
+									shell.setSize(0,0);
+									int style = SWT.APPLICATION_MODAL | SWT.OK;
+									MessageBox messageBox = new MessageBox (shell, style);
+									String lang = System.getProperty("user.language");
+									if (lang==null) lang = "de";									
+									messageBox.setMessage (lang.equalsIgnoreCase("de") ? "jAnrufmonitor kann nicht gestartet werden, da Java nur in\nVersion "+System.getProperty("java.specification.version")+" installiert ist. Es wird jedoch mindestens\nJava Version 1.6 ben\u00F6tigt." : "jAnrufmonitor already running.");
+									messageBox.setText(lang.equalsIgnoreCase("de") ? "jAnrufmonitor - Fehler beim Programmstart": "jAnrufmonitor Error...");
+									if (messageBox.open () == SWT.OK) {
+										RunUI.m_logger.severe("Emergency exit: Invalid Java Version: "+System.getProperty("java.specification.version"));
+										System.exit(0);
+									}
+								}
+							}
+						);
+					}
+				};
+				t.setName("JAM-Check-Java-Thread-(non-deamon)");
+				t.start();
+				
+				try {
+					Thread.sleep(30000);
+				} catch (InterruptedException e) {
+					RunUI.m_logger.log(Level.SEVERE, e.getMessage(), e);
+				}
+		
+				RunUI.m_logger.severe("Emergency exit: Invalid Java Version: "+System.getProperty("java.specification.version"));
+				System.exit(0);
+			}
 
 			// set Jam classloader
 			if (JamCacheMasterClassLoader.getInstance().isValid()) {
