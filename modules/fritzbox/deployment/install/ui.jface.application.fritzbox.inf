@@ -1,4 +1,3 @@
--ui.jface.application.journal.Journal\:popup_actions\:value=-fb2,fritzbox_callstat
 +ui.jface.application.editor.Editor\:popup_actions\:value=fritzbox_clickdial,fritzbox_block,
 +ui.jface.application.journal.Journal\:popup_actions\:value=fritzbox_clickdial,fritzbox_block,-fb1,fritzbox_delete,fritzbox_refresh,
 +ui.jface.application.last10calls.Last10Calls\:popup_actions\:value=fritzbox_clickdial,fritzbox_block,
