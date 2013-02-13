@@ -98,7 +98,7 @@ public class TellowsProxy {
 	private Properties m_configuration;
 	
 	private final String NAMESPACE = "service.Tellows";
-	private final String TELLOWS_PARTNER = "janrufer";
+	private final String TELLOWS_PARTNER = "janrufmonitor";
 	
 	private final String CFG_SPAMCOLOR = "spamcolor";
 	private final String CFG_TELLOWS_APIKEY = "apikey";
