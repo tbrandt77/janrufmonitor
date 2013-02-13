@@ -1,5 +1,5 @@
 ui.jface.configuration.pages.Tellows\:title\:label\:de=tellows Rufnummer Scoring
-ui.jface.configuration.pages.Tellows\:description\:label\:de=Bewertet Rufnummer mit einem Score (1-9) des Dienstes tellows (tellows.de) und zeigt an, ob die Rufnummer SPAM oder vertrauensw\u00FCrdig ist.
+ui.jface.configuration.pages.Tellows\:description\:label\:de=Bewertet Rufnummern mit einem Score (1-9) des Dienstes tellows (tellows.de) und zeigt an, ob die Rufnummer SPAM oder vertrauensw\u00FCrdig ist.
 ui.jface.configuration.pages.Tellows\:enabled\:label\:de=Dienst aktiviert
 ui.jface.configuration.pages.Tellows\:spamcolor\:label\:de=tellows SPAM-Farbcode im Journal verwenden
 ui.jface.configuration.pages.Tellows\:apikey\:label\:de=tellows API Key: 
