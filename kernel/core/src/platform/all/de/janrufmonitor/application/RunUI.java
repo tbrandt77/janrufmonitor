@@ -89,7 +89,7 @@ public class RunUI {
 									MessageBox messageBox = new MessageBox (shell, style);
 									String lang = System.getProperty("user.language");
 									if (lang==null) lang = "de";									
-									messageBox.setMessage (lang.equalsIgnoreCase("de") ? "jAnrufmonitor kann nicht gestartet werden, da Java nur in\nVersion "+System.getProperty("java.specification.version")+" installiert ist. Es wird jedoch mindestens\nJava Version 1.6 ben\u00F6tigt." : "jAnrufmonitor already running.");
+									messageBox.setMessage (lang.equalsIgnoreCase("de") ? "jAnrufmonitor kann nicht gestartet werden, da Java nur in\nVersion "+System.getProperty("java.specification.version")+" installiert ist. Es wird jedoch mindestens\nJava Version 1.6 ben\u00F6tigt." : "jAnrufmonitor wrong Java version.");
 									messageBox.setText(lang.equalsIgnoreCase("de") ? "jAnrufmonitor - Fehler beim Programmstart": "jAnrufmonitor Error...");
 									if (messageBox.open () == SWT.OK) {
 										RunUI.m_logger.severe("Emergency exit: Invalid Java Version: "+System.getProperty("java.specification.version"));

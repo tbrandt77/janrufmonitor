@@ -1,4 +1,4 @@
-jAnrufmonitor
+﻿jAnrufmonitor
 Copyright (C) 1999 - 2013 Thilo Brandt
 
 
