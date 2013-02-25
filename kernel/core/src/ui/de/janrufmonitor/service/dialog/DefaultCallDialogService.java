@@ -18,6 +18,7 @@ public class DefaultCallDialogService extends AbstractReceiverConfigurableServic
 
 	private String CFG_BALLOON = "balloon";
 	private String CFG_OUTGOING = "outgoing";
+	private String CFG_DELAY = "delay";
 	
 	private IRuntime m_runtime;
 	
@@ -79,6 +80,10 @@ public class DefaultCallDialogService extends AbstractReceiverConfigurableServic
 					} else {
 						m_logger.fine("Time measure in ms (SWTExecuter): "+(System.currentTimeMillis()-ms));
 						ExtendedBalloonDialog j = new ExtendedBalloonDialog(m_configuration, aCall);
+						try {
+							Thread.sleep(getDelay());
+						} catch (InterruptedException e) {
+						}
 						j.createDialog();
 						m_logger.fine("Time measure in ms (SWTExecuter.open() - before): "+(System.currentTimeMillis()-ms));
 						j.open();
@@ -95,6 +100,10 @@ public class DefaultCallDialogService extends AbstractReceiverConfigurableServic
 
 	private boolean isDetectOutgoing() {
 		return this.m_configuration.getProperty(CFG_OUTGOING, "false").equalsIgnoreCase("true");
+	}
+	
+	private long getDelay() {
+		return Long.parseLong(this.m_configuration.getProperty(CFG_DELAY, "0"));
 	}
 	
 }

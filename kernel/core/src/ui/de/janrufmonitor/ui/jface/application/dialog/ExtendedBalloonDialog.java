@@ -127,6 +127,7 @@ public class ExtendedBalloonDialog extends AbstractBalloonDialog implements IEve
 		eventBroker.register(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_CALLCLEARED));   		
 		eventBroker.register(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_CALLACCEPTED));
 		eventBroker.register(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_CALLREJECTED));
+		eventBroker.register(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_CALLMARKEDSPAM));
 		
 		this.m_configuration = config;
 		this.m_call = call;
@@ -146,6 +147,7 @@ public class ExtendedBalloonDialog extends AbstractBalloonDialog implements IEve
 	private String getDialogContent() {
 		String c = this.getConfiguration().getProperty(
 				CFG_CUSTOM_DIALOG_CONTENT,
+				//"%r:imagepreviewbig%,%calltime%,%r:providerlogo%,%r:tellowsimg%; ,MSN: %msn% (%msnalias%), , ; ,%callername%, , ; ,%callernumber%, , ; ,%cip%, , "
 				"%r:imagepreviewbig%,%calltime%,%r:providerlogo%; ,MSN: %msn% (%msnalias%), ; ,%callername%, ; ,%callernumber%, ; ,%cip%, "
 				//"%r:imagepreview%,%callername%,%r:providerlogo%; ,%callernumber%, "
 			);
@@ -525,6 +527,7 @@ public class ExtendedBalloonDialog extends AbstractBalloonDialog implements IEve
 		eventBroker.unregister(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_CALLCLEARED));
 		eventBroker.unregister(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_CALLACCEPTED));  
 		eventBroker.unregister(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_CALLREJECTED));  
+		eventBroker.unregister(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_CALLMARKEDSPAM));  
 
 		m_instance_count--;
 		m_instance_count = Math.max(m_instance_count, -1);
@@ -548,7 +551,13 @@ public class ExtendedBalloonDialog extends AbstractBalloonDialog implements IEve
 						}
 					}.start();
 				} 
-			}	
+			}
+		if (event.getType() == IEventConst.EVENT_TYPE_CALLMARKEDSPAM) {
+			Object o = event.getData();
+			if (o instanceof ICall) {
+				this.m_call = (ICall)o;
+			}
+		}
 	}
 
 	protected String getID() {
