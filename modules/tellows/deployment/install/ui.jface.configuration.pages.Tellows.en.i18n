@@ -11,6 +11,8 @@ ui.jface.application.tellows.rendering.TellowsSearches\:name\:label\:en=tellows 
 ui.jface.application.tellows.rendering.TellowsSearches\:label\:label\:en=tellows spam searches
 ui.jface.application.tellows.rendering.TellowsComments\:name\:label\:en=tellows comments
 ui.jface.application.tellows.rendering.TellowsComments\:label\:label\:en=tellows spam comments
+ui.jface.application.tellows.rendering.TellowsImg\:name\:label\:en=tellows score (image)
+ui.jface.application.tellows.rendering.TellowsImg\:label\:label\:en=tellows spam score (image)
 
 ui.jface.application.tellows.action.OpenTellows\:title\:label\:en=Show score and comments on tellows
 ui.jface.application.tellows.action.ScoreNumberTellows\:title\:label\:en=Determine score on tellows..
