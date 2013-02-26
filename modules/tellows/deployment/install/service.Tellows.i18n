@@ -1,2 +1,3 @@
 service.Tellows\:title\:label\:de=tellows Rufnummer Scoring
 service.Tellows\:no_api_key\:description\:de=Das tellows Rufnummer Scoring wurde deaktiviert, da kein tellows API Key vorhanden ist. Einen tellows API key k\u00F6nnen Sie k\u00E4uflich auf shop.tellows.de erwerben.
+service.Tellows\:invalid_api_key\:description\:de=Das tellows Rufnummer Scoring konnte nicht durchgef\u00FChrt werden, da der tellows API Key ung\u00FCltig ist. Bitte pr\u00FCfen Sie den tellows API Key unter Administration -> Einstellungen -> Dienste -> tellows Rufnummer Scoring.

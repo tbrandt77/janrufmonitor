@@ -96,6 +96,7 @@ public class TellowsProxy {
 	private Logger m_logger;
 	private IRuntime m_runtime;
 	private Properties m_configuration;
+	private String m_language;
 	
 	private final String NAMESPACE = "service.Tellows";
 	private final String TELLOWS_PARTNER = "janrufmonitor";
@@ -140,7 +141,7 @@ public class TellowsProxy {
 		return Integer.parseInt(this.m_configuration.getProperty(CFG_MIN_SCORE, "1"));
 	}
 
-	public IAttributeMap getTellowsData(String number, String country) {
+	public IAttributeMap getTellowsData(String number, String country) throws Exception {
 		IAttributeMap m = getRuntime().getCallerFactory().createAttributeMap();
 		StringBuffer url_string = new StringBuffer();
 		url_string.append("http://www.tellows.");
@@ -194,6 +195,22 @@ public class TellowsProxy {
 				isr.close();
 			}
 			
+			if (content.toString().indexOf("ERROR")>0) {
+				// check for ERROR
+				if (this.m_logger.isLoggable(Level.WARNING)) 
+					this.m_logger.warning("Invalid tellows API key detected. Service will be not processed.");
+	            
+				String msg = getRuntime().getI18nManagerFactory().getI18nManager().getString(
+	            		"service.Tellows",
+						"invalid_api_key", "description",
+						getLanguage());
+	            if (this.m_logger.isLoggable(Level.INFO)) {
+	            	this.m_logger.info(content.toString());
+	            }
+	            throw new Exception(msg);
+			}
+			
+			
 			if (content.length()>10) { 
 				XMLTellowsHandler handler = new XMLTellowsHandler();
 				SAXParser p = SAXParserFactory.newInstance().newSAXParser();
@@ -217,6 +234,15 @@ public class TellowsProxy {
 		return m;
 	}
 
-	
+	private String getLanguage() {
+		if (this.m_language==null) {
+			this.m_language = 
+				this.getRuntime().getConfigManagerFactory().getConfigManager().getProperty(
+					IJAMConst.GLOBAL_NAMESPACE,
+					IJAMConst.GLOBAL_LANGUAGE
+				);
+		}
+		return this.m_language;
+	}
 	
 }

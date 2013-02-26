@@ -10,6 +10,8 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 
+import de.janrufmonitor.exception.Message;
+import de.janrufmonitor.exception.PropagationFactory;
 import de.janrufmonitor.framework.IAttributeMap;
 import de.janrufmonitor.framework.ICall;
 import de.janrufmonitor.framework.ICaller;
@@ -104,15 +106,26 @@ public class ScoreNumberTellows extends AbstractAction {
 	
 										progressMonitor.worked(1);
 	
-										IAttributeMap m = TellowsProxy.getInstance().getTellowsData(((ICaller) o3).getPhoneNumber().getTelephoneNumber(), 
-												((ICaller) o3).getPhoneNumber().getIntAreaCode());
-										if (m.size()>0) {
-											((ICaller) o3).getAttributes().addAll(m);
-											if (m_app.getController() instanceof IExtendedApplicationController)
-												((IExtendedApplicationController)m_app.getController()).updateElement(o2, false);
-											else
-												m_app.getController().updateElement(o2);
-										}	
+										
+										try {
+											IAttributeMap m = TellowsProxy.getInstance().getTellowsData(((ICaller) o3).getPhoneNumber().getTelephoneNumber(), 
+													((ICaller) o3).getPhoneNumber().getIntAreaCode());
+											if (m.size()>0) {
+												((ICaller) o3).getAttributes().addAll(m);
+												if (m_app.getController() instanceof IExtendedApplicationController)
+													((IExtendedApplicationController)m_app.getController()).updateElement(o2, false);
+												else
+													m_app.getController().updateElement(o2);
+											}
+										} catch (Exception e) {
+											PropagationFactory.getInstance().fire(
+													new Message(Message.ERROR, 
+															getRuntime().getI18nManagerFactory().getI18nManager().getString(NAMESPACE,
+															"title", "label",
+															getLanguage()), 
+															e),
+													"Tray");
+										}		
 	
 										progressMonitor.done();
 									}

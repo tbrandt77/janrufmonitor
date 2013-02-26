@@ -1,2 +1,3 @@
 service.Tellows\:title\:label\:en=tellows number scoring
 service.Tellows\:no_api_key\:description\:en=The tellows number scoring was disabled, due to a missing tellows api key.
+service.Tellows\:invalid_api_key\:description\:en=The tellows number scoring failed, due to a invalid tellows api key.

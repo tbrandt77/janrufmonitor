@@ -179,11 +179,22 @@ public class Tellows extends AbstractReceiverConfigurableService implements
 			}
 			
 			String num = aCall.getCaller().getPhoneNumber().getTelephoneNumber();
-			IAttributeMap m = TellowsProxy.getInstance().getTellowsData(num, aCall.getCaller().getPhoneNumber().getIntAreaCode());
-			if (m.size()>0) {
-				aCall.getCaller().getAttributes().addAll(m);
-				IEventBroker eventBroker = this.getRuntime().getEventBroker();
-				eventBroker.send(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_CALLMARKEDSPAM, aCall));
+			
+			try {
+				IAttributeMap m = TellowsProxy.getInstance().getTellowsData(num, aCall.getCaller().getPhoneNumber().getIntAreaCode());
+				if (m.size()>0) {
+					aCall.getCaller().getAttributes().addAll(m);
+					IEventBroker eventBroker = this.getRuntime().getEventBroker();
+					eventBroker.send(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_CALLMARKEDSPAM, aCall));
+				}
+			} catch (Exception e) {
+				PropagationFactory.getInstance().fire(
+						new Message(Message.ERROR, 
+								getRuntime().getI18nManagerFactory().getI18nManager().getString(NAMESPACE,
+								"title", "label",
+								getLanguage()), 
+								e),
+						"Tray");
 			}			
 		}
 	}
@@ -233,19 +244,23 @@ public class Tellows extends AbstractReceiverConfigurableService implements
 		if (o instanceof ICaller) { 
 			ICaller caller = (ICaller)o;
 			if (!PhonenumberInfo.isInternalNumber(caller.getPhoneNumber()) && 
-					!caller.getPhoneNumber().isClired()) {
+				!caller.getPhoneNumber().isClired()) {
 					
-					if (!caller.getPhoneNumber().getIntAreaCode().equalsIgnoreCase("49") && !caller.getPhoneNumber().getIntAreaCode().equalsIgnoreCase("43") && !caller.getPhoneNumber().getIntAreaCode().equalsIgnoreCase("41")) {
-						if (this.m_logger.isLoggable(Level.INFO)) 
-							this.m_logger.info("Country code not supported by tellows: 00"+caller.getPhoneNumber().getIntAreaCode());
-					}
-					
-					String num = caller.getPhoneNumber().getTelephoneNumber();
+				if (!caller.getPhoneNumber().getIntAreaCode().equalsIgnoreCase("49") && !caller.getPhoneNumber().getIntAreaCode().equalsIgnoreCase("43") && !caller.getPhoneNumber().getIntAreaCode().equalsIgnoreCase("41")) {
+					if (this.m_logger.isLoggable(Level.INFO)) 
+						this.m_logger.info("Country code not supported by tellows: 00"+caller.getPhoneNumber().getIntAreaCode());
+				}
+				
+				String num = caller.getPhoneNumber().getTelephoneNumber();
+				
+				try {
 					IAttributeMap m = TellowsProxy.getInstance().getTellowsData(num, caller.getPhoneNumber().getIntAreaCode());
 					if (m.size()>0) {
 						caller.getAttributes().addAll(m);
-					}			
-				}
+					}
+				} catch (Exception e) {
+				}			
+			}
 		}
 	}
 
