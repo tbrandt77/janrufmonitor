@@ -477,7 +477,7 @@ public class FritzOSFirmware extends AbstractFritzBoxFirmware implements IFritzB
 		// 2013/02/05: removed dial via wahlhilfe only
 		//String urlstr = "http://" + this.m_address +":" + this.m_port + "/fon_num/fonbook_list.lua?sid="+this.m_sid+"&dial="+number+"&xhr=1";
 
-		String urlstr = "http://fritz.box/cgi-bin/webcm";
+		String urlstr = "http://" + this.m_address +":" + this.m_port + "/cgi-bin/webcm";
 		
 		try {
 			data.append(this.executeURL(

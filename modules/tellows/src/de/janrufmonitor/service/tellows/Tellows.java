@@ -176,6 +176,7 @@ public class Tellows extends AbstractReceiverConfigurableService implements
 			if (!aCall.getCaller().getPhoneNumber().getIntAreaCode().equalsIgnoreCase("49") && !aCall.getCaller().getPhoneNumber().getIntAreaCode().equalsIgnoreCase("43") && !aCall.getCaller().getPhoneNumber().getIntAreaCode().equalsIgnoreCase("41")) {
 				if (this.m_logger.isLoggable(Level.INFO)) 
 					this.m_logger.info("Country code not supported by tellows: 00"+aCall.getCaller().getPhoneNumber().getIntAreaCode());
+				return;
 			}
 			
 			String num = aCall.getCaller().getPhoneNumber().getTelephoneNumber();
@@ -249,6 +250,7 @@ public class Tellows extends AbstractReceiverConfigurableService implements
 				if (!caller.getPhoneNumber().getIntAreaCode().equalsIgnoreCase("49") && !caller.getPhoneNumber().getIntAreaCode().equalsIgnoreCase("43") && !caller.getPhoneNumber().getIntAreaCode().equalsIgnoreCase("41")) {
 					if (this.m_logger.isLoggable(Level.INFO)) 
 						this.m_logger.info("Country code not supported by tellows: 00"+caller.getPhoneNumber().getIntAreaCode());
+					return;
 				}
 				
 				String num = caller.getPhoneNumber().getTelephoneNumber();
