@@ -78,6 +78,7 @@ ui.jface.configuration.pages.Dialog\:balloon\:label\:en=open dialogue as balloon
 ui.jface.configuration.pages.Dialog\:outgoing\:label\:en=show outgoing calls
 ui.jface.configuration.pages.Dialog\:focus\:label\:en=set focus on dialogue
 ui.jface.configuration.pages.Dialog\:usemsncolor\:label\:en=Take font colour from journal MSN colour selection
+ui.jface.configuration.pages.Dialog\:spamcolor\:label\:en=Take font colour from SPAM colour selection
 
 ui.jface.configuration.pages.Info\:title\:label\:en=Info
 ui.jface.configuration.pages.Info\:description\:label\:en=Information on the programm itself, the operating system and Java.

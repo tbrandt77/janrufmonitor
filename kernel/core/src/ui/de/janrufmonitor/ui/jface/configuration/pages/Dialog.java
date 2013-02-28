@@ -116,11 +116,7 @@ public class Dialog extends AbstractServiceFieldEditorConfigPage {
 				true
 			);
 			addField(rgfe);
-//			IntegerFieldEditor ife = new IntegerFieldEditor(
-//					this.getConfigNamespace()+SEPARATOR+"showduration",
-//					this.m_i18n.getString(this.getNamespace(), "showduration", "label", this.m_language),
-//					this.getFieldEditorParent(),5);
-//			
+
 			sfe = new StringFieldEditor(
 				this.getConfigNamespace()+SEPARATOR+"showduration",
 				this.m_i18n.getString(this.getNamespace(), "showduration", "label", this.m_language),
@@ -151,6 +147,13 @@ public class Dialog extends AbstractServiceFieldEditorConfigPage {
 		bfe = new BooleanFieldEditor(
 			this.getConfigNamespace()+SEPARATOR+"usemsncolor",
 			this.m_i18n.getString(this.getNamespace(), "usemsncolor", "label", this.m_language),
+			this.getFieldEditorParent()
+		);
+		addField(bfe);
+		
+		bfe = new BooleanFieldEditor(
+			this.getConfigNamespace()+SEPARATOR+"spamcolor",
+			this.m_i18n.getString(this.getNamespace(), "spamcolor", "label", this.m_language),
 			this.getFieldEditorParent()
 		);
 		addField(bfe);

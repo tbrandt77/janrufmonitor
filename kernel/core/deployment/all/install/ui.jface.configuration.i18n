@@ -77,6 +77,7 @@ ui.jface.configuration.pages.Dialog\:balloon\:label\:de=Dialog als Balloon darst
 ui.jface.configuration.pages.Dialog\:outgoing\:label\:de=Ausgehende Anrufe anzeigen
 ui.jface.configuration.pages.Dialog\:focus\:label\:de=Dialog fokussieren
 ui.jface.configuration.pages.Dialog\:usemsncolor\:label\:de=Schriftfarbe aus der Journal MSN Farbwahl \u00FCbernehmen
+ui.jface.configuration.pages.Dialog\:spamcolor\:label\:de=Schriftfarbe aus SPAM Farbwahl \u00FCbernehmen
 
 
 ui.jface.configuration.pages.Info\:title\:label\:de=Info

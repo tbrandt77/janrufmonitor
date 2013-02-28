@@ -291,6 +291,10 @@ public abstract class AbstractBalloonDialog extends BalloonWindow implements IDi
 		return this.getConfiguration().getProperty(CFG_USEMSNCOLOR, "false").equalsIgnoreCase("true");
 	}
 	
+	protected boolean isUseSpamColors() {
+		return this.getConfiguration().getProperty(CFG_SPAMCOLOR, "false").equalsIgnoreCase("true");
+	}
+	
 	protected String getMsnColor(String msn){
 		if (this.m_colors==null) {
 			this.m_colors = new HashMap();
@@ -322,4 +326,15 @@ public abstract class AbstractBalloonDialog extends BalloonWindow implements IDi
 		}
 		return null;	
 	}
+	
+	
+	protected String getSpamColor(ICaller caller) {
+		if (caller!=null && !caller.getPhoneNumber().isClired()) {
+			if (caller.getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_SPAM_COLOR)) {
+				return caller.getAttribute(IJAMConst.ATTRIBUTE_NAME_SPAM_COLOR).getValue();
+			}
+		}
+		return null;
+	}
+	
 }

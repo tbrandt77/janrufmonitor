@@ -358,8 +358,11 @@ public class ExtendedBalloonDialog extends AbstractBalloonDialog implements IEve
 		int blue = 0;
     	
 		String colors = null;
-		if (this.isUseMsnColors())
+		if (this.isUseSpamColors()) 
+			colors = getSpamColor(this.getCall().getCaller());
+		if (colors==null && this.isUseMsnColors())
 			colors = getMsnColor(this.getCall().getMSN().getMSN());
+		
 		if (colors==null) {		
 			colors = this.getConfiguration().getProperty(
 					CFG_CUSTOM_DIALOG_PREFIX+c+CFG_CUSTOM_DIALOG_POSTFIX_FONTCOLOR + (this.isCliredCaller() ? CFG_CUSTOM_DIALOG_POSTFIX_CLIR : ""), 
@@ -372,7 +375,7 @@ public class ExtendedBalloonDialog extends AbstractBalloonDialog implements IEve
 		blue = Integer.parseInt(st.nextToken());
 		return new RGB(red, green, blue);
 	}
-	
+
 	private int getFontStyle(String c) {
 		String styleString = this.getConfiguration().getProperty(
 				CFG_CUSTOM_DIALOG_PREFIX+c+CFG_CUSTOM_DIALOG_POSTFIX_FONTSTYLE + (this.isCliredCaller() ? CFG_CUSTOM_DIALOG_POSTFIX_CLIR : ""),

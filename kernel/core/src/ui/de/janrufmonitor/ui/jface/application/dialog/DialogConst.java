@@ -12,4 +12,5 @@ public interface DialogConst {
 	public static String CFG_ASSIGNEMENT = "assign";
 	public static String CFG_FOCUS = "focus";
 	public static String CFG_USEMSNCOLOR = "usemsncolor";
+	public static String CFG_SPAMCOLOR = "spamcolor";
 }
