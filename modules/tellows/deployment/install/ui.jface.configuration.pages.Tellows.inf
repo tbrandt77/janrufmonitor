@@ -20,3 +20,5 @@ ui.jface.application.ActionRegistry\:action_scorenumbertellows\:access=system
 
 ui.jface.application.dialog.Dialog\:delay\:value=1500
 ui.jface.application.dialog.Dialog\:dialog.content\:value=%r:imagepreviewbig%,%calltime%,%r:providerlogo%,%r:tellowsimg%; ,MSN: %msn% (%msnalias%), , ; ,%callername%, , ; ,%callernumber%, , ; ,%cip%, , 
+ui.jface.application.dialog.Dialog\:fontcolor\:value=0,0,0
+ui.jface.application.dialog.Dialog\:spamcolor\:value=true

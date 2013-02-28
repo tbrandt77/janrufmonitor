@@ -3,7 +3,7 @@ ui.jface.configuration.pages.Tellows\:description\:label\:de=Bewertet Rufnummern
 ui.jface.configuration.pages.Tellows\:enabled\:label\:de=Dienst aktiviert
 ui.jface.configuration.pages.Tellows\:spamcolor\:label\:de=tellows SPAM-Farbcode im Journal verwenden
 ui.jface.configuration.pages.Tellows\:apikey\:label\:de=tellows API Key: 
-ui.jface.configuration.pages.Tellows\:minscore\:label\:de=min. Score\nf\u00FCr Anrufmarkierung: 
+ui.jface.configuration.pages.Tellows\:minscore\:label\:de=min. Score\nf\u00FCr Anrufermarkierung: 
 
 ui.jface.application.tellows.rendering.TellowsScore\:name\:label\:de=tellows Score
 ui.jface.application.tellows.rendering.TellowsScore\:label\:label\:de=tellows SPAM-Score
