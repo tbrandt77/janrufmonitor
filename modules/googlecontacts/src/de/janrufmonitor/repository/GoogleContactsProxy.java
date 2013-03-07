@@ -646,11 +646,17 @@ public class GoogleContactsProxy implements IGoogleContactsConst {
 						return;
 					}
 				} else {
-					this.m_logger.warning("Invalid extryUrl parameter. Cannot update google contact: "+caller.toString());
+					this.m_logger.warning("Invalid entryUrl parameter. Cannot update google contact: "+caller.toString());
 					return;
 				}
 			} else {
-				this.m_logger.warning("No entryUrl paramter. Cannot update google contact: "+caller.toString());
+				// no update possible, contact must be new
+				if (this.m_logger.isLoggable(Level.INFO))
+					this.m_logger.info("No update possible dur to missing entryUrl. Creating google contact: "+caller.toString());
+				
+				ICallerList cl = getRuntime().getCallerFactory().createCallerList();
+				cl.add(caller);
+				this.createContacts(cl);
 				return;
 			}
 						
