@@ -1,5 +1,24 @@
 ﻿===
 
+jAnrufmonitor 5.0.38 (01.04.2013)
+---------------------------------
+
+Neu:
+- Dialog: Farbauswahl für SPAM Anrufe
+- Überwachung: Verzögerungsoption für Rufnummernerkennung
+
+Bugfix:
+- RSS Creator: UTF-8 encoding für RSS Feed
+
+Module:
+- Fritz!Box-Überwachung: Problem beim Wählen über IP-Adresse behoben
+- Fritz!Box-Überwachung: Firmwareprüfung auf Major- und Minor-Version
+- Google Kontakte: Kontakt anlegen über Journal möglich
+- tellows Rufnummer Scoring: Farbauswahl für SPAM Anrufe
+
+===
+
+
 jAnrufmonitor 5.0.37 (01.03.2013)
 ---------------------------------
 
@@ -16,9 +35,8 @@ Module:
 - Fritz!Box-Überwachung: Umlaute in Fritz!Box Fon Anrufliste werden als ? dargestellt
 - Fritz!Box-Überwachung: Wahlproblem für DECT Telefone behoben
 - Fritz!Box-Überwachung: Wahlproblem für Nebenstellenauswahl behoben
-- Fritz!Box-Überwachung: Option "Immer gesamte Anrufliste synchronieren" hinzugefügt
+- Fritz!Box-Überwachung: Option "Immer gesamte Anrufliste synchronisieren" hinzugefügt
 - tellows Rufnummer Scoring: Neues Modul
-
 
 ===
 
