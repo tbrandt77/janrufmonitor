@@ -6,9 +6,11 @@ jAnrufmonitor 5.0.38 (01.04.2013)
 Neu:
 - Dialog: Farbauswahl für SPAM Anrufe
 - Überwachung: Verzögerungsoption für Rufnummernerkennung
+- Console: Update ohne Benutzeroberfläche möglich
 
 Bugfix:
 - RSS Creator: UTF-8 encoding für RSS Feed
+- Update Manager: Erkennung von Console Version Updates
 
 Module:
 - Fritz!Box-Überwachung: Problem beim Wählen über IP-Adresse behoben
