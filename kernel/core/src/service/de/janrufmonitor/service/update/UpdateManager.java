@@ -430,7 +430,9 @@ public class UpdateManager {
 		StringBuffer s = new StringBuffer();
 		s.append(".");
 		s.append(IJAMConst.VERSION_DISPLAY);
-		if (OSUtils.isWindows() && OSUtils.is32Bit()) {
+		if (OSUtils.isConsole()) {
+			s.append(".console.32");
+		} else if (OSUtils.isWindows() && OSUtils.is32Bit()) {
 			s.append(".win.32");
 		} else if (OSUtils.isWindows() && OSUtils.is64Bit()) {
 			s.append(".win.64");

@@ -44,9 +44,11 @@ public class RunConsole implements IEventSender, IEventReceiver {
 
 	public static void main(String[] args) {
 		LoggingInitializer.run();
-
+		
 		Thread.currentThread().setContextClassLoader(JamCacheMasterClassLoader.getInstance());
 
+		System.setProperty("jam.console", "true");
+		
 		BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 		
 		System.out.println("Welcome to jAnrufmonitor 5 Console:");

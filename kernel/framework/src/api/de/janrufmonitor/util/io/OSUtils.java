@@ -16,6 +16,14 @@ public class OSUtils {
 	private static byte m_64 = -1;
 	
 	/**
+	 * Return true wether the current running mode is console
+	 * @return
+	 */
+	public static boolean isConsole() {
+		return System.getProperty("jam.console", "false").equalsIgnoreCase("true");	
+	}
+	
+	/**
 	 * Return true wether the current running OS is Microsoft Windows
 	 * @return
 	 */
