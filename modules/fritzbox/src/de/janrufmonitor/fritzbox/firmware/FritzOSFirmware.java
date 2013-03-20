@@ -582,17 +582,17 @@ public class FritzOSFirmware extends AbstractFritzBoxFirmware implements IFritzB
 		p = Pattern.compile(PATTERN_DETECT_FIRMWARE);
 		m = p.matcher(data);
 		if (m.find()) {
-			return new FirmwareData(
+			FirmwareData fwd =  new FirmwareData(
 					m.group(1), 
 					m.group(2), 
 					m.group(3),
 					m.group(4).trim()
 			);
-		} else {
-			throw new FritzBoxDetectFirmwareException(
-				"Could not detect FRITZ!Box firmware version."); 
-		}
-	
+			if (fwd.getMajor()>=5 && fwd.getMinor()>=50)
+				return fwd;
+		} 
+		throw new FritzBoxDetectFirmwareException(
+			"Could not detect FRITZ!Box firmware version."); 
 	}
 
 	private void createSessionID() throws CreateSessionIDException {

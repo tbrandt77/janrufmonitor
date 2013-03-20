@@ -23,6 +23,13 @@ public class FirmwareData {
 	public FirmwareData(String type, String major, String minor) {
 		this(type, major, minor, "");
 	}
+	
+	public byte getMajor() {
+		return this.m_major;
+	}
+	public byte getMinor() {
+		return this.m_minor;
+	}
 
 	public String getFritzBoxName() {
 		switch (this.m_type) {
