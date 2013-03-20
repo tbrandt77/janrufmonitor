@@ -117,10 +117,17 @@ public class RunConsole implements IEventSender, IEventReceiver {
 
 	public static void start() {
 		System.out.println("Starting jAnrufmonitor ...");
-		PIMRuntime.getInstance().startup();
+		if (JamCacheMasterClassLoader.getInstance().isValid()) {
+			PIMRuntime.getInstance().startup();
 
-		application = new RunConsole();
-		application.init();
+			application = new RunConsole();
+			application.init();
+		} else {
+			System.out.println("Updating all files...");
+			System.out.println("Done.");
+			System.out.println("Update successfully processed. Please restart jAnrufmonitor...");
+			System.exit(0);
+		}
 	}
 	
 	
