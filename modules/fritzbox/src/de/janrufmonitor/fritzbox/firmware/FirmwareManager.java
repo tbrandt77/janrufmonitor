@@ -180,16 +180,25 @@ public class FirmwareManager {
 				} catch (FritzBoxInitializationException ex) {
 					if (this.m_logger.isLoggable(Level.INFO))
 						this.m_logger.info("No Session ID Firmware detected.");
-					this.m_fw = new PasswordFritzBoxFirmware(getFritzBoxAddress(), getFritzBoxPort(), getFritzBoxPassword());
+					this.m_fw = new UnitymediaFirmware(getFritzBoxAddress(), getFritzBoxPort(), getFritzBoxPassword(), getFritzBoxUser());
 					try {
 						this.m_fw.init();
 						if (this.m_logger.isLoggable(Level.INFO))
-							this.m_logger.info("Detected FritzBox standard firmware (password protected): "+this.m_fw.toString());
-					} catch (FritzBoxInitializationException e) {
+							this.m_logger.info("Detected Unitymedia firmware: "+this.m_fw.toString());
+					} catch (FritzBoxInitializationException ex1) {
 						if (this.m_logger.isLoggable(Level.INFO))
-							this.m_logger.info("No FritzBox standard Firmware detected.");
-						this.m_fw = null;
-						throw new FritzBoxInitializationException(e.getMessage());
+							this.m_logger.info("No Unitymedia Firmware detected.");
+						this.m_fw = new PasswordFritzBoxFirmware(getFritzBoxAddress(), getFritzBoxPort(), getFritzBoxPassword());
+						try {
+							this.m_fw.init();
+							if (this.m_logger.isLoggable(Level.INFO))
+								this.m_logger.info("Detected FritzBox standard firmware (password protected): "+this.m_fw.toString());
+						} catch (FritzBoxInitializationException e) {
+							if (this.m_logger.isLoggable(Level.INFO))
+								this.m_logger.info("No FritzBox standard Firmware detected.");
+							this.m_fw = null;
+							throw new FritzBoxInitializationException(e.getMessage());
+						}
 					}
 				}
 			}

@@ -266,7 +266,7 @@ public class PIMRuntime implements IRuntime, IEventSender {
 		if (System.getProperty("http.proxyUser")!=null && System.getProperty("http.proxyUser").length()>0 && System.getProperty("http.proxyPassword")!=null && System.getProperty("http.proxyPassword").length()>0) {
 			Authenticator.setDefault(new ProxyAuthenticator(System.getProperty("http.proxyUser"), System.getProperty("http.proxyPassword")));  
 			if (this.m_logger.isLoggable(Level.INFO)) 
-				this.m_logger.info("Setting http.prxyUser="+System.getProperty("http.proxyUser")+", http.proxyPassword="+System.getProperty("http.proxyPassword"));
+				this.m_logger.info("Setting http.proxyUser="+System.getProperty("http.proxyUser")+", http.proxyPassword="+System.getProperty("http.proxyPassword"));
 		}
 
 		// start configuration
