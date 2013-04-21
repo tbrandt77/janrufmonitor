@@ -10,6 +10,7 @@ import org.eclipse.jface.preference.ComboFieldEditor;
 import de.janrufmonitor.fritzbox.firmware.FirmwareManager;
 import de.janrufmonitor.fritzbox.firmware.FritzOSFirmware;
 import de.janrufmonitor.fritzbox.firmware.SessionIDFritzBoxFirmware;
+import de.janrufmonitor.fritzbox.firmware.UnitymediaFirmware;
 import de.janrufmonitor.fritzbox.firmware.exception.GetAddressbooksException;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
@@ -62,7 +63,7 @@ public class FritzBoxPhonebookManager extends AbstractServiceFieldEditorConfigPa
 			label,
 			this.getFieldEditorParent()
 		);		
-		bfe.setEnabled((FirmwareManager.getInstance().isInstance(SessionIDFritzBoxFirmware.class)||FirmwareManager.getInstance().isInstance(FritzOSFirmware.class)), this.getFieldEditorParent());
+		bfe.setEnabled((FirmwareManager.getInstance().isInstance(UnitymediaFirmware.class)||FirmwareManager.getInstance().isInstance(SessionIDFritzBoxFirmware.class)||FirmwareManager.getInstance().isInstance(FritzOSFirmware.class)), this.getFieldEditorParent());
 		addField(bfe);
 		
 		if (FirmwareManager.getInstance().isInstance(FritzOSFirmware.class)) {
