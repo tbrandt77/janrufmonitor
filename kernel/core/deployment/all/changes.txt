@@ -1,5 +1,18 @@
 ﻿===
 
+jAnrufmonitor 5.0.39 (01.05.2013)
+---------------------------------
+
+Bugfix:
+- Dialog: Farbauswahl für dunkle Farben korrigiert
+
+Module:
+- Fritz!Box-Überwachung: Unterstützung für AVM Fritz!Box 6340/6360 Cable von Unitymedia/KabelDeutschland
+- Fritz!Box-Überwachung: Anmeldung mit Benutzer/Passwort ab Fritz!OS 5.50 optimiert
+
+===
+
+
 jAnrufmonitor 5.0.38 (01.04.2013)
 ---------------------------------
 
