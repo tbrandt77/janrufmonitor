@@ -29,6 +29,7 @@ import de.janrufmonitor.repository.types.IIdentifyCallerRepository;
 import de.janrufmonitor.repository.types.IWriteCallRepository;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
+import de.janrufmonitor.service.IModifierService;
 import de.janrufmonitor.ui.jface.application.AbstractAction;
 import de.janrufmonitor.ui.jface.application.IExtendedApplicationController;
 import de.janrufmonitor.ui.jface.wizards.JournalCallerWizard;
@@ -175,6 +176,8 @@ public class ReIdentifyAction extends AbstractAction {
 								progressMonitor.worked(1);
 
 								call.setCaller(newCaller);
+								
+								processModifierServices(call);
 
 								if (status == SWT.NO && m_app.getController() instanceof IExtendedApplicationController) {
 									// added 2009/12/31: only update single entry
@@ -256,4 +259,21 @@ public class ReIdentifyAction extends AbstractAction {
 		}
 		return false;
 	}
+	
+	private void processModifierServices(ICall call) {
+		if (call!=null) {
+			List msvc = getRuntime().getServiceFactory().getModifierServices();
+			IModifierService s = null;
+			for (int k=0,l=msvc.size();k<l;k++) {
+				s = (IModifierService) msvc.get(k);
+				if (s!=null && s.isEnabled()) {
+					if (m_logger.isLoggable(Level.INFO))
+						m_logger.info("Processing modifier service <"+s.getServiceID()+">");
+					
+					s.modifyObject(call);
+				}
+			}
+		}
+	}
+
 }
