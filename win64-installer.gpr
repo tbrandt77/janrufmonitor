@@ -266,8 +266,9 @@
 		<var name="Uninstall" value="1"/>
 		<var name="ProgramGroup" value="%AppName%"/>
 		<var name="AppFolder" value="%ProgramsMenu%\%ProgramGroup%"/>
-		<var name="InstallPath" value="%ProgramFiles%\jAnrufmonitor"/>
-		<var condition="%OSVersion%=Vista AND %InstallPath%='%ProgramFiles%\jAnrufmonitor' OR %OSVersion%=W7 AND %InstallPath%='%ProgramFiles%\jAnrufmonitor'" name="AppDataFolder" value="%CommonAppData%\jAnrufmonitor"/>
+		<var name="InstallPath" value="%BootDrive%\jAnrufmonitor"/>
 		<var name="AppDataFolder" value="%InstallPath%"/>
+		<var condition="%OSVersion%=Vista AND %InstallPath%='%ProgramFiles%\jAnrufmonitor'" name="AppDataFolder" value="%CommonAppData%\jAnrufmonitor"/>
+		<var condition="%OSVersion%=W7 AND %InstallPath%='%ProgramFiles%\jAnrufmonitor'" name="AppDataFolder" value="%CommonAppData%\jAnrufmonitor"/>
 	</variables>
 </giproject>
