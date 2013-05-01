@@ -5,6 +5,8 @@ jAnrufmonitor 5.0.39 (01.05.2013)
 
 Bugfix:
 - Dialog: Farbauswahl für dunkle Farben korrigiert
+- Journal: Erneute Anrufer-Identifizierung nutzt automatische Geokodierung
+- Installer: Standard-Installationsverzeichnis auf C:\jAnrufmonitor geändert
 
 Module:
 - Fritz!Box-Überwachung: Unterstützung für AVM Fritz!Box 6340/6360 Cable von Unitymedia/KabelDeutschland
