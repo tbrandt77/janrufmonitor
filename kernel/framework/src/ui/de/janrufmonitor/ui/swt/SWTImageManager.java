@@ -34,7 +34,14 @@ public class SWTImageManager {
 	}
 	
 	public Image get(String key) {
-		return this.m_ir.get(key);
+		Image img = this.m_ir.get(key);
+		if (img==null) {
+			img = this.getImage(key);
+			if (img!=null) {
+				this.m_ir.put(key, img);
+			}
+		}
+		return img;
 	}
 	
 	public Image getWithoutCache(String key) {
