@@ -342,6 +342,7 @@ ui.jface.application.journal.rendering.Status\:name\:label\:en=Status
 ui.jface.application.journal.rendering.Cip\:name\:label\:en=CIP
 ui.jface.application.journal.rendering.Duration\:name\:label\:en=Duration
 ui.jface.application.rendering.Number\:name\:label\:en=Number
+ui.jface.application.rendering.Flag\:name\:label\:en=Country
 ui.jface.application.rendering.Name\:name\:label\:en=Name
 ui.jface.application.rendering.Name\:label\:label\:en=Name and address
 ui.jface.application.rendering.GeoCoding\:name\:label\:en=Geoposition

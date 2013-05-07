@@ -371,8 +371,10 @@ ui.jface.application.last10calls.Last10Calls\:width\:value=580
 ui.jface.application.last10calls.Last10Calls\:enable_filter_view\:value=false
 ui.jface.application.last10calls.Last10Calls\:enable_filter_view\:type=boolean
 
-
-
 # added 5.0.29
 ui.jface.application.RendererRegistry\:renderer_img64\:value=de.janrufmonitor.ui.jface.application.rendering.ImageBase64
 ui.jface.application.RendererRegistry\:renderer_img64\:access=system
+
+# added 5.0.40
+ui.jface.application.RendererRegistry\:renderer_flag\:value=de.janrufmonitor.ui.jface.application.rendering.Flag
+ui.jface.application.RendererRegistry\:renderer_flag\:access=system
