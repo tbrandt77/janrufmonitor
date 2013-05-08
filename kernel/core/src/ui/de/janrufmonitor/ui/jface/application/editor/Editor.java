@@ -3,7 +3,6 @@ package de.janrufmonitor.ui.jface.application.editor;
 import java.util.List;
 
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
@@ -19,7 +18,7 @@ import de.janrufmonitor.ui.jface.application.AbstractTreeTableApplication;
 import de.janrufmonitor.ui.jface.application.ActionRegistry;
 import de.janrufmonitor.ui.jface.application.IApplication;
 import de.janrufmonitor.ui.jface.application.IFilterManager;
-import de.janrufmonitor.ui.jface.application.TreeLabelContentProvider;
+import de.janrufmonitor.ui.jface.application.TreeContentProvider;
 import de.janrufmonitor.ui.jface.application.action.IAction;
 import de.janrufmonitor.ui.jface.application.dnd.IDropTargetHandler;
 import de.janrufmonitor.ui.jface.application.editor.action.ImportAction;
@@ -208,7 +207,7 @@ public class Editor extends AbstractTreeTableApplication implements EditorConfig
 	public static String NAMESPACE = "ui.jface.application.editor.Editor";
 
 	private IRuntime m_runtime;
-	private TreeLabelContentProvider m_jp;
+	private TreeContentProvider m_jp;
 	private AbstractMenuBuilder m_mb;
 	private IDropTargetHandler m_dth;
 	
@@ -231,13 +230,7 @@ public class Editor extends AbstractTreeTableApplication implements EditorConfig
 
 	protected ITreeContentProvider getContentProvider() {
 		if (this.m_jp==null)
-			this.m_jp = new TreeLabelContentProvider(this.getConfiguration());
-		return this.m_jp;
-	}
-
-	protected IBaseLabelProvider getLableProvider() {
-		if (this.m_jp==null)
-			this.m_jp = new TreeLabelContentProvider(this.getConfiguration());
+			this.m_jp = new TreeContentProvider(this.getConfiguration());
 		return this.m_jp;
 	}
 

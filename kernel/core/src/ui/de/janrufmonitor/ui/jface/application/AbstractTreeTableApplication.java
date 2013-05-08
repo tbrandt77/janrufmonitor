@@ -12,9 +12,10 @@ import java.util.logging.Level;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.jface.viewers.IBaseLabelProvider;
+import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
@@ -82,7 +83,6 @@ public abstract class AbstractTreeTableApplication extends
 		this.buildTableColumns();
 		this.initializeProviders();
 		((TreeViewer) viewer).setContentProvider(this.getContentProvider());
-		((TreeViewer) viewer).setLabelProvider(this.getLableProvider());
 	}
 
 	public synchronized void updateViews(Object[] controllerdata, boolean reload) {
@@ -641,22 +641,22 @@ public abstract class AbstractTreeTableApplication extends
 
 	private void buildTableColumns() {
 		Tree t = ((TreeViewer) viewer).getTree();
-
+		
 		TreeColumn[] cols = t.getColumns();
 		for (int i = 0; i < cols.length; i++) {
 			cols[i].dispose();
 		}
 		int columns = this.getTableColumnCount();
-
+		
 		String id = "";
 		for (int i = 0; i < columns; i++) {
-			TreeColumn tc = new TreeColumn(t, SWT.LEFT);
+			TreeViewerColumn tc = new TreeViewerColumn((TreeViewer) viewer, SWT.LEFT);
 			id = getColumnID(i);
 			ITableCellRenderer tr = RendererRegistry.getInstance().getRenderer(
 					id);
-			tc.setText((tr != null ? tr.getHeader() : ""));
-			tc.setData(id);
-			tc.addSelectionListener(new SelectionAdapter() {
+			tc.getColumn().setText((tr != null ? tr.getHeader() : ""));
+			tc.getColumn().setData(id);
+			tc.getColumn().addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e) {
 					de.janrufmonitor.ui.jface.application.action.IAction action = getOrderAction();
 					if (action != null
@@ -669,13 +669,15 @@ public abstract class AbstractTreeTableApplication extends
 				}
 			});
 
+			tc.setLabelProvider(this.getTextCellLabelProvider(id));
+
 			int width = Integer.parseInt(getConfiguration().getProperty(
 					CFG_COLUMN_SIZE + id, "50"));
 			if (width > -1) {
-				tc.setWidth(width);
+				tc.getColumn().setWidth(width);
 			}
 
-			tc.addControlListener(new ControlAdapter() {
+			tc.getColumn().addControlListener(new ControlAdapter() {
 				public void controlResized(ControlEvent e) {
 					if (e.widget instanceof TreeColumn) {
 						TreeColumn tc = (TreeColumn) e.widget;
@@ -694,7 +696,11 @@ public abstract class AbstractTreeTableApplication extends
 		}
 	}
 
+	
+	private CellLabelProvider getTextCellLabelProvider(String renderer) {
+		return new TextImageCellLabelProvider(renderer);
+	}
+
 	protected abstract ITreeContentProvider getContentProvider();
 
-	protected abstract IBaseLabelProvider getLableProvider();
 }

@@ -21,7 +21,7 @@ import de.janrufmonitor.ui.jface.application.AbstractTableApplication;
 import de.janrufmonitor.ui.jface.application.ActionRegistry;
 import de.janrufmonitor.ui.jface.application.IApplication;
 import de.janrufmonitor.ui.jface.application.IFilterManager;
-import de.janrufmonitor.ui.jface.application.TableLabelContentProvider;
+import de.janrufmonitor.ui.jface.application.TableContentProvider;
 import de.janrufmonitor.ui.jface.application.action.IAction;
 import de.janrufmonitor.ui.jface.application.dnd.IDropTargetHandler;
 import de.janrufmonitor.ui.jface.application.journal.Journal;
@@ -112,7 +112,7 @@ public class History extends AbstractTableApplication {
 	
 	public static String NAMESPACE = "ui.jface.application.history.History";
 	private IRuntime m_runtime;
-	private TableLabelContentProvider m_jp;
+	private TableContentProvider m_jp;
 	private AbstractMenuBuilder m_mb;
 	private ICaller m_caller;
 	
@@ -142,7 +142,7 @@ public class History extends AbstractTableApplication {
 	
 	protected IStructuredContentProvider getContentProvider() {
 		if (this.m_jp==null)
-			this.m_jp = new TableLabelContentProvider(this.getConfiguration());
+			this.m_jp = new TableContentProvider(this.getConfiguration());
 		return this.m_jp;
 	}
 

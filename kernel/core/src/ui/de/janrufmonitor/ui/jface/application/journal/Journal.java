@@ -24,7 +24,7 @@ import de.janrufmonitor.ui.jface.application.AbstractTableApplication;
 import de.janrufmonitor.ui.jface.application.ActionRegistry;
 import de.janrufmonitor.ui.jface.application.IApplication;
 import de.janrufmonitor.ui.jface.application.IFilterManager;
-import de.janrufmonitor.ui.jface.application.TableLabelContentProvider;
+import de.janrufmonitor.ui.jface.application.TableContentProvider;
 import de.janrufmonitor.ui.jface.application.action.IAction;
 import de.janrufmonitor.ui.jface.application.dnd.IDropTargetHandler;
 import de.janrufmonitor.ui.jface.application.journal.action.ImportAction;
@@ -275,7 +275,7 @@ public final class Journal extends AbstractTableApplication implements IEventSen
 
 	private IRuntime m_runtime;
 	private AbstractMenuBuilder m_mb;
-	private TableLabelContentProvider m_jp;
+	private TableContentProvider m_jp;
 	private IDropTargetHandler m_dth;
 
 	public Journal() {
@@ -378,7 +378,7 @@ public final class Journal extends AbstractTableApplication implements IEventSen
 
 	protected IStructuredContentProvider getContentProvider() {
 		if (this.m_jp==null)
-			this.m_jp = new TableLabelContentProvider(this.getConfiguration());
+			this.m_jp = new TableContentProvider(this.getConfiguration());
 		return this.m_jp;
 	}
 	

@@ -16,11 +16,13 @@ public class ImageCellLabelProvider extends org.eclipse.jface.viewers.OwnerDrawL
 	}
 	
 	protected void measure(Event e, Object o) {
-
+		Image img = getImage(o);
+		if (img==null) return;
+		e.height = img.getBounds().height;
 	}
 
 	protected void paint(Event event, Object element) {
-		Image img = getImage(element, event.index);
+		Image img = getImage(element);
 		if (img==null) return;
 	    Rectangle bounds = ((TableItem) event.item).getBounds(event.index);
 	    Rectangle imgBounds = img.getBounds();
@@ -34,7 +36,7 @@ public class ImageCellLabelProvider extends org.eclipse.jface.viewers.OwnerDrawL
 	}
 
 	
-	public Image getImage(Object o, int column) {
+	private Image getImage(Object o) {
 		ITableCellRenderer r = RendererRegistry.getInstance().getRenderer(
 			this.m_renderer
 		);
