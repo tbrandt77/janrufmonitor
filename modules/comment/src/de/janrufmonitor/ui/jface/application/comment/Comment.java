@@ -45,7 +45,7 @@ import de.janrufmonitor.ui.jface.application.IApplication;
 import de.janrufmonitor.ui.jface.application.IApplicationController;
 import de.janrufmonitor.ui.jface.application.IFilterManager;
 import de.janrufmonitor.ui.jface.application.RendererRegistry;
-import de.janrufmonitor.ui.jface.application.TableLabelContentProvider;
+import de.janrufmonitor.ui.jface.application.TableContentProvider;
 import de.janrufmonitor.ui.jface.application.action.IAction;
 import de.janrufmonitor.ui.jface.application.dnd.IDropTargetHandler;
 import de.janrufmonitor.ui.jface.application.rendering.ITableCellRenderer;
@@ -53,7 +53,7 @@ import de.janrufmonitor.ui.swt.DisplayManager;
 
 public class Comment extends AbstractTableApplication {
 
-	private class CommentTableColorLabelContentProvider extends TableLabelContentProvider implements ITableColorProvider {
+	private class CommentTableColorLabelContentProvider extends TableContentProvider implements ITableColorProvider {
 
 		public CommentTableColorLabelContentProvider(Properties configuration) {
 			super(configuration);
