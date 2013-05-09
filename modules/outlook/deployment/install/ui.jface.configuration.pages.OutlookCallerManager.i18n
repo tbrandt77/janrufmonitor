@@ -1,12 +1,12 @@
 ui.jface.configuration.pages.OutlookCallerManager\:title\:label\:de=Microsoft Outlook Kontaktverzeichnis
 ui.jface.configuration.pages.OutlookCallerManager\:description\:label\:de=Das Microsoft Outlook Kontaktverzeichnis identifiziert eingehende Anrufe direkt mit dem Standard Kontakte-Ordner in Outlook.
 ui.jface.configuration.pages.OutlookCallerManager\:enabled\:label\:de=Datenablage aktiviert
-ui.jface.configuration.pages.OutlookCallerManager\:split\:label\:de=Private und geschäftliche Rufnummern trennen
+ui.jface.configuration.pages.OutlookCallerManager\:split\:label\:de=Private und gesch\u00E4ftliche Rufnummern trennen
 ui.jface.configuration.pages.OutlookCallerManager\:import\:label\:de=Import-Optionen: 
 ui.jface.configuration.pages.OutlookCallerManager\:sf\:label\:de=Kontakte im Ordner {%1} ({%2} Kontakte) importieren
-ui.jface.configuration.pages.OutlookCallerManager\:index\:label\:de=Auf neue Outlook Kontakte prüfen [Zeitintervall]: 
+ui.jface.configuration.pages.OutlookCallerManager\:index\:label\:de=Auf neue Outlook Kontakte pr\u00FCfen [Zeitintervall]: 
 ui.jface.configuration.pages.OutlookCallerManager\:mode\:label\:de=Zugriffsrechte: 
 ui.jface.configuration.pages.OutlookCallerManager\:mode1\:label\:de=Nur identifizieren
 ui.jface.configuration.pages.OutlookCallerManager\:mode2\:label\:de=identifizieren, Adressbuch (nur lesen)
 ui.jface.configuration.pages.OutlookCallerManager\:mode3\:label\:de=identifizieren, Adressbuch (lesen/schreiben)
-ui.jface.configuration.pages.OutlookCallerManager\:keepextension\:label\:de=Erkennung von Nebenstellenanschlüssen
+ui.jface.configuration.pages.OutlookCallerManager\:keepextension\:label\:de=Erkennung von Nebenstellenanschl\u00FCssen
