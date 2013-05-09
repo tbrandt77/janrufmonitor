@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import org.eclipse.jface.preference.FileFieldEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
@@ -113,6 +114,7 @@ public class GosPage extends AbstractPage {
 	private IRuntime m_runtime;
 	
 	private DirectoryFieldEditor dfe;
+	private FileFieldEditor ffe;
 	private Text url;
 	private Text name;
 	private Text version;
@@ -412,15 +414,28 @@ public class GosPage extends AbstractPage {
 	      }
 	    });
 	    
-	    l = new Label(co, SWT.LEFT);
-	    l = new Label(co, SWT.LEFT);
+	    Composite dco2 = new Composite(co, SWT.NONE);
+		dco2.setLayout(new GridLayout(1, false));
+		gd = new GridData();
+	    gd.horizontalSpan = 2;
+		dco2.setLayoutData(gd);
 	    
-	    Composite dco = new Composite(co, SWT.NONE);
+		ffe = new FileFieldEditor(
+	    	this.m_i18n.getString(this.getNamespace(), "fname", "label", this.m_language),
+	    	this.m_i18n.getString(this.getNamespace(), "flabel", "label", this.m_language),
+	    	dco2
+	    );
+		ffe.setFileExtensions(new String[] {"*.png"});
+	    
+	    l = new Label(co, SWT.LEFT);
+	    l = new Label(co, SWT.LEFT);
+		
+		Composite dco = new Composite(co, SWT.NONE);
 		dco.setLayout(new GridLayout(1, false));
 		gd = new GridData();
 	    gd.horizontalSpan = 2;
 		dco.setLayoutData(gd);
-	    
+		
 	    dfe = new DirectoryFieldEditor(
 	    	this.m_i18n.getString(this.getNamespace(), "dname", "label", this.m_language),
 	    	this.m_i18n.getString(this.getNamespace(), "dlabel", "label", this.m_language),
@@ -470,6 +485,7 @@ public class GosPage extends AbstractPage {
 				config.setProperty("regexp.phone", number.getText());
 				config.setProperty("intareacode", intarea.getText());
 				config.setProperty("locale", ((Locale) locale.getData(locale.getText())).toString());
+				config.setProperty("icon", ffe.getStringValue());
 				
 				TestWebCallerManager twcm = new TestWebCallerManager(config);
 				try {
@@ -569,6 +585,7 @@ public class GosPage extends AbstractPage {
 		m.put("area", area.getText());
 		m.put("number", number.getText());
 		m.put("intarea", intarea.getText());
+		m.put("icon", ffe.getStringValue());
 		m.put("locale", ((Locale) locale.getData(locale.getText())).toString());
 		
 		return m;

@@ -24,4 +24,6 @@ ui.jface.application.gos.wizard.pages.GosPage\:notidentified\:label\:en=The phon
 
 ui.jface.application.gos.wizard.pages.GosPage\:dname\:label\:en=Directory for storing the new Directory Assistance module 
 ui.jface.application.gos.wizard.pages.GosPage\:dlabel\:label\:en=Directory for new Directory Assistance module 
+ui.jface.application.gos.wizard.pages.GosPage\:fname\:label\:en=PNG icon (24x24 px)
+ui.jface.application.gos.wizard.pages.GosPage\:flabel\:label\:en=PNG icon for new Directory Assistance module 
 ui.jface.application.gos.wizard.pages.GosPage\:dmessage\:label\:en=Choose a directory to store the new Directory Assistance module 

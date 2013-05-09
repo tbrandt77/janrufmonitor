@@ -3,6 +3,7 @@ package de.janrufmonitor.ui.jface.application.gos.wizard;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
@@ -140,6 +141,8 @@ public class GosWizard extends AbstractWizard {
 			dir.mkdirs();
 		}
 		
+		File icon = new File((String) data.get("icon"));
+		
 		ZipArchive z = new ZipArchive(dir.getAbsolutePath() + File.separator + "mod-rep-"+id.toLowerCase()+"."+descriptor.getProperty(InstallerConst.DESCRIPTOR_VERSION, "1.0.0")+".jam.zip");
 		try {
 			z.open();
@@ -175,6 +178,9 @@ public class GosWizard extends AbstractWizard {
 
 			bin = new ByteArrayInputStream(bos.toByteArray());
 			z.add("install/repository."+id+".en.i18n", bin);
+
+			if (icon.exists())
+				z.add("images/"+id+".png", new FileInputStream(icon));
 			
 			z.close();
 			bin.close();
