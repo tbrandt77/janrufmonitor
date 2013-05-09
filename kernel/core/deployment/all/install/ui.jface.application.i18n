@@ -134,6 +134,8 @@ ui.jface.application.editor.rendering.ImagePath\:%datapath%\:label\:de=[Datenver
 ui.jface.application.editor.rendering.ImagePath\:%imagepath%\:label\:de=[Grafikverzeichnis] 
 ui.jface.application.editor.rendering.ImagePath\:%userhome%\:label\:de=[Benutzerverzeichnis] 
 ui.jface.application.editor.rendering.CallerManager\:name\:label\:de=Telefonbuch
+ui.jface.application.editor.rendering.CallerManagerLogo\:name\:label\:de=
+ui.jface.application.editor.rendering.CallerManagerLogo\:label\:label\:de=Telefonbuch (Logo)
 ui.jface.application.editor.rendering.CreationDate\:name\:label\:de=Erstellt am
 ui.jface.application.editor.rendering.Creator\:name\:label\:de=Ersteller
 ui.jface.application.editor.rendering.Email\:name\:label\:de=Email
@@ -143,7 +145,7 @@ ui.jface.application.editor.rendering.ReadOnly\:name\:label\:de=Schreibschutz
 ui.jface.application.editor.rendering.ReadOnly\:yes\:label\:de=Ja
 ui.jface.application.editor.rendering.LastCalled\:name\:label\:de=Zuletzt angerufen
 ui.jface.application.editor.rendering.ProviderLogo\:name\:label\:de=
-ui.jface.application.editor.rendering.ProviderLogo\:label\:label\:de=Provider Logo
+ui.jface.application.editor.rendering.ProviderLogo\:label\:label\:de=Provider (Logo)
 
 ui.jface.application.help.WebHelpCommand\:label\:label\:de=Hilfe
 ui.jface.application.identification.AutoIdentifyDialog\:title\:label\:de=Automatische Vorwahlerkennung

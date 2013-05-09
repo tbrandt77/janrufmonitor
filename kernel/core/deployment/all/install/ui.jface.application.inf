@@ -378,3 +378,5 @@ ui.jface.application.RendererRegistry\:renderer_img64\:access=system
 # added 5.0.40
 ui.jface.application.RendererRegistry\:renderer_flag\:value=de.janrufmonitor.ui.jface.application.rendering.Flag
 ui.jface.application.RendererRegistry\:renderer_flag\:access=system
+ui.jface.application.RendererRegistry\:renderer_cmlogo\:value=de.janrufmonitor.ui.jface.application.editor.rendering.CallerManagerLogo
+ui.jface.application.RendererRegistry\:renderer_cmlogo\:access=system

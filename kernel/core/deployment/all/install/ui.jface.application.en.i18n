@@ -124,6 +124,7 @@ ui.jface.application.editor.rendering.ImagePath\:%userhome%\:label\:en=[User dir
 ui.jface.application.editor.rendering.Image\:name\:label\:en=Image
 ui.jface.application.editor.rendering.Image\:yes\:label\:en=Yes
 ui.jface.application.editor.rendering.CallerManager\:name\:label\:en=Phone book
+ui.jface.application.editor.rendering.CallerManagerLogo\:name\:label\:en=Phone book logo
 ui.jface.application.editor.rendering.CreationDate\:name\:label\:en=Created on 
 ui.jface.application.editor.rendering.Creator\:name\:label\:en=Creator
 ui.jface.application.editor.rendering.Email\:name\:label\:en=Email
