@@ -3,7 +3,7 @@ ui.jface.configuration.pages.GoogleContactsCallerManager\:description\:label\:de
 ui.jface.configuration.pages.GoogleContactsCallerManager\:enabled\:label\:de=Datenablage aktiviert
 ui.jface.configuration.pages.GoogleContactsCallerManager\:user\:label\:de=Google-Benutzer:
 ui.jface.configuration.pages.GoogleContactsCallerManager\:password\:label\:de=Google-Passwort: 
-ui.jface.configuration.pages.GoogleContactsCallerManager\:keepextension\:label\:de=Erkennung von Nebenstellenanschlüssen
+ui.jface.configuration.pages.GoogleContactsCallerManager\:keepextension\:label\:de=Erkennung von Nebenstellenanschl\u00FCssen
 ui.jface.configuration.pages.GoogleContactsCallerManager\:mode\:label\:de=Zugriffsrechte: 
 ui.jface.configuration.pages.GoogleContactsCallerManager\:mode1\:label\:de=identifizieren, Adressbuch (nur lesen)
 ui.jface.configuration.pages.GoogleContactsCallerManager\:mode2\:label\:de=identifizieren, Adressbuch (lesen/schreiben)
@@ -13,4 +13,4 @@ ui.jface.configuration.pages.GoogleContactsCallerManager\:syncstart\:label\:de=G
 ui.jface.configuration.pages.GoogleContactsCallerManager\:success\:label\:de=Login erforlgreich
 ui.jface.configuration.pages.GoogleContactsCallerManager\:success\:description\:de=Der Login an den Google Account war erfolgreich.
 ui.jface.configuration.pages.GoogleContactsCallerManager\:error\:label\:de=Login fehlgeschlagen
-ui.jface.configuration.pages.GoogleContactsCallerManager\:error\:description\:de=Der Login an den Google Account ist fehlgeschlagen. Prüfen Sie die Felder Google-Benutzer und Google-Passwort auf korrekte Schreibweise.
+ui.jface.configuration.pages.GoogleContactsCallerManager\:error\:description\:de=Der Login an den Google Account ist fehlgeschlagen. Pr\u00FCfen Sie die Felder Google-Benutzer und Google-Passwort auf korrekte Schreibweise.

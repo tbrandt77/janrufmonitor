@@ -1,6 +1,6 @@
 repository.GoogleContacts\:title\:label\:de=Google Kontakte
 repository.GoogleContactsCallerManager\:title\:label\:de=Google Kontakte
-repository.GoogleContactsCallerManager\:loginerror\:label\:de=Die Anmeldung bei Google ist fehlgeschlagen. Prüfen Sie die Anmeldeinformationen unter Einstellungen -> Telefonbücher -> Google Kontakte.
+repository.GoogleContactsCallerManager\:loginerror\:label\:de=Die Anmeldung bei Google ist fehlgeschlagen. Pr\u00FCfen Sie die Anmeldeinformationen unter Einstellungen -> Telefonb\u00FCcher -> Google Kontakte.
 repository.GoogleContactsCallerManager\:process\:label\:de=Google Kontakte werden synchronisiert... ({%1}/{%2})
 repository.GoogleContactsCallerManager\:finished\:label\:de={%1} Google Kontakte wurden synchronisiert.
 
