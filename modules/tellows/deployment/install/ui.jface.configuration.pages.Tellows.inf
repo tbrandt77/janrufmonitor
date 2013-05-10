@@ -19,6 +19,6 @@ ui.jface.application.ActionRegistry\:action_scorenumbertellows\:access=system
 +ui.jface.application.editor.Editor\:popup_actions\:value=opentellows,scorenumbertellows,
 
 ui.jface.application.dialog.Dialog\:delay\:value=1500
-ui.jface.application.dialog.Dialog\:dialog.content\:value=%r:imagepreviewbig%,%calltime%,%r:providerlogo%,%r:tellowsimg%; ,MSN: %msn% (%msnalias%), , ; ,%callername%, , ; ,%callernumber%, , ; ,%cip%, , 
+ui.jface.application.dialog.Dialog\:dialog.content\:value=%r:imagepreviewbig%,%r:empty%,%calltime%,%r:providerlogo%,%r:tellowsimg%; ,%r:empty%,MSN: %msn% (%msnalias%), , ; ,%r:callermanagerlogo%,%callername%, , ; ,%r:flag%,%callernumber%, , ; ,%r:empty%,%cip%, , 
 ui.jface.application.dialog.Dialog\:fontcolor\:value=0,0,0
 ui.jface.application.dialog.Dialog\:spamcolor\:value=true
