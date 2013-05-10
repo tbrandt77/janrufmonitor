@@ -128,7 +128,7 @@ command.CommandFactory\:command_helpcommand\:value=de.janrufmonitor.ui.jface.app
 command.CommandFactory\:command_helpcommand\:access=system
 
 
-ui.jface.application.journal.Journal\:renderer\:value=status,date,number,name,msn,cip
+ui.jface.application.journal.Journal\:renderer\:value=status,date,flag,number,name,msn,cip,callermanagerlogo
 ui.jface.application.journal.Journal\:repository\:value=DefaultJournal
 ui.jface.application.journal.Journal\:order\:value=0
 ui.jface.application.journal.Journal\:order\:type=integer
@@ -152,6 +152,8 @@ ui.jface.application.journal.Journal\:col_size_msn\:value=115
 ui.jface.application.journal.Journal\:col_size_name\:value=303
 ui.jface.application.journal.Journal\:col_size_number\:value=137
 ui.jface.application.journal.Journal\:col_size_status\:value=25
+ui.jface.application.journal.Journal\:col_size_flag\:value=30
+ui.jface.application.journal.Journal\:col_size_callermanagerlogo\:value=50
 ui.jface.application.journal.Journal\:refresh_popup\:value=true
 ui.jface.application.journal.Journal\:refresh_popup\:type=boolean
 ui.jface.application.journal.Journal\:add_stats\:value=
@@ -312,9 +314,10 @@ ui.jface.application.ActionRegistry\:action_editor_lastopen_editor\:access=syste
 # added 5.0.17
 +ui.jface.application.dialog.Dialog\:pluginlist\:value=historyplugin,
 ui.jface.application.dialog.Dialog\:historyplugin\:value=de.janrufmonitor.ui.jface.application.history.HistoryDialogPlugin
-ui.jface.application.history.History\:renderer\:value=status,date,number,msn,cip
+ui.jface.application.history.History\:renderer\:value=status,date,number,msn,cip,callermanagerlogo
 ui.jface.application.history.History\:col_size_date\:value=120
 ui.jface.application.history.History\:col_size_status\:value=50
+ui.jface.application.history.History\:col_size_callermanagerlogo\:value=50
 ui.jface.application.history.History\:order\:value=0
 ui.jface.application.history.History\:order\:type=integer
 ui.jface.application.history.History\:height\:value=305
@@ -359,9 +362,11 @@ ui.jface.application.ActionRegistry\:action_editor_svcfexport\:access=system
 # added 5.0.27
 command.CommandFactory\:command_last10command\:value=de.janrufmonitor.ui.jface.application.last10calls.Last10CallsCommand
 command.CommandFactory\:command_last10command\:access=system
-ui.jface.application.last10calls.Last10Calls\:renderer\:value=status,date,number,name,msn
+ui.jface.application.last10calls.Last10Calls\:renderer\:value=status,date,flag,number,name,msn,callermanagerlogo
 ui.jface.application.last10calls.Last10Calls\:col_size_date\:value=120
 ui.jface.application.last10calls.Last10Calls\:col_size_status\:value=50
+ui.jface.application.last10calls.Last10Calls\:col_size_flag\:value=30
+ui.jface.application.last10calls.Last10Calls\:col_size_callermanagerlogo\:value=50
 ui.jface.application.last10calls.Last10Calls\:order\:value=0
 ui.jface.application.last10calls.Last10Calls\:order\:type=integer
 ui.jface.application.last10calls.Last10Calls\:height\:value=305
