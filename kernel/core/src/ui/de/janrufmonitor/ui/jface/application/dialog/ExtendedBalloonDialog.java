@@ -147,9 +147,7 @@ public class ExtendedBalloonDialog extends AbstractBalloonDialog implements IEve
 	private String getDialogContent() {
 		String c = this.getConfiguration().getProperty(
 				CFG_CUSTOM_DIALOG_CONTENT,
-				//"%r:imagepreviewbig%,%calltime%,%r:providerlogo%,%r:tellowsimg%; ,MSN: %msn% (%msnalias%), , ; ,%callername%, , ; ,%callernumber%, , ; ,%cip%, , "
-				"%r:imagepreviewbig%,%calltime%,%r:providerlogo%; ,MSN: %msn% (%msnalias%), ; ,%callername%, ; ,%callernumber%, ; ,%cip%, "
-				//"%r:imagepreview%,%callername%,%r:providerlogo%; ,%callernumber%, "
+				"%r:imagepreviewbig%,%r:empty%,%calltime%,%r:providerlogo%; ,%r:empty%,MSN: %msn% (%msnalias%), ; ,%r:callermanagerlogo%,%callername%, ; ,%r:flag%,%callernumber%, ; ,%r:empty%,%cip%, "
 			);
 		
 		return c;

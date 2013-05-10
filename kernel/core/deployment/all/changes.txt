@@ -5,12 +5,25 @@ jAnrufmonitor 5.0.40 (01.06.2013)
 
 Neu:
 - Kontakte/Journal: Land als Flagge darstellbar
+- Kontakte/Journal: Telefonbuch als Logo darstellbar
 
 Bugfix:
-- Dialog:...
+- Dialog: Anzeige von Land und Telefonbuch als Icon im Balloon-Dialog
 
 Module:
-- Fritz!Box-Überwachung: ...
+- Fritz!Box-Überwachung: Icon als Telefonbuch-Logo im Journal hinzugefügt
+- www.DasOertliche.de: Icon als Telefonbuch-Logo im Journal hinzugefügt
+- DasTelefonbuch.de: Icon als Telefonbuch-Logo im Journal hinzugefügt
+- gelbeseitenn.de: Icon als Telefonbuch-Logo im Journal hinzugefügt
+- 11880.com: Icon als Telefonbuch-Logo im Journal hinzugefügt
+- klicktel.de: Icon als Telefonbuch-Logo im Journal hinzugefügt
+- tel.search.ch: Icon als Telefonbuch-Logo im Journal hinzugefügt
+- tellows Rufnummer Scoring: Anpassung des Dialogs für Land und Telefonbuch Icon 
+- Apple Mac Adressbuch: Icon als Telefonbuch-Logo im Journal hinzugefügt
+- Google Kontakte: Icon als Telefonbuch-Logo im Journal hinzugefügt
+- Microsoft Outlook Kontaktverzeichnis: Icon als Telefonbuch-Logo im Journal hinzugefügt
+- MySQL Adressbuch / Journal: Icon als Telefonbuch-Logo im Journal hinzugefügt
+- Mozilla Thunderbird Adressbuch: Icon als Telefonbuch-Logo im Journal hinzugefügt
 
 ===
 
