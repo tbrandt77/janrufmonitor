@@ -24,6 +24,7 @@ Module:
 - Microsoft Outlook Kontaktverzeichnis: Icon als Telefonbuch-Logo im Journal hinzugefügt
 - MySQL Adressbuch / Journal: Icon als Telefonbuch-Logo im Journal hinzugefügt
 - Mozilla Thunderbird Adressbuch: Icon als Telefonbuch-Logo im Journal hinzugefügt
+- Erweiterung zur Google Maps Lokalisierung: Darstellen des Kartenausschnitts im Journal
 
 ===
 

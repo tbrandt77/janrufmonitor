@@ -5,3 +5,6 @@ service.GoogleMaps\:enabled\:type=boolean
 service.GoogleMaps\:priority\:value=999
 service.GoogleMaps\:priority\:type=integer
 service.GoogleMaps\:url\:value=http://maps.google.com/?q=
+service.GoogleMaps\:zoom\:value=13
+service.GoogleMaps\:zoom\:type=integer
+service.GoogleMaps\:type\:value=hybrid

@@ -7,3 +7,6 @@ ui.jface.application.ActionRegistry\:action_googlemapslocalize\:access=system
 
 +ui.jface.application.dialog.Dialog\:pluginlist\:value=googlemapsplugin,
 ui.jface.application.dialog.Dialog\:googlemapsplugin\:value=de.janrufmonitor.ui.jface.application.dialog.GoogleMapsDialogPlugin
+
+ui.jface.application.RendererRegistry\:renderer_map\:value=de.janrufmonitor.ui.jface.application.rendering.Map
+ui.jface.application.RendererRegistry\:renderer_map\:access=system

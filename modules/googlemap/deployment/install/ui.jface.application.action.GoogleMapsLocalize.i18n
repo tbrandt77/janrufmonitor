@@ -3,4 +3,5 @@ ui.jface.application.action.GoogleMapsLocalize\:label\:label\:de=Lokalisieren...
 ui.jface.application.action.GoogleMapsLocalize\:nourl\:label\:de=Keine Google Maps Abfrage-URL vorhanden
 ui.jface.application.action.GoogleMapsLocalize\:nourl\:description\:de=Es ist keine Google Maps Abfrage-URL konfiguriert. Ohne die Abfrage-URL kann keine Abfrage beim Online-Dienst maps.google.com erfolgen.
 ui.jface.application.action.GoogleMapsLocalize\:less\:label\:de=Unzureichende Adressdaten
-ui.jface.application.action.GoogleMapsLocalize\:less\:description\:de=Die Adressdaten dieses Anrufers sind nicht ausreichend um eine Anfrage bei maps.google.com durchzuführen. Es müssen mindestens Stadt/Gemeinde und Land/Region gepflegt sein.
+ui.jface.application.action.GoogleMapsLocalize\:less\:description\:de=Die Adressdaten dieses Anrufers sind nicht ausreichend um eine Anfrage bei maps.google.com durchzuf\u00FChren. Es m\u00FCssen mindestens Stadt/Gemeinde und Land/Region gepflegt sein.
+ui.jface.application.rendering.Map\:name\:label\:de=Karte
