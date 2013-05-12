@@ -234,7 +234,7 @@ public class CountryDirectory extends AbstractReadOnlyDatabaseCallerManager {
 
 			// no prefix match
 			if (!pn.getTelephoneNumber().startsWith(this.getPrefix()) || this.isSpecialLocalIntAreaCode()) {
-				for (int i = areaCode.length() - 1; i > 1; i--) {
+				for (int i = areaCode.length() - 1; i >= 1; i--) {
 					String check = areaCode.substring(0, i);
 					if (this.isAreaCodeExisting(intAreaCode, check)) {
 						return check;
@@ -248,7 +248,7 @@ public class CountryDirectory extends AbstractReadOnlyDatabaseCallerManager {
 			areaCode = areaCode.substring(this.getPrefix().length()
 					+ intAreaCode.length(), areaCode.length());
 
-			for (int i = areaCode.length() - 1; i > 1; i--) {
+			for (int i = areaCode.length() - 1; i >= 1; i--) {
 				String check = areaCode.substring(0, i);
 				if (this.isAreaCodeExisting(intAreaCode, check)) {
 					return check;

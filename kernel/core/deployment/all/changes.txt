@@ -9,6 +9,7 @@ Neu:
 
 Bugfix:
 - Dialog: Anzeige von Land und Telefonbuch als Icon im Balloon-Dialog
+- Identifizierung: Fehler bei der Erkennung von 1-stelligen Vorwahlen, z.B. Wien 
 
 Module:
 - Fritz!Box-Überwachung: Icon als Telefonbuch-Logo im Journal hinzugefügt
