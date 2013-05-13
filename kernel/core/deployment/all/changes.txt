@@ -6,6 +6,7 @@ jAnrufmonitor 5.0.40 (01.06.2013)
 Neu:
 - Kontakte/Journal: Land als Flagge darstellbar
 - Kontakte/Journal: Telefonbuch als Logo darstellbar
+- Journal: Ansicht-Filter über Einstellungen -> Journale änderbar
 - TrayIcon: Icon jami.ico für eingeschränkte Funktion hinzugefügt
 
 Bugfix:

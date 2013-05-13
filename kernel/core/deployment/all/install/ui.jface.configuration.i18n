@@ -105,6 +105,7 @@ ui.jface.configuration.pages.Info\:modules\:label\:de=Installierte Module:
 
 ui.jface.configuration.pages.Journal\:title\:label\:de=Journale
 ui.jface.configuration.pages.Journal\:description\:label\:de=Journale dienen zur Speicherung der Anrufe in verschiedenen Dateiformaten.
+ui.jface.configuration.pages.Journal\:filter\:label\:de=Aktiver Journal-Filter
 
 ui.jface.configuration.pages.ModuleManager\:title\:label\:de=Module Manager
 ui.jface.configuration.pages.ModuleManager\:description\:label\:de=Verwalten Sie zus\u00E4tzliche Module um den jAnrufmonitor mit Funktionalit\u00E4t zu erweitern. Mit dem Module Manager installieren und entfernen Sie Module.
