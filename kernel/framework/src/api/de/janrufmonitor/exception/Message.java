@@ -21,6 +21,8 @@ public class Message {
 	private String m_namespace;
 	private String m_message;
 	private String[] m_variables;
+	private boolean m_isErrorIcon;
+	
 	
 	public Message(String level,String messageID, Throwable t) {
 		this(level, Message.DEFAULT_NAMESPACE, messageID, t);
@@ -38,7 +40,15 @@ public class Message {
 		this(level, namespace, messageID, new String[0], t);
 	}
 	
+	public Message(String level, String namespace, String messageID, Throwable t, boolean setErrorIcon) {
+		this(level, namespace, messageID, new String[0], t, setErrorIcon);
+	}
+	
 	public Message(String level, String namespace, String messageID, String[] variables, Throwable t) {
+		this(level, namespace, messageID, new String[0], t, false);
+	}
+	
+	public Message(String level, String namespace, String messageID, String[] variables, Throwable t, boolean setErrorIcon) {
 		this.m_level = level;
 		this.m_namespace = namespace;
 		this.m_message = messageID;
@@ -46,6 +56,7 @@ public class Message {
 		if (variables!=null)
 			this.m_variables = variables;
 		else this.m_variables = new String[0];
+		this.m_isErrorIcon = setErrorIcon;
 	}
 
 	public String getLevel() {
@@ -66,5 +77,9 @@ public class Message {
 	
 	public String[] getVariables(){
 		return this.m_variables;
+	}
+	
+	public boolean isSetErrorIcon() {
+		return this.m_isErrorIcon;
 	}
 }

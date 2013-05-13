@@ -604,10 +604,15 @@ public interface IJAMConst {
 	public final static String IMAGE_KEY_PIM_ICON = "jam.ico";
 	
 	/**
-	 * Image key of SWTImageManager for pimx.ico
+	 * Image key of SWTImageManager for jamx.ico
 	 */
 	public final static String IMAGE_KEY_PIMX_ICON = "jamx.ico";
 
+	/**
+	 * Image key of SWTImageManager for jami.ico
+	 */
+	public final static String IMAGE_KEY_PIMI_ICON = "jami.ico";
+	
 	/**
 	 * Image key of SWTImageManager for b1.jpg
 	 */

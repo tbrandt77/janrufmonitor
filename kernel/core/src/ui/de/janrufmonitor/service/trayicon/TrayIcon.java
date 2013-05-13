@@ -188,22 +188,6 @@ public class TrayIcon extends AbstractReceiverConfigurableService implements Com
 	}
 
 	public void startup() {
-//		String restart = System.getProperty("jam.installer.restart");
-//		if (restart==null || restart.equalsIgnoreCase("true")) {
-//			this.m_logger.info("Detected jam.installer.restart flag as: "+System.getProperty("jam.installer.restart"));
-//			try {
-//				Thread.sleep(2000);
-//			} catch (InterruptedException e) {
-//			}
-//			
-//			restart = System.getProperty("jam.installer.restart");
-//			if (restart !=null && restart.equalsIgnoreCase("true")) {
-//				this.m_logger.info("TrayIcon service is not started, due to installation of new modules.");
-//				return;
-//			}
-//		}
-//		
-//		
 		super.startup();
 
 		// register as a receiver
@@ -264,6 +248,20 @@ public class TrayIcon extends AbstractReceiverConfigurableService implements Com
 		this.getRuntime().getEventBroker().unregister(this, this.getRuntime().getEventBroker().createEvent(IEventConst.EVENT_TYPE_IDENTIFIED_CALL));
 		this.getRuntime().getEventBroker().unregister(this, this.getRuntime().getEventBroker().createEvent(IEventConst.EVENT_TYPE_APPLICATION_READY));
 	}
+	
+	public void setIconStateError() {
+		new SWTExecuter() {
+			protected void execute() {
+				if (trayItem==null || trayItem.isDisposed ()) return;
+				if (OSUtils.isWindows())
+					trayItem.setVisible(false);
+				trayItem.setImage(SWTImageManager.getInstance(getRuntime()).get(IJAMConst.IMAGE_KEY_PIMI_ICON));
+				if (OSUtils.isWindows())
+					trayItem.setVisible(true);				
+			}
+		}.start();
+	}
+	
 	
 	public void setIconStateMonitorListener() {
 		if (getRuntime().getMonitorListener().getDefaultMonitor()==null) return;

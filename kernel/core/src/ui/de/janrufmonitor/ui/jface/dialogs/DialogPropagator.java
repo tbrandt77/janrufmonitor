@@ -12,6 +12,8 @@ import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.command.AbstractCommand;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
+import de.janrufmonitor.service.IService;
+import de.janrufmonitor.service.trayicon.TrayIcon;
 import de.janrufmonitor.ui.jface.application.controls.ErrorDialog;
 import de.janrufmonitor.ui.swt.DisplayManager;
 import de.janrufmonitor.ui.swt.SWTImageManager;
@@ -39,6 +41,12 @@ public class DialogPropagator extends AbstractCommand implements IPropagator {
 							openDialog(m.getLevel(), m.getNamespace(), m.getMessage(), m.getVariables(), (t!=null ? t.toString(): ""));
 							if (m.getLevel().equalsIgnoreCase(Message.ERROR)) {
 								m_logger.log(Level.SEVERE, m.getMessage(), t);
+							}
+							if (m.isSetErrorIcon()) {
+								IService tray = getRuntime().getServiceFactory().getService("TrayIcon");
+								if (tray != null && tray instanceof TrayIcon) {
+									((TrayIcon) tray).setIconStateError();
+								}
 							}
 						}
 					});

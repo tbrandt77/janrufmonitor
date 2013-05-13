@@ -6,6 +6,7 @@ jAnrufmonitor 5.0.40 (01.06.2013)
 Neu:
 - Kontakte/Journal: Land als Flagge darstellbar
 - Kontakte/Journal: Telefonbuch als Logo darstellbar
+- TrayIcon: Icon jami.ico für eingeschränkte Funktion hinzugefügt
 
 Bugfix:
 - Dialog: Anzeige von Land und Telefonbuch als Icon im Balloon-Dialog
@@ -13,6 +14,7 @@ Bugfix:
 
 Module:
 - Fritz!Box-Überwachung: Icon als Telefonbuch-Logo im Journal hinzugefügt
+- Fritz!Box-Überwachung: Hinweis bei Anmeldefehler auf Passwort und Benutzer Prüfung
 - www.DasOertliche.de: Icon als Telefonbuch-Logo im Journal hinzugefügt
 - DasTelefonbuch.de: Icon als Telefonbuch-Logo im Journal hinzugefügt
 - gelbeseitenn.de: Icon als Telefonbuch-Logo im Journal hinzugefügt
