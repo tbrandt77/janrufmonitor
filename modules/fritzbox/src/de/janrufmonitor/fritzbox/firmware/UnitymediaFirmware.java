@@ -38,7 +38,6 @@ import de.janrufmonitor.fritzbox.firmware.exception.DoBlockException;
 import de.janrufmonitor.fritzbox.firmware.exception.DoCallException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxDetectFirmwareException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxInitializationException;
-import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxLoginException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetAddressbooksException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetBlockedListException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallListException;
@@ -133,10 +132,6 @@ public class UnitymediaFirmware extends AbstractFritzBoxFirmware implements IFri
 	
 	public UnitymediaFirmware(String box_address, String box_port, String box_password, String box_user) {
 		super(box_address, box_port, box_password, box_user);
-	}
-	
-	public void login() throws FritzBoxLoginException {
-		if (!this.isInitialized()) throw new FritzBoxLoginException("Could not login to FritzBox: FritzBox firmware not initialized.");
 	}
 
 	public void init() throws FritzBoxInitializationException {
@@ -639,6 +634,9 @@ public class UnitymediaFirmware extends AbstractFritzBoxFirmware implements IFri
 			if (sid!=null) {
 				if (this.m_logger.isLoggable(Level.INFO))
 					this.m_logger.info("Detected FritzBox SID: "+sid);
+				if (sid.equalsIgnoreCase("0000000000000000")) {
+					throw new CreateSessionIDException("Session ID is 0000000000000000.");
+				}
 				this.m_sid = sid;
 			} else {
 				throw new CreateSessionIDException("Could not get session ID from FritzBox.");		

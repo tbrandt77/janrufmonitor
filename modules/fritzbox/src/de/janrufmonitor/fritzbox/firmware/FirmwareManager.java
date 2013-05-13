@@ -7,6 +7,8 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import de.janrufmonitor.exception.Message;
+import de.janrufmonitor.exception.PropagationFactory;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.fritzbox.FritzBoxConst;
 import de.janrufmonitor.fritzbox.FritzBoxMonitor;
@@ -44,8 +46,8 @@ public class FirmwareManager {
     
     public void startup() {
    		try {
-			this.createFirmwareInstance();
-		} catch (FritzBoxInitializationException e) {
+			this.login();
+		} catch (FritzBoxLoginException e) {
 			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 		}
     }
@@ -55,6 +57,12 @@ public class FirmwareManager {
 			try {
 				this.createFirmwareInstance();
 			} catch (FritzBoxInitializationException e) {
+				PropagationFactory.getInstance().fire(
+						new Message(Message.ERROR,
+						"ui.jface.application.fritzbox.general",
+						"loginfailed",	
+						e,
+						true));
 				throw new FritzBoxLoginException(e.getMessage());
 			}
 		this.m_fw.login();
