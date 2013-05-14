@@ -11,11 +11,15 @@ Neu:
 
 Bugfix:
 - Dialog: Anzeige von Land und Telefonbuch als Icon im Balloon-Dialog
-- Identifizierung: Fehler bei der Erkennung von 1-stelligen Vorwahlen, z.B. Wien 
+- Identifizierung: Fehler bei der Erkennung von 1-stelligen Vorwahlen, z.B. Wien
+- Ruhezustandserkennung: NullPointerException in TrayIconPropagator nach Standby
 
 Module:
 - Fritz!Box-Überwachung: Icon als Telefonbuch-Logo im Journal hinzugefügt
 - Fritz!Box-Überwachung: Hinweis bei Anmeldefehler auf Passwort und Benutzer Prüfung
+- Fritz!Box-Überwachung: Verbindungsstatus Überwachung
+- Fritz!Box-Überwachung: Fehlermeldung bei falschem Passwort
+- Fritz!Box-Überwachung: Fehlermeldung bei nicht erkannter AVM Fritz!Box
 - www.DasOertliche.de: Icon als Telefonbuch-Logo im Journal hinzugefügt
 - DasTelefonbuch.de: Icon als Telefonbuch-Logo im Journal hinzugefügt
 - gelbeseitenn.de: Icon als Telefonbuch-Logo im Journal hinzugefügt

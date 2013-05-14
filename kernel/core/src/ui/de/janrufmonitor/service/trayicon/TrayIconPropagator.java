@@ -35,7 +35,11 @@ public class TrayIconPropagator implements IPropagator {
 			message = m.getThrowable().getMessage();
 			title = m.getMessage();
 		} else {
-			message = this.m_i18n.getString(m.getNamespace(), m.getMessage(), "label", this.m_language);
+			try {
+				message = this.m_i18n.getString(m.getNamespace(), m.getMessage(), "label", this.m_language);
+			} catch (NullPointerException ex) {
+				message = m.getMessage();
+			}
 			if (message.equalsIgnoreCase(m.getMessage())) {
 				message = this.m_i18n.getString(Message.DEFAULT_NAMESPACE, "unknown", "label", this.m_language);
 			} else {
