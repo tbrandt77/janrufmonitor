@@ -12,8 +12,12 @@ import java.util.logging.Level;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CellLabelProvider;
+import org.eclipse.jface.viewers.CheckboxCellEditor;
+import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.swt.SWT;
@@ -59,6 +63,7 @@ import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.repository.filter.IFilter;
 import de.janrufmonitor.repository.imexport.ITracker;
 import de.janrufmonitor.ui.jface.application.action.IAction;
+import de.janrufmonitor.ui.jface.application.rendering.ITableCellEditorRenderer;
 import de.janrufmonitor.ui.jface.application.rendering.ITableCellRenderer;
 import de.janrufmonitor.ui.swt.SWTExecuter;
 import de.janrufmonitor.ui.swt.SWTImageManager;
@@ -641,6 +646,38 @@ public abstract class AbstractTreeTableApplication extends
 
 	private void buildTableColumns() {
 		Tree t = ((TreeViewer) viewer).getTree();
+		
+	    int columnCount = this.getTableColumnCount();
+		String[] columnHeader = new String[columnCount];
+		CellEditor[] editors = new CellEditor[columnCount];
+		
+		ITableCellRenderer r = null;
+		for (int i=0;i<columnCount;i++) {
+			columnHeader[i] = this.getColumnID(i);
+			// check renderer type
+			r = RendererRegistry.getInstance().getRenderer(columnHeader[i]);
+			if (r instanceof ITableCellEditorRenderer) {
+				switch (((ITableCellEditorRenderer) r).getType()) {
+				case 1: 
+					editors[i] = new ComboBoxCellEditor(t, ((ITableCellEditorRenderer) r).getValues() ,SWT.READ_ONLY);
+					break;
+				case 2: 
+					editors[i] = new CheckboxCellEditor(t);
+					break;
+				default:
+					//editors[i] = new TextCellEditor(t);
+					editors[i] = new TextCellEditor(t/**, SWT.WRAP*/);	
+				}
+			} else {
+				//editors[i] = new TextCellEditor(t);
+				editors[i] = new TextCellEditor(t, SWT.WRAP);
+			}
+		}
+		
+	    ((TreeViewer)this.viewer).setColumnProperties(columnHeader);
+		((TreeViewer)this.viewer).setCellEditors(editors);
+		((TreeViewer)this.viewer).setCellModifier(new TableCellModifier(((TreeViewer)viewer), this));
+		
 		
 		TreeColumn[] cols = t.getColumns();
 		for (int i = 0; i < cols.length; i++) {

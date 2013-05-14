@@ -6,6 +6,7 @@ import org.eclipse.swt.widgets.Item;
 
 import de.janrufmonitor.framework.IAttribute;
 import de.janrufmonitor.framework.ICall;
+import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.repository.ICallManager;
 import de.janrufmonitor.repository.ICallerManager;
 import de.janrufmonitor.repository.types.IWriteCallRepository;
@@ -39,6 +40,8 @@ public class TableCellModifier implements ICellModifier {
 	
 	public boolean canModify(Object o, String column) {
 		if (!m_ROchecked) checkReadOnly();
+		
+		if (!(o instanceof ICall) && !(o instanceof ICaller)) return false;
 		
 		if (this.m_isReadOnly) return false;
 		ITableCellRenderer r = RendererRegistry.getInstance().getRenderer(
@@ -82,27 +85,47 @@ public class TableCellModifier implements ICellModifier {
 	public void modify(Object element, String column, Object value) {
 		 if (element instanceof Item)
 		      element = ((Item) element).getData();
-		 
-		 ICall c = ((ICall)element);
+		
 		 
 		 ITableCellRenderer r = RendererRegistry.getInstance().getRenderer(
 					column
 				);
 		 if (r instanceof ITableAttributeCellEditorRenderer && ((ITableAttributeCellEditorRenderer)r).getAttribute()!=null) {
-			 IAttribute cAtt = c.getAttribute(((ITableAttributeCellEditorRenderer)r).getAttribute().getName());
-			 if (cAtt!=null && value instanceof String) {
-				 if (cAtt.getValue().equalsIgnoreCase((String)value)) {
-					 return;
+			 if (element instanceof ICall) {
+				 ICall c = ((ICall)element);
+				 IAttribute cAtt = c.getAttribute(((ITableAttributeCellEditorRenderer)r).getAttribute().getName());
+				 if (cAtt!=null && value instanceof String) {
+					 if (cAtt.getValue().equalsIgnoreCase((String)value)) {
+						 return;
+					 }
+				 }
+				 IAttribute att = ((ITableAttributeCellEditorRenderer)r).getAttribute();
+				 
+				 ((ITableAttributeCellEditorRenderer)r).applyAttributeChanges(c, att, value);
+							 
+				 if (this.m_ac.getController() instanceof IExtendedApplicationController) {
+					 ((IExtendedApplicationController)this.m_ac.getController()).updateElement(c, false);
+				 } else {
+					 this.m_ac.getController().updateElement(c);
 				 }
 			 }
-			 IAttribute att = ((ITableAttributeCellEditorRenderer)r).getAttribute();
-			 
-			 ((ITableAttributeCellEditorRenderer)r).applyAttributeChanges(c, att, value);
-						 
-			 if (this.m_ac.getController() instanceof IExtendedApplicationController) {
-				 ((IExtendedApplicationController)this.m_ac.getController()).updateElement(c, false);
-			 } else {
-				 this.m_ac.getController().updateElement(c);
+			 if (element instanceof ICaller) {
+				 ICaller c = ((ICaller)element);
+				 IAttribute cAtt = c.getAttribute(((ITableAttributeCellEditorRenderer)r).getAttribute().getName());
+				 if (cAtt!=null && value instanceof String) {
+					 if (cAtt.getValue().equalsIgnoreCase((String)value)) {
+						 return;
+					 }
+				 }
+				 IAttribute att = ((ITableAttributeCellEditorRenderer)r).getAttribute();
+				 
+				 ((ITableAttributeCellEditorRenderer)r).applyAttributeChanges(c, att, value);
+							 
+				 if (this.m_ac.getController() instanceof IExtendedApplicationController) {
+					 ((IExtendedApplicationController)this.m_ac.getController()).updateElement(c, false);
+				 } else {
+					 this.m_ac.getController().updateElement(c);
+				 }
 			 }
 		 }
 		 
