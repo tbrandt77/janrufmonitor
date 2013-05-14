@@ -8,3 +8,9 @@ repository.FritzBoxCallerExporter\:filtername\:label\:en=AVM Fritz!Box Fon phone
 ui.jface.dialogs.InfoDialog\:edition\:label\:en=(AVM Fritz!Box Fon edition)
 
 repository.FritzBoxPhonebookManager\:title\:label\:en=AVM Fritz!Box Fon phonebook
+
+fritzbox.firmware.login\:loginfailed\:label\:en=Login to Fritz!Box Fon failed. Please check password and user in the configurations.
+fritzbox.firmware.login\:title\:label\:en=Fritz!Box Fon login
+
+fritzbox.firmware.hardware\:title\:label\:en=Fritz!Box Fon hardware detection
+fritzbox.firmware.hardware\:notfound\:label\:en=A Fritz!Box Fon could not be found. Please check the configuration.

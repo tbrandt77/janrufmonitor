@@ -163,11 +163,6 @@ public class ClickDialAction extends AbstractAction implements FritzBoxConst {
 										e));
 							} catch (FritzBoxLoginException e) {
 								this.m_logger.warning(e.toString());
-								PropagationFactory.getInstance().fire(
-										new Message(Message.ERROR,
-										getNamespace(),
-										"faileddial",	
-										e));
 							} catch (DoCallException e) {
 								this.m_logger.warning(e.toString());
 								PropagationFactory.getInstance().fire(

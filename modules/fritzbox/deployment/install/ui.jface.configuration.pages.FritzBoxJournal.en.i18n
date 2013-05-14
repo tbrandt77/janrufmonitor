@@ -16,7 +16,9 @@ ui.jface.configuration.pages.FritzBoxVoip\:fbinfo\:label\:en=Fritz!Box Fon info:
 ui.jface.configuration.pages.FritzBoxVoip\:all_analog\:label\:en=all telephone lines
 ui.jface.configuration.pages.FritzBoxVoip\:all_isdn\:label\:en=all ISDN lines
 ui.jface.configuration.pages.FritzBoxVoip\:dialprefixes\:label\:en=Define dial prefix:\n(comma-separated, no spaces)
-
+ui.jface.configuration.pages.FritzBoxVoip\:status\:label\:en=Connection status: 
+ui.jface.configuration.pages.FritzBoxVoip\:statuso\:label\:en=Connection to observer:  
+ui.jface.configuration.pages.FritzBoxVoip\:statuss\:label\:en=Connection to sync: 
 
 ui.jface.configuration.pages.FritzBoxSynchronizer\:title\:label\:en=AVM Fritz!Box Fon Synchronizer
 service.SynchronizerService\:title\:label\:en=AVM Fritz!Box Fon Synchronizer

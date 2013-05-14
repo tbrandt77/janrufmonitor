@@ -102,11 +102,6 @@ public class Delete extends AbstractAction implements FritzBoxConst {
 								e));
 					} catch (FritzBoxLoginException e) {
 						m_logger.warning(e.toString());
-						PropagationFactory.getInstance().fire(
-								new Message(Message.ERROR,
-								getNamespace(),
-								"faileddelete",	
-								e));
 					} catch (DeleteCallListException e) {
 						m_logger.warning(e.toString());
 						PropagationFactory.getInstance().fire(

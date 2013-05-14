@@ -2,6 +2,7 @@ package de.janrufmonitor.fritzbox.firmware;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.ConnectException;
 import java.net.URLEncoder;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
@@ -10,6 +11,8 @@ import java.util.regex.Pattern;
 import de.janrufmonitor.fritzbox.FritzBoxMD5Handler;
 import de.janrufmonitor.fritzbox.firmware.exception.CreateSessionIDException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxInitializationException;
+import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxNotFoundException;
+import de.janrufmonitor.fritzbox.firmware.exception.InvalidSessionIDException;
 
 public class SessionIDFritzBoxFirmware extends AbstractFritzBoxFirmware {
 
@@ -24,7 +27,7 @@ public class SessionIDFritzBoxFirmware extends AbstractFritzBoxFirmware {
 		super(box_address, box_port, box_password);
 	}
 
-	public void init() throws FritzBoxInitializationException {
+	public void init() throws FritzBoxInitializationException, FritzBoxNotFoundException, InvalidSessionIDException {
 		try {
 			this.createSessionID();
 		} catch (CreateSessionIDException e) {
@@ -75,7 +78,7 @@ public class SessionIDFritzBoxFirmware extends AbstractFritzBoxFirmware {
 		};
 	}
 
-	private void createSessionID() throws CreateSessionIDException {
+	private void createSessionID() throws CreateSessionIDException, FritzBoxNotFoundException, InvalidSessionIDException {
 		final String urlstr = "http://" + this.m_address +":" + this.m_port + "/cgi-bin/webcm";
 
 		StringBuffer data = new StringBuffer(); 
@@ -88,6 +91,9 @@ public class SessionIDFritzBoxFirmware extends AbstractFritzBoxFirmware {
 			this.m_logger.warning(e.getMessage());
 		} catch (IOException e) {
 			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			if (e.getCause() instanceof ConnectException) {
+				throw new FritzBoxNotFoundException(this.m_address, this.m_port);
+			}
 			throw new CreateSessionIDException("Could not get a valid challenge code from the FritzBox.");
 		} 
 				
@@ -118,6 +124,9 @@ public class SessionIDFritzBoxFirmware extends AbstractFritzBoxFirmware {
 			if (sid!=null) {
 				if (this.m_logger.isLoggable(Level.INFO))
 					this.m_logger.info("Detected FritzBox SID: "+sid);
+				if (sid.equalsIgnoreCase("0000000000000000")) {
+					throw new CreateSessionIDException("Session ID is 0000000000000000.");
+				}
 				this.m_sid = sid;
 			} else {
 				throw new CreateSessionIDException("Could not get session ID from FritzBox.");		

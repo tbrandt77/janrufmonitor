@@ -9,10 +9,12 @@ import de.janrufmonitor.fritzbox.firmware.exception.DoBlockException;
 import de.janrufmonitor.fritzbox.firmware.exception.DoCallException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxInitializationException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxLoginException;
+import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxNotFoundException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetAddressbooksException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetBlockedListException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallListException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallerListException;
+import de.janrufmonitor.fritzbox.firmware.exception.InvalidSessionIDException;
 
 public interface IFritzBoxFirmware {
 	
@@ -55,7 +57,7 @@ public interface IFritzBoxFirmware {
 
     public void login() throws FritzBoxLoginException;
     
-    public void init() throws FritzBoxInitializationException;
+    public void init() throws FritzBoxInitializationException, FritzBoxNotFoundException, InvalidSessionIDException;
     
     public void destroy();
     

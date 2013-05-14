@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Label;
 
 import de.janrufmonitor.framework.monitor.IMonitor;
 import de.janrufmonitor.fritzbox.FritzBoxMonitor;
+import de.janrufmonitor.fritzbox.firmware.FirmwareManager;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.ui.jface.configuration.AbstractFieldEditorConfigPage;
@@ -176,6 +177,19 @@ public class FritzBoxVoip extends AbstractFieldEditorConfigPage {
 				}
 			}
 		}
+		
+		new Label(this.getFieldEditorParent(), SWT.NULL);
+		Label statusl= new Label(this.getFieldEditorParent(), 0);
+		statusl.setText(this.m_i18n.getString(this.getNamespace(), "status", "label", this.m_language));
+
+		Label status_observer = new Label(this.getFieldEditorParent(), SWT.NULL);
+		status_observer.setText(this.m_i18n.getString(this.getNamespace(), "statuso", "label", this.m_language)+((fbMonitor!=null && fbMonitor.isAvailable()) ? "OK" : "---"));
+		new Label(this.getFieldEditorParent(), SWT.NULL);
+		
+		Label status_sync = new Label(this.getFieldEditorParent(), SWT.NULL);
+		status_sync.setText(this.m_i18n.getString(this.getNamespace(), "statuss", "label", this.m_language)+(FirmwareManager.getInstance().isLoggedIn() ? "OK" : "---"));
+		new Label(this.getFieldEditorParent(), SWT.NULL);
+		
 		
 	}
 }

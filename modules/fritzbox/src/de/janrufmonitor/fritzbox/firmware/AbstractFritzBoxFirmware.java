@@ -30,10 +30,12 @@ import de.janrufmonitor.fritzbox.firmware.exception.DoCallException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxDetectFirmwareException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxInitializationException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxLoginException;
+import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxNotFoundException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetAddressbooksException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetBlockedListException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallListException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallerListException;
+import de.janrufmonitor.fritzbox.firmware.exception.InvalidSessionIDException;
 import de.janrufmonitor.util.io.Stream;
 
 public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
@@ -122,7 +124,7 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 		this(box_address, box_port, box_password, null);
 	}
 
-	public void init() throws FritzBoxInitializationException {
+	public void init() throws FritzBoxInitializationException, FritzBoxNotFoundException, InvalidSessionIDException {
 		try {
 			this.m_firmware = this.detectFritzBoxFirmware();
 			

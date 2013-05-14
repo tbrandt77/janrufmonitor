@@ -8,10 +8,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.ConnectException;
 import java.net.MalformedURLException;
+import java.net.Socket;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,10 +41,12 @@ import de.janrufmonitor.fritzbox.firmware.exception.DoBlockException;
 import de.janrufmonitor.fritzbox.firmware.exception.DoCallException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxDetectFirmwareException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxInitializationException;
+import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxNotFoundException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetAddressbooksException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetBlockedListException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallListException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallerListException;
+import de.janrufmonitor.fritzbox.firmware.exception.InvalidSessionIDException;
 import de.janrufmonitor.util.io.Stream;
 
 public class FritzOSFirmware extends AbstractFritzBoxFirmware implements IFritzBoxFirmware {
@@ -131,9 +136,9 @@ public class FritzOSFirmware extends AbstractFritzBoxFirmware implements IFritzB
 	
 	public FritzOSFirmware(String box_address, String box_port, String box_password, String box_user) {
 		super(box_address, box_port, box_password, box_user);
-	}
+	} 
 
-	public void init() throws FritzBoxInitializationException {
+	public void init() throws FritzBoxInitializationException, FritzBoxNotFoundException, InvalidSessionIDException {
 		try {
 			this.createSessionID();
 			this.m_firmware = this.detectFritzBoxFirmware();
@@ -590,7 +595,18 @@ public class FritzOSFirmware extends AbstractFritzBoxFirmware implements IFritzB
 			"Could not detect FRITZ!Box firmware version."); 
 	}
 
-	private void createSessionID() throws CreateSessionIDException {
+	private void createSessionID() throws CreateSessionIDException, FritzBoxNotFoundException, InvalidSessionIDException {
+		try {
+			Socket fb_socket = new Socket(this.m_address, Integer.parseInt(this.m_port));
+			fb_socket.close();
+		} catch (NumberFormatException e) {
+			throw new FritzBoxNotFoundException(this.m_address, this.m_port);
+		} catch (UnknownHostException e) {
+			throw new FritzBoxNotFoundException(this.m_address, this.m_port);
+		} catch (IOException e) {
+			throw new FritzBoxNotFoundException(this.m_address, this.m_port);
+		}
+
 		final String urlstr = "http://" + this.m_address +":" + this.m_port + "/login_sid.lua";
 
 		StringBuffer data = new StringBuffer(); 
@@ -601,6 +617,9 @@ public class FritzOSFirmware extends AbstractFritzBoxFirmware implements IFritzB
 			this.m_logger.warning(e.getMessage());
 		} catch (IOException e) {
 			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			if (e.getCause() instanceof ConnectException) {
+				throw new FritzBoxNotFoundException(this.m_address, this.m_port);
+			}
 			throw new CreateSessionIDException("Could not get a valid challenge code from the FritzBox.");
 		} 
 				

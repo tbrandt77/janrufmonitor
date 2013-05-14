@@ -8,3 +8,9 @@ repository.FritzBoxCallerExporter\:filtername\:label\:de=AVM Fritz!Box Fon Telef
 ui.jface.dialogs.InfoDialog\:edition\:label\:de=(AVM Fritz!Box Fon-Edition)
 
 repository.FritzBoxPhonebookManager\:title\:label\:de=AVM Fritz!Box Fon Telefonbuch
+
+fritzbox.firmware.login\:title\:label\:de=Fritz!Box Fon Anmeldung
+fritzbox.firmware.login\:loginfailed\:label\:de=Die Anmeldung an der Fritz!Box Fon ist fehlgeschlagen. Bitte pr\u00FCfen Sie das Fritz!Box Fon-Passwort und ggf. den Fritz!Box Fon-Benutzer unter Administration -> Einstellungen -> AVM Fritz!Box Fon-Einstellungen.
+
+fritzbox.firmware.hardware\:title\:label\:de=Fritz!Box Fon Hardware Erkennung
+fritzbox.firmware.hardware\:notfound\:label\:de=Die Fritz!Box Fon {%1} auf Port {%2} konnte nicht gefunden werden. Bitte pr\u00FCfen Sie die IP-Adresse der Fritz!Box Fon unter Administration -> Einstellungen -> AVM Fritz!Box Fon-Einstellungen.

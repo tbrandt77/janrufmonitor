@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
@@ -178,10 +179,22 @@ public class FritzBoxMonitor implements IMonitor, IConfigurable, FritzBoxConst {
 				m_logger.log(Level.SEVERE, e.getMessage(), e);
 				PropagationFactory.getInstance().fire(
 						new Message(Message.ERROR,
-						getNamespace(),
-						"connect",	
-						new String[] {Integer.toString(getRetryMaxValue() - retryCount)},
-						e));
+						"fritzbox.firmware.hardware",
+						"notfound",	
+						new String[] {this.m_configuration.getProperty(CFG_IP, "fritz.box"), this.m_configuration.getProperty(CFG_MONITOR_PORT, "1012")},
+						e,
+						true));
+				retryCount = getRetryMaxValue();
+			} catch (SocketException e) {
+				m_logger.log(Level.SEVERE, e.getMessage(), e);
+				PropagationFactory.getInstance().fire(
+						new Message(Message.ERROR,
+						"fritzbox.firmware.hardware",
+						"notfound",	
+						new String[] {this.m_configuration.getProperty(CFG_IP, "fritz.box"), this.m_configuration.getProperty(CFG_MONITOR_PORT, "1012")},
+						e,
+						true));
+				retryCount = getRetryMaxValue();	
 			} catch (IOException e) {
 				m_logger.log(Level.SEVERE, e.getMessage(), e);
 				PropagationFactory.getInstance().fire(

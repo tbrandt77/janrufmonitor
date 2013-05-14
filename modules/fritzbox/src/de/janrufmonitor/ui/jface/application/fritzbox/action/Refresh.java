@@ -270,11 +270,6 @@ public class Refresh extends AbstractAction implements FritzBoxConst {
 								e));
 					} catch (FritzBoxLoginException e) {
 						m_logger.warning(e.toString());
-						PropagationFactory.getInstance().fire(
-								new Message(Message.ERROR,
-								getNamespace(),
-								"failedrefresh",	
-								e));
 					} catch (DeleteCallListException e) {
 						m_logger.warning(e.toString());
 						PropagationFactory.getInstance().fire(

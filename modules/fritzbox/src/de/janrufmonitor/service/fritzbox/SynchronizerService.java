@@ -398,11 +398,6 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 						e));
 			} catch (FritzBoxLoginException e) {
 				m_logger.warning(e.toString());
-				PropagationFactory.getInstance().fire(
-						new Message(Message.ERROR,
-						getNamespace(),
-						"failedrefresh",	
-						e));
 			} catch (GetCallListException e) {
 				m_logger.warning(e.toString());
 				PropagationFactory.getInstance().fire(
@@ -645,11 +640,6 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 									e));
 						} catch (FritzBoxLoginException e) {
 							m_logger.warning(e.toString());
-							PropagationFactory.getInstance().fire(
-									new Message(Message.ERROR,
-									getNamespace(),
-									"failedrefresh",	
-									e));
 						} catch (GetCallListException e) {
 							m_logger.warning(e.toString());
 							PropagationFactory.getInstance().fire(

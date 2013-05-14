@@ -125,11 +125,6 @@ public class Block extends AbstractAction implements FritzBoxConst {
 						e));
 			} catch (FritzBoxLoginException e) {
 				this.m_logger.warning(e.toString());
-				PropagationFactory.getInstance().fire(
-						new Message(Message.ERROR,
-						getNamespace(),
-						"failedblock",	
-						e));
 			} catch (DoBlockException e) {
 				this.m_logger.warning(e.toString());
 				PropagationFactory.getInstance().fire(

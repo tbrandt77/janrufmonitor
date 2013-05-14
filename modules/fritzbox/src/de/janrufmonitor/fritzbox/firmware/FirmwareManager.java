@@ -17,10 +17,12 @@ import de.janrufmonitor.fritzbox.firmware.exception.DoBlockException;
 import de.janrufmonitor.fritzbox.firmware.exception.DoCallException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxInitializationException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxLoginException;
+import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxNotFoundException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetAddressbooksException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetBlockedListException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallListException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallerListException;
+import de.janrufmonitor.fritzbox.firmware.exception.InvalidSessionIDException;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 
@@ -44,6 +46,10 @@ public class FirmwareManager {
         return FirmwareManager.m_instance;
     }
     
+    public boolean isLoggedIn() {
+    	return (this.m_fw!=null);
+    }
+    
     public void startup() {
    		try {
 			this.login();
@@ -57,9 +63,20 @@ public class FirmwareManager {
 			try {
 				this.createFirmwareInstance();
 			} catch (FritzBoxInitializationException e) {
+				throw new FritzBoxLoginException(e.getMessage());
+			} catch (FritzBoxNotFoundException e) {
 				PropagationFactory.getInstance().fire(
 						new Message(Message.ERROR,
-						"ui.jface.application.fritzbox.general",
+						"fritzbox.firmware.hardware",
+						"notfound",	
+						new String[] {e.getServer(), e.getPort()},
+						e,
+						true));
+				throw new FritzBoxLoginException(e.getMessage());
+			} catch (InvalidSessionIDException e) {
+				PropagationFactory.getInstance().fire(
+						new Message(Message.ERROR,
+						"fritzbox.firmware.login",
 						"loginfailed",	
 						e,
 						true));
@@ -84,6 +101,23 @@ public class FirmwareManager {
 				this.createFirmwareInstance();
 			} catch (FritzBoxInitializationException e) {
 				throw new GetCallListException(e.getMessage());
+			} catch (FritzBoxNotFoundException e) {
+				PropagationFactory.getInstance().fire(
+						new Message(Message.ERROR,
+						"fritzbox.firmware.hardware",
+						"notfound",	
+						new String[] {e.getServer(), e.getPort()},
+						e,
+						true));
+				throw new GetCallListException(e.getMessage());
+			} catch (InvalidSessionIDException e) {
+				PropagationFactory.getInstance().fire(
+						new Message(Message.ERROR,
+						"fritzbox.firmware.login",
+						"loginfailed",	
+						e,
+						true));
+				throw new GetCallListException(e.getMessage());
 			}
 		return this.m_fw.getCallList();
     }
@@ -93,6 +127,23 @@ public class FirmwareManager {
 			try {
 				this.createFirmwareInstance();
 			} catch (FritzBoxInitializationException e) {
+				throw new GetCallerListException(e.getMessage());
+			} catch (FritzBoxNotFoundException e) {
+				PropagationFactory.getInstance().fire(
+						new Message(Message.ERROR,
+						"fritzbox.firmware.hardware",
+						"notfound",
+						new String[] {e.getServer(), e.getPort()},
+						e,
+						true));
+				throw new GetCallerListException(e.getMessage());
+			} catch (InvalidSessionIDException e) {
+				PropagationFactory.getInstance().fire(
+						new Message(Message.ERROR,
+						"fritzbox.firmware.login",
+						"loginfailed",	
+						e,
+						true));
 				throw new GetCallerListException(e.getMessage());
 			}
 		return this.m_fw.getCallerList();
@@ -104,6 +155,23 @@ public class FirmwareManager {
 				this.createFirmwareInstance();
 			} catch (FritzBoxInitializationException e) {
 				throw new GetCallerListException(e.getMessage());
+			} catch (FritzBoxNotFoundException e) {
+				PropagationFactory.getInstance().fire(
+						new Message(Message.ERROR,
+						"fritzbox.firmware.hardware",
+						"notfound",	
+						new String[] {e.getServer(), e.getPort()},
+						e,
+						true));
+				throw new GetCallerListException(e.getMessage());
+			} catch (InvalidSessionIDException e) {
+				PropagationFactory.getInstance().fire(
+						new Message(Message.ERROR,
+						"fritzbox.firmware.login",
+						"loginfailed",	
+						e,
+						true));
+				throw new GetCallerListException(e.getMessage());
 			}
 		return this.m_fw.getCallerList(id, name);
     }
@@ -113,6 +181,23 @@ public class FirmwareManager {
 			try {
 				this.createFirmwareInstance();
 			} catch (FritzBoxInitializationException e) {
+				throw new GetAddressbooksException(e.getMessage());
+			} catch (FritzBoxNotFoundException e) {
+				PropagationFactory.getInstance().fire(
+						new Message(Message.ERROR,
+						"fritzbox.firmware.hardware",
+						"notfound",	
+						new String[] {e.getServer(), e.getPort()},
+						e,
+						true));
+				throw new GetAddressbooksException(e.getMessage());
+			} catch (InvalidSessionIDException e) {
+				PropagationFactory.getInstance().fire(
+						new Message(Message.ERROR,
+						"fritzbox.firmware.login",
+						"loginfailed",	
+						e,
+						true));
 				throw new GetAddressbooksException(e.getMessage());
 			}
 		return this.m_fw.getAddressbooks();
@@ -124,6 +209,23 @@ public class FirmwareManager {
 				this.createFirmwareInstance();
 			} catch (FritzBoxInitializationException e) {
 				throw new GetBlockedListException(e.getMessage());
+			} catch (FritzBoxNotFoundException e) {
+				PropagationFactory.getInstance().fire(
+						new Message(Message.ERROR,
+						"fritzbox.firmware.hardware",
+						"notfound",	
+						new String[] {e.getServer(), e.getPort()},
+						e,
+						true));
+				throw new GetBlockedListException(e.getMessage());
+			} catch (InvalidSessionIDException e) {
+				PropagationFactory.getInstance().fire(
+						new Message(Message.ERROR,
+						"fritzbox.firmware.login",
+						"loginfailed",	
+						e,
+						true));
+				throw new GetBlockedListException(e.getMessage());
 			}
 		return this.m_fw.getBlockedList();
     }
@@ -133,6 +235,23 @@ public class FirmwareManager {
 			try {
 				this.createFirmwareInstance();
 			} catch (FritzBoxInitializationException e) {
+				throw new DeleteCallListException(e.getMessage());
+			} catch (FritzBoxNotFoundException e) {
+				PropagationFactory.getInstance().fire(
+						new Message(Message.ERROR,
+						"fritzbox.firmware.hardware",
+						"notfound",	
+						new String[] {e.getServer(), e.getPort()},
+						e,
+						true));
+				throw new DeleteCallListException(e.getMessage());
+			} catch (InvalidSessionIDException e) {
+				PropagationFactory.getInstance().fire(
+						new Message(Message.ERROR,
+						"fritzbox.firmware.login",
+						"loginfailed",	
+						e,
+						true));
 				throw new DeleteCallListException(e.getMessage());
 			}
 		this.m_fw.deleteCallList();
@@ -144,6 +263,23 @@ public class FirmwareManager {
 				this.createFirmwareInstance();
 			} catch (FritzBoxInitializationException e) {
 				throw new DoBlockException(e.getMessage());
+			} catch (FritzBoxNotFoundException e) {
+				PropagationFactory.getInstance().fire(
+						new Message(Message.ERROR,
+						"fritzbox.firmware.hardware",
+						"notfound",	
+						new String[] {e.getServer(), e.getPort()},
+						e,
+						true));
+				throw new DoBlockException(e.getMessage());
+			} catch (InvalidSessionIDException e) {
+				PropagationFactory.getInstance().fire(
+						new Message(Message.ERROR,
+						"fritzbox.firmware.login",
+						"loginfailed",	
+						e,
+						true));
+				throw new DoBlockException(e.getMessage());
 			}
 		this.m_fw.doBlock(number);
     }
@@ -153,6 +289,23 @@ public class FirmwareManager {
 			try {
 				this.createFirmwareInstance();
 			} catch (FritzBoxInitializationException e) {
+				throw new DoCallException(e.getMessage());
+			} catch (FritzBoxNotFoundException e) {
+				PropagationFactory.getInstance().fire(
+						new Message(Message.ERROR,
+						"fritzbox.firmware.hardware",
+						"notfound",	
+						new String[] {e.getServer(), e.getPort()},
+						e,
+						true));
+				throw new DoCallException(e.getMessage());
+			} catch (InvalidSessionIDException e) {
+				PropagationFactory.getInstance().fire(
+						new Message(Message.ERROR,
+						"fritzbox.firmware.login",
+						"loginfailed",	
+						e,
+						true));
 				throw new DoCallException(e.getMessage());
 			}
 		this.m_fw.doCall(number, extension);
@@ -170,7 +323,7 @@ public class FirmwareManager {
     	this.m_fw = null;
     }
     
-    private synchronized void createFirmwareInstance() throws FritzBoxInitializationException{
+    private synchronized void createFirmwareInstance() throws FritzBoxInitializationException, FritzBoxNotFoundException, InvalidSessionIDException {
     	if (this.m_fw==null) {
     		this.m_fw = new FritzOSFirmware(getFritzBoxAddress(), getFritzBoxPort(), getFritzBoxPassword(), getFritzBoxUser());
     		try {
@@ -205,8 +358,8 @@ public class FirmwareManager {
 							if (this.m_logger.isLoggable(Level.INFO))
 								this.m_logger.info("No FritzBox standard Firmware detected.");
 							this.m_fw = null;
-							throw new FritzBoxInitializationException(e.getMessage());
-						}
+							throw new InvalidSessionIDException(e.getMessage());
+						} 
 					}
 				}
 			}
@@ -241,6 +394,10 @@ public class FirmwareManager {
 							createFirmwareInstance();
 							m_logger.info("Automatic re-connect to FritzBox done...");
 						} catch (FritzBoxInitializationException e) {
+							m_logger.log(Level.SEVERE, e.getMessage(), e);
+						} catch (FritzBoxNotFoundException e) {
+							m_logger.log(Level.SEVERE, e.getMessage(), e);
+						} catch (InvalidSessionIDException e) {
 							m_logger.log(Level.SEVERE, e.getMessage(), e);
 						}
 					}

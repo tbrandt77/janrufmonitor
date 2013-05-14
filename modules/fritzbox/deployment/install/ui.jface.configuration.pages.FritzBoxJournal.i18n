@@ -7,16 +7,18 @@ ui.jface.configuration.pages.FritzBoxVoip\:boxuser\:label\:de=Fritz!Box Fon-Benu
 ui.jface.configuration.pages.FritzBoxVoip\:boxport\:label\:de=Port: 
 ui.jface.configuration.pages.FritzBoxVoip\:boxareacode\:label\:de=Vorwahl des Fritz!Box Fon-Standorts:\n(mit f\u00FChrender Null) 
 ui.jface.configuration.pages.FritzBoxVoip\:boxdate\:label\:de=Datumsformat: 
-ui.jface.configuration.pages.FritzBoxVoip\:activemonitor\:label\:de=Überwachung aktiviert (erfordert Programmneustart)
+ui.jface.configuration.pages.FritzBoxVoip\:activemonitor\:label\:de=\u00DCberwachung aktiviert (erfordert Programmneustart)
 ui.jface.configuration.pages.FritzBoxVoip\:outgoing\:label\:de=Ausgehende Anrufe \u00FCberwachen
-ui.jface.configuration.pages.FritzBoxVoip\:retrymax\:label\:de=Anzahl der automatischen Verbindungsversuche: 
+ui.jface.configuration.pages.FritzBoxVoip\:retrymax\:label\:de=Anzahl der autom. Verbindungsversuche: 
 ui.jface.configuration.pages.FritzBoxVoip\:festnetzalias\:label\:de=MSN f\u00FCr "Festnetz" Anrufe:
 ui.jface.configuration.pages.FritzBoxVoip\:syncdelete\:label\:de=Anrufliste auf Fritz!Box Fon nach Synchronisation l\u00F6schen
 ui.jface.configuration.pages.FritzBoxVoip\:fbinfo\:label\:de=Fritz!Box Fon-Infos:
 ui.jface.configuration.pages.FritzBoxVoip\:all_analog\:label\:de=Alle analogen Nebenstellen
 ui.jface.configuration.pages.FritzBoxVoip\:all_isdn\:label\:de=Alle ISDN Ger\u00E4te
 ui.jface.configuration.pages.FritzBoxVoip\:dialprefixes\:label\:de=W\u00E4hlpr\u00E4fixe festlegen:\n(Komma-separiert, ohne Leerzeichen)
-
+ui.jface.configuration.pages.FritzBoxVoip\:status\:label\:de=Verbindungsstatus :
+ui.jface.configuration.pages.FritzBoxVoip\:statuso\:label\:de=Verbindung zur \u00DCberwachung: 
+ui.jface.configuration.pages.FritzBoxVoip\:statuss\:label\:de=Verbindung zum Synchronisieren: 
 
 ui.jface.configuration.pages.FritzBoxSynchronizer\:title\:label\:de=AVM Fritz!Box Fon Synchronizer
 service.SynchronizerService\:title\:label\:de=AVM Fritz!Box Fon Synchronizer

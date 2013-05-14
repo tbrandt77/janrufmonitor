@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -38,10 +39,12 @@ import de.janrufmonitor.fritzbox.firmware.exception.DoBlockException;
 import de.janrufmonitor.fritzbox.firmware.exception.DoCallException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxDetectFirmwareException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxInitializationException;
+import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxNotFoundException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetAddressbooksException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetBlockedListException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallListException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallerListException;
+import de.janrufmonitor.fritzbox.firmware.exception.InvalidSessionIDException;
 import de.janrufmonitor.util.io.Stream;
 
 public class UnitymediaFirmware extends AbstractFritzBoxFirmware implements IFritzBoxFirmware {
@@ -134,7 +137,7 @@ public class UnitymediaFirmware extends AbstractFritzBoxFirmware implements IFri
 		super(box_address, box_port, box_password, box_user);
 	}
 
-	public void init() throws FritzBoxInitializationException {
+	public void init() throws FritzBoxInitializationException, FritzBoxNotFoundException, InvalidSessionIDException {
 		try {
 			this.createSessionID();
 			this.m_firmware = this.detectFritzBoxFirmware();
@@ -591,7 +594,7 @@ public class UnitymediaFirmware extends AbstractFritzBoxFirmware implements IFri
 			"Could not detect FRITZ!Box firmware version."); 
 	}
 
-	private void createSessionID() throws CreateSessionIDException {
+	private void createSessionID() throws CreateSessionIDException, InvalidSessionIDException, FritzBoxNotFoundException {
 		final String urlstr = "http://" + this.m_address +":" + this.m_port + "/cgi-bin/webcm";
 
 		StringBuffer data = new StringBuffer(); 
@@ -604,6 +607,9 @@ public class UnitymediaFirmware extends AbstractFritzBoxFirmware implements IFri
 			this.m_logger.warning(e.getMessage());
 		} catch (IOException e) {
 			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			if (e.getCause() instanceof ConnectException) {
+				throw new FritzBoxNotFoundException(this.m_address, this.m_port);
+			}
 			throw new CreateSessionIDException("Could not get a valid challenge code from the FritzBox.");
 		} 
 				
