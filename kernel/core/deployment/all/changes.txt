@@ -6,23 +6,25 @@ jAnrufmonitor 5.0.40 (01.06.2013)
 Neu:
 - Kontakte/Journal: Land als Flagge darstellbar
 - Kontakte/Journal: Telefonbuch als Logo darstellbar
+- Kontakte: Freitext-Spalte einem Kontakt zuweisen
 - Journal: Ansicht-Filter über Einstellungen -> Journale änderbar
 - TrayIcon: Icon jami.ico für eingeschränkte Funktion hinzugefügt
+- Dialog: Anzeige von Land und Telefonbuch als Icon im Balloon-Dialog
 
 Bugfix:
-- Dialog: Anzeige von Land und Telefonbuch als Icon im Balloon-Dialog
 - Identifizierung: Fehler bei der Erkennung von 1-stelligen Vorwahlen, z.B. Wien
 - Ruhezustandserkennung: NullPointerException in TrayIconPropagator nach Standby
+- Geokodierung: Mobilfunkanbieter werden vor Geokodierung nicht ausgefiltert.
 
 Module:
 - Fritz!Box-Überwachung: Icon als Telefonbuch-Logo im Journal hinzugefügt
-- Fritz!Box-Überwachung: Hinweis bei Anmeldefehler auf Passwort und Benutzer Prüfung
-- Fritz!Box-Überwachung: Verbindungsstatus Überwachung
+- Fritz!Box-Überwachung: Hinweis bei Anmeldefehler auf Passwort und Benutzer
+- Fritz!Box-Überwachung: Verbindungsstatus der Überwachung und Synchronisation
 - Fritz!Box-Überwachung: Fehlermeldung bei falschem Passwort
 - Fritz!Box-Überwachung: Fehlermeldung bei nicht erkannter AVM Fritz!Box
 - www.DasOertliche.de: Icon als Telefonbuch-Logo im Journal hinzugefügt
 - DasTelefonbuch.de: Icon als Telefonbuch-Logo im Journal hinzugefügt
-- gelbeseitenn.de: Icon als Telefonbuch-Logo im Journal hinzugefügt
+- gelbeseiten.de: Icon als Telefonbuch-Logo im Journal hinzugefügt
 - 11880.com: Icon als Telefonbuch-Logo im Journal hinzugefügt
 - klicktel.de: Icon als Telefonbuch-Logo im Journal hinzugefügt
 - tel.search.ch: Icon als Telefonbuch-Logo im Journal hinzugefügt
@@ -33,6 +35,7 @@ Module:
 - MySQL Adressbuch / Journal: Icon als Telefonbuch-Logo im Journal hinzugefügt
 - Mozilla Thunderbird Adressbuch: Icon als Telefonbuch-Logo im Journal hinzugefügt
 - Erweiterung zur Google Maps Lokalisierung: Darstellen des Kartenausschnitts im Journal
+- Erweiterung zur Google Maps Lokalisierung: Karten- oder Luftbildansicht wählbar
 
 ===
 

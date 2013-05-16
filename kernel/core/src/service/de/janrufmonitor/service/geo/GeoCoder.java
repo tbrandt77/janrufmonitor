@@ -156,6 +156,8 @@ public class GeoCoder {
     	if (atts.contains(IJAMConst.ATTRIBUTE_NAME_CITY) && atts.get(IJAMConst.ATTRIBUTE_NAME_CITY).getValue().length()>0) {
     		query.append("&city=");
     		query.append(encode(atts.get(IJAMConst.ATTRIBUTE_NAME_CITY).getValue()));
+    		// 2013/06/01: check if city is a forbidden city name
+    		if (this.isForbiddenCity(encode(atts.get(IJAMConst.ATTRIBUTE_NAME_CITY).getValue()))) return null;
     	}    	
     	if (atts.contains(IJAMConst.ATTRIBUTE_NAME_COUNTRY) && atts.get(IJAMConst.ATTRIBUTE_NAME_COUNTRY).getValue().length()>0) {
     		query.append("&cntry=");
@@ -205,6 +207,26 @@ public class GeoCoder {
 			}	
 		}
     	return null;   	
+    }
+    
+    private boolean isForbiddenCity(String city) {
+    	if (city==null) return true;
+    	if (city.length()==0) return true;
+    	if (city.toLowerCase().equalsIgnoreCase("vodafone")) return true;
+    	if (city.toLowerCase().equalsIgnoreCase("t-mobile")) return true;
+    	if (city.toLowerCase().equalsIgnoreCase("freephone dienste")) return true;
+    	if (city.toLowerCase().equalsIgnoreCase("e-plus mobilfunk")) return true;
+    	if (city.toLowerCase().equalsIgnoreCase("o2 (germany)")) return true;
+    	if (city.toLowerCase().equalsIgnoreCase("mabez rufnummer")) return true;
+    	if (city.toLowerCase().equalsIgnoreCase("shared cost-dienste")) return true;
+    	if (city.toLowerCase().equalsIgnoreCase("e-plus")) return true;
+    	if (city.toLowerCase().equalsIgnoreCase("e-plus mobilfunk gmbh & co. kg")) return true;
+    	if (city.toLowerCase().equalsIgnoreCase("swisscom mobile")) return true;
+    	if (city.toLowerCase().equalsIgnoreCase("premium rate")) return true;
+    	if (city.toLowerCase().equalsIgnoreCase("nationale teilnehmerrufnummer (ntr)")) return true;
+    	if (city.toLowerCase().equalsIgnoreCase("mobiltelefonnetz a1")) return true;
+    	if (city.toLowerCase().equalsIgnoreCase("premium rate-dienste")) return true;
+    	return false;
     }
     
     private String encode(String q) {
