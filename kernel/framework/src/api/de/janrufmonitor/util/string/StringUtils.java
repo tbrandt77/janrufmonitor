@@ -1,5 +1,9 @@
 package de.janrufmonitor.util.string;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 /**
  *  This class provides string manipulation functions.
  * 
@@ -72,5 +76,31 @@ public class StringUtils {
             }
         }
         return b.toString();
+    }
+    
+    private static String hex(byte[] array) {
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < array.length; ++i) {
+        sb.append(Integer.toHexString((array[i]
+            & 0xFF) | 0x100).substring(1,3));        
+        }
+        return sb.toString();
+    }
+    
+    /**
+     * Encodes a string to an MD5 hex representation.
+     * 
+     * @param message
+     * @return MD5 hex string
+     */
+    public static String toMD5Hex(String message) {
+        try {
+        MessageDigest md = 
+            MessageDigest.getInstance("MD5");
+        return hex (md.digest(message.getBytes("CP1252")));
+        } catch (NoSuchAlgorithmException e) {
+        } catch (UnsupportedEncodingException e) {
+        }
+        return null;
     }
 }

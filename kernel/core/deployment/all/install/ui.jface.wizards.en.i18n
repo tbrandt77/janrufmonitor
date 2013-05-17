@@ -61,6 +61,7 @@ ui.jface.wizards.pages.CallerPage\:categorygroup\:label\:en=Category
 ui.jface.wizards.pages.CallerPage\:std_phone\:label\:en=Number 
 ui.jface.wizards.pages.CallerPage\:add_phone\:label\:en=Add number
 ui.jface.wizards.pages.CallerPage\:remove_phone\:label\:en=Remove number
+ui.jface.wizards.pages.CallerPage\:gravatar\:label\:en=use Gravatar
 
 ui.jface.wizards.pages.CallerPage\:fn\:label\:en=Firstname
 ui.jface.wizards.pages.CallerPage\:ln\:label\:en=Lastname
@@ -71,7 +72,6 @@ ui.jface.wizards.pages.CallerPage\:email\:label\:en=Email
 ui.jface.wizards.pages.CallerPage\:pcode\:label\:en=Postal code
 ui.jface.wizards.pages.CallerPage\:city\:label\:en=City
 ui.jface.wizards.pages.CallerPage\:cntry\:label\:en=Country
-
 
 ui.jface.wizards.pages.EditorCategoryPage\:title\:label\:en=Create/Edit categories
 ui.jface.wizards.pages.EditorCategoryPage\:description\:label\:en=Specify the name of your category. The name is limited to 128 characters.

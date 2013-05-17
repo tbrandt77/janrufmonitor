@@ -1,10 +1,14 @@
 package de.janrufmonitor.ui.jface.wizards.pages;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -55,6 +59,8 @@ import de.janrufmonitor.util.formatter.Formatter;
 import de.janrufmonitor.util.io.ImageHandler;
 import de.janrufmonitor.util.io.OSUtils;
 import de.janrufmonitor.util.io.PathResolver;
+import de.janrufmonitor.util.io.Stream;
+import de.janrufmonitor.util.string.StringUtils;
 
 public class MultiPhoneCallerPage extends AbstractPage {
 
@@ -326,6 +332,8 @@ public class MultiPhoneCallerPage extends AbstractPage {
 	private boolean m_numberReadonly;
 
 	private boolean m_allowClirEdit;
+	
+	private boolean m_useGRAVATAR;
 
 	private TabFolder tabFolder;
 
@@ -366,6 +374,48 @@ public class MultiPhoneCallerPage extends AbstractPage {
 							.getAttributes());
 		}		
 		this.m_caller.setPhonenumbers(phones);
+		
+		// check for GRAVATAR image
+		this.m_caller.getAttributes().remove(IJAMConst.ATTRIBUTE_NAME_GRAVATAR);
+		if (m_useGRAVATAR && this.m_caller.getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_EMAIL)) {
+			String email = this.m_caller.getAttribute(IJAMConst.ATTRIBUTE_NAME_EMAIL).getValue();
+			if (email != null && email.length()>0) {	
+				File dir = new File(PathResolver.getInstance().getPhotoDirectory());
+				if (!dir.exists()) dir.mkdirs();
+				
+				File img = new File(dir, this.m_caller.getPhoneNumber().getTelephoneNumber()+".jpg");
+				try {
+					email = StringUtils.toMD5Hex(email);
+					String gravatar = "http://www.gravatar.com/avatar/"+email+".jpg?d=404&s=120";
+					URL url = new URL(gravatar);
+					URLConnection c = url.openConnection();
+					
+					StringBuffer agent = new StringBuffer();
+					agent.append("jAnrufmonitor Update Manager ");
+					agent.append(IJAMConst.VERSION_DISPLAY);
+					
+					c.setDoInput(true);
+					c.setRequestProperty(
+						"User-Agent",
+						agent.toString());
+					c.connect();
+
+					Object o = url.openStream();
+					if (o instanceof InputStream) {
+						this.m_caller.getAttributes().add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_GRAVATAR, gravatar));
+						BufferedInputStream bin = new BufferedInputStream((InputStream) o);
+						FileOutputStream fos = new FileOutputStream(img);
+						Stream.copy(bin, fos, true);
+						this.m_caller.getAttributes().add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_IMAGEPATH, img.getAbsolutePath()));
+					}
+				} catch (FileNotFoundException e) {
+					m_logger.info("No GRAVATAR found: "+e.getMessage());
+				} catch (IOException e) {
+					m_logger.info("IOException: "+e.getMessage());
+				}
+			}
+		}
+		
 		return this.m_caller;
 	}
 
@@ -480,11 +530,89 @@ public class MultiPhoneCallerPage extends AbstractPage {
 					image.setImage(getNewImage(""));
 					image.setToolTipText(m_i18n.getString(getNamespace(), "pixel", "label",
 							m_language));
+					
+					// check if number image exist
+					if (m_caller!=null && m_caller.getPhoneNumber().getTelephoneNumber().length()>0) {
+						File photo = new File(PathResolver.getInstance().getPhotoDirectory(), m_caller.getPhoneNumber().getTelephoneNumber()+".jpg");
+						if (photo.exists()) {
+							photo.delete();
+						}
+						photo = new File(PathResolver.getInstance().getPhotoDirectory(), m_caller.getPhoneNumber().getTelephoneNumber()+".png");
+						if (photo.exists()) {
+							photo.delete();
+						}
+					}
+					
 					setPageComplete(isComplete());
 				}
 			});
 
 			image.setMenu(m);
+			final Button gravatar = new Button(t, SWT.CHECK);
+			gravatar.setText(
+		    	this.m_i18n.getString(this.getNamespace(), "gravatar", "label", this.m_language)	
+		    );
+			gravatar.setSelection(this.m_caller.getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_GRAVATAR)); 
+			this.m_useGRAVATAR = this.m_caller.getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_GRAVATAR);
+			
+			gravatar.setEnabled(!m_callerReadonly);
+			
+			gravatar.addSelectionListener(
+				new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent e) {				
+						m_useGRAVATAR = gravatar.getSelection();
+//						if (!m_useGRAVATAR) {
+//							setAttributeValue(IJAMConst.ATTRIBUTE_NAME_IMAGEPATH, "");
+//							image.setImage(getNewImage(""));
+//							image.setToolTipText(m_i18n.getString(getNamespace(), "pixel", "label",
+//									m_language));
+//						}
+						if (m_useGRAVATAR && m_caller.getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_EMAIL)) {
+							String email = m_caller.getAttribute(IJAMConst.ATTRIBUTE_NAME_EMAIL).getValue();
+							if (email != null && email.length()>0) {	
+								File dir = new File(PathResolver.getInstance().getPhotoDirectory());
+								if (!dir.exists()) dir.mkdirs();
+								
+								File img = new File(dir, m_caller.getPhoneNumber().getTelephoneNumber()+".jpg");
+								try {
+									email = StringUtils.toMD5Hex(email);
+									String gravatar = "http://www.gravatar.com/avatar/"+email+".jpg?d=404&s=120";
+									URL url = new URL(gravatar);
+									URLConnection c = url.openConnection();
+									
+									StringBuffer agent = new StringBuffer();
+									agent.append("jAnrufmonitor Update Manager ");
+									agent.append(IJAMConst.VERSION_DISPLAY);
+									
+									c.setDoInput(true);
+									c.setRequestProperty(
+										"User-Agent",
+										agent.toString());
+									c.connect();
+
+									Object o = url.openStream();
+									if (o instanceof InputStream) {
+										BufferedInputStream bin = new BufferedInputStream((InputStream) o);
+										FileOutputStream fos = new FileOutputStream(img);
+										Stream.copy(bin, fos, true);
+										
+										setAttributeValue(IJAMConst.ATTRIBUTE_NAME_IMAGEPATH, img.getAbsolutePath());
+										image.setImage(getNewImage(img.getAbsolutePath()));
+										if (hasCallerImage()) {
+											image.setToolTipText(getCallerImagePath());
+										}
+									}
+								} catch (FileNotFoundException ex) {
+									m_logger.info("No GRAVATAR found: "+ex.getMessage());
+								} catch (IOException ex) {
+									m_logger.info("IOException: "+ex.getMessage());
+								}
+							}
+						}
+						setPageComplete(isComplete());
+					}
+				}	
+		    );
 		} else {
 			final Button image = new Button(t, SWT.PUSH);
 			image.setLayoutData(gd);
@@ -532,11 +660,90 @@ public class MultiPhoneCallerPage extends AbstractPage {
 					image.setImage(getNewImage(""));
 					image.setToolTipText(m_i18n.getString(getNamespace(), "pixel", "label",
 							m_language));
+					
+					// check if number image exist
+					if (m_caller!=null && m_caller.getPhoneNumber().getTelephoneNumber().length()>0) {
+						File photo = new File(PathResolver.getInstance().getPhotoDirectory(), m_caller.getPhoneNumber().getTelephoneNumber()+".jpg");
+						if (photo.exists()) {
+							photo.delete();
+						}
+						photo = new File(PathResolver.getInstance().getPhotoDirectory(), m_caller.getPhoneNumber().getTelephoneNumber()+".png");
+						if (photo.exists()) {
+							photo.delete();
+						}
+					}
 					setPageComplete(isComplete());
 				}
 			});
 
 			image.setMenu(m);
+			
+			final Button gravatar = new Button(t, SWT.CHECK);
+			gravatar.setText(
+		    	this.m_i18n.getString(this.getNamespace(), "gravatar", "label", this.m_language)	
+		    );
+			gravatar.setSelection(this.m_caller.getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_GRAVATAR)); 
+			this.m_useGRAVATAR = this.m_caller.getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_GRAVATAR);
+			
+			gravatar.setEnabled(!m_callerReadonly);
+			
+			gravatar.addSelectionListener(
+				new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent e) {				
+						m_useGRAVATAR = gravatar.getSelection();
+//						if (!m_useGRAVATAR) {
+//							setAttributeValue(IJAMConst.ATTRIBUTE_NAME_IMAGEPATH, "");
+//							image.setImage(getNewImage(""));
+//							image.setToolTipText(m_i18n.getString(getNamespace(), "pixel", "label",
+//									m_language));
+//						}
+						if (m_useGRAVATAR && m_caller.getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_EMAIL)) {
+							String email = m_caller.getAttribute(IJAMConst.ATTRIBUTE_NAME_EMAIL).getValue();
+							if (email != null && email.length()>0) {	
+								File dir = new File(PathResolver.getInstance().getPhotoDirectory());
+								if (!dir.exists()) dir.mkdirs();
+								
+								File img = new File(dir, m_caller.getPhoneNumber().getTelephoneNumber()+".jpg");
+								try {
+									email = StringUtils.toMD5Hex(email);
+									String gravatar = "http://www.gravatar.com/avatar/"+email+".jpg?d=404&s=120";
+									URL url = new URL(gravatar);
+									URLConnection c = url.openConnection();
+									
+									StringBuffer agent = new StringBuffer();
+									agent.append("jAnrufmonitor Update Manager ");
+									agent.append(IJAMConst.VERSION_DISPLAY);
+									
+									c.setDoInput(true);
+									c.setRequestProperty(
+										"User-Agent",
+										agent.toString());
+									c.connect();
+
+									Object o = url.openStream();
+									if (o instanceof InputStream) {
+										BufferedInputStream bin = new BufferedInputStream((InputStream) o);
+										FileOutputStream fos = new FileOutputStream(img);
+										Stream.copy(bin, fos, true);
+										
+										setAttributeValue(IJAMConst.ATTRIBUTE_NAME_IMAGEPATH, img.getAbsolutePath());
+										image.setImage(getNewImage(img.getAbsolutePath()));
+										if (hasCallerImage()) {
+											image.setToolTipText(getCallerImagePath());
+										}
+									}
+								} catch (FileNotFoundException ex) {
+									m_logger.info("No GRAVATAR found: "+ex.getMessage());
+								} catch (IOException ex) {
+									m_logger.info("IOException: "+ex.getMessage());
+								}
+							}
+						}
+						
+						setPageComplete(isComplete());
+					}
+				}	
+		    );
 		}
 
 

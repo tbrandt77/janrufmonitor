@@ -61,6 +61,7 @@ ui.jface.wizards.pages.CallerPage\:categorygroup\:label\:de=Kategorie
 ui.jface.wizards.pages.CallerPage\:std_phone\:label\:de=Rufnummer 
 ui.jface.wizards.pages.CallerPage\:add_phone\:label\:de=Rufnummer hinzuf\u00FCgen
 ui.jface.wizards.pages.CallerPage\:remove_phone\:label\:de=Rufnummer entfernen
+ui.jface.wizards.pages.CallerPage\:gravatar\:label\:de=Gravatar verwenden
 
 ui.jface.wizards.pages.CallerPage\:fn\:label\:de=Vorname
 ui.jface.wizards.pages.CallerPage\:ln\:label\:de=Nachname

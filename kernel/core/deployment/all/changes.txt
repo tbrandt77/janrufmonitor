@@ -7,6 +7,7 @@ Neu:
 - Kontakte/Journal: Land als Flagge darstellbar
 - Kontakte/Journal: Telefonbuch als Logo darstellbar
 - Kontakte: Freitext-Spalte einem Kontakt zuweisen
+- Kontakte: Unterstützung für Gravatar (http://de.gravatar.com)
 - Journal: Ansicht-Filter über Einstellungen -> Journale änderbar
 - TrayIcon: Icon jami.ico für eingeschränkte Funktion hinzugefügt
 - Dialog: Anzeige von Land und Telefonbuch als Icon im Balloon-Dialog
