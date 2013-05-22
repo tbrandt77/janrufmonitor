@@ -95,6 +95,7 @@ public class GosWizard extends AbstractWizard {
 		inf.setProperty("repository."+id+":regexp.phone:value", (String) data.get("number"));
 		inf.setProperty("repository."+id+":intareacode:value", (String) data.get("intarea"));
 		inf.setProperty("repository."+id+":locale:value", (String) data.get("locale"));
+		inf.setProperty("repository."+id+":encoding:value", (String) data.get("encoding"));
 		
 		inf.setProperty("ui.jface.configuration.ConfigurationCommand:page_"+id+":value", "de.janrufmonitor.ui.jface.configuration.pages.DynamicWebCallerManager");
 		inf.setProperty("ui.jface.configuration.ConfigurationCommand:page_"+id+":access", "system");
@@ -116,6 +117,7 @@ public class GosWizard extends AbstractWizard {
 		i18n.setProperty("ui.jface.configuration.pages."+id+":regexp.city:label:de", "Muster f\u00FCr Stadt: ");
 		i18n.setProperty("ui.jface.configuration.pages."+id+":regexp.areacode:label:de", "Muster f\u00FCr Vorwahl: ");
 		i18n.setProperty("ui.jface.configuration.pages."+id+":regexp.phone:label:de", "Muster f\u00FCr Rufnummer: ");
+		i18n.setProperty("ui.jface.configuration.pages."+id+":encoding:label:de", "Zeichenkodierung: ");
 		
 		Properties i18n_en = new Properties();
 		i18n_en.setProperty("repository."+id+":title:label:en", (String) data.get("name"));
@@ -133,6 +135,7 @@ public class GosWizard extends AbstractWizard {
 		i18n_en.setProperty("ui.jface.configuration.pages."+id+":regexp.city:label:en", "Pattern for city: ");
 		i18n_en.setProperty("ui.jface.configuration.pages."+id+":regexp.areacode:label:en", "Pattern for areacode: ");
 		i18n_en.setProperty("ui.jface.configuration.pages."+id+":regexp.phone:label:en", "Pattern for number: ");
+		i18n_en.setProperty("ui.jface.configuration.pages."+id+":encoding:label:en", "Encoding: ");
 
 		
 		// create jam.zip archive

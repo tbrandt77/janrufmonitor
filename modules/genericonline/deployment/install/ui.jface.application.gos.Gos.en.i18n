@@ -18,6 +18,7 @@ ui.jface.application.gos.wizard.pages.GosPage\:area\:label\:en=Pattern for areac
 ui.jface.application.gos.wizard.pages.GosPage\:number\:label\:en=Pattern for number:
 ui.jface.application.gos.wizard.pages.GosPage\:intarea\:label\:en=International area code:
 ui.jface.application.gos.wizard.pages.GosPage\:locale\:label\:en=Locale:
+ui.jface.application.gos.wizard.pages.GosPage\:encoding\:label\:en=Encoding:
 ui.jface.application.gos.wizard.pages.GosPage\:testnumber\:label\:en=Phonenumber for testing: 
 ui.jface.application.gos.wizard.pages.GosPage\:test\:label\:en=Execute test
 ui.jface.application.gos.wizard.pages.GosPage\:notidentified\:label\:en=The phonenumber {%1} was not identified. Either the number is not available at this Directory Assistance service or the patterns are wrong.

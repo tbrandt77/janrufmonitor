@@ -18,6 +18,7 @@ ui.jface.application.gos.wizard.pages.GosPage\:area\:label\:de=Muster f\u00FCr V
 ui.jface.application.gos.wizard.pages.GosPage\:number\:label\:de=Muster f\u00FCr Rufnummer:
 ui.jface.application.gos.wizard.pages.GosPage\:intarea\:label\:de=L\u00E4ndercode:
 ui.jface.application.gos.wizard.pages.GosPage\:locale\:label\:de=Landessprache:
+ui.jface.application.gos.wizard.pages.GosPage\:encoding\:label\:de=Zeichenkodierung:
 ui.jface.application.gos.wizard.pages.GosPage\:testnumber\:label\:de=Rufnummer zum Testen eingeben: 
 ui.jface.application.gos.wizard.pages.GosPage\:test\:label\:de=Test durchf\u00FChren
 ui.jface.application.gos.wizard.pages.GosPage\:notidentified\:label\:de=Die Rufnummer {%1} wurde nicht identifiziert. Entweder ist die Nummer nicht in dem Telefonauskunftsdienst eingetragen oder die angegebenen Erkennungsmuster sind falsch.

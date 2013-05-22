@@ -129,6 +129,7 @@ public class GosPage extends AbstractPage {
 	private Text number;
 	private Text intarea;
 	private Combo locale;
+	private Combo encoding;
 
 	public GosPage(String name) {
 		super(GosPage.class.getName());
@@ -414,6 +415,27 @@ public class GosPage extends AbstractPage {
 	      }
 	    });
 	    
+	    
+	    l = new Label(co, SWT.LEFT);
+	    l.setText(this.m_i18n.getString(this.getNamespace(), "encoding", "label", this.m_language));
+	    String[] encodings = new String[] {
+	    	"ISO-8859-1",
+	    	"UTF-8",
+	    	"UTF-16"
+	    };
+	    encoding = new Combo(co, SWT.READ_ONLY);
+	    encoding.setItems(encodings);
+	    for (int i = 0; i < encodings.length; i++) {
+	    	encoding.setData(encodings[i], encodings[i]);
+	    }
+	    encoding.select(0);
+	    
+	    locale.addModifyListener(new ModifyListener() {
+	      public void modifyText(ModifyEvent event) {
+	        setPageComplete(isComplete());
+	      }
+	    });
+	    
 	    Composite dco2 = new Composite(co, SWT.NONE);
 		dco2.setLayout(new GridLayout(1, false));
 		gd = new GridData();
@@ -485,6 +507,7 @@ public class GosPage extends AbstractPage {
 				config.setProperty("regexp.phone", number.getText());
 				config.setProperty("intareacode", intarea.getText());
 				config.setProperty("locale", ((Locale) locale.getData(locale.getText())).toString());
+				config.setProperty("encoding", encoding.getText());
 				config.setProperty("icon", ffe.getStringValue());
 				
 				TestWebCallerManager twcm = new TestWebCallerManager(config);
@@ -587,6 +610,7 @@ public class GosPage extends AbstractPage {
 		m.put("intarea", intarea.getText());
 		m.put("icon", ffe.getStringValue());
 		m.put("locale", ((Locale) locale.getData(locale.getText())).toString());
+		m.put("encoding", encoding.getText());
 		
 		return m;
 	}
