@@ -14,6 +14,7 @@ monitor.FritzBoxMonitor\:boxdate\:value=dd.MM.yy HH:mm
 monitor.FritzBoxMonitor\:activemonitor\:value=false
 monitor.FritzBoxMonitor\:activemonitor\:type=boolean
 monitor.FritzBoxMonitor\:boxclickdial\:value=50
+monitor.FritzBoxMonitor\:lastdialednumbers\:value=10
 monitor.FritzBoxMonitor\:outgoing\:value=true
 monitor.FritzBoxMonitor\:outgoing\:type=boolean
 monitor.FritzBoxMonitor\:retrymax\:value=5

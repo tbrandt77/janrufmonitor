@@ -173,8 +173,9 @@ public class DialerDialog extends TitleAreaDialog implements FritzBoxConst {
 			String dial = Formatter.getInstance(getRuntime()).toCallablePhonenumber(dialBox.getText());
 			
 			if (dials!=null) {
-				if (dials.size()>=10) {
-					dials = dials.subList(0, 9);
+				int maxnums = Integer.parseInt(this.getRuntime().getConfigManagerFactory().getConfigManager().getProperty(FritzBoxMonitor.NAMESPACE, FritzBoxConst.CFG_LAST_DIALED_NUMBERS));
+				if (dials.size()>=maxnums) {
+					dials = dials.subList(0, maxnums-1);
 				}
 				dials.add(0, dial);
 				this.setLast10DialedNumbers(dials);
