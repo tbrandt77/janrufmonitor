@@ -1,12 +1,15 @@
 package de.janrufmonitor.ui.jface.application.dialer;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-import org.eclipse.jface.dialogs.MessageDialog;
+//import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
@@ -20,7 +23,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 
 import de.janrufmonitor.exception.Message;
 import de.janrufmonitor.exception.PropagationFactory;
@@ -33,7 +35,7 @@ import de.janrufmonitor.fritzbox.firmware.exception.DoCallException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxLoginException;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
-import de.janrufmonitor.ui.swt.DisplayManager;
+//import de.janrufmonitor.ui.swt.DisplayManager;
 import de.janrufmonitor.ui.swt.SWTImageManager;
 import de.janrufmonitor.util.formatter.Formatter;
 import de.janrufmonitor.util.string.StringUtils;
@@ -47,9 +49,10 @@ public class DialerDialog extends TitleAreaDialog implements FritzBoxConst {
 	private IRuntime m_runtime;
 	private Logger m_logger;
 	
-	private Text dialBox;
+	private Combo dialBox;
 	private Combo dialPrefix;
 	private String number;
+	private List dials;
 
 	public DialerDialog(Shell shell) {
 		this(shell, null);		
@@ -58,6 +61,7 @@ public class DialerDialog extends TitleAreaDialog implements FritzBoxConst {
 	public DialerDialog(Shell shell, String number) {
 		super(shell);
 		this.number = number;
+		this.dials = this.getLast10DialedNumbers();
 		this.m_logger = LogManager.getLogManager().getLogger(IJAMConst.DEFAULT_LOGGER);
 	}
 	
@@ -110,9 +114,20 @@ public class DialerDialog extends TitleAreaDialog implements FritzBoxConst {
     		this.getI18nManager().getString(this.getNamespace(), "number", "description", this.getLanguage())
 	    );
 	    
-	    dialBox = new Text(composite, SWT.BORDER);
+	    dialBox = new Combo(composite, SWT.DROP_DOWN);
 	    dialBox.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-	    dialBox.setText(this.number == null ? "" : number);   
+	    String[] ldials = new String[(this.number != null ? (dials.size()+1) : dials.size())];
+	    if (this.number!=null) ldials[0] = this.number;
+	    int k = 0;
+	    if (this.number!=null) k = 1;
+	    for (int i=(this.number != null ? 1 : 0); i<ldials.length; i++) {
+	    	ldials[i] = (String) dials.get(i-k);
+	    }
+	    
+	    dialBox.setItems(ldials);
+	    dialBox.select(0);	 
+	    
+	    //dialBox.setText(this.number == null ? "" : number);   
 	    dialBox.addKeyListener(new KeyAdapter() {
 	    	public void keyReleased(KeyEvent e) {
 	    		getButton(0).setEnabled((dialBox!=null && dialBox.getText().trim().length()>0));
@@ -157,6 +172,14 @@ public class DialerDialog extends TitleAreaDialog implements FritzBoxConst {
 		if (dialBox!=null) {
 			String dial = Formatter.getInstance(getRuntime()).toCallablePhonenumber(dialBox.getText());
 			
+			if (dials!=null) {
+				if (dials.size()>=10) {
+					dials = dials.subList(0, 9);
+				}
+				dials.add(0, dial);
+				this.setLast10DialedNumbers(dials);
+			}
+			
 			// added 2010/03/06: check for dial prefix for outgoing calls
 			if (this.getRuntime().getConfigManagerFactory().getConfigManager().getProperty(IJAMConst.GLOBAL_NAMESPACE, IJAMConst.GLOBAL_DIAL_PREFIX).length()>0) {
 				if (this.m_logger.isLoggable(Level.INFO))
@@ -176,11 +199,11 @@ public class DialerDialog extends TitleAreaDialog implements FritzBoxConst {
 				
 				text = StringUtils.replaceString(text, "{%1}", dial);
 				
-				if (MessageDialog.openConfirm(
-						new Shell(DisplayManager.getDefaultDisplay()),
-						this.getI18nManager().getString("ui.jface.application.fritzbox.action.ClickDialAction", "success", "label", this.getLanguage()),
-						text)
-					) {
+//				if (MessageDialog.openConfirm(
+//						new Shell(DisplayManager.getDefaultDisplay()),
+//						this.getI18nManager().getString("ui.jface.application.fritzbox.action.ClickDialAction", "success", "label", this.getLanguage()),
+//						text)
+//					) {
 
 					Properties config = this.getRuntime().getConfigManagerFactory().getConfigManager().getProperties(FritzBoxMonitor.NAMESPACE);
 					FirmwareManager fwm = FirmwareManager.getInstance();
@@ -225,7 +248,7 @@ public class DialerDialog extends TitleAreaDialog implements FritzBoxConst {
 								e));
 					}
 					
-				}
+			//	}
 			
 			}
 		}
@@ -252,6 +275,33 @@ public class DialerDialog extends TitleAreaDialog implements FritzBoxConst {
 				);
 		}
 		return this.m_language;
+	}
+	
+	private List getLast10DialedNumbers() {
+		List l = new ArrayList();
+		String dialss = this.getRuntime().getConfigManagerFactory().getConfigManager().getProperty(NAMESPACE, "lastdials");
+		if (dialss!=null && dialss.length()>0) {
+			StringTokenizer st = new StringTokenizer(dialss, "$");
+			String num = null;
+			while (st.hasMoreTokens()) {
+				num = st.nextToken();
+				if (!l.contains(num))
+					l.add(num);
+			}
+		}
+		return l;
+	}
+	
+	private void setLast10DialedNumbers(List l) {
+		if (l==null) return;
+		StringBuffer sb = new StringBuffer();
+		for (int i=0;i<l.size();i++) {
+			sb.append(l.get(i));
+			if (i<l.size()-1)
+				sb.append("$");
+		}
+		this.getRuntime().getConfigManagerFactory().getConfigManager().setProperty(NAMESPACE, "lastdials", sb.toString());
+		this.getRuntime().getConfigManagerFactory().getConfigManager().saveConfiguration();
 	}
 	
 	public IRuntime getRuntime() {
