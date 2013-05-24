@@ -365,10 +365,10 @@ public class GoogleContactsProxy implements IGoogleContactsConst {
 					if (c instanceof IMultiPhoneCaller) {
 						List phones = ((IMultiPhoneCaller)c).getPhonenumbers();
 						IPhonenumber pn = null;
+						if (category!=null)
+							this.m_dbh.delete(c.getUUID());
 						for (int k=0;k<phones.size();k++) {
 							pn = (IPhonenumber) phones.get(k);
-							if (category!=null)
-								this.m_dbh.delete(c.getUUID());
 							this.m_dbh.insert(c.getUUID(), pn.getIntAreaCode(), pn.getAreaCode(), pn.getCallNumber());
 						}
 					} else {
@@ -441,9 +441,9 @@ public class GoogleContactsProxy implements IGoogleContactsConst {
 					if (c instanceof IMultiPhoneCaller) {
 						List phones = ((IMultiPhoneCaller)c).getPhonenumbers();
 						IPhonenumber pn = null;
+						this.m_dbh.delete(c.getUUID());
 						for (int k=0;k<phones.size();k++) {
 							pn = (IPhonenumber) phones.get(k);
-							this.m_dbh.delete(c.getUUID());
 							this.m_dbh.insert(c.getUUID(), pn.getIntAreaCode(), pn.getAreaCode(), pn.getCallNumber());
 						}
 					} else {
@@ -452,6 +452,7 @@ public class GoogleContactsProxy implements IGoogleContactsConst {
 						this.m_dbh.insert(c.getUUID(), pn.getIntAreaCode(), pn.getAreaCode(), pn.getCallNumber());
 					}
 				}
+				this.m_dbh.commit();
 			} catch (SQLException e) {
 				throw new GoogleContactsException(e.getMessage(), e);
 			}
@@ -678,11 +679,14 @@ public class GoogleContactsProxy implements IGoogleContactsConst {
 			
 			if (m.contains(IJAMConst.ATTRIBUTE_NAME_EMAIL)) {
 				List emaillist = entry.getEmailAddresses();
+				String rel = Email.Rel.HOME;
 				if (emaillist.size()>0) {
-					entry.getEmailAddresses().remove(0);
+					Email eold = entry.getEmailAddresses().remove(0);
+					rel = eold.getRel();
 				}
 				Email email = new Email();
 				email.setAddress(m.get(IJAMConst.ATTRIBUTE_NAME_EMAIL).getValue());
+				email.setRel(rel);
 				entry.addEmailAddress(email);
 			}
 			
@@ -779,9 +783,9 @@ public class GoogleContactsProxy implements IGoogleContactsConst {
 					if (caller instanceof IMultiPhoneCaller) {
 						List phones = ((IMultiPhoneCaller)caller).getPhonenumbers();
 						IPhonenumber p = null;
+						this.m_dbh.delete(caller.getUUID());
 						for (int k=0;k<phones.size();k++) {
 							p = (IPhonenumber) phones.get(k);
-							this.m_dbh.delete(caller.getUUID());
 							this.m_dbh.insert(caller.getUUID(), p.getIntAreaCode(), p.getAreaCode(), p.getCallNumber());
 						}
 					} else {

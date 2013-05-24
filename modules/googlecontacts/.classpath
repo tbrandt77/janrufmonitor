@@ -9,8 +9,8 @@
 	<classpathentry kind="var" path="JAM_LIB/kernel/allui/jface.jar"/>
 	<classpathentry kind="var" path="JAM_LIB/kernel/allui/runtime.jar"/>
 	<classpathentry kind="var" path="JAM_LIB/modules/gdata-client-1.0.jar"/>
-	<classpathentry kind="var" path="JAM_LIB/modules/gdata-contacts-2.0.jar"/>
 	<classpathentry kind="var" path="JAM_LIB/modules/gdata-core-1.0.jar"/>
+	<classpathentry kind="var" path="JAM_LIB/modules/gdata-contacts-3.0.jar"/>
 	<classpathentry kind="var" path="JAM_LIB/modules/google-collect-1.0.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

@@ -11,8 +11,8 @@
         <and>
             <available file="${jam.modules.extlib}/gdata-core-1.0.jar"/>
             <available file="${jam.modules.extlib}/gdata-client-1.0.jar"/>
-            <available file="${jam.modules.extlib}/gdata-contacts-2.0.jar"/>
-            <available file="${jam.modules.extlib}/google-collect-1.0.jar"/>
+            <available file="${jam.modules.extlib}/gdata-contacts-3.0.jar"/>
+	    <available file="${jam.modules.extlib}/google-collect-1.0.jar"/>
         </and>
       </condition>
     </target>
@@ -22,7 +22,7 @@
      
      <get dest="${jam.modules.extlib}/gdata-core-1.0.jar" src="http://downloads.janrufmonitor.de/dev/5.0/lib/modules/gdata-core-1.0.jar"/>
      <get dest="${jam.modules.extlib}/gdata-client-1.0.jar" src="http://downloads.janrufmonitor.de/dev/5.0/lib/modules/gdata-client-1.0.jar"/>
-     <get dest="${jam.modules.extlib}/gdata-contacts-2.0.jar" src="http://downloads.janrufmonitor.de/dev/5.0/lib/modules/gdata-contacts-2.0.jar"/>
+     <get dest="${jam.modules.extlib}/gdata-contacts-3.0.jar" src="http://downloads.janrufmonitor.de/dev/5.0/lib/modules/gdata-contacts-3.0.jar"/>
      <get dest="${jam.modules.extlib}/google-collect-1.0.jar" src="http://downloads.janrufmonitor.de/dev/5.0/lib/modules/google-collect-1.0.jar"/>
   </target>
 
@@ -52,7 +52,7 @@
       <copy todir="${jam.modules.lib.dir}/${jam.mod.name}">
         <fileset file="${jam.modules.extlib}/gdata-core-1.0.jar"/>
         <fileset file="${jam.modules.extlib}/gdata-client-1.0.jar"/>
-        <fileset file="${jam.modules.extlib}/gdata-contacts-2.0.jar"/>
+        <fileset file="${jam.modules.extlib}/gdata-contacts-3.0.jar"/>
         <fileset file="${jam.modules.extlib}/google-collect-1.0.jar"/>
       </copy>
     </target>
