@@ -281,7 +281,7 @@ public class TrayIcon extends AbstractReceiverConfigurableService implements Com
 		setItemChecked("Activator", started);
 	}
 
-	public void invertImage() {	
+	public void setIconStateInactive() {	
 		new SWTExecuter() {
 			protected void execute() {
 				if (trayItem==null || trayItem.isDisposed ()) return;
@@ -294,7 +294,7 @@ public class TrayIcon extends AbstractReceiverConfigurableService implements Com
 		}.start();
 	}
 	
-	public void revertImage() {
+	public void setIconStateActive() {
 		new SWTExecuter() {
 			protected void execute() {
 				if (trayItem==null || trayItem.isDisposed ()) return;
