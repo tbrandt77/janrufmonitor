@@ -1,5 +1,7 @@
 package de.janrufmonitor.ui.jface.configuration.pages;
 
+import java.lang.reflect.Method;
+
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
@@ -11,6 +13,7 @@ import de.janrufmonitor.fritzbox.FritzBoxMonitor;
 import de.janrufmonitor.fritzbox.firmware.FirmwareManager;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
+import de.janrufmonitor.service.IService;
 import de.janrufmonitor.ui.jface.configuration.AbstractFieldEditorConfigPage;
 import de.janrufmonitor.ui.jface.configuration.IConfigPage;
 import de.janrufmonitor.ui.jface.configuration.controls.BooleanFieldEditor;
@@ -183,13 +186,24 @@ public class FritzBoxVoip extends AbstractFieldEditorConfigPage {
 		statusl.setText(this.m_i18n.getString(this.getNamespace(), "status", "label", this.m_language));
 
 		Label status_observer = new Label(this.getFieldEditorParent(), SWT.NULL);
-		status_observer.setText(this.m_i18n.getString(this.getNamespace(), "statuso", "label", this.m_language)+((fbMonitor!=null && fbMonitor.isAvailable()) ? "OK" : "---"));
+		status_observer.setText(this.m_i18n.getString(this.getNamespace(), "statuso", "label", this.m_language)+((fbMonitor!=null && fbMonitor.isStarted()) ? "OK" : "---"));
 		new Label(this.getFieldEditorParent(), SWT.NULL);
 		
 		Label status_sync = new Label(this.getFieldEditorParent(), SWT.NULL);
 		status_sync.setText(this.m_i18n.getString(this.getNamespace(), "statuss", "label", this.m_language)+(FirmwareManager.getInstance().isLoggedIn() ? "OK" : "---"));
 		new Label(this.getFieldEditorParent(), SWT.NULL);
 		
+		if (fbMonitor!=null && fbMonitor.isAvailable() && FirmwareManager.getInstance().isLoggedIn()) {
+			// set icon to colored
+			IService tray = this.getRuntime().getServiceFactory().getService("TrayIcon");
+			try {
+				Method m = tray.getClass().getMethod("setIconStateActive", new Class[] {});
+				if (m!=null) {
+					m.invoke(tray, new Object[] {});
+				}
+			} catch (Exception ex) {
+			}
+		}
 		
 	}
 }
