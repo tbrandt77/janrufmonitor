@@ -193,11 +193,23 @@ public class FritzBoxVoip extends AbstractFieldEditorConfigPage {
 		status_sync.setText(this.m_i18n.getString(this.getNamespace(), "statuss", "label", this.m_language)+(FirmwareManager.getInstance().isLoggedIn() ? "OK" : "---"));
 		new Label(this.getFieldEditorParent(), SWT.NULL);
 		
-		if (fbMonitor!=null && fbMonitor.isAvailable() && FirmwareManager.getInstance().isLoggedIn()) {
+		if (fbMonitor!=null && fbMonitor.isStarted() && FirmwareManager.getInstance().isLoggedIn()) {
 			// set icon to colored
 			IService tray = this.getRuntime().getServiceFactory().getService("TrayIcon");
 			try {
 				Method m = tray.getClass().getMethod("setIconStateActive", new Class[] {});
+				if (m!=null) {
+					m.invoke(tray, new Object[] {});
+				}
+			} catch (Exception ex) {
+			}
+		}
+		
+		if ((fbMonitor==null || !fbMonitor.isStarted()) && !FirmwareManager.getInstance().isLoggedIn()) {
+			// set icon to colored
+			IService tray = this.getRuntime().getServiceFactory().getService("TrayIcon");
+			try {
+				Method m = tray.getClass().getMethod("setIconStateInactive", new Class[] {});
 				if (m!=null) {
 					m.invoke(tray, new Object[] {});
 				}

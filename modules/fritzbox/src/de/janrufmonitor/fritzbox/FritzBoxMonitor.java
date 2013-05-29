@@ -203,8 +203,8 @@ public class FritzBoxMonitor implements IMonitor, IConfigurable, FritzBoxConst {
 						"connect",	
 						new String[] {Integer.toString(getRetryMaxValue() - retryCount)},
 						e));
+				retryCount++;
 			} 
-			retryCount++;
 			return false;
 		}
 		
