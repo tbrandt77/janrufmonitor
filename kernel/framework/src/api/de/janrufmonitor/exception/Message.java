@@ -45,7 +45,7 @@ public class Message {
 	}
 	
 	public Message(String level, String namespace, String messageID, String[] variables, Throwable t) {
-		this(level, namespace, messageID, new String[0], t, false);
+		this(level, namespace, messageID, variables, t, false);
 	}
 	
 	public Message(String level, String namespace, String messageID, String[] variables, Throwable t, boolean setErrorIcon) {
