@@ -6,7 +6,7 @@ service.Journaling\:title\:label\:en=Prtotcol service
 
 service.QuickIdentify\:title\:label\:en=Identification service
 
-
+service.update.UpdateManager\:title\:label\:en=Update Manager
 service.update.UpdateManager\:nooverview\:label\:en=The Update list is empty.
 service.update.UpdateManager\:ioexception\:label\:en=An error occured during requesting the update service. Make sure that your internet connection is available for requesting.
 

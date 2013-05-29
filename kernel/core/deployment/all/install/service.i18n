@@ -6,7 +6,7 @@ service.Journaling\:title\:label\:de=Protokollierungsdienst
 
 service.QuickIdentify\:title\:label\:de=Identifizierung
 
-
+service.update.UpdateManager\:title\:label\:de=Update Manager
 service.update.UpdateManager\:nooverview\:label\:de=Die Liste der Updates ist leer.
 service.update.UpdateManager\:ioexception\:label\:de=Beim Abfragen der Update-Liste ist ein Fehler aufgetreten. \u00DCberpr\u00FCfen Sie die Internet-Verbindung und stellen Sie sicher, dass jAnrufmonitor darauf zugreifen kann.
 
