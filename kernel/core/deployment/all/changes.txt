@@ -1,5 +1,28 @@
 ﻿===
 
+jAnrufmonitor 5.0.41 (01.07.2013)
+---------------------------------
+
+Neu:
+- ...
+
+Bugfix:
+- Dialog: Größenberechnung des Dialoges korrigiert
+- Sprachdatei: Session is closed Fehler behoben
+- Tray: Platzhalter werden bei Info- und Warnhinweisen nicht ersetzt
+- Console: NoClassDefFoundError nach einem Modul-Update
+- Update-Manager: Tray Icon zeigt keinen Komponententitel an
+
+Module:
+- Fritz!Box-Überwachung: Wählhilfe speichert die letzten 10 angwählten Rufnummern
+- Fritz!Box-Überwachung: Änderungen am Zähler für Wiederverbindungen
+- Fritz!Box-Überwachung: Icon Status bei eingeschränkter Funktion wird falsch gesetzt
+- Telefonauskunft Modul Assistent: Zeichenkodierung hinzugefügt
+- Google Kontakte: Auf Google Contacts API v3 umgestellt
+- Google Kontakte: Identifizierungsproblem bei Kontaktem mit mehreren Rufnummern behoben
+
+===
+
 jAnrufmonitor 5.0.40 (01.06.2013)
 ---------------------------------
 
