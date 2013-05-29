@@ -9,7 +9,7 @@ ui.jface.application.dialog.Dialog\:msn_label\:label\:de=MSN:
 ui.jface.application.dialog.Dialog\:caller_label\:label\:de=Anrufer: 
 ui.jface.application.dialog.Dialog\:reject\:label\:de=Abweisen
 ui.jface.application.dialog.Dialog\:rejected\:label\:de=Abgewiesen...
-ui.jface.application.dialog.Dialog\:assign\:label\:de=Als Kontakt speichern...
+ui.jface.application.dialog.Dialog\:assign\:label\:de=Kontakt speichern
 ui.jface.application.dialog.Dialog\:close\:label\:de=Schlie\u00DFen
 
 ui.jface.application.editor.Editor\:label\:label\:de=Kontakte

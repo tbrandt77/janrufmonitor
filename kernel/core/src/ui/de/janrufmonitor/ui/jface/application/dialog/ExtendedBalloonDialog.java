@@ -113,6 +113,7 @@ public class ExtendedBalloonDialog extends AbstractBalloonDialog implements IEve
 	private static String CFG_CUSTOM_DIALOG_POSTFIX_CLIR = ".clir";
 	
 	private static int m_instance_count = -1;
+	private int m_columnCount = 3;
 	
 	public ExtendedBalloonDialog(Properties config, ICall call) {
 		super(DisplayManager.getDefaultDisplay(), SWT.ON_TOP | SWT.CLOSE | SWT.TITLE);
@@ -256,7 +257,8 @@ public class ExtendedBalloonDialog extends AbstractBalloonDialog implements IEve
 		}
 		
 		String[][] matrix = m.getMatrix();
-		c.setLayout(new GridLayout(m.getColCount(matrix), false));
+		this.m_columnCount = m.getColCount(matrix);
+		c.setLayout(new GridLayout(this.m_columnCount, false));
 		int rowCount = m.getRowCount(matrix);
 		int colCount = m.getColCount(matrix);
 		for (int i=0;i<rowCount;i++) {
@@ -417,7 +419,7 @@ public class ExtendedBalloonDialog extends AbstractBalloonDialog implements IEve
 	    // Buttons
 	    Composite buttonBar = new Composite(c, SWT.NONE);
 	    GridData gd = new GridData();
-	    gd.horizontalSpan = 2;
+	    gd.horizontalSpan = this.m_columnCount;
 	    
 	    // check for plugins
 	    List plugins = this.getPlugins(this.getConfiguration().getProperty("pluginlist", ""));
