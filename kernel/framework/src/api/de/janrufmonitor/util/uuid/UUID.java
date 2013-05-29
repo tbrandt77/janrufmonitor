@@ -33,8 +33,8 @@ public class UUID implements Serializable, Comparable {
         try {
             internetAddress = InetAddress.getLocalHost().getAddress();
         } catch (Exception exc) {
-            System.out.println("UUID: Can't get host address: " + exc);
-            exc.printStackTrace();
+            //System.out.println("UUID: Can't get host address: " + exc);
+            //exc.printStackTrace();
         }
         try {
 
@@ -49,7 +49,7 @@ public class UUID implements Serializable, Comparable {
             uuidFile = uuidFile + "/UUID";
             previousUUID = getUUIDState();
         } catch (Exception exc) {
-            exc.printStackTrace();
+            //exc.printStackTrace();
         }
     }
 
@@ -341,7 +341,7 @@ public class UUID implements Serializable, Comparable {
                 s.close();
                 nextSave = aUUID.getTime() + 10 * 10 * 1000 * 1000;
             } catch (Exception exc) {
-                System.err.println("UUID: Can't save UUID state: " + exc);
+                //System.err.println("UUID: Can't save UUID state: " + exc);
             }
         }
     }
