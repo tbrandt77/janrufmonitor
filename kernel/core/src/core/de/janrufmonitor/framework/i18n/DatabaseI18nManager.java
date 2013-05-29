@@ -61,9 +61,12 @@ public class DatabaseI18nManager implements II18nManager, IConfigurable {
 		}
 
 		public void disconnect() throws SQLException {
-			Statement st = m_con.createStatement();
-			st.execute("SHUTDOWN");
-			super.disconnect();
+			try {
+				Statement st = m_con.createStatement();
+				st.execute("SHUTDOWN");
+			} finally {
+				super.disconnect();
+			}
 		}
 
 		public void commit() throws SQLException {
@@ -207,7 +210,25 @@ public class DatabaseI18nManager implements II18nManager, IConfigurable {
 	        	}
 	            return (value == null ? parameter : value);
 			} catch (SQLException e) {
-				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+				this.m_logger.log(Level.WARNING, e.getMessage(), e);
+				// added 2013/05/29: due to "session is closed" error try to reconnect to i18n DB
+				try {
+					if (this.m_dh!=null)
+						try {
+							this.m_dh.disconnect();
+						} catch (SQLException ex) {	}
+						
+					this.m_dh.connect();
+					String value = this.m_dh.getI18nEntry(namespace, parameter, identifier, language);
+					if (value!=null && value.length()==0) {
+		        		value = this.m_dh.getI18nEntry(namespace, parameter, identifier, this.m_configuration.getProperty(this.CONFIG_LANG));
+		        	}
+		            return (value == null ? parameter : value);
+				} catch (SQLException ex) {
+					this.m_logger.log(Level.SEVERE, ex.getMessage(), ex);
+				} catch (ClassNotFoundException ex) {
+					this.m_logger.log(Level.SEVERE, ex.getMessage(), ex);
+				}
 			}
         }
         this.m_logger.warning("Identifier {" + identifier + "} is not valid.");
