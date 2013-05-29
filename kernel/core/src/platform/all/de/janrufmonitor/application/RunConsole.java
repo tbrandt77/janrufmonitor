@@ -55,9 +55,15 @@ public class RunConsole implements IEventSender, IEventReceiver {
 		System.out.println("===================================");
 		System.out.println("");
 		
-		start();
-		help();
-		prompt();
+		try {
+			start();
+			help();
+			prompt();
+		} catch (NoClassDefFoundError e) {
+			System.out.println("Updates have been installed. jAnrufmonitor needs to be restarted.");
+			System.out.println("... have a nice day :-)");
+			System.exit(0);
+		}
 		while (true) {
 			try {
 				String lineToBeSent = input.readLine();
