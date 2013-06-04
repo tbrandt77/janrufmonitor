@@ -118,6 +118,7 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 		this.m_port = box_port;
 		this.m_password = box_password;
 		this.m_language = "de"; // default 
+		this.m_user = box_user;
 	}
 
 	public AbstractFritzBoxFirmware(String box_address, String box_port, String box_password) {
