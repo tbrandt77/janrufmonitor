@@ -1,2 +1,2 @@
 repository.LdapRepository\:title\:label\:de=LDAP-basiertes Adressbuch
-repository.LdapRepository\:loginerror\:label\:de=Die Anmeldung am LDAP-Server ist fehlgeschlagen. Prüfen Sie die Anmeldeinformationen unter Einstellungen -> Telefonbücher -> LDAP-basiertes Adressbuch und stellen Sie sicher, dass der LDAP-Server erreichbar ist.
+repository.LdapRepository\:loginerror\:label\:de=Die Anmeldung am LDAP-Server ist fehlgeschlagen. Pr\u00FCfen Sie die Anmeldeinformationen unter Einstellungen -> Telefonb\u00FCcher -> LDAP-basiertes Adressbuch und stellen Sie sicher, dass der LDAP-Server erreichbar ist.

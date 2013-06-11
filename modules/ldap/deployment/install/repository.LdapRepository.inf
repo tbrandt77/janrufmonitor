@@ -8,6 +8,8 @@ repository.LdapRepository\:maxresults\:value=200
 repository.LdapRepository\:maxresults\:type=integer
 repository.LdapRepository\:port\:value=389
 repository.LdapRepository\:port\:type=integer
+repository.LdapRepository\:scope\:value=1
+repository.LdapRepository\:scope\:type=integer
 repository.LdapRepository\:server\:value=localhost
 repository.LdapRepository\:basedn\:value=ou=People,dc=company,dc=com
 repository.LdapRepository\:user\:value=cn=Administrator

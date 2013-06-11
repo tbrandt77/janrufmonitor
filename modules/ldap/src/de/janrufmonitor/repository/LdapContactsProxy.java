@@ -64,7 +64,7 @@ public class LdapContactsProxy implements ILdapRepositoryConst {
             
             LDAPSearchResults searchResults =
             	lc.search(getBaseDN(),
-            				LDAPConnection.SCOPE_ONE,
+            				getScope(),
             				query,
                             null,       // return all attributes
                             false, 		// return attrs and values
@@ -320,6 +320,15 @@ public class LdapContactsProxy implements ILdapRepositoryConst {
 						CFG_LDAP_PORT);
 		return ((value != null && value.length() > 0) ? Integer.parseInt(value)
 				: LDAPConnection.DEFAULT_PORT);
+	}
+	
+	private int getScope() {
+		String value = getRuntime().getConfigManagerFactory()
+				.getConfigManager().getProperty(
+						LdapRepository.NAMESPACE,
+						CFG_LDAP_SCOPE);
+		return ((value != null && value.length() > 0) ? Integer.parseInt(value)
+				: LDAPConnection.SCOPE_ONE);
 	}
 
 }

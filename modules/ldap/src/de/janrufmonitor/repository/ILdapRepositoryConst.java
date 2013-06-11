@@ -10,5 +10,6 @@ public interface ILdapRepositoryConst {
 	public static final String CFG_LDAP_MAXRESULTS = "maxresults";
 	public static final String CFG_LDAP_NUMBERFORMAT = "numformat";
 	public static final String CFG_LDAP_KEEPEXT = "keepextension";
+	public static final String CFG_LDAP_SCOPE = "scope";
 	
 }
