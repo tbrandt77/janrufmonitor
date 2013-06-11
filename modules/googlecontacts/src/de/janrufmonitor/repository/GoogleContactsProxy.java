@@ -1125,60 +1125,32 @@ public class GoogleContactsProxy implements IGoogleContactsConst {
 		IAttributeMap m = getRuntime().getCallerFactory().createAttributeMap();
 		if (pa == null)
 			return m;
-
-		String address = pa.getFormattedAddress().getValue();
-		String[] lines = address.split("\n");
-		if (lines.length == 3) {
-			String[] street = splitStreet(lines[0]);
+		
+		if (pa.hasCity()) {
+			m.add(getRuntime().getCallerFactory().createAttribute(
+					IJAMConst.ATTRIBUTE_NAME_CITY, pa.getCity().getValue()));
+		}
+		
+		if (pa.hasPostcode()) {
+			m.add(getRuntime().getCallerFactory().createAttribute(
+					IJAMConst.ATTRIBUTE_NAME_POSTAL_CODE, pa.getPostcode().getValue()));
+		}
+		
+		if (pa.hasStreet()) {
+			String[] street = splitStreet(pa.getStreet().getValue());
 			m.add(getRuntime().getCallerFactory().createAttribute(
 					IJAMConst.ATTRIBUTE_NAME_STREET, street[0]));
+			
 			m.add(getRuntime().getCallerFactory().createAttribute(
 					IJAMConst.ATTRIBUTE_NAME_STREET_NO, street[1]));
-			street = splitCity(lines[1]);
-			m.add(getRuntime().getCallerFactory().createAttribute(
-					IJAMConst.ATTRIBUTE_NAME_POSTAL_CODE, street[0]));
-			m.add(getRuntime().getCallerFactory().createAttribute(
-					IJAMConst.ATTRIBUTE_NAME_CITY, street[1]));
-			m.add(getRuntime().getCallerFactory().createAttribute(
-					IJAMConst.ATTRIBUTE_NAME_COUNTRY, lines[2]));
 		}
-		if (lines.length == 2) {
-			String[] street = splitStreet(lines[0]);
+		
+		if (pa.hasCountry()) {
 			m.add(getRuntime().getCallerFactory().createAttribute(
-					IJAMConst.ATTRIBUTE_NAME_STREET, street[0]));
-			m.add(getRuntime().getCallerFactory().createAttribute(
-					IJAMConst.ATTRIBUTE_NAME_STREET_NO, street[1]));
-			street = splitCity(lines[1]);
-			m.add(getRuntime().getCallerFactory().createAttribute(
-					IJAMConst.ATTRIBUTE_NAME_POSTAL_CODE, street[0]));
-			m.add(getRuntime().getCallerFactory().createAttribute(
-					IJAMConst.ATTRIBUTE_NAME_CITY, street[1]));
+					IJAMConst.ATTRIBUTE_NAME_COUNTRY, pa.getCountry().getValue()));
 		}
-		if (lines.length == 1) {
-			m.add(getRuntime().getCallerFactory().createAttribute(
-					IJAMConst.ATTRIBUTE_NAME_CITY, lines[0]));
-		}
-
+		
 		return m;
-	}
-	
-	private String[] splitCity(String str) {
-		String[] t = new String[2];
-		if (str.trim().indexOf(" ")<0) {
-			t[0] = "";
-			t[1] = str.trim();
-			return t;
-		}	
-		String pc = str.trim().substring(0, str.trim().indexOf(" ")).trim();
-		if (pc.matches("[\\d]+")) {
-			t[0] = str.trim().substring(0, str.trim().indexOf(" ")).trim(); 
-			t[1] = str.trim().substring(str.trim().indexOf(" ")).trim();
-		} else {
-			t[0] = "";
-			t[1] = str.trim();
-		}
-
-		return t;
 	}
 	
 	private String[] splitStreet(String str) {
