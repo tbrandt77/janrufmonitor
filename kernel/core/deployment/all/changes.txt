@@ -20,6 +20,8 @@ Module:
 - Telefonauskunft Modul Assistent: Zeichenkodierung hinzugefügt
 - Google Kontakte: Auf Google Contacts API v3 umgestellt
 - Google Kontakte: Identifizierungsproblem bei Kontaktem mit mehreren Rufnummern behoben
+- Erweiterung zur Google Maps Lokalisierung: Schreibfehler in Konfigurationsdialog beseitigt
+- LDAP-basiertes Adressbuch: Scope-Suche hinzugefügt
 
 ===
 
