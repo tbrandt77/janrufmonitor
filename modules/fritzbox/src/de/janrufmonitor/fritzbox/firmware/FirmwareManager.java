@@ -54,6 +54,7 @@ public class FirmwareManager {
    		try {
 			this.login();
 		} catch (FritzBoxLoginException e) {
+			this.m_fw = null;
 			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 		}
     }
@@ -63,8 +64,10 @@ public class FirmwareManager {
 			try {
 				this.createFirmwareInstance();
 			} catch (FritzBoxInitializationException e) {
+				this.m_fw = null;
 				throw new FritzBoxLoginException(e.getMessage());
 			} catch (FritzBoxNotFoundException e) {
+				this.m_fw = null;
 				PropagationFactory.getInstance().fire(
 						new Message(Message.ERROR,
 						"fritzbox.firmware.hardware",
@@ -74,6 +77,7 @@ public class FirmwareManager {
 						true));
 				throw new FritzBoxLoginException(e.getMessage());
 			} catch (InvalidSessionIDException e) {
+				this.m_fw = null;
 				PropagationFactory.getInstance().fire(
 						new Message(Message.ERROR,
 						"fritzbox.firmware.login",
@@ -82,6 +86,7 @@ public class FirmwareManager {
 						true));
 				throw new FritzBoxLoginException(e.getMessage());
 			}
+		if (this.m_fw==null) throw new FritzBoxLoginException("Login failed due to invalid firmware.");
 		this.m_fw.login();
     }
     

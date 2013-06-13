@@ -177,24 +177,26 @@ public class FritzBoxMonitor implements IMonitor, IConfigurable, FritzBoxConst {
 				return true;
 			} catch (UnknownHostException e) {
 				m_logger.log(Level.SEVERE, e.getMessage(), e);
-				PropagationFactory.getInstance().fire(
-						new Message(Message.ERROR,
-						"fritzbox.firmware.hardware",
-						"notfound",	
-						new String[] {this.m_configuration.getProperty(CFG_IP, "fritz.box"), this.m_configuration.getProperty(CFG_MONITOR_PORT, "1012")},
-						e,
-						true));
-				retryCount = getRetryMaxValue();
+				retryCount++;
+				if (retryCount == getRetryMaxValue())
+					PropagationFactory.getInstance().fire(
+							new Message(Message.ERROR,
+							"fritzbox.firmware.hardware",
+							"notfound",	
+							new String[] {this.m_configuration.getProperty(CFG_IP, "fritz.box"), this.m_configuration.getProperty(CFG_MONITOR_PORT, "1012")},
+							e,
+							true));
 			} catch (SocketException e) {
 				m_logger.log(Level.SEVERE, e.getMessage(), e);
-				PropagationFactory.getInstance().fire(
-						new Message(Message.ERROR,
-						"fritzbox.firmware.hardware",
-						"notfound",	
-						new String[] {this.m_configuration.getProperty(CFG_IP, "fritz.box"), this.m_configuration.getProperty(CFG_MONITOR_PORT, "1012")},
-						e,
-						true));
-				retryCount = getRetryMaxValue();	
+				retryCount++;
+				if (retryCount == getRetryMaxValue())
+					PropagationFactory.getInstance().fire(
+							new Message(Message.ERROR,
+							"fritzbox.firmware.hardware",
+							"notfound",	
+							new String[] {this.m_configuration.getProperty(CFG_IP, "fritz.box"), this.m_configuration.getProperty(CFG_MONITOR_PORT, "1012")},
+							e,
+							true));	
 			} catch (IOException e) {
 				m_logger.log(Level.SEVERE, e.getMessage(), e);
 				PropagationFactory.getInstance().fire(

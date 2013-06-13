@@ -146,12 +146,21 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 			this.cancelingTimebasedSyncing();
 			FirmwareManager.getInstance().shutdown();
 			
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
+			int counter = 0;
+			do {
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {	}
+				
+				FirmwareManager.getInstance().startup();
+				counter ++;
+			} while (!FirmwareManager.getInstance().isLoggedIn() && counter<getRetryMaxValue());
+			
+			if (counter == getRetryMaxValue()) {
+				this.m_logger.severe("FritzBox Syncronizer stopped. Could not get a connection after "+counter+" re-connects try outs to FritzBox.");
+				return;
 			}
 			
-			FirmwareManager.getInstance().startup();
 			new SWTExecuter() {
 				protected void execute() {
 					synchronize(false);
@@ -159,6 +168,13 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 			.start();
 			timebasedSyncing();
 		}
+	}
+	
+	private int getRetryMaxValue() {
+		Properties config = getRuntime().getConfigManagerFactory().getConfigManager().getProperties(FritzBoxMonitor.NAMESPACE);
+		if (config!=null)
+			return Integer.parseInt(config.getProperty(CFG_RETRYMAX, "5"));
+		return 5;
 	}
 	
 	public void receivedValidRule(ICall aCall) {
