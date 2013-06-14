@@ -58,38 +58,45 @@ public class LdapContactsProxy implements ILdapRepositoryConst {
 		LDAPConnection lc = new LDAPConnection();
         try {
         	lc.connect(getServer(), getPort());
-            lc.bind(LDAPConnection.LDAP_V3, getLoginUser(), getLoginPassword().getBytes("UTF8"));
+            lc.bind(LDAPConnection.LDAP_V3, getLoginUser(), getLoginPassword().getBytes("UTF-8"));
             LDAPSearchConstraints cons = lc.getSearchConstraints();
             cons.setMaxResults(getMaxResults());
             
-            LDAPSearchResults searchResults =
-            	lc.search(getBaseDN(),
-            				getScope(),
-            				query,
-                            null,       // return all attributes
-                            false, 		// return attrs and values
-                            cons);       
-            
-            ICaller c = null;
-            while (searchResults.hasMore()) {
-                LDAPEntry nextEntry = null;
-
-                try {
-
-                    nextEntry = searchResults.next();
-
-                } catch(LDAPException e) {
-                    if(e.getResultCode() == LDAPException.LDAP_TIMEOUT || e.getResultCode() == LDAPException.CONNECT_ERROR)
-                       break;
-                    else
-                       continue;
-                }
-                c = LdapMappingManager.getInstance().mapToJamCaller(nextEntry);
-                if (c!=null) {                	
-                	cl.add(c);
-                }
+            String baseDN = this.getBaseDN();
+            String[] bases = null;
+            if (baseDN.indexOf("|")>0) {
+            	bases = baseDN.split("\\|");
+            } else {
+            	bases = new String[] {baseDN};
             }
-
+            
+            for (int i=0;i<bases.length;i++) {
+	            LDAPSearchResults searchResults =
+	            	lc.search(bases[i],
+	            				getScope(),
+	            				query,
+	                            null,       // return all attributes
+	                            false, 		// return attrs and values
+	                            cons);       
+	            
+	            ICaller c = null;
+	            while (searchResults.hasMore()) {
+	                LDAPEntry nextEntry = null;
+	
+	                try {
+	                    nextEntry = searchResults.next();
+	                } catch(LDAPException e) {
+	                    if(e.getResultCode() == LDAPException.LDAP_TIMEOUT || e.getResultCode() == LDAPException.CONNECT_ERROR)
+	                       break;
+	                    else
+	                       continue;
+	                }
+	                c = LdapMappingManager.getInstance().mapToJamCaller(nextEntry);
+	                if (c!=null) {                	
+	                	cl.add(c);
+	                }
+	            }
+            }
             // disconnect from the server
             lc.disconnect();
 			LdapMappingManager.invalidate();
