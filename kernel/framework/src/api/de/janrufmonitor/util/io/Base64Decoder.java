@@ -161,6 +161,16 @@ public class Base64Decoder extends FilterInputStream {
       return null;
     }
   }
+  
+  /**
+   * Returns true if the string s is base64 encoded
+   *
+   * @param s a string to test for base64 encoded
+   * @return  true if the string s is base64 encoded
+   */
+  public static boolean isBase64(String s) {
+		return (s.length() % 4 == 0) && s.matches("^[A-Za-z0-9+/]+[=]{0,2}$");
+  }
 
   /*
    * public static void main(String[] args) throws Exception {

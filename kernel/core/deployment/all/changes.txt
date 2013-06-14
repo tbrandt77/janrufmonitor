@@ -1,10 +1,7 @@
 ﻿===
 
-jAnrufmonitor 5.0.41 (01.07.2013)
+jAnrufmonitor 5.0.41 (15.06.2013)
 ---------------------------------
-
-Neu:
-- ...
 
 Bugfix:
 - Dialog: Größenberechnung des Dialoges korrigiert
@@ -14,6 +11,7 @@ Bugfix:
 - Update-Manager: Tray Icon zeigt keinen Komponententitel an
 
 Module:
+- Fritz!Box-Überwachung: Sicherheitslücke beim Anmelden mit Benutzername/Passwort behoben
 - Fritz!Box-Überwachung: Wählhilfe speichert die letzten 10 angwählten Rufnummern
 - Fritz!Box-Überwachung: Änderungen am Zähler für Wiederverbindungen
 - Fritz!Box-Überwachung: Icon Status bei eingeschränkter Funktion wird falsch gesetzt
@@ -22,6 +20,8 @@ Module:
 - Google Kontakte: Identifizierungsproblem bei Kontaktem mit mehreren Rufnummern behoben
 - Erweiterung zur Google Maps Lokalisierung: Schreibfehler in Konfigurationsdialog beseitigt
 - LDAP-basiertes Adressbuch: Scope-Suche hinzugefügt
+- LDAP-basiertes Adressbuch: Unterstützung für mehrere Base DN
+- tel.search.ch: Zeichenkodierung angepasst
 
 ===
 
