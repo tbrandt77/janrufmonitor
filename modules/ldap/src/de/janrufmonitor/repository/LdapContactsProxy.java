@@ -21,6 +21,7 @@ import de.janrufmonitor.framework.ICallerList;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IMultiPhoneCaller;
 import de.janrufmonitor.framework.IPhonenumber;
+import de.janrufmonitor.framework.monitor.PhonenumberInfo;
 import de.janrufmonitor.repository.identify.Identifier;
 import de.janrufmonitor.repository.mapping.LdapMappingManager;
 import de.janrufmonitor.repository.zip.ZipArchive;
@@ -137,6 +138,10 @@ public class LdapContactsProxy implements ILdapRepositoryConst {
 
 	public synchronized ICaller identify(IPhonenumber pn) throws LdapContactsException {
 		ICaller c = Identifier.identifyDefault(getRuntime(), pn);
+		if (c==null && PhonenumberInfo.isInternalNumber(pn)) {
+			IPhonenumber p = getRuntime().getCallerFactory().createInternalPhonenumber(pn.getTelephoneNumber());
+			c = getRuntime().getCallerFactory().createCaller(p);
+		}
 		if (c!=null) {
 			pn = c.getPhoneNumber();
 			try {

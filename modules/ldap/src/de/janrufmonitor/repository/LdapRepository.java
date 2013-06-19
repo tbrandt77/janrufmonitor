@@ -57,10 +57,6 @@ public class LdapRepository extends AbstractReadWriteCallerManager
 			throw new CallerNotFoundException(
 					"Phone number is CLIR. Identification impossible.");
 		
-		if (this.isInternalNumber(number))
-			throw new CallerNotFoundException(
-				"Phone number is internal phone system number. Identification not possible.");
-
 		try {
 			ICaller c = getProxy().identify(number);
 			if (c!=null) return c;

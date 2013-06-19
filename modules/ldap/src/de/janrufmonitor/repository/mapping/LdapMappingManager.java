@@ -24,13 +24,12 @@ import de.janrufmonitor.framework.IAttributeMap;
 import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
-import de.janrufmonitor.repository.ILdapRepositoryConst;
+import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
 import de.janrufmonitor.repository.LdapRepository;
 import de.janrufmonitor.repository.identify.Identifier;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.util.formatter.Formatter;
-import de.janrufmonitor.util.io.Base64Decoder;
 import de.janrufmonitor.util.io.PathResolver;
 import de.janrufmonitor.util.io.Stream;
 import de.janrufmonitor.util.string.StringUtils;
@@ -142,28 +141,19 @@ public class LdapMappingManager {
                         (LDAPAttribute)allAttributes.next();
 
             if (m_attributeMappings.values().contains(attribute.getName())) {
-            	Enumeration allValues = attribute.getStringValues();
-                if( allValues != null) {
-                	String value = null;
-                    while(allValues.hasMoreElements()) {
-                        value = (String) allValues.nextElement();
-                        if (isBase64EncodingAllowed() && !Base64.isLDIFSafe(value)) {
-                            value = Base64.encode(value.getBytes());
-                        }
-                        if (m_logger.isLoggable(Level.INFO)) {
-                        	m_logger.info("Adding LDAP attribute: "+attribute.getName()+", value: "+value);
-                        }
-                        if (!m_inversAttributeMappings.getProperty(attribute.getName()).equalsIgnoreCase(IJAMConst.ATTRIBUTE_NAME_IMAGEPATH)) {
-                        	attributes.add(getRuntime().getCallerFactory().createAttribute(m_inversAttributeMappings.getProperty(attribute.getName()), decode(value)));	
-                        } else {                        	
-                        	try {
-								addImage(attributes, attribute.getByteValue(), entry);
-							} catch (IOException e) {
-								m_logger.log(Level.SEVERE, e.toString(), e);
-							}
-                        }
-                    }
+            	String value = attribute.getStringValue();
+                if (m_logger.isLoggable(Level.INFO)) {
+                	m_logger.info("Adding LDAP attribute: "+attribute.getName()+", value: "+value);
                 }
+                if (!m_inversAttributeMappings.getProperty(attribute.getName()).equalsIgnoreCase(IJAMConst.ATTRIBUTE_NAME_IMAGEPATH)) {
+                	attributes.add(getRuntime().getCallerFactory().createAttribute(m_inversAttributeMappings.getProperty(attribute.getName()), value));	
+                } else {                        	
+                	try {
+						addImage(attributes, attribute.getByteValue(), entry);
+					} catch (IOException e) {
+						m_logger.log(Level.SEVERE, e.toString(), e);
+					}
+                }  
             }
         }
 		return attributes;
@@ -207,18 +197,28 @@ public class LdapMappingManager {
                 	String value = null;
                     while(allValues.hasMoreElements()) {
                         value = (String) allValues.nextElement();
-                        if (isBase64EncodingAllowed() && !Base64.isLDIFSafe(value)) {
-                            value = Base64.encode(value.getBytes());
+                        if (!Base64.isLDIFSafe(value)) {
+                            value = attribute.getStringValue();
                         }
                         if (m_logger.isLoggable(Level.INFO)) {
                         	m_logger.info("Adding LDAP attribute: "+attribute.getName()+", value: "+value);
                         }
                         value = Formatter.getInstance(getRuntime()).normalizePhonenumber(value.trim());
-                        IPhonenumber pn = getRuntime().getCallerFactory().createPhonenumber(value); 
-                        ICaller c = Identifier.identifyDefault(getRuntime(), pn);
-                        if (c!=null) {
-                        	phones.add(c.getPhoneNumber());
-                        	attributes.add(getNumberTypeAttribute(attribute.getName(), c.getPhoneNumber()));
+                        IPhonenumber pn = PhonenumberAnalyzer.getInstance().createClirPhonenumberFromRaw(value);
+                        if (pn==null) {
+                        	pn = PhonenumberAnalyzer.getInstance().createInternalPhonenumberFromRaw(value, null);
+                        	if (pn!=null) {
+                        		phones.add(pn);
+                            	attributes.add(getNumberTypeAttribute(attribute.getName(), pn));
+                        	}
+                        }
+                        if (pn==null) {
+                        	pn = PhonenumberAnalyzer.getInstance().createPhonenumberFromRaw(value, null);
+                        	 ICaller c = Identifier.identifyDefault(getRuntime(), pn);
+                             if (c!=null) {
+                             	phones.add(c.getPhoneNumber());
+                             	attributes.add(getNumberTypeAttribute(attribute.getName(), c.getPhoneNumber()));
+                             }
                         }
                     }
                 }
@@ -230,23 +230,23 @@ public class LdapMappingManager {
 	private IAttribute getNumberTypeAttribute(String ldapNumberType, IPhonenumber pn) {
 		return getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_NUMBER_TYPE+pn.getTelephoneNumber(), m_phonenumberMappings.getProperty(ldapNumberType));
 	}
-	
-	private String decode(String s) {
-		if (this.isBase64(s)) {
-			s = Base64Decoder.decode(s);
-		}
-		return s;
-	}
-	
-	private boolean isBase64(String s) {
-		return (s.length() % 4 == 0) && s.matches("^[A-Za-z0-9+/]+[=]{0,2}$");
-	}
-	
-	private boolean isBase64EncodingAllowed() {
-		String value = getRuntime().getConfigManagerFactory()
-				.getConfigManager().getProperty(
-						LdapRepository.NAMESPACE,
-						ILdapRepositoryConst.CFG_LDAP_ENCODE_BASE64);
-		return value != null && value.equalsIgnoreCase("true");
-	}
+//	
+//	private String decode(String s) {
+//		if (this.isBase64(s)) {
+//			s = Base64Decoder.decode(s);
+//		}
+//		return s;
+//	}
+//	
+//	private boolean isBase64(String s) {
+//		return (s.length() % 4 == 0) && s.matches("^[A-Za-z0-9+/]+[=]{0,2}$");
+//	}
+//	
+//	private boolean isBase64EncodingAllowed() {
+//		String value = getRuntime().getConfigManagerFactory()
+//				.getConfigManager().getProperty(
+//						LdapRepository.NAMESPACE,
+//						ILdapRepositoryConst.CFG_LDAP_ENCODE_BASE64);
+//		return value != null && value.equalsIgnoreCase("true");
+//	}
 }
