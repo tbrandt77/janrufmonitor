@@ -16,8 +16,8 @@ public class OKNConverter {
 	}
 	
 	public void go() {
-		// http://www.bundesnetzagentur.de/enid/450904e1f268518819ba027fdc6597cf,0/Verzeichnisse/ONB_1gh.html
-		File db = new File("C:\\okn.txt");
+		// http://www.bundesnetzagentur.de/cln_1911/DE/Sachgebiete/Telekommunikation/Unternehmen_Institutionen/Nummerierung/Rufnummern/UebersichtNrnRaum_Basepage.html?nn=268384
+		File db = new File("/Users/brandtt/Desktop/okn.txt");
 		Properties m = new Properties();
 		try {
 			FileReader dbReader = new FileReader(db);
@@ -26,9 +26,9 @@ public class OKNConverter {
 			
 			while (bufReader.ready()) {
 				line = bufReader.readLine();
-				StringTokenizer st = new StringTokenizer(line, "\t");
+				StringTokenizer st = new StringTokenizer(line, ";");
 				if (st.countTokens()==2) {
-					m.put(st.nextToken().trim().substring(1), st.nextToken().trim());
+					m.put(st.nextToken().trim(), st.nextToken().trim());
 				}
 			}
 			bufReader.close();

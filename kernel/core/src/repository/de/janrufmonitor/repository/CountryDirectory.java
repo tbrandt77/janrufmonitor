@@ -76,6 +76,25 @@ public class CountryDirectory extends AbstractReadOnlyDatabaseCallerManager {
 			
 			m_preparedStatements.put("SELECT_CALLER_PHONE2", m_con.prepareStatement("SELECT content FROM callers WHERE country=? AND areacode=? AND number=?;"));
 			m_preparedStatements.put("DELETE_ATTRIBUTE_ALL", m_con.prepareStatement("DELETE FROM attributes;"));
+			m_preparedStatements.put("DELETE_COUNTRY", m_con.prepareStatement("DELETE FROM callers WHERE country=?;"));
+		}
+		
+		public void insertOrUpdateCallerList(ICallerList cl) throws SQLException {
+			if (!isConnected())
+				try {
+					this.connect();
+				} catch (ClassNotFoundException e) {
+					throw new SQLException(e.getMessage());
+				}
+			
+			if (cl.size()>0) {
+				String countrycode = cl.get(0).getPhoneNumber().getIntAreaCode();
+				PreparedStatement ps = this.getStatement("DELETE_COUNTRY");
+				ps.setString(1, countrycode);
+				ps.execute();
+			}
+			
+			super.insertOrUpdateCallerList(cl);
 		}
 
 		public void deleteCallerList(ICallerList cl) throws SQLException {
