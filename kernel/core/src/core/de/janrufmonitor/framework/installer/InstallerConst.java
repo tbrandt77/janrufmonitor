@@ -20,6 +20,8 @@ public interface InstallerConst {
 	
 	public static String DESCRIPTOR_REQUIRED_PATCH_VERSION = "jam.version.patch.required";
 	
+	public static String DESCRIPTOR_REQUIRED_ARCHITECTURE = "jam.architecture.required";
+	
 	public static String DESCRIPTOR_RESTART = "jam.restart";
 	
 	public static String DESCRIPTOR_CONFIG_OVERWRITE = "jam.config.overwrite";

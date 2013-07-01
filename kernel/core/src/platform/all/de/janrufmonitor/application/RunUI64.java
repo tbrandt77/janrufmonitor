@@ -68,7 +68,6 @@ public class RunUI64 {
 				while (iter.hasNext()) {
 					key = (String) iter.next();
 					RunUI64.m_logger.fine(key + " = "+env.getProperty(key));
-					//System.out.println(key + " = "+env.getProperty(key));
 				}
 			}
 

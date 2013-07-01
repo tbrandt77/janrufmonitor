@@ -33,6 +33,7 @@ public class InstallerRuleEngine {
     	this.m_rules = new ArrayList();
     	this.m_rules.add(new PIMVersionRule());
     	this.m_rules.add(new ModuleVersionRule());
+    	this.m_rules.add(new ModuleArchitectureRule());
     	this.m_rules.add(new DependencyRule());
     	this.m_rules.add(new ConflictRule());
     }
