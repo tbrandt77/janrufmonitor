@@ -1,5 +1,23 @@
 ﻿===
 
+jAnrufmonitor 5.0.42 (01.08.2013)
+---------------------------------
+
+Neu:
+- Installer: Prüfung auf 32-bit und 64-bit Architektur
+
+Bugfix:
+- Vorwahldatei: Aktualisierte Vorwahldatei für Deutschland (Bundesnetzagentur Update 2013)
+- Vorwahldatei: Unicodeschreibweise von Orten korrigiert
+
+Module:
+- LDAP-basiertes Adressbuch: Korrektur von Umlautdarstellungen
+- LDAP-basiertes Adressbuch: UTF-8 und Latin-1 Unterstützung
+- LDAP-basiertes Adressbuch: Base64-Kodierung Unterstützung
+- LDAP-basiertes Adressbuch: Unterstützung für mehrere Base DNs
+
+===
+
 jAnrufmonitor 5.0.41 (15.06.2013)
 ---------------------------------
 
