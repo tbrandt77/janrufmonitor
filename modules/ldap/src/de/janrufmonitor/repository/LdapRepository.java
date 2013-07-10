@@ -79,9 +79,14 @@ public class LdapRepository extends AbstractReadWriteCallerManager
 				}				
 			}
 			if (filter!=null && filter.getType().equals(FilterType.PHONENUMBER)) {
-//				String intarea = ((PhonenumberFilter)filter).getPhonenumber().getIntAreaCode();
-//				String area = ((PhonenumberFilter)filter).getPhonenumber().getAreaCode();
-//				return getProxy().getContacts(intarea+area);
+				ICallerList cl = getProxy().getContacts(null);
+				this.applyFilters(cl, new IFilter[] { filter });
+				return cl;
+			}
+			if (filter!=null && filter.getType().equals(FilterType.CHARACTER)) {
+				ICallerList cl = getProxy().getContacts(null);
+				this.applyFilters(cl, new IFilter[] { filter });
+				return cl;
 			}
 			return getProxy().getContacts(null);
 		} catch (LdapContactsException e) {
