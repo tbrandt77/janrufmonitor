@@ -91,6 +91,11 @@ public class OutlookContactManager extends AbstractReadWriteCallerManager implem
 				String area = ((PhonenumberFilter)filter).getPhonenumber().getAreaCode();
 				return getProxy().getContactsByAreaCode(intarea+area);
 			}
+			if (filter!=null && filter.getType().equals(FilterType.CHARACTER)) {	
+				ICallerList cl = getProxy().getContacts(null);
+				this.applyFilters(cl, new IFilter[] { filter });
+				return cl;
+			}
 			return getProxy().getContacts(null);
 		} catch (OutlookContactProxyException e) {
 			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
