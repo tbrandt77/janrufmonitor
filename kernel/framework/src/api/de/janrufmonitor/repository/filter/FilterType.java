@@ -15,6 +15,7 @@ package de.janrufmonitor.repository.filter;
  * <li>FilterType.UUID - a UUID filter
  * <li>FilterType.USERDEFINED - a user defined filter
  * <li>FilterType.ITEMCOUNT - a item count filter
+ * <li>FilterType.CHARACTER - a starting character filter of an attribute
  * </ol>
  * The concrete FilterType has to be determined and evaluated within the 
  * filter application/component, e.g. a caller manager.

@@ -1,5 +1,7 @@
 package de.janrufmonitor.repository.filter;
 
+import de.janrufmonitor.framework.IAttribute;
+
 /**
  * This class is a single character filter.
  * 
@@ -8,14 +10,22 @@ package de.janrufmonitor.repository.filter;
  */
 public class CharacterFilter extends AbstractFilter {
 
+	private String m_attribute;
+	
 	/**
 	 * Creates a new character filter object.
 	 * @param c a valid char, e.g. a, b, c, d...
+	 * @param att attribute as string to be filtered
 	 */
-	public CharacterFilter(String c) {
+	public CharacterFilter(String c, String att) {
 		super();
 		this.m_filter = c;
+		this.m_attribute = att;
 		this.m_type = FilterType.CHARACTER;
+	}
+	
+	public CharacterFilter(String c, IAttribute att) {
+		this(c, (att!=null ? att.getName(): ""));
 	}
 	
 	/**
@@ -26,8 +36,12 @@ public class CharacterFilter extends AbstractFilter {
 	public String getCharacter() {
 		return (String)this.m_filter;
 	}
+	
+	public String getAttributeName() {
+		return this.m_attribute;
+	}
 
 	public String toString() {
-		return CharacterFilter.class.getName()+"#"+this.m_filter;
+		return CharacterFilter.class.getName()+"#"+this.m_attribute+"#"+this.m_filter;
 	}
 }

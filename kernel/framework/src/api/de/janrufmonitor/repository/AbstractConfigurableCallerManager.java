@@ -2,15 +2,23 @@ package de.janrufmonitor.repository;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Iterator;
 import java.util.Properties;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import de.janrufmonitor.framework.IAttribute;
+import de.janrufmonitor.framework.IAttributeMap;
 import de.janrufmonitor.framework.ICaller;
+import de.janrufmonitor.framework.ICallerList;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.framework.configuration.IConfigurable;
+import de.janrufmonitor.repository.filter.AttributeFilter;
+import de.janrufmonitor.repository.filter.CharacterFilter;
+import de.janrufmonitor.repository.filter.FilterType;
+import de.janrufmonitor.repository.filter.IFilter;
+import de.janrufmonitor.repository.filter.PhonenumberFilter;
 import de.janrufmonitor.runtime.IRuntime;
 
 /**
@@ -201,8 +209,61 @@ public abstract class AbstractConfigurableCallerManager implements ICallerManage
 			IJAMConst.ATTRIBUTE_NAME_CALLERMANAGER,
 			this.getID()
 		);
-		//c.getAttributes().remove(cm);
 		c.getAttributes().add(cm);
+	}
+	
+	protected void applyFilters(ICallerList cl, IFilter[] filters) {
+		if (cl==null) return;
+		if (filters == null) return;
+		IFilter f = null;
+		for (int i=0;i<filters.length;i++) {
+			f = filters[i];
+			if (f.getType()==FilterType.CHARACTER) {
+				CharacterFilter cf = ((CharacterFilter)f);
+				ICaller c = null;
+				for (int j=cl.size()-1;j>=0;j--) {
+					c = cl.get(j);
+					if (!c.getAttributes().contains(cf.getAttributeName())) {
+						cl.remove(c);
+					} else if (c.getAttributes().contains(cf.getAttributeName())) {
+						if (!c.getAttribute(cf.getAttributeName()).getValue().startsWith(cf.getCharacter())) {
+							cl.remove(c);
+						}
+					}
+				}
+			}
+			if (f.getType()==FilterType.PHONENUMBER) {
+				PhonenumberFilter cf = ((PhonenumberFilter)f);
+				ICaller c = null;
+				for (int j=cl.size()-1;j>=0;j--) {
+					c = cl.get(j);
+					if (!c.getPhoneNumber().getIntAreaCode().equalsIgnoreCase(cf.getPhonenumber().getIntAreaCode())) {
+						cl.remove(c);
+					}
+					else if (!c.getPhoneNumber().getAreaCode().equalsIgnoreCase(cf.getPhonenumber().getAreaCode())) {
+						cl.remove(c);
+					}
+				}
+			}
+			if (f.getType()==FilterType.ATTRIBUTE) {
+				AttributeFilter cf = ((AttributeFilter)f);
+				ICaller c = null;
+				for (int j=cl.size()-1;j>=0;j--) {
+					c = cl.get(j);
+					IAttributeMap atts = cf.getAttributeMap();
+					Iterator iter = atts.iterator();
+					IAttribute a = null;
+					while (iter.hasNext()) {
+						a = (IAttribute) iter.next();
+						if (!c.getAttributes().contains(a)) {
+							cl.remove(c);
+						} else if (c.getAttributes().contains(a) && !c.getAttribute(a.getName()).getValue().equalsIgnoreCase(a.getValue())) {
+							cl.remove(c);
+						}
+					}
+				}
+			}
+		}
 	}
 
 }

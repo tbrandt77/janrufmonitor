@@ -13,6 +13,7 @@ import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.repository.db.AbstractCallerDatabaseHandler;
 import de.janrufmonitor.repository.filter.AttributeFilter;
+import de.janrufmonitor.repository.filter.CharacterFilter;
 import de.janrufmonitor.repository.filter.FilterType;
 import de.janrufmonitor.repository.filter.IFilter;
 import de.janrufmonitor.util.io.Serializer;
@@ -102,7 +103,22 @@ public abstract class HsqldbCallerDatabaseHandler extends AbstractCallerDatabase
 						}
 						sql.append("))");	
 					}
-				}						
+				}
+				if (f.getType() == FilterType.CHARACTER) {
+					sql.append("(");
+					sql.append("callers.uuid=attributes.ref AND (");
+					sql.append("attributes.name='");
+					sql.append(((CharacterFilter)f).getAttributeName());
+					sql.append("'");
+					sql.append(" AND ");
+					sql.append("(attributes.value like '");
+					sql.append(((CharacterFilter)f).getCharacter().toUpperCase());
+					sql.append("%'");
+					sql.append(" OR attributes.value like '");
+					sql.append(((CharacterFilter)f).getCharacter().toLowerCase());
+					sql.append("%'");
+					sql.append(")))");	
+				}
 			}
 		}
 		
@@ -124,6 +140,7 @@ public abstract class HsqldbCallerDatabaseHandler extends AbstractCallerDatabase
 		for (int i=0;i<filters.length;i++) {
 			f = filters[i];
 			if (f!=null && f.getType()==FilterType.ATTRIBUTE) return true;
+			if (f!=null && f.getType()==FilterType.CHARACTER) return true;
 		}
 		return false;
 	}

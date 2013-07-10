@@ -240,7 +240,8 @@ public abstract class AbstractFilterSerializer {
 					return new AttributeFilter(m);
 				}	
 				if (ft.equals(FilterType.CHARACTER)) {
-					return new CharacterFilter(st.nextToken().trim());
+					String[] t = st.nextToken().split("=");
+					return new CharacterFilter(t[1].trim(), t[0].trim());
 				}	
 				// TODO: more filters to be added here
 			}
@@ -365,6 +366,8 @@ public abstract class AbstractFilterSerializer {
 			if (ft.equals(FilterType.CHARACTER)) {
 				sb.append(ft.toString());
 				sb.append(",");
+				sb.append(((CharacterFilter)f).getAttributeName());
+				sb.append("=");
 				sb.append(((CharacterFilter)f).getCharacter());
 			}	
 			// TODO: more filters to be added here

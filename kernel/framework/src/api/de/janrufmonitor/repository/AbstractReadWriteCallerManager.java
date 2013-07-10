@@ -1,12 +1,7 @@
 package de.janrufmonitor.repository;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
-import de.janrufmonitor.framework.IAttribute;
 import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.ICallerList;
-import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.repository.filter.IFilter;
 import de.janrufmonitor.repository.types.IIdentifyCallerRepository;
 import de.janrufmonitor.repository.types.IReadCallerRepository;
@@ -61,70 +56,6 @@ public abstract class AbstractReadWriteCallerManager extends AbstractConfigurabl
 		for (int i=0,n=callerList.size();i<n;i++) {
 			this.removeCaller(callerList.get(i));	
 		}
-	}
-	
-	protected void addCreationAttributes(ICaller c) {
-	    String value = null;
-	    if (!c.getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_MACHINE_NAME)) {
-	        try {
-				value = InetAddress.getLocalHost().getHostName();
-				c.setAttribute(
-					this.getRuntime().getCallFactory().createAttribute(
-							IJAMConst.ATTRIBUTE_NAME_MACHINE_NAME,
-							value
-						)	
-					);
-			} catch (UnknownHostException e) {
-				this.m_logger.warning(e.getMessage());
-			}
-	    }
-
-	    if (!c.getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_MACHINE_IP)) {
-	        try {
-				value = InetAddress.getLocalHost().getHostAddress();
-				c.setAttribute(
-					this.getRuntime().getCallFactory().createAttribute(
-							IJAMConst.ATTRIBUTE_NAME_MACHINE_IP,
-							value
-						)	
-					);
-			} catch (UnknownHostException e) {
-				this.m_logger.warning(e.getMessage());
-			}
-	    }
-		
-	    if (!c.getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_USER_ACCOUNT)) {
-			value = System.getProperty("user.name");
-			if (value!=null && value.length()>0) {
-				c.setAttribute(
-					this.getRuntime().getCallFactory().createAttribute(
-							IJAMConst.ATTRIBUTE_NAME_USER_ACCOUNT,
-							value
-						)	
-					);
-			}
-	    }
-	    
-	    if (!c.getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_CREATION)) {
-			value = Long.toString(System.currentTimeMillis());
-			if (value!=null && value.length()>0) {
-				c.setAttribute(
-					this.getRuntime().getCallFactory().createAttribute(
-							IJAMConst.ATTRIBUTE_NAME_CREATION,
-							value
-						)	
-					);
-			}
-	    }
-	}
-	
-	protected void addSystemAttributes(ICaller c) {
-		IAttribute cm = this.getRuntime().getCallerFactory().createAttribute(
-			IJAMConst.ATTRIBUTE_NAME_CALLERMANAGER,
-			this.getID()
-		);
-		//c.getAttributes().remove(cm);
-		c.getAttributes().add(cm);
 	}
 
 }

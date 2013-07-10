@@ -13,6 +13,7 @@ import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.framework.i18n.II18nManager;
 import de.janrufmonitor.repository.filter.AbstractFilterSerializer;
 import de.janrufmonitor.repository.filter.AttributeFilter;
+import de.janrufmonitor.repository.filter.CharacterFilter;
 import de.janrufmonitor.repository.filter.CipFilter;
 import de.janrufmonitor.repository.filter.DateFilter;
 import de.janrufmonitor.repository.filter.FilterType;
@@ -184,6 +185,17 @@ public abstract class AbstractFilterManager extends AbstractFilterSerializer imp
 						
 						}
 					}
+					if ((i + 1) < f.length)
+						sb.append(", ");
+				}
+				if (f1.getType().equals(FilterType.CHARACTER)) {
+					CharacterFilter cf = ((CharacterFilter) f1);
+					sb.append(this.getI18nManager().getString(
+							this.getNamespace(), "view_"+cf.getAttributeName(), "label",
+							this.getLanguage()));
+					sb.append("(");
+					sb.append(cf.getCharacter().toUpperCase());
+					sb.append("...)");
 					
 					if ((i + 1) < f.length)
 						sb.append(", ");

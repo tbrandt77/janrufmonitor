@@ -22,6 +22,7 @@ ui.jface.application.editor.Editor\:view\:label\:en=View
 ui.jface.application.editor.Editor\:contact\:label\:en=Contacts
 ui.jface.application.editor.Editor\:view_intarea\:label\:en=Country code
 ui.jface.application.editor.Editor\:view_area\:label\:en=, area code 
+ui.jface.application.editor.Editor\:view_ln\:label\:en=Lastame 
 ui.jface.application.editor.Editor\:current_view\:label\:en=Current view: 
 ui.jface.application.editor.Editor\:selected\:label\:en=selected contacts
 ui.jface.application.editor.Editor\:settings\:label\:en=Settings
