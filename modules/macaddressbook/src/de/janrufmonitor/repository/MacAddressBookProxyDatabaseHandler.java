@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.janrufmonitor.framework.IAttribute;
 import de.janrufmonitor.repository.db.AbstractDatabaseHandler;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
@@ -35,6 +36,7 @@ public class MacAddressBookProxyDatabaseHandler extends AbstractDatabaseHandler 
 		m_preparedStatements.put("SELECT", m_con.prepareStatement("SELECT DISTINCT(uuid) FROM mapping WHERE country=? AND areacode=? AND number=?;"));
 		m_preparedStatements.put("SELECT2", m_con.prepareStatement("SELECT DISTINCT(uuid) FROM mapping WHERE country=? AND areacode=?;"));
 		m_preparedStatements.put("SELECT_ATT_VALUE", m_con.prepareStatement("SELECT value FROM attributes WHERE uuid=? AND attribute=?;"));
+		m_preparedStatements.put("SELECT3", m_con.prepareStatement("SELECT DISTINCT(uuid) FROM attributes WHERE attribute=? AND value like ?;"));
 
 	}
 
@@ -117,6 +119,21 @@ public class MacAddressBookProxyDatabaseHandler extends AbstractDatabaseHandler 
 		PreparedStatement ps = (PreparedStatement) this.m_preparedStatements.get("SELECT2");
 		ps.setString(1, country);
 		ps.setString(2, areacode);
+		ResultSet r = ps.executeQuery();
+		while (r.next()) {
+			uuids.add(r.getString("uuid"));
+		}
+	
+		return uuids;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List select(IAttribute a) throws SQLException {
+		if (!isConnected()) throw new SQLException ("Database is disconnected.");
+		List uuids = new ArrayList();
+		PreparedStatement ps = (PreparedStatement) this.m_preparedStatements.get("SELECT3");
+		ps.setString(1, a.getName());
+		ps.setString(2, a.getValue()+"%");
 		ResultSet r = ps.executeQuery();
 		while (r.next()) {
 			uuids.add(r.getString("uuid"));

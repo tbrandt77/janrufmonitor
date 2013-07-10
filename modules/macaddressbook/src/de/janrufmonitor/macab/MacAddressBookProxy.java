@@ -402,35 +402,7 @@ public class MacAddressBookProxy implements AddressBookChangeListener {
 				}
 				if (privateCaller!=null) {
 					callers.add(privateCaller);
-				}
-				
-				// removed 2010/12/07: due to lost mobile number remove this section
-				
-//				if (privateCaller!=null && businessCaller!=null) {
-//					
-//					if (((IMultiPhoneCaller)businessCaller).getPhonenumbers().size()==1) {
-//						IPhonenumber pn = (IPhonenumber) ((IMultiPhoneCaller)businessCaller).getPhonenumbers().get(0); // only one entry available
-//						IAttribute numbertype = businessCaller.getAttribute(IMacAddressBookNumberMapping.MAPPING_ATTTRIBUTE_ID+pn.getTelephoneNumber());
-//						if (numbertype!=null && numbertype.getValue().equalsIgnoreCase(IMacAddressBookConst.MOBILE)) {
-//							this.m_logger.info("Bussiness caller will be dropped. Only mobile number available, but still in private contact: "+businessCaller);
-//							businessCaller = null;
-//						}
-//					}
-//					if (((IMultiPhoneCaller)privateCaller).getPhonenumbers().size()==1 && businessCaller!=null) {
-//						IPhonenumber pn = (IPhonenumber) ((IMultiPhoneCaller)privateCaller).getPhonenumbers().get(0); // only one entry available
-//						IAttribute numbertype = privateCaller.getAttribute(IMacAddressBookNumberMapping.MAPPING_ATTTRIBUTE_ID+pn.getTelephoneNumber());
-//						if (numbertype!=null && numbertype.getValue().equalsIgnoreCase(IMacAddressBookConst.MOBILE)) {
-//							this.m_logger.info("Private caller will be dropped. Only mobile number available, but still in business contact: "+privateCaller);
-//							privateCaller = null;
-//						}
-//					}
-//					if (privateCaller!=null) {
-//						callers.add(privateCaller);
-//					}
-//					if (businessCaller!=null) {
-//						callers.add(businessCaller);
-//					}
-//				}				
+				}				
 			}
 		}
 		if (callers.size()>0) {
@@ -476,6 +448,63 @@ public class MacAddressBookProxy implements AddressBookChangeListener {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	public synchronized ICallerList getContactsByCharAttribute(IAttribute charAttribute) throws MacAddressBookProxyException {
+		this.m_total = 0;
+		this.m_current = 0;
+		
+		final ICallerList callers = getRuntime().getCallerFactory().createCallerList();
+		if (this.m_dbh!=null) {
+			try {
+				List uuids = this.m_dbh.select(charAttribute);
+				if (uuids.size()>0) {
+					List contacts = getRecordsByUIDs(uuids);
+					if (contacts.size()>0) {
+						this.m_total = contacts.size();
+						ICaller businessCaller, privateCaller = null;
+						for (Object contact : contacts) {
+							if (contact instanceof Map<?,?>) {
+								this.m_current++;
+								privateCaller = MacAddressBookMappingManager.getInstance().mapToJamCaller((Map<?, ?>) contact, new PrivateMacAddressBookMapping());
+								businessCaller = MacAddressBookMappingManager.getInstance().mapToJamCaller((Map<?, ?>) contact, new BusinessMacAddressBookMapping());
+					
+								if (privateCaller!=null && businessCaller!=null) {
+									// check if firstname, lastname or additional is filled or not
+									if (privateCaller.getAttribute(IJAMConst.ATTRIBUTE_NAME_FIRSTNAME)==null && privateCaller.getAttribute(IJAMConst.ATTRIBUTE_NAME_LASTNAME)==null && privateCaller.getAttribute(IJAMConst.ATTRIBUTE_NAME_ADDITIONAL)==null) {
+										((IMultiPhoneCaller)businessCaller).getPhonenumbers().addAll(((IMultiPhoneCaller)privateCaller).getPhonenumbers());
+										privateCaller=null;
+									}
+									if (businessCaller.getAttribute(IJAMConst.ATTRIBUTE_NAME_FIRSTNAME)==null && businessCaller.getAttribute(IJAMConst.ATTRIBUTE_NAME_LASTNAME)==null && businessCaller.getAttribute(IJAMConst.ATTRIBUTE_NAME_ADDITIONAL)==null) {
+										((IMultiPhoneCaller)privateCaller).getPhonenumbers().addAll(((IMultiPhoneCaller)businessCaller).getPhonenumbers());
+										businessCaller=null;
+									}
+								}
+								
+								if (businessCaller!=null) {
+									callers.add(businessCaller);
+								}
+								if (privateCaller!=null) {
+									callers.add(privateCaller);
+								}				
+							}
+						}
+					}
+				}
+			} catch (SQLException e) {
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			}					
+		}
+		if (callers.size()>0) {
+			Thread updateDbhThread = new Thread() {
+				public void run() {
+					updateProxyDatabase(callers);
+				}
+			};
+			updateDbhThread.setName("JAM-MacAddressBookSync-Thread-(deamon)");
+			updateDbhThread.start();
+		}
+		return callers;
+	}
 	
 	@SuppressWarnings("unchecked")
 	public synchronized ICallerList getContactsByAreaCode(String countrycode, String areacode) throws MacAddressBookProxyException {

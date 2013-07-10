@@ -11,6 +11,7 @@ import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.macab.MacAddressBookProxy;
 import de.janrufmonitor.repository.AbstractReadWriteCallerManager;
 import de.janrufmonitor.repository.filter.AttributeFilter;
+import de.janrufmonitor.repository.filter.CharacterFilter;
 import de.janrufmonitor.repository.filter.FilterType;
 import de.janrufmonitor.repository.filter.IFilter;
 import de.janrufmonitor.repository.filter.PhonenumberFilter;
@@ -82,6 +83,10 @@ public class MacAddressBookManager extends AbstractReadWriteCallerManager implem
 				String intarea = ((PhonenumberFilter)filter).getPhonenumber().getIntAreaCode();
 				String area = ((PhonenumberFilter)filter).getPhonenumber().getAreaCode();
 				return getProxy().getContactsByAreaCode(intarea,area);
+			}
+			if (filter!=null && filter.getType().equals(FilterType.CHARACTER)) {
+				IAttribute charAtt = getRuntime().getCallerFactory().createAttribute(((CharacterFilter)filter).getAttributeName(), ((CharacterFilter)filter).getCharacter());
+				return getProxy().getContactsByCharAttribute(charAtt);
 			}
 			return getProxy().getContacts(null);
 		} catch (MacAddressBookProxyException e) {

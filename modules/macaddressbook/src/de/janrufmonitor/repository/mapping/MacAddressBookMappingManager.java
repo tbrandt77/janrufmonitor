@@ -286,6 +286,12 @@ public class MacAddressBookMappingManager {
 			if (this.m_logger.isLoggable(Level.INFO)) {
 				this.m_logger.info("Created Mac address book contact: "+macCaller.toString());
 			}
+			try {
+				if (macCaller.getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_LASTNAME))
+					MacAddressBookProxy.getInstance().getDataHandler().insertAttribute(macCaller.getUUID(), IJAMConst.ATTRIBUTE_NAME_LASTNAME, macCaller.getAttribute(IJAMConst.ATTRIBUTE_NAME_LASTNAME).getValue());
+			} catch (SQLException e) {
+				this.m_logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			}
 			return macCaller;
 		}
 		
