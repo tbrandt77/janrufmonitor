@@ -20,6 +20,9 @@
   <condition property="jam.osarch" value="32">
       <os arch="x86"/>
   </condition>
+  <condition property="jam.osarch" value="32">
+      <os arch="i386"/>
+  </condition>
   <condition property="jam.osarch" value="64">
       <os arch="x86_64"/>
   </condition>
