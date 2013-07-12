@@ -193,9 +193,9 @@ public abstract class AbstractFilterManager extends AbstractFilterSerializer imp
 					sb.append(this.getI18nManager().getString(
 							this.getNamespace(), "view_"+cf.getAttributeName(), "label",
 							this.getLanguage()));
-					sb.append("(");
+					sb.append("[");
 					sb.append(cf.getCharacter().toUpperCase());
-					sb.append("...)");
+					sb.append("...]");
 					
 					if ((i + 1) < f.length)
 						sb.append(", ");

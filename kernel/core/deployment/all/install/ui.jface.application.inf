@@ -386,30 +386,5 @@ ui.jface.application.RendererRegistry\:renderer_flag\:access=system
 ui.jface.application.RendererRegistry\:renderer_cmlogo\:value=de.janrufmonitor.ui.jface.application.editor.rendering.CallerManagerLogo
 ui.jface.application.RendererRegistry\:renderer_cmlogo\:access=system
 
-# added 4.0.42
-ui.jface.application.editor.Editor\:filter_ln_1\:value=(11,ln\=A)
-ui.jface.application.editor.Editor\:filter_ln_2\:value=(11,ln\=B)
-ui.jface.application.editor.Editor\:filter_ln_3\:value=(11,ln\=C)
-ui.jface.application.editor.Editor\:filter_ln_4\:value=(11,ln\=D)
-ui.jface.application.editor.Editor\:filter_ln_5\:value=(11,ln\=E)
-ui.jface.application.editor.Editor\:filter_ln_6\:value=(11,ln\=F)
-ui.jface.application.editor.Editor\:filter_ln_7\:value=(11,ln\=G)
-ui.jface.application.editor.Editor\:filter_ln_8\:value=(11,ln\=H)
-ui.jface.application.editor.Editor\:filter_ln_9\:value=(11,ln\=I)
-ui.jface.application.editor.Editor\:filter_ln_10\:value=(11,ln\=J)
-ui.jface.application.editor.Editor\:filter_ln_11\:value=(11,ln\=K)
-ui.jface.application.editor.Editor\:filter_ln_12\:value=(11,ln\=L)
-ui.jface.application.editor.Editor\:filter_ln_13\:value=(11,ln\=M)
-ui.jface.application.editor.Editor\:filter_ln_14\:value=(11,ln\=N)
-ui.jface.application.editor.Editor\:filter_ln_15\:value=(11,ln\=O)
-ui.jface.application.editor.Editor\:filter_ln_16\:value=(11,ln\=P)
-ui.jface.application.editor.Editor\:filter_ln_17\:value=(11,ln\=Q)
-ui.jface.application.editor.Editor\:filter_ln_18\:value=(11,ln\=R)
-ui.jface.application.editor.Editor\:filter_ln_19\:value=(11,ln\=S)
-ui.jface.application.editor.Editor\:filter_ln_20\:value=(11,ln\=T)
-ui.jface.application.editor.Editor\:filter_ln_21\:value=(11,ln\=U)
-ui.jface.application.editor.Editor\:filter_ln_22\:value=(11,ln\=V)
-ui.jface.application.editor.Editor\:filter_ln_23\:value=(11,ln\=W)
-ui.jface.application.editor.Editor\:filter_ln_24\:value=(11,ln\=X)
-ui.jface.application.editor.Editor\:filter_ln_25\:value=(11,ln\=Y)
-ui.jface.application.editor.Editor\:filter_ln_26\:value=(11,ln\=Z)
+
+

@@ -1,6 +1,7 @@
 package de.janrufmonitor.ui.jface.application.editor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -191,6 +192,51 @@ public class EditorController implements IApplicationController,
 			this.m_data = ((IReadCallerRepository) cm).getCallers(this
 					.getFilter());
 			this.doSorting();
+			
+			List lastnames = new ArrayList(26);
+			List cities = new ArrayList(26);
+			List pcode = new ArrayList(9);
+			List countries = new ArrayList(12);
+			ICaller c = null;
+			for (int i = 0; i < this.m_data.size(); i++) {
+				c = this.m_data.get(i);
+				if (c instanceof ICaller) {
+					if (c.getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_LASTNAME) && c.getAttributes().get(IJAMConst.ATTRIBUTE_NAME_LASTNAME).getValue().trim().length()>0) {
+						lastnames.add(c.getAttributes().get(IJAMConst.ATTRIBUTE_NAME_LASTNAME).getValue().substring(0, 1).toUpperCase());
+					}
+					if (c.getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_CITY) && c.getAttributes().get(IJAMConst.ATTRIBUTE_NAME_CITY).getValue().trim().length()>0) {
+						cities.add(c.getAttributes().get(IJAMConst.ATTRIBUTE_NAME_CITY).getValue().substring(0, 1).toUpperCase());
+					}
+					if (c.getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_POSTAL_CODE) && c.getAttributes().get(IJAMConst.ATTRIBUTE_NAME_POSTAL_CODE).getValue().trim().length()>0) {
+						pcode.add(c.getAttributes().get(IJAMConst.ATTRIBUTE_NAME_POSTAL_CODE).getValue().substring(0, 1).toUpperCase());
+					}
+					if (c.getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_COUNTRY) && c.getAttributes().get(IJAMConst.ATTRIBUTE_NAME_COUNTRY).getValue().trim().length()>0) {
+						countries.add(c.getAttributes().get(IJAMConst.ATTRIBUTE_NAME_COUNTRY).getValue().substring(0, 1).toUpperCase());
+					}
+				}
+			}
+			
+			Collections.sort(lastnames);
+			Collections.sort(cities);
+			Collections.sort(pcode);
+			Collections.sort(countries);
+			for (int i=0;i<lastnames.size();i++) {
+				this.m_configuration.put("filter_"+IJAMConst.ATTRIBUTE_NAME_LASTNAME+"_"+(String)lastnames.get(i), "(11,"+IJAMConst.ATTRIBUTE_NAME_LASTNAME+"="+(String)lastnames.get(i)+")");
+				this.getRuntime().getConfigManagerFactory().getConfigManager().setProperty(Editor.NAMESPACE,"filter_"+IJAMConst.ATTRIBUTE_NAME_LASTNAME+"_"+(String)lastnames.get(i), "(11,"+IJAMConst.ATTRIBUTE_NAME_LASTNAME+"="+(String)lastnames.get(i)+")");
+			}
+			for (int i=0;i<cities.size();i++) {
+				this.m_configuration.put("filter_"+IJAMConst.ATTRIBUTE_NAME_CITY+"_"+(String)cities.get(i), "(11,"+IJAMConst.ATTRIBUTE_NAME_CITY+"="+(String)cities.get(i)+")");
+				this.getRuntime().getConfigManagerFactory().getConfigManager().setProperty(Editor.NAMESPACE,"filter_"+IJAMConst.ATTRIBUTE_NAME_CITY+"_"+(String)cities.get(i), "(11,"+IJAMConst.ATTRIBUTE_NAME_CITY+"="+(String)cities.get(i)+")");
+			}
+			for (int i=0;i<pcode.size();i++) {
+				this.m_configuration.put("filter_"+IJAMConst.ATTRIBUTE_NAME_POSTAL_CODE+"_"+(String)pcode.get(i), "(11,"+IJAMConst.ATTRIBUTE_NAME_POSTAL_CODE+"="+(String)pcode.get(i)+")");
+				this.getRuntime().getConfigManagerFactory().getConfigManager().setProperty(Editor.NAMESPACE,"filter_"+IJAMConst.ATTRIBUTE_NAME_POSTAL_CODE+"_"+(String)pcode.get(i), "(11,"+IJAMConst.ATTRIBUTE_NAME_LASTNAME+"="+(String)pcode.get(i)+")");
+			}
+			for (int i=0;i<countries.size();i++) {
+				this.m_configuration.put("filter_"+IJAMConst.ATTRIBUTE_NAME_COUNTRY+"_"+(String)countries.get(i), "(11,"+IJAMConst.ATTRIBUTE_NAME_COUNTRY+"="+(String)countries.get(i)+")");
+				this.getRuntime().getConfigManagerFactory().getConfigManager().setProperty(Editor.NAMESPACE,"filter_"+IJAMConst.ATTRIBUTE_NAME_COUNTRY+"_"+(String)countries.get(i), "(11,"+IJAMConst.ATTRIBUTE_NAME_COUNTRY+"="+(String)countries.get(i)+")");
+			}
+			this.getRuntime().getConfigManagerFactory().getConfigManager().saveConfiguration();
 		}
 		if (this.m_data == null)
 			this.m_data = this.getRuntime().getCallerFactory()
@@ -238,28 +284,13 @@ public class EditorController implements IApplicationController,
 		return l;
 	}
 
-	// protected List getActiveCallerManagers() {
-	// String[] managers =
-	// this.getRuntime().getCallerManagerFactory().getAllCallerManagerIDs();
-	//		
-	// List l = new ArrayList();
-	//		
-	// for (int i=0;i<managers.length;i++) {
-	// ICallerManager man =
-	// this.getRuntime().getCallerManagerFactory().getCallerManager(managers[i]);
-	// if (man !=null && man.isActive()){
-	// l.add(managers[i]);
-	// }
-	// }
-	// return l;
-	// }
-
 	public void generateElementArray(Object[] data) {
 		if (data != null) {
 			this.m_data = this.getRuntime().getCallerFactory()
 					.createCallerList();
+
 			for (int i = 0; i < data.length; i++) {
-				if (data[i] instanceof ICaller)
+				if (data[i] instanceof ICaller) 
 					this.m_data.add((ICaller) data[i]);
 			}
 		}

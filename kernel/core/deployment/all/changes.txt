@@ -5,6 +5,7 @@ jAnrufmonitor 5.0.42 (01.08.2013)
 
 Neu:
 - Installer: Prüfung auf 32-bit und 64-bit Architektur
+- Kontakte: Filter für Nachname, Stadt, Postleitzahl und Land
 
 Bugfix:
 - Vorwahldatei: Aktualisierte Vorwahldatei für Deutschland (Bundesnetzagentur Update 2013)
