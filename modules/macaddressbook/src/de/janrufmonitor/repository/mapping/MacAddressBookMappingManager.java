@@ -289,6 +289,12 @@ public class MacAddressBookMappingManager {
 			try {
 				if (macCaller.getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_LASTNAME))
 					MacAddressBookProxy.getInstance().getDataHandler().insertAttribute(macCaller.getUUID(), IJAMConst.ATTRIBUTE_NAME_LASTNAME, macCaller.getAttribute(IJAMConst.ATTRIBUTE_NAME_LASTNAME).getValue());
+				if (macCaller.getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_CITY))
+					MacAddressBookProxy.getInstance().getDataHandler().insertAttribute(macCaller.getUUID(), IJAMConst.ATTRIBUTE_NAME_CITY, macCaller.getAttribute(IJAMConst.ATTRIBUTE_NAME_CITY).getValue());
+				if (macCaller.getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_COUNTRY))
+					MacAddressBookProxy.getInstance().getDataHandler().insertAttribute(macCaller.getUUID(), IJAMConst.ATTRIBUTE_NAME_COUNTRY, macCaller.getAttribute(IJAMConst.ATTRIBUTE_NAME_COUNTRY).getValue());
+				if (macCaller.getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_POSTAL_CODE))
+					MacAddressBookProxy.getInstance().getDataHandler().insertAttribute(macCaller.getUUID(), IJAMConst.ATTRIBUTE_NAME_POSTAL_CODE, macCaller.getAttribute(IJAMConst.ATTRIBUTE_NAME_POSTAL_CODE).getValue());
 			} catch (SQLException e) {
 				this.m_logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 			}
