@@ -101,6 +101,22 @@ public class FirmwareData {
             return "FRITZ!Box Fon 7330 SL";
         case IFritzBoxFirmware.TYPE_FRITZBOX_7312:
             return "FRITZ!Box Fon 7312"; 
+        case IFritzBoxFirmware.TYPE_VOIP_GATEWAY_5188:
+            return "AVM VoIP Gateway 5188"; 
+        case IFritzBoxFirmware.TYPE_FRITZBOX_5124:
+            return "FRITZ!Box Fon 5124"; 
+        case IFritzBoxFirmware.TYPE_FRITZBOX_3370:
+            return "FRITZ!Box Fon 3370"; 
+        case IFritzBoxFirmware.TYPE_FRITZBOX_6320:
+            return "FRITZ!Box Fon 6320 (Kabel)"; 
+        case IFritzBoxFirmware.TYPE_FRITZBOX_6842_LTE:
+            return "FRITZ!Box Fon 6842 LTE"; 
+        case IFritzBoxFirmware.TYPE_FRITZBOX_7360_EWE:
+            return "FRITZ!Box Fon 7360 (EWE Edition)"; 
+        case IFritzBoxFirmware.TYPE_FRITZBOX_6320_V2:
+            return "FRITZ!Box Fon 6320 (Kabel) v2"; 
+        case IFritzBoxFirmware.TYPE_SPEEDPORT_W920V:
+            return "Speedport W920V"; 
 		default:			
 		}
 		return "unknown";

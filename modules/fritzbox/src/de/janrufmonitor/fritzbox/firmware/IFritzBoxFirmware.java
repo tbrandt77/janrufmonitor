@@ -30,14 +30,23 @@ public interface IFritzBoxFirmware {
     public final static byte TYPE_FRITZBOX_7170 = 29;
     public final static byte TYPE_FRITZBOX_7140 = 30;
     public final static byte TYPE_SPEEDPORT_W900V = 34;
+    
+    public final static byte TYPE_VOIP_GATEWAY_5188 = 36;
+    
     public final static byte TYPE_FRITZFON_7150 = 38;
     public final static byte TYPE_FRITZBOX_7140_ANNEXA = 39;
     public final static byte TYPE_FRITZBOX_7141 = 40;
     public final static byte TYPE_FRITZBOX_5140 = 43;
     public final static byte TYPE_FRITZBOX_7270 = 54;
     public final static byte TYPE_FRITZBOX_5124_ANNEXB = 56;
+    
+    public final static byte TYPE_FRITZBOX_5124 = 57;
+    
     public final static byte TYPE_FRITZBOX_7170_ANNEXA = 58;
     public final static byte TYPE_FRITZBOX_7113 = 60;
+    
+    public final static byte TYPE_SPEEDPORT_W920V = 65;
+    
     public final static byte TYPE_FRITZBOX_7240 = 73;
     public final static byte TYPE_FRITZBOX_7270V3 = 74;
     public final static byte TYPE_FRITZBOX_7570 = 75;
@@ -47,13 +56,20 @@ public interface IFritzBoxFirmware {
     public final static byte TYPE_FRITZBOX_7340 = 99;
     public final static byte TYPE_FRITZBOX_7320 = 100;
     
+    public final static byte TYPE_FRITZBOX_3370 = 103;
+    public final static byte TYPE_FRITZBOX_6320 = 104;
+    
     public final static byte TYPE_FRITZBOX_6840_LTE = 105;
     public final static byte TYPE_FRITZBOX_7330 = 107;
     public final static byte TYPE_FRITZBOX_7360_SL = 109;
+    public final static byte TYPE_FRITZBOX_6320_V2 = 110;
     public final static byte TYPE_FRITZBOX_7360 = 111;
     public final static byte TYPE_FRITZBOX_6340_CABLE = 115;
     public final static byte TYPE_FRITZBOX_7330_SL = 116;
     public final static byte TYPE_FRITZBOX_7312 = 117;
+    
+    public final static byte TYPE_FRITZBOX_6842_LTE = 123;
+    public final static byte TYPE_FRITZBOX_7360_EWE = 124;
 
     public void login() throws FritzBoxLoginException;
     
