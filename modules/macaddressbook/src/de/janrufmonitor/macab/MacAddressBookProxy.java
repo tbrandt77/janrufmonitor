@@ -686,8 +686,10 @@ public class MacAddressBookProxy implements AddressBookChangeListener {
 			if (c instanceof IMultiPhoneCaller) {
 				try {
 					// clean up cache
-					if (this.m_dbh!=null) 
+					if (this.m_dbh!=null) {
 						this.m_dbh.delete(c.getUUID());
+						//this.m_dbh.deleteAttributes(c.getUUID());
+					}
 				} catch (SQLException e) {
 					this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 				}	

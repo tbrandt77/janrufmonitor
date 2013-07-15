@@ -273,6 +273,12 @@ public class MacAddressBookMappingManager {
 			if (uuid==null || uuid.trim().length()==0)
 				uuid = new UUID().toString();
 			
+			try {
+					MacAddressBookProxy.getInstance().getDataHandler().deleteAttributes(uuid);
+			} catch (SQLException e) {
+				this.m_logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+			}
+			
 			ICaller macCaller = getRuntime().getCallerFactory().createCaller(uuid, null, phones, m);
 	
 			this.setPictureAttribute(macCaller, oCaller);
