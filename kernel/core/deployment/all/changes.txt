@@ -12,6 +12,11 @@ Bugfix:
 - Vorwahldatei: Unicodeschreibweise von Orten korrigiert
 
 Module:
+- Fritz!Box-Überwachung: Unterstützung für AVM Fritz!Box Fon 5124, 3370, 6320, 6842, 7360, 6320 v2
+- Apple Mac Adressbuch: Filteroption für Kontakte nach Nachname, Stadt, Postleitzahl und Land
+- Microsoft Outlook Kontaktverzeichnis: Filteroption für Kontakte nach Nachname, Stadt, Postleitzahl und Land
+- Google Kontakte: Filteroption für Kontakte nach Nachname, Stadt, Postleitzahl und Land
+- LDAP-basiertes Adressbuch: Filteroption für Kontakte nach Nachname, Stadt, Postleitzahl und Land
 - LDAP-basiertes Adressbuch: Korrektur von Umlautdarstellungen
 - LDAP-basiertes Adressbuch: UTF-8 und Latin-1 Unterstützung
 - LDAP-basiertes Adressbuch: Base64-Kodierung Unterstützung
