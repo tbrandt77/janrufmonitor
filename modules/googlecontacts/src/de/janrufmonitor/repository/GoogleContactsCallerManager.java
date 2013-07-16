@@ -85,10 +85,10 @@ public class GoogleContactsCallerManager extends AbstractReadWriteCallerManager
 					return getProxy().getContacts(a.getValue());
 				}				
 			}
-			if (filter!=null && filter.getType().equals(FilterType.PHONENUMBER)) {
-//				String intarea = ((PhonenumberFilter)filter).getPhonenumber().getIntAreaCode();
-//				String area = ((PhonenumberFilter)filter).getPhonenumber().getAreaCode();
-//				return getProxy().getContacts(intarea+area);
+			if (filter!=null && filter.getType().equals(FilterType.CHARACTER)) {
+				ICallerList cl = getProxy().getContacts(null);
+				this.applyFilters(cl, new IFilter[] { filter });
+				return cl;
 			}
 			return getProxy().getContacts(null);
 		} catch (GoogleContactsException e) {
