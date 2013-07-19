@@ -156,14 +156,14 @@ public class ThunderbirdTransformer {
 	private String removeEscapedChars(String s) {
 		if (s==null) return s;
 		try {
-			s = StringUtils.replaceString(s, "$C3$BC", "ü");
-			s = StringUtils.replaceString(s, "$C3$B6", "ö");
-			s = StringUtils.replaceString(s, "$C3$A4", "ä");
-			s = StringUtils.replaceString(s, "$C3$9F", "ß");
+			s = StringUtils.replaceString(s, "$C3$BC", "\u00fc");
+			s = StringUtils.replaceString(s, "$C3$B6", "\u00f6");
+			s = StringUtils.replaceString(s, "$C3$A4", "\u00e4");
+			s = StringUtils.replaceString(s, "$C3$9F", "\u00df");
 			
-			s = StringUtils.replaceString(s, "$C3$9C", "Ü");
-			s = StringUtils.replaceString(s, "$C3$96", "Ö");
-			s = StringUtils.replaceString(s, "$C3$84", "Ä");
+			s = StringUtils.replaceString(s, "$C3$9C", "\u00dc");
+			s = StringUtils.replaceString(s, "$C3$96", "\u00d6");
+			s = StringUtils.replaceString(s, "$C3$84", "\u00c4");
 		} catch (Exception e) {
 			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 		}

@@ -21,6 +21,8 @@ Module:
 - LDAP-basiertes Adressbuch: UTF-8 und Latin-1 Unterstützung
 - LDAP-basiertes Adressbuch: Base64-Kodierung Unterstützung
 - LDAP-basiertes Adressbuch: Unterstützung für mehrere Base DNs
+- Mozilla Thunderbird Adressbuch: Unicode Bug beseitigt
+- DasTelefonbuch.de: Unterstützung des neuen Identifizierungsmusters
 
 ===
 
