@@ -128,9 +128,13 @@ public abstract class AbstractWebCallerManager extends AbstractReadOnlyCallerMan
 			}
 			
 			// check correct country code
-			if (!this.getSupportedIntAreaCode().equalsIgnoreCase("00"))
+			if (!this.getSupportedIntAreaCode().equalsIgnoreCase("00")) {
 				if (pn!=null && !pn.getIntAreaCode().equalsIgnoreCase(this.getSupportedIntAreaCode()))
 					throw new CallerNotFoundException("Phone number has country code "+pn.getIntAreaCode()+". Caller manager "+this.getID()+" is supporting only "+this.getSupportedIntAreaCode());
+			
+				// added 2013/07/22: number format compatibility 0911234567 must be equal +49 (911) 234567
+				if (pn!=null) number.setTelephoneNumber(pn.getTelephoneNumber());
+			}
 			
 			// added 2009/05/28
 			// add detection of web services which provides number in middle of URL
