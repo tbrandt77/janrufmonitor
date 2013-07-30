@@ -202,16 +202,20 @@ public class EditorController implements IApplicationController,
 				c = this.m_data.get(i);
 				if (c instanceof ICaller) {
 					if (c.getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_LASTNAME) && c.getAttributes().get(IJAMConst.ATTRIBUTE_NAME_LASTNAME).getValue().trim().length()>0) {
-						lastnames.add(c.getAttributes().get(IJAMConst.ATTRIBUTE_NAME_LASTNAME).getValue().substring(0, 1).toUpperCase());
+						if (!hasForbiddenFilterChars(c.getAttributes().get(IJAMConst.ATTRIBUTE_NAME_LASTNAME).getValue().substring(0, 1).toUpperCase()))
+							lastnames.add(c.getAttributes().get(IJAMConst.ATTRIBUTE_NAME_LASTNAME).getValue().substring(0, 1).toUpperCase());
 					}
 					if (c.getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_CITY) && c.getAttributes().get(IJAMConst.ATTRIBUTE_NAME_CITY).getValue().trim().length()>0) {
-						cities.add(c.getAttributes().get(IJAMConst.ATTRIBUTE_NAME_CITY).getValue().substring(0, 1).toUpperCase());
+						if (!hasForbiddenFilterChars(c.getAttributes().get(IJAMConst.ATTRIBUTE_NAME_CITY).getValue().substring(0, 1).toUpperCase()))
+							cities.add(c.getAttributes().get(IJAMConst.ATTRIBUTE_NAME_CITY).getValue().substring(0, 1).toUpperCase());
 					}
 					if (c.getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_POSTAL_CODE) && c.getAttributes().get(IJAMConst.ATTRIBUTE_NAME_POSTAL_CODE).getValue().trim().length()>0) {
-						pcode.add(c.getAttributes().get(IJAMConst.ATTRIBUTE_NAME_POSTAL_CODE).getValue().substring(0, 1).toUpperCase());
+						if (!hasForbiddenFilterChars(c.getAttributes().get(IJAMConst.ATTRIBUTE_NAME_POSTAL_CODE).getValue().substring(0, 1).toUpperCase()))
+							pcode.add(c.getAttributes().get(IJAMConst.ATTRIBUTE_NAME_POSTAL_CODE).getValue().substring(0, 1).toUpperCase());
 					}
 					if (c.getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_COUNTRY) && c.getAttributes().get(IJAMConst.ATTRIBUTE_NAME_COUNTRY).getValue().trim().length()>0) {
-						countries.add(c.getAttributes().get(IJAMConst.ATTRIBUTE_NAME_COUNTRY).getValue().substring(0, 1).toUpperCase());
+						if (!hasForbiddenFilterChars(c.getAttributes().get(IJAMConst.ATTRIBUTE_NAME_COUNTRY).getValue().substring(0, 1).toUpperCase()))
+							countries.add(c.getAttributes().get(IJAMConst.ATTRIBUTE_NAME_COUNTRY).getValue().substring(0, 1).toUpperCase());
 					}
 				}
 			}
@@ -241,6 +245,25 @@ public class EditorController implements IApplicationController,
 		if (this.m_data == null)
 			this.m_data = this.getRuntime().getCallerFactory()
 					.createCallerList();
+	}
+	
+	private boolean hasForbiddenFilterChars(String s) {
+		if (s==null || s.length()==0) return false;
+		if (s.equalsIgnoreCase("(")) return true;
+		if (s.equalsIgnoreCase(")")) return true;
+		if (s.equalsIgnoreCase("\\")) return true;
+		if (s.equalsIgnoreCase("$")) return true;
+		if (s.equalsIgnoreCase("¤")) return true;
+		if (s.equalsIgnoreCase("!")) return true;
+		if (s.equalsIgnoreCase("&")) return true;
+		if (s.equalsIgnoreCase("\"")) return true;
+		if (s.equalsIgnoreCase("?")) return true;
+		if (s.equalsIgnoreCase("=")) return true;
+		if (s.equalsIgnoreCase("#")) return true;
+		if (s.equalsIgnoreCase("+")) return true;
+		if (s.equalsIgnoreCase("*")) return true;
+		if (s.equalsIgnoreCase("@")) return true;
+		return false;
 	}
 
 	private ICallerManager _getRepository() {
