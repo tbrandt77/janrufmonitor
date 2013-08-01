@@ -386,5 +386,8 @@ ui.jface.application.RendererRegistry\:renderer_flag\:access=system
 ui.jface.application.RendererRegistry\:renderer_cmlogo\:value=de.janrufmonitor.ui.jface.application.editor.rendering.CallerManagerLogo
 ui.jface.application.RendererRegistry\:renderer_cmlogo\:access=system
 
-
-
+# added 5.0.43
+-ui.jface.application.editor.Editor\:filter_ln_(\:access=user
+-ui.jface.application.editor.Editor\:filter_ln_(\:default=(11,ln\=()
+-ui.jface.application.editor.Editor\:filter_ln_(\:type=text
+-ui.jface.application.editor.Editor\:filter_ln_(\:value=(11,ln\=()
