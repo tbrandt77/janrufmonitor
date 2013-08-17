@@ -54,6 +54,8 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 	private static String CFG_ADDRESSBOOK = "ab";
 
 	private IRuntime m_runtime;
+	
+	private boolean isSyncing = false;
 
 	private ICallerDatabaseHandler m_dbh;
 
@@ -116,6 +118,20 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 			throw new CallerNotFoundException(
 					"Phone number is CLIR. Identification impossible.");
 
+		int counter = 0;
+		while(this.isSyncing && counter < 5) {
+			counter++;
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+			}
+		}
+		
+		if (counter==5) {
+			this.m_logger.warning("JAM-FritzBoxPhonebookSync-Thread still running for more then 5 sec., but caller identification requested.");
+		}
+		
+		
 		ICaller c = null;
 		try {
 			c = getDatabaseHandler().getCaller(number);
@@ -140,6 +156,7 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 			Logger m_logger;
 
 			public void run() {
+				isSyncing = true;
 				this.m_logger = LogManager.getLogManager().getLogger(IJAMConst.DEFAULT_LOGGER);
 				if (this.m_logger.isLoggable(Level.FINE))
 					this.m_logger.fine("Starting JAM-FritzBoxPhonebookSync-Thread");
@@ -197,7 +214,7 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 								this.m_logger.log(Level.SEVERE, e1.getMessage(), e1);
 							}
 						}
-						
+						isSyncing = false;
 						return;
 					}
 
@@ -272,6 +289,8 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 						this.m_logger.log(Level.SEVERE, e1.getMessage(), e1);
 					}
 				}
+				
+				isSyncing = false;
 				
 				if (this.m_logger.isLoggable(Level.FINE))
 					this.m_logger.fine("Stopping JAM-FritzBoxPhonebookSync-Thread");
