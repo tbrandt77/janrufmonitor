@@ -5,8 +5,8 @@ jAnrufmonitor 5.0.43 (15.08.2013)
 
 Bugfix:
 - Identifizierung: Rufnummernkompatibilität zwischen Norm E.123 und kanonischem Format
-- Adressbuch: Filterproblem bei Sonderzeichen für Nachname und Stadt/Gemeinde 
-- Adressbuch: Filetr mit ( Zeichen führt zu Programmabsturz
+- Adressbuch: Filterproblem bei Sonderzeichen für Nachname und Stadt/Gemeinde
+- Adressbuch: Filter mit ( Zeichen führt zu Programmabsturz
 
 ===
 
