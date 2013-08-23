@@ -23,6 +23,7 @@ import de.janrufmonitor.framework.monitor.PhonenumberInfo;
 import de.janrufmonitor.repository.imexport.ICallerExporter;
 import de.janrufmonitor.repository.imexport.IImExporter;
 import de.janrufmonitor.runtime.PIMRuntime;
+import de.janrufmonitor.util.string.StringEscapeUtils;
 
 public class FritzBoxCallerExporter implements ICallerExporter {
 
@@ -82,8 +83,10 @@ public class FritzBoxCallerExporter implements ICallerExporter {
 		s.append("<person>");s.append(IJAMConst.CRLF);
 		s.append("<realName>");
 		try {
-			s.append(new String(c.getName().getFullname().getBytes("iso-8859-1")));
+			s.append(StringEscapeUtils.escapeXml(new String(c.getName().getFullname().getBytes("iso-8859-1"))));
 		} catch (UnsupportedEncodingException e) {
+			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+		} catch (Exception e) {
 			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 		}
 		s.append("</realName>");s.append(IJAMConst.CRLF);
