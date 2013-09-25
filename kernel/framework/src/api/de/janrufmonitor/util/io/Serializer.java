@@ -61,11 +61,13 @@ public class Serializer {
 	}
 	
 	private static String encodeAttributeValue(String field) {
+		field = StringUtils.replaceString(field, m_token, TOKEN_ESCAPE_SYMBOL);
 		field = StringUtils.replaceString(field, m_atoken, AVTOKEN_ESCAPE_SYMBOL);
 		return encode(field);
 	}
 	
 	private static String decodeAttributeValue(String field) {		
+		field = StringUtils.replaceString(field, TOKEN_ESCAPE_SYMBOL, m_token);
 		field = StringUtils.replaceString(field, AVTOKEN_ESCAPE_SYMBOL, m_atoken);
 		return decode(field);
 	}
