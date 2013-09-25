@@ -193,7 +193,7 @@ public class GeoCoder {
 		} catch (MalformedURLException e) {
 			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 		} catch (IOException e) {
-			this.m_logger.log(Level.SEVERE, e.getMessage(), e);			
+			this.m_logger.log(Level.INFO, e.getMessage(), e);			
 		} 
 		
 		if (result!=null) {
