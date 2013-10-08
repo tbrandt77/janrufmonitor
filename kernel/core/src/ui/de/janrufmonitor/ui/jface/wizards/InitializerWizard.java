@@ -17,6 +17,7 @@ import de.janrufmonitor.ui.jface.wizards.pages.InitDataPathPage;
 import de.janrufmonitor.ui.jface.wizards.pages.InitFinalizePage;
 import de.janrufmonitor.ui.jface.wizards.pages.InitMsnPage;
 import de.janrufmonitor.ui.jface.wizards.pages.InitNumberFormatPage;
+import de.janrufmonitor.ui.jface.wizards.pages.InitVariantPage;
 import de.janrufmonitor.ui.jface.wizards.pages.InitWelcomePage;
 import de.janrufmonitor.ui.swt.DisplayManager;
 import de.janrufmonitor.util.io.PathResolver;
@@ -33,15 +34,32 @@ public class InitializerWizard extends AbstractWizard {
 	public InitializerWizard() {
 		super();
 
-		this.m_pages = new AbstractPage[6];
+		this.m_pages = new AbstractPage[7];
 		this.m_pages[0] = new InitWelcomePage("");
 		this.m_pages[1] = new InitDataPathPage(PathResolver.getInstance(getRuntime()).getUserDataDirectory());
 		this.m_pages[2] = new InitMsnPage("");
 		this.m_pages[3] = new InitNumberFormatPage("");
 		this.m_pages[4] = new InitFinalizePage("");
 		this.m_pages[5] = new InitAreaCodePage("");
+		this.m_pages[6] = null;
+		
+		String clazz = getRuntime().getConfigManagerFactory().getConfigManager().getProperty(InitVariantPage.NAMESPACE, "class");
+		if (clazz!=null && clazz.length()>0) {
+			try {
+				Class c = Thread.currentThread().getContextClassLoader().loadClass(clazz);
+				Object o = c.newInstance();
+				if (o instanceof InitVariantPage) {
+					this.m_pages[6] = (InitVariantPage)o;
+				}
+			} catch (ClassNotFoundException e) {
+			} catch (InstantiationException e) {
+			} catch (IllegalAccessException e) {
+			}
+		}
 
 		this.addPage(this.m_pages[0]);
+		if (this.m_pages[6]!=null)
+			this.addPage(this.m_pages[6]); // variant
 		this.addPage(this.m_pages[5]); // areacode
 		this.addPage(this.m_pages[3]); // number format
 		this.addPage(this.m_pages[2]); // msn
@@ -75,6 +93,14 @@ public class InitializerWizard extends AbstractWizard {
 						
 						progressMonitor.worked(1);
 						m_status &= ((InitDataPathPage) m_pages[1]).performFinish();
+						
+						if (m_pages[6]!=null) {
+							progressMonitor.setTaskName(getI18nManager()
+									.getString(getNamespace(),
+											"variant", "label",
+											getLanguage()));
+							m_status &= ((InitVariantPage) m_pages[6]).performFinish();
+						}
 					
 						progressMonitor.setTaskName(getI18nManager()
 								.getString(getNamespace(),
