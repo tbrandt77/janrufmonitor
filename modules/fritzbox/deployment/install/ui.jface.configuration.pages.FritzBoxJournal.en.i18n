@@ -8,6 +8,7 @@ ui.jface.configuration.pages.FritzBoxVoip\:boxport\:label\:en=Port:
 ui.jface.configuration.pages.FritzBoxVoip\:boxareacode\:label\:en=Areacode of Fritz!Box Fon location:\n(incl. leading zero) 
 ui.jface.configuration.pages.FritzBoxVoip\:boxdate\:label\:en=Date format: 
 ui.jface.configuration.pages.FritzBoxVoip\:activemonitor\:label\:en=Monitor enabled (restart required)
+ui.jface.configuration.pages.FritzBoxVoip\:activemonitor2\:label\:en=Monitor enabled
 ui.jface.configuration.pages.FritzBoxVoip\:outgoing\:label\:en=Monitor outgoing calls
 ui.jface.configuration.pages.FritzBoxVoip\:retrymax\:label\:en=Connection retry #: 
 ui.jface.configuration.pages.FritzBoxVoip\:festnetzalias\:label\:en=MSN for "Festnetz" calls:
@@ -19,6 +20,8 @@ ui.jface.configuration.pages.FritzBoxVoip\:dialprefixes\:label\:en=Define dial p
 ui.jface.configuration.pages.FritzBoxVoip\:status\:label\:en=Connection status: 
 ui.jface.configuration.pages.FritzBoxVoip\:statuso\:label\:en=Connection to observer:  
 ui.jface.configuration.pages.FritzBoxVoip\:statuss\:label\:en=Connection to sync: 
+ui.jface.configuration.pages.FritzBoxVoip\:openfb\:label\:en=To enable the connection of jAnrufmonitor to the Fritz!Box Fon, please dial the\ncode #96*5* on a phone connected with the Fritz!Box Fon hardware.
+ui.jface.configuration.pages.FritzBoxVoip\:nohttp\:label\:en=Please remove http:// from Fritz!Box Fon IP address.
 
 ui.jface.configuration.pages.FritzBoxSynchronizer\:title\:label\:en=AVM Fritz!Box Fon Synchronizer
 service.SynchronizerService\:title\:label\:en=AVM Fritz!Box Fon Synchronizer
@@ -36,3 +39,5 @@ ui.jface.configuration.pages.FritzBoxPhonebookManager\:title\:label\:en=AVM Frit
 ui.jface.configuration.pages.FritzBoxPhonebookManager\:description\:label\:en=Identifies callers with the AVM Fritz!Box Fon phonebook. Hint: Newly created contacts on the AVM Fritz!Box Fon phonebook are only applied after program restart.
 ui.jface.configuration.pages.FritzBoxPhonebookManager\:enabled\:label\:en=Repository enabled
 ui.jface.configuration.pages.FritzBoxPhonebookManager\:ab\:label\:en=Available phonebooks: 
+
+ui.jface.wizards.InitializerWizard\:variant\:label\:en=AVM Fritz!Box Fon settings being saved...

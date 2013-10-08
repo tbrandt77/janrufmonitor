@@ -62,3 +62,7 @@ service.TrayIcon\:component_sep_dial\:access=system
 # added 5.0.1
 ui.jface.application.ActionRegistry\:action_fritzbox_stats\:value=de.janrufmonitor.ui.jface.application.fritzbox.action.FritzboxStatAction
 ui.jface.application.ActionRegistry\:action_fritzbox_stats\:access=system
+
+# added 5.0.44
+ui.jface.wizards.pages.InitVariantPage\:class\:value=de.janrufmonitor.ui.jface.wizards.pages.InitFritzBoxVariantPage
+ui.jface.wizards.pages.InitVariantPage\:class\:access=system

@@ -8,6 +8,7 @@ ui.jface.configuration.pages.FritzBoxVoip\:boxport\:label\:de=Port:
 ui.jface.configuration.pages.FritzBoxVoip\:boxareacode\:label\:de=Vorwahl des Fritz!Box Fon-Standorts:\n(mit f\u00FChrender Null) 
 ui.jface.configuration.pages.FritzBoxVoip\:boxdate\:label\:de=Datumsformat: 
 ui.jface.configuration.pages.FritzBoxVoip\:activemonitor\:label\:de=\u00DCberwachung aktiviert (erfordert Programmneustart)
+ui.jface.configuration.pages.FritzBoxVoip\:activemonitor2\:label\:de=\u00DCberwachung aktivieren
 ui.jface.configuration.pages.FritzBoxVoip\:outgoing\:label\:de=Ausgehende Anrufe \u00FCberwachen
 ui.jface.configuration.pages.FritzBoxVoip\:retrymax\:label\:de=Anzahl der autom. Verbindungsversuche: 
 ui.jface.configuration.pages.FritzBoxVoip\:festnetzalias\:label\:de=MSN f\u00FCr "Festnetz" Anrufe:
@@ -19,6 +20,8 @@ ui.jface.configuration.pages.FritzBoxVoip\:dialprefixes\:label\:de=W\u00E4hlpr\u
 ui.jface.configuration.pages.FritzBoxVoip\:status\:label\:de=Verbindungsstatus :
 ui.jface.configuration.pages.FritzBoxVoip\:statuso\:label\:de=Verbindung zur \u00DCberwachung: 
 ui.jface.configuration.pages.FritzBoxVoip\:statuss\:label\:de=Verbindung zum Synchronisieren: 
+ui.jface.configuration.pages.FritzBoxVoip\:openfb\:label\:de=Um die Fritz!Box Fon Hardware mit jAnrufmonitor zu \u00FCberwachen,\nmuss diese freigeschaltet werden. Durch W\u00E4hlen der Ziffernfolge #96*5*\nmit einem an der Fritz!Box Fon angeschlossenen Telefon erfolgt\ndie Freischaltung.
+ui.jface.configuration.pages.FritzBoxVoip\:nohttp\:label\:de=Die IP-Adresse der Fritz!Box Fon ohne http:// angeben.
 
 ui.jface.configuration.pages.FritzBoxSynchronizer\:title\:label\:de=AVM Fritz!Box Fon Synchronizer
 service.SynchronizerService\:title\:label\:de=AVM Fritz!Box Fon Synchronizer
@@ -36,3 +39,5 @@ ui.jface.configuration.pages.FritzBoxPhonebookManager\:title\:label\:de=AVM Frit
 ui.jface.configuration.pages.FritzBoxPhonebookManager\:description\:label\:de=Identifiziert Anrufe direkt mit den Kontakten des AVM Fritz!Box Fon Telefonbuchs. Hinweis: Neue Kontakte, die \u00FCber die AVM Fritz!Box Fon angelegt werden, sind erst nach einem Programmneustart nutzbar.
 ui.jface.configuration.pages.FritzBoxPhonebookManager\:enabled\:label\:de=Datenablage aktiviert
 ui.jface.configuration.pages.FritzBoxPhonebookManager\:ab\:label\:de=Verf\u00FCgbare Telefonb\u00FCcher: 
+
+ui.jface.wizards.InitializerWizard\:variant\:label\:de=AVM Fritz!Box Fon Einstellungen werden gespeichert...
