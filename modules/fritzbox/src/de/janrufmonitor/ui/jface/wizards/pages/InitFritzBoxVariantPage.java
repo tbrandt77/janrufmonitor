@@ -1,5 +1,7 @@
 package de.janrufmonitor.ui.jface.wizards.pages;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 
 import org.eclipse.jface.preference.StringFieldEditor;
@@ -12,6 +14,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import de.janrufmonitor.framework.command.ICommand;
+import de.janrufmonitor.framework.monitor.IMonitor;
 import de.janrufmonitor.fritzbox.FritzBoxMonitor;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
@@ -147,7 +151,42 @@ public class InitFritzBoxVariantPage extends InitVariantPage {
 		getRuntime().getConfigManagerFactory().getConfigManager().setProperty(FritzBoxMonitor.NAMESPACE, "activemonitor", (m_active ? "true" : "false"));
 		getRuntime().getConfigManagerFactory().getConfigManager().saveConfiguration();
 		
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			m_logger.log(Level.SEVERE, e.getMessage(), e);
+			return false;
+		}
+		
 		getRuntime().getConfigurableNotifier().notifyByNamespace(FritzBoxMonitor.NAMESPACE);
+		
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			m_logger.log(Level.SEVERE, e.getMessage(), e);
+			return false;
+		}
+		
+		if (m_active && !getRuntime().getMonitorListener().isRunning()) {
+			getRuntime().getMonitorListener().start();
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				m_logger.log(Level.SEVERE, e.getMessage(), e);
+				return false;
+			}
+			ICommand c = PIMRuntime.getInstance().getCommandFactory().getCommand("Activator");
+			if (c!=null) {
+				try {
+					Map m = new HashMap();
+					IMonitor mon = getRuntime().getMonitorListener().getDefaultMonitor();
+					m.put("status", (mon.isStarted() ? "revert" : "invert"));
+					c.setParameters(m); // this method executes the command as well !!
+				} catch (Exception e) {
+					m_logger.log(Level.SEVERE, e.toString(), e);
+				}
+			}
+		}
 		
 		try {
 			Thread.sleep(500);
