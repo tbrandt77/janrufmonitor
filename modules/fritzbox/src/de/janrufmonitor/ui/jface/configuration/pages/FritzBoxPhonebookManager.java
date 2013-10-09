@@ -8,6 +8,7 @@ import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ComboFieldEditor;
 
 import de.janrufmonitor.fritzbox.firmware.FirmwareManager;
+import de.janrufmonitor.fritzbox.firmware.FritzOS559Firmware;
 import de.janrufmonitor.fritzbox.firmware.FritzOSFirmware;
 import de.janrufmonitor.fritzbox.firmware.SessionIDFritzBoxFirmware;
 import de.janrufmonitor.fritzbox.firmware.UnitymediaFirmware;
@@ -63,10 +64,10 @@ public class FritzBoxPhonebookManager extends AbstractServiceFieldEditorConfigPa
 			label,
 			this.getFieldEditorParent()
 		);		
-		bfe.setEnabled((FirmwareManager.getInstance().isInstance(UnitymediaFirmware.class)||FirmwareManager.getInstance().isInstance(SessionIDFritzBoxFirmware.class)||FirmwareManager.getInstance().isInstance(FritzOSFirmware.class)), this.getFieldEditorParent());
+		bfe.setEnabled((FirmwareManager.getInstance().isInstance(UnitymediaFirmware.class)||FirmwareManager.getInstance().isInstance(SessionIDFritzBoxFirmware.class)||FirmwareManager.getInstance().isInstance(FritzOSFirmware.class)||FirmwareManager.getInstance().isInstance(FritzOS559Firmware.class)), this.getFieldEditorParent());
 		addField(bfe);
 		
-		if (FirmwareManager.getInstance().isInstance(FritzOSFirmware.class)) {
+		if (FirmwareManager.getInstance().isInstance(FritzOSFirmware.class)||FirmwareManager.getInstance().isInstance(FritzOS559Firmware.class)) {
 			try {
 				Map adb = FirmwareManager.getInstance().getAddressbooks();
 				String[][] list = new String[adb.size()][2];
