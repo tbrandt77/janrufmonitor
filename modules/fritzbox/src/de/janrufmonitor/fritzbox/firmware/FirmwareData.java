@@ -117,6 +117,8 @@ public class FirmwareData {
             return "FRITZ!Box Fon 6320 (Kabel) v2"; 
         case IFritzBoxFirmware.TYPE_SPEEDPORT_W920V:
             return "Speedport W920V"; 
+        case IFritzBoxFirmware.TYPE_FRITZBOX_7490:
+            return "FRITZ!Box Fon 7490"; 
 		default:			
 		}
 		return "unknown";

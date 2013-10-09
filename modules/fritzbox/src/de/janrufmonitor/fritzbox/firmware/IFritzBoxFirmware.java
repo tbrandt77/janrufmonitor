@@ -64,6 +64,7 @@ public interface IFritzBoxFirmware {
     public final static byte TYPE_FRITZBOX_7360_SL = 109;
     public final static byte TYPE_FRITZBOX_6320_V2 = 110;
     public final static byte TYPE_FRITZBOX_7360 = 111;
+    public final static byte TYPE_FRITZBOX_7490 = 113;
     public final static byte TYPE_FRITZBOX_6340_CABLE = 115;
     public final static byte TYPE_FRITZBOX_7330_SL = 116;
     public final static byte TYPE_FRITZBOX_7312 = 117;
