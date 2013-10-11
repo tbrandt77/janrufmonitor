@@ -1,5 +1,24 @@
 ﻿===
 
+jAnrufmonitor 5.0.44 (01.11.2013)
+---------------------------------
+Neu:
+- Konfigurations-Wizard: Option für CAPI und AVM Fritz!Box Fon Einstellungen hinzugefügt
+- Konfigurations-Wizard: Automatischer Verbindungsaufbau nach Beenden des Wizards möglich
+
+Bugfix:
+- Geokodierung: Loglevel bei nicht-kodierten Adressen angepasst
+- Kontakte: Exportproblem beim DAT-Format mit ; Zeichen behoben
+
+Module:
+- Fritz!Box-Überwachung: Unterstützung für AVM Fritz!Box Fon 7490
+- Fritz!Box-Überwachung: Startverzögerung beim Synchronisieren nach dem Programmstart
+- Fritz!Box-Überwachung: XML Encodierung beim Fritz!Box internen Telefonbuch hinzugefügt
+- Fritz!Box-Überwachung: Unterstützung für Fritz!OS 5.59+
+- Google Kontakte: Google API Library 3.0 aktualisiert
+
+===
+
 jAnrufmonitor 5.0.43 (15.08.2013)
 ---------------------------------
 
