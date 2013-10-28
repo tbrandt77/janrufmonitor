@@ -588,7 +588,7 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 					m.group(3),
 					""
 			);
-			if (fwd.getMajor()>=5 && fwd.getMinor()>=59)
+			if ((fwd.getMajor()==5 && fwd.getMinor()>=59) || fwd.getMajor()==6)
 				return fwd;
 		} 
 		throw new FritzBoxDetectFirmwareException(
