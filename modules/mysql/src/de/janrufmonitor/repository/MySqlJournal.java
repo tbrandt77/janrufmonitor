@@ -86,7 +86,7 @@ public class MySqlJournal extends AbstractDatabaseCallManager implements IRemote
 			} 
 			
 			stmt.execute("CREATE TABLE attributes (ref VARCHAR(36), name VARCHAR(64), value VARCHAR(2048));");
-			stmt.execute("CREATE TABLE calls (uuid VARCHAR(36) PRIMARY KEY, cuuid VARCHAR(36), country VARCHAR(8), areacode VARCHAR(16), number VARCHAR(64), msn VARCHAR(16), cip VARCHAR(4), cdate BIGINT, ndate TIMESTAMP, content VARCHAR("+Short.MAX_VALUE+"));");
+			stmt.execute("CREATE TABLE calls (uuid VARCHAR(36) PRIMARY KEY, cuuid VARCHAR(36), country VARCHAR(8), areacode VARCHAR(16), number VARCHAR(64), msn VARCHAR(16), cip VARCHAR(4), cdate BIGINT, ndate TIMESTAMP, content TEXT("+Short.MAX_VALUE+"));");
 
 //			super.createTables();
 		}

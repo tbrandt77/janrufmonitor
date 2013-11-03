@@ -73,7 +73,7 @@ public class MySqlAddressbook extends AbstractDatabaseCallerManager implements
 			stmt.execute("CREATE TABLE versions (version VARCHAR(10));");
 			stmt.execute("INSERT INTO versions (version) VALUES ('"+IJAMConst.VERSION_DISPLAY+"');");
 			stmt.execute("CREATE TABLE attributes (ref VARCHAR(36), name VARCHAR(64), value VARCHAR(2048));");
-			stmt.execute("CREATE TABLE callers (uuid VARCHAR(36) PRIMARY KEY, content VARCHAR("+ Short.MAX_VALUE + "));");
+			stmt.execute("CREATE TABLE callers (uuid VARCHAR(36) PRIMARY KEY, content TEXT("+ Short.MAX_VALUE + "));");
 			stmt.execute("CREATE TABLE phones (ref VARCHAR(36), country VARCHAR(8), areacode VARCHAR(16), number VARCHAR(64), phone VARCHAR(128));");
 
 			stmt.close();
