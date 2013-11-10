@@ -133,6 +133,7 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 	
 	private String m_sid;
 	private String m_response;
+	private boolean is600  = false;
 	
 	public FritzOS559Firmware(String box_address, String box_port, String box_password, String box_user) {
 		super(box_address, box_port, box_password, box_user);
@@ -265,7 +266,8 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 		
 		List result = new ArrayList();
 		StringBuffer xml = new StringBuffer();
-		InputStreamReader inr = new InputStreamReader(in, "iso-8859-1");
+		String encoding = (is600 ? "utf-8": "iso-8859-1");
+		InputStreamReader inr = new InputStreamReader(in, encoding);
 		BufferedReader bufReader = new BufferedReader(inr);
 		
 		String line = bufReader.readLine(); // drop header
@@ -588,6 +590,7 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 					m.group(3),
 					""
 			);
+			if (fwd.getMajor()==6) is600 = true;
 			if ((fwd.getMajor()==5 && fwd.getMinor()>=59) || fwd.getMajor()==6)
 				return fwd;
 		} 
