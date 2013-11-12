@@ -323,9 +323,10 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 		try {
 			XMLPeHandler handler = new XMLPeHandler(ab);
 			SAXParser p = SAXParserFactory.newInstance().newSAXParser();
-			ByteArrayInputStream in = new ByteArrayInputStream(xml.toString().getBytes("iso-8859-1"));
+			String encoding = (is600 ? "utf-8": "iso-8859-1");
+			ByteArrayInputStream in = new ByteArrayInputStream(xml.toString().getBytes(encoding));
 			InputSource is = new InputSource(in);
-			is.setEncoding("iso-8859-1");
+			is.setEncoding(encoding);
 			p.parse(is, handler);
 			return handler.getList();
 		} catch (SAXException e) {
