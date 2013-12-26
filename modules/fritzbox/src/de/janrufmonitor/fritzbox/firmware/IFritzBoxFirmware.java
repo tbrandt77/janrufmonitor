@@ -71,6 +71,8 @@ public interface IFritzBoxFirmware {
     
     public final static byte TYPE_FRITZBOX_6842_LTE = 123;
     public final static byte TYPE_FRITZBOX_7360_EWE = 124;
+    
+    public final static int TYPE_FRITZBOX_7362_SL = 131;
 
     public void login() throws FritzBoxLoginException;
     

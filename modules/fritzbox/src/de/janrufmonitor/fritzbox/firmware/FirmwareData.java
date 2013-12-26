@@ -2,14 +2,18 @@ package de.janrufmonitor.fritzbox.firmware;
 
 public class FirmwareData {
 
-	private byte m_type, m_major, m_minor;
+	private int m_type, m_major, m_minor;
 	private String m_mod;
 	
-	public FirmwareData(byte type, byte major, byte minor , String mod) {
+	public FirmwareData(int type, int major, int minor , String mod) {
 		this.m_type = type;
 		this.m_major = major;
 		this.m_minor = minor;
 		this.m_mod = mod;
+	}
+	
+	public FirmwareData(byte type, byte major, byte minor , String mod) {
+		this((int)type, (int) major, (int) minor, mod);
 	}
 	
 	public FirmwareData(byte type, byte major, byte minor) {
@@ -17,17 +21,17 @@ public class FirmwareData {
 	}
 	
 	public FirmwareData(String type, String major, String minor , String mod) {
-		this(Byte.parseByte(type), Byte.parseByte(major), Byte.parseByte(minor), mod);
+		this(Integer.parseInt(type), Integer.parseInt(major), Integer.parseInt(minor), mod);
 	}
 	
 	public FirmwareData(String type, String major, String minor) {
 		this(type, major, minor, "");
 	}
 	
-	public byte getMajor() {
+	public int getMajor() {
 		return this.m_major;
 	}
-	public byte getMinor() {
+	public int getMinor() {
 		return this.m_minor;
 	}
 
@@ -119,6 +123,8 @@ public class FirmwareData {
             return "Speedport W920V"; 
         case IFritzBoxFirmware.TYPE_FRITZBOX_7490:
             return "FRITZ!Box Fon 7490"; 
+        case IFritzBoxFirmware.TYPE_FRITZBOX_7362_SL:
+            return "FRITZ!Box Fon 7362 SL"; 
 		default:			
 		}
 		return "unknown";
@@ -127,15 +133,15 @@ public class FirmwareData {
 	public String toString() {
 		StringBuffer fw = new StringBuffer(32);
 		fw.append((this.m_type<10 ? "0" : ""));
-		fw.append(Byte.toString(this.m_type));
+		fw.append(Integer.toString(this.m_type));
 		fw.append(".");
 		
 		fw.append((this.m_major<10 ? "0" : ""));
-		fw.append(Byte.toString(this.m_major));
+		fw.append(Integer.toString(this.m_major));
 		fw.append(".");
 		
 		fw.append((this.m_minor<10 ? "0" : ""));
-		fw.append(Byte.toString(this.m_minor));
+		fw.append(Integer.toString(this.m_minor));
 		fw.append(this.m_mod);
 		
 		return fw.toString();
