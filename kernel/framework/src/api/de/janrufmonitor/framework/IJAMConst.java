@@ -24,12 +24,12 @@ public interface IJAMConst {
 	/**
 	 * Patch level
 	 */
-	public final static String VERSION_PATCH = "45";
+	public final static String VERSION_PATCH = "46";
 	
 	/**
 	 * Build number
 	 */
-	public final static String VERSION_BUILD = "20131201";
+	public final static String VERSION_BUILD = "20140115";
 
 	/**
 	 * Display version

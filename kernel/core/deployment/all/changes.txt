@@ -1,5 +1,18 @@
 ﻿===
 
+jAnrufmonitor 5.0.46 (15.01.2014)
+---------------------------------
+
+Bugfix:
+- Sprachdatei: Rechtschreibkorrekturen
+- Infodialog: Copyright Information angepasst
+
+Module:
+- Fritz!Box-Überwachung: Unterstützung für AVM Fritz!Box Fon 7362 SL
+- Fritz!Box-Überwachung: Minor-Version Erkennung für AVM Fritz!Box Fon 7490 verbessert
+
+===
+
 jAnrufmonitor 5.0.45 (01.12.2013)
 ---------------------------------
 
