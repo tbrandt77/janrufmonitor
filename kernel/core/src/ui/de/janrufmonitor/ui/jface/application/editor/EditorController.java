@@ -264,6 +264,7 @@ public class EditorController implements IApplicationController,
 		if (s.equalsIgnoreCase("*")) return true;
 		if (s.equalsIgnoreCase("@")) return true;
 		if (s.equalsIgnoreCase(",")) return true;
+		if (s.equalsIgnoreCase(" ")) return true;
 		return false;
 	}
 
