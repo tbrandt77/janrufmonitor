@@ -1431,6 +1431,7 @@ public class MailNotification extends AbstractConfigPage {
 		this.getPreferenceStore().setValue(this.getConfigNamespace()+SEPARATOR+"rej", activerej.getSelection());
 		this.getPreferenceStore().setValue(this.getConfigNamespace()+SEPARATOR+"end", activeend.getSelection());
 		this.getPreferenceStore().setValue(this.getConfigNamespace()+SEPARATOR+"smtpauth", smtp_auth.getSelection());
+		this.getPreferenceStore().setValue(this.getConfigNamespace()+SEPARATOR+"smtpssl", smtp_ssl.getSelection());
 		this.getPreferenceStore().setValue(this.getConfigNamespace()+SEPARATOR+"smtpserver", server.getText());
 		this.getPreferenceStore().setValue(this.getConfigNamespace()+SEPARATOR+"smtpport", port.getText());
 		this.getPreferenceStore().setValue(this.getConfigNamespace()+SEPARATOR+"smtpuser", user.getText());
