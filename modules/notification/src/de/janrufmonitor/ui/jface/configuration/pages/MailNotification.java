@@ -814,6 +814,7 @@ public class MailNotification extends AbstractConfigPage {
 	private Button activepre;
 	private Button activeend;
 	private Button smtp_auth;
+	private Button smtp_ssl;
 	private Text server;
 	private Text port;
 	private Text user;
@@ -1064,6 +1065,18 @@ public class MailNotification extends AbstractConfigPage {
         gd.horizontalSpan = 2;
         smtp_auth.setLayoutData(gd);
 		
+        this.smtp_ssl = new Button(g2, SWT.CHECK);
+		this.smtp_ssl.setText(
+			this.m_i18n.getString(this.getNamespace(), "smtpssl", "label", this.m_language)
+		);
+		this.smtp_ssl.setSelection(
+			this.getPreferenceStore().getBoolean(this.getConfigNamespace()+SEPARATOR+"smtpssl")	
+		);
+		
+		gd = new GridData();
+        gd.widthHint = 300;
+        gd.horizontalSpan = 2;
+        smtp_ssl.setLayoutData(gd);
         
         new Label(g2, SWT.NONE).setText(
 			this.m_i18n.getString(this.getNamespace(), "smtpqueuetime", "label", this.m_language)

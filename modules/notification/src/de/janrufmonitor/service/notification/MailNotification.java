@@ -67,9 +67,9 @@ public class MailNotification extends AbstractReceiverConfigurableService {
 
 	private static String CONFIG_MAILFROM = "mailfrom";
 
-	private static String CONFIG_SERVER_PORT = "smtpport";
-
 	private static String CONFIG_SMTP_AUTH = "smtpauth";
+	
+	private static String CONFIG_SMTP_SSL = "smtpssl";
 	
 	private static String CONFIG_TEMPLATE = "mailtemplate";
 
@@ -102,17 +102,34 @@ public class MailNotification extends AbstractReceiverConfigurableService {
 				Properties props = System.getProperties();
 				String server = this.m_configuration.getProperty(
 						MailNotification.CONFIG_SERVER, "");
+				String port = this.m_configuration.getProperty(
+						MailNotification.CONFIG_PORT, "25");
+				
 				if (server.length() > 0) {
 					props.put("mail.smtp.host", server);
+					props.put("mail.smtp.port", port);
 					
 					boolean auth = Boolean.parseBoolean(this.m_configuration
 							.getProperty(MailNotification.CONFIG_SMTP_AUTH,
 									"false"));
+					
+					boolean usessl = Boolean.parseBoolean(this.m_configuration
+							.getProperty(MailNotification.CONFIG_SMTP_SSL,
+									"false"));
+					
 					if (auth) {						
 						props.put("mail.smtp.auth", "true");
 					} else {
 						props.put("mail.smtp.auth", "false");
-					}					
+					}	
+					
+					if (usessl) {
+						props.put("mail.smtp.starttls.enable", "true");
+					} else {
+						props.put("mail.smtp.starttls.enable", "false");
+					}	
+					
+				
 				} else {
 					m_logger.severe("No SMTP Host set.");
 					return;
@@ -181,6 +198,17 @@ public class MailNotification extends AbstractReceiverConfigurableService {
 						} else {
 							props.put("mail.smtp.auth", "false");
 						}
+						
+						boolean usessl = Boolean.parseBoolean(this.m_configuration
+								.getProperty(MailNotification.CONFIG_SMTP_SSL,
+										"false"));
+
+						if (usessl) {
+							props.put("mail.smtp.starttls.enable", "true");
+						} else {
+							props.put("mail.smtp.starttls.enable", "false");
+						}	
+						
 					} else {
 						m_logger.severe("No SMTP Host set.");
 						return;
@@ -568,7 +596,7 @@ public class MailNotification extends AbstractReceiverConfigurableService {
 
 	private int getPort() {
 		return Integer.parseInt(this.m_configuration.getProperty(
-				MailNotification.CONFIG_SERVER_PORT, "25"));
+				MailNotification.CONFIG_PORT, "25"));
 	}
 
 	public String getID() {

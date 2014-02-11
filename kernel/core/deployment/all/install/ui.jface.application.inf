@@ -401,3 +401,9 @@ ui.jface.application.RendererRegistry\:renderer_cmlogo\:access=system
 -ui.jface.application.editor.Editor\:filter_ln_,\:default=(11,ln\=,)
 -ui.jface.application.editor.Editor\:filter_ln_,\:type=text
 -ui.jface.application.editor.Editor\:filter_ln_,\:value=(11,ln\=,)
+
+# added 5.0.47
+-ui.jface.application.editor.Editor\:filter_pcode_\ \:access=user
+-ui.jface.application.editor.Editor\:filter_pcode_\ \:default=(11,ln\= )
+-ui.jface.application.editor.Editor\:filter_pcode_\ \:type=text
+-ui.jface.application.editor.Editor\:filter_pcode_\ \:value=(11,pcode\= )
