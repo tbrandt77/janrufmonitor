@@ -878,7 +878,7 @@ public class MailNotification extends AbstractConfigPage {
 		g.setLayout(new GridLayout(1, false));
 		GridData gd = new GridData();
         gd.widthHint = 420;
-        gd.heightHint = 130;
+        gd.heightHint = 140;
        	g.setLayoutData(gd);
 		
 		
@@ -994,7 +994,7 @@ public class MailNotification extends AbstractConfigPage {
 		g2.setLayout(new GridLayout(2, true));
 		gd = new GridData();
         gd.widthHint = 420;
-		gd.heightHint = 190;
+		gd.heightHint = 195;
 		g2.setLayoutData(gd);
 		
 		new Label(g2, SWT.NONE).setText(
