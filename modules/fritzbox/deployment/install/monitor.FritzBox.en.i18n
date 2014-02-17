@@ -1,16 +1,16 @@
-monitor.FritzBoxMonitor\:title\:label\:en=AVM Fritz!Box Fon monitor
-monitor.FritzBoxMonitor\:error\:label\:en=Login to Fritz!Box Fon failed. Either the Fritz!Box Fon is not reachable or the login data is wrong. No data could be fetched from the Fritz!Box Fon. Please check the configuration.
-monitor.FritzBoxMonitor\:connectlost\:label\:en=Connection lost\n\nThe connection to Fritz!Box Fon is lost. No identification will be done. A connection retry is started to login again. If the error perists please check the configuration and the network availability.
-monitor.FritzBoxMonitor\:connect\:label\:en=No Connection\n\nConnection could not be established to Fritz!Box Fon due to network problems. Please check your network settings and make sure that the Fritz!Box Fon is reachable and activated for monitoring.\n\nConnection retries left: {%1}
+monitor.FritzBoxMonitor\:title\:label\:en=AVM FRITZ!Box Fon monitor
+monitor.FritzBoxMonitor\:error\:label\:en=Login to FRITZ!Box Fon failed. Either the FRITZ!Box Fon is not reachable or the login data is wrong. No data could be fetched from the FRITZ!Box Fon. Please check the configuration.
+monitor.FritzBoxMonitor\:connectlost\:label\:en=Connection lost\n\nThe connection to FRITZ!Box Fon is lost. No identification will be done. A connection retry is started to login again. If the error perists please check the configuration and the network availability.
+monitor.FritzBoxMonitor\:connect\:label\:en=No Connection\n\nConnection could not be established to FRITZ!Box Fon due to network problems. Please check your network settings and make sure that the FRITZ!Box Fon is reachable and activated for monitoring.\n\nConnection retries left: {%1}
 
-repository.FritzBoxCallListImporter\:filtername\:label\:en=AVM Fritz!Box Fon call list (*.csv)
-repository.FritzBoxCallerExporter\:filtername\:label\:en=AVM Fritz!Box Fon phonebook (*.xml)
-ui.jface.dialogs.InfoDialog\:edition\:label\:en=(AVM Fritz!Box Fon edition)
+repository.FritzBoxCallListImporter\:filtername\:label\:en=AVM FRITZ!Box Fon call list (*.csv)
+repository.FritzBoxCallerExporter\:filtername\:label\:en=AVM FRITZ!Box Fon phonebook (*.xml)
+ui.jface.dialogs.InfoDialog\:edition\:label\:en=(AVM FRITZ!Box Fon edition)
 
-repository.FritzBoxPhonebookManager\:title\:label\:en=AVM Fritz!Box Fon phonebook
+repository.FritzBoxPhonebookManager\:title\:label\:en=AVM FRITZ!Box Fon phonebook
 
-fritzbox.firmware.login\:loginfailed\:label\:en=Login to Fritz!Box Fon failed. Please check password and user in the configurations.
-fritzbox.firmware.login\:title\:label\:en=Fritz!Box Fon login
+fritzbox.firmware.login\:loginfailed\:label\:en=Login to FRITZ!Box Fon failed. Please check password and user in the configurations.
+fritzbox.firmware.login\:title\:label\:en=FRITZ!Box Fon login
 
-fritzbox.firmware.hardware\:title\:label\:en=Fritz!Box Fon hardware detection
-fritzbox.firmware.hardware\:notfound\:label\:en=A Fritz!Box Fon could not be found. Please check the configuration.
+fritzbox.firmware.hardware\:title\:label\:en=FRITZ!Box Fon hardware detection
+fritzbox.firmware.hardware\:notfound\:label\:en=A FRITZ!Box Fon could not be found. Please check the configuration.

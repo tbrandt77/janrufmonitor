@@ -1,16 +1,16 @@
-monitor.FritzBoxMonitor\:title\:label\:de=AVM Fritz!Box Fon Monitor
-monitor.FritzBoxMonitor\:error\:label\:de=Die Anmeldung an der Fritz!Box Fon ist fehlgeschlagen. Entweder ist die Fritz!Box Fon nicht erreichbar oder die Anmeldeinformationen sind falsch. Es k\u00F6nnen keine Daten von der Fritz!Box Fon geladen werden. Bitte \u00FCberpr\u00FCfen Sie die Konfiguration der Fritz!Box Fon und die Einstellungen im jAnrufmonitor.
-monitor.FritzBoxMonitor\:connectlost\:label\:de=Verbindungsabbruch\n\nDie Verbindung zur Fritz!Box Fon wurde unterbrochen. Es werden derzeit keine Anrufe erkannt. Ein erneuter Anmeldeversuch wird gestartet, um sich an der Fritz!Box Fon zu registrieren und die Anrufer\u00FCberwachung fortzusetzen. Sollte das Problem weiterhin bestehen, \u00FCberpr\u00FCfen Sie bitte die Netzwerkverbindung.
-monitor.FritzBoxMonitor\:connect\:label\:de=Keine Verbindung zur Fritz!Box Fon m\u00F6glich\n\nDie Verbindung zur Fritz!Box Fon konnte nicht hergestellt werden, da Probleme in der Netzwerkkommunikation auftraten.\nM\u00F6gliche Ursache:\n\n1) Die Fritz!Box Fon ist noch nicht durch W\u00E4hlen der Ziffernfolge #96*5* an einem Telefon, das direkt an der Fritz!Box Fon angeschlossen ist, zur \u00DCberwachung freigeschaltet\n\n2) Die Einstellungen zur Fritz!Box Fon (siehe Administration -> Einstellungen -> AVM Fritz!Box Fon Einstellungen) sind fehlerhaft\n\n3) Es liegen Netzwerkprobleme vor, die eine Kommunikation mit der Fritz!Box Fon verhindern (z.B. fehlerhafte Firewall-Konfiguration oder LAN- und WLAN-Einstellungen)\n\nPr\u00FCfen Sie die oben genannten Ursachen und verbinden Sie jAnrufmonitor erneut mit der Fritz!Box Fon. Momentan werden keine Anrufe erkannt.\n\nVerbleibende automatische Verbindungsversuche: {%1}
+monitor.FritzBoxMonitor\:title\:label\:de=AVM FRITZ!Box Fon Monitor
+monitor.FritzBoxMonitor\:error\:label\:de=Die Anmeldung an der FRITZ!Box Fon ist fehlgeschlagen. Entweder ist die FRITZ!Box Fon nicht erreichbar oder die Anmeldeinformationen sind falsch. Es k\u00F6nnen keine Daten von der FRITZ!Box Fon geladen werden. Bitte \u00FCberpr\u00FCfen Sie die Konfiguration der FRITZ!Box Fon und die Einstellungen im jAnrufmonitor.
+monitor.FritzBoxMonitor\:connectlost\:label\:de=Verbindungsabbruch\n\nDie Verbindung zur FRITZ!Box Fon wurde unterbrochen. Es werden derzeit keine Anrufe erkannt. Ein erneuter Anmeldeversuch wird gestartet, um sich an der FRITZ!Box Fon zu registrieren und die Anrufer\u00FCberwachung fortzusetzen. Sollte das Problem weiterhin bestehen, \u00FCberpr\u00FCfen Sie bitte die Netzwerkverbindung.
+monitor.FritzBoxMonitor\:connect\:label\:de=Keine Verbindung zur FRITZ!Box Fon m\u00F6glich\n\nDie Verbindung zur FRITZ!Box Fon konnte nicht hergestellt werden, da Probleme in der Netzwerkkommunikation auftraten.\nM\u00F6gliche Ursache:\n\n1) Die FRITZ!Box Fon ist noch nicht durch W\u00E4hlen der Ziffernfolge #96*5* an einem Telefon, das direkt an der FRITZ!Box Fon angeschlossen ist, zur \u00DCberwachung freigeschaltet\n\n2) Die Einstellungen zur FRITZ!Box Fon (siehe Administration -> Einstellungen -> AVM FRITZ!Box Fon Einstellungen) sind fehlerhaft\n\n3) Es liegen Netzwerkprobleme vor, die eine Kommunikation mit der FRITZ!Box Fon verhindern (z.B. fehlerhafte Firewall-Konfiguration oder LAN- und WLAN-Einstellungen)\n\nPr\u00FCfen Sie die oben genannten Ursachen und verbinden Sie jAnrufmonitor erneut mit der FRITZ!Box Fon. Momentan werden keine Anrufe erkannt.\n\nVerbleibende automatische Verbindungsversuche: {%1}
 
-repository.FritzBoxCallListImporter\:filtername\:label\:de=AVM Fritz!Box Fon-Anrufliste (*.csv)
-repository.FritzBoxCallerExporter\:filtername\:label\:de=AVM Fritz!Box Fon Telefonbuch (*.xml)
-ui.jface.dialogs.InfoDialog\:edition\:label\:de=(AVM Fritz!Box Fon-Edition)
+repository.FritzBoxCallListImporter\:filtername\:label\:de=AVM FRITZ!Box Fon-Anrufliste (*.csv)
+repository.FritzBoxCallerExporter\:filtername\:label\:de=AVM FRITZ!Box Fon Telefonbuch (*.xml)
+ui.jface.dialogs.InfoDialog\:edition\:label\:de=(AVM FRITZ!Box Fon-Edition)
 
-repository.FritzBoxPhonebookManager\:title\:label\:de=AVM Fritz!Box Fon Telefonbuch
+repository.FritzBoxPhonebookManager\:title\:label\:de=AVM FRITZ!Box Fon Telefonbuch
 
-fritzbox.firmware.login\:title\:label\:de=Fritz!Box Fon Anmeldung
-fritzbox.firmware.login\:loginfailed\:label\:de=Die Anmeldung an der Fritz!Box Fon ist fehlgeschlagen. Bitte pr\u00FCfen Sie das Fritz!Box Fon-Passwort und ggf. den Fritz!Box Fon-Benutzer unter Administration -> Einstellungen -> AVM Fritz!Box Fon-Einstellungen.
+fritzbox.firmware.login\:title\:label\:de=FRITZ!Box Fon Anmeldung
+fritzbox.firmware.login\:loginfailed\:label\:de=Die Anmeldung an der FRITZ!Box Fon ist fehlgeschlagen. Bitte pr\u00FCfen Sie das FRITZ!Box Fon-Passwort und ggf. den FRITZ!Box Fon-Benutzer unter Administration -> Einstellungen -> AVM FRITZ!Box Fon-Einstellungen.
 
-fritzbox.firmware.hardware\:title\:label\:de=Fritz!Box Fon Hardware Erkennung
-fritzbox.firmware.hardware\:notfound\:label\:de=Die Fritz!Box Fon {%1} auf Port {%2} konnte nicht gefunden werden. Bitte pr\u00FCfen Sie die IP-Adresse der Fritz!Box Fon unter Administration -> Einstellungen -> AVM Fritz!Box Fon-Einstellungen.
+fritzbox.firmware.hardware\:title\:label\:de=FRITZ!Box Fon Hardware Erkennung
+fritzbox.firmware.hardware\:notfound\:label\:de=Die FRITZ!Box Fon {%1} auf Port {%2} konnte nicht gefunden werden. Bitte pr\u00FCfen Sie die IP-Adresse der FRITZ!Box Fon unter Administration -> Einstellungen -> AVM FRITZ!Box Fon-Einstellungen.

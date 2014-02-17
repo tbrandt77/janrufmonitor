@@ -1,5 +1,18 @@
 ﻿===
 
+jAnrufmonitor 5.0.47 (01.03.2014)
+---------------------------------
+
+Bugfix:
+- Kontakte: Defekte Ansicht-Filter werden automatisch gelöscht
+
+Module:
+- FRITZ!Box-Überwachung: Produktname von Fritz!Box auf FRITZ!Box geändert
+- Emailbenachrichtigung: Untersützung von SSLv3 und TLSv1 zur Authentifizierung
+- Emailbenachrichtigung: SSL Port freiwählbar, Standardport 465
+
+===
+
 jAnrufmonitor 5.0.46 (15.01.2014)
 ---------------------------------
 
@@ -8,8 +21,8 @@ Bugfix:
 - Infodialog: Copyright Information angepasst
 
 Module:
-- Fritz!Box-Überwachung: Unterstützung für AVM Fritz!Box Fon 7362 SL
-- Fritz!Box-Überwachung: Minor-Version Erkennung für AVM Fritz!Box Fon 7490 verbessert
+- FRITZ!Box-Überwachung: Unterstützung für AVM FRITZ!Box Fon 7362 SL
+- FRITZ!Box-Überwachung: Minor-Version Erkennung für AVM FRITZ!Box Fon 7490 verbessert
 
 ===
 
@@ -20,8 +33,8 @@ Bugfix:
 - Kontakte: Filter mit Komma als erstes Zeichen des Nachname führt zu Programmabsturz
 
 Module:
-- Fritz!Box-Überwachung: Dekodierungsproblem von UTF-8 Einträgen behoben
-- Fritz!Box-Überwachung: Dekodierungsproblem bei Fritz!OS 6.00 behoben
+- FRITZ!Box-Überwachung: Dekodierungsproblem von UTF-8 Einträgen behoben
+- FRITZ!Box-Überwachung: Dekodierungsproblem bei Fritz!OS 6.00 behoben
 - MySQL Adressbuch / Journal:Datentypanpassung VARCHAR -> TEXT
 
 ===
@@ -30,7 +43,7 @@ Module:
 jAnrufmonitor 5.0.44 (01.11.2013)
 ---------------------------------
 Neu:
-- Konfigurations-Wizard: Option für CAPI und AVM Fritz!Box Fon Einstellungen hinzugefügt
+- Konfigurations-Wizard: Option für CAPI und AVM FRITZ!Box Fon Einstellungen hinzugefügt
 - Konfigurations-Wizard: Automatischer Verbindungsaufbau nach Beenden des Wizards möglich
 
 Bugfix:
@@ -38,10 +51,10 @@ Bugfix:
 - Kontakte: Exportproblem beim DAT-Format mit ; Zeichen behoben
 
 Module:
-- Fritz!Box-Überwachung: Unterstützung für AVM Fritz!Box Fon 7490
-- Fritz!Box-Überwachung: Startverzögerung beim Synchronisieren nach dem Programmstart
-- Fritz!Box-Überwachung: XML Encodierung beim Fritz!Box internen Telefonbuch hinzugefügt
-- Fritz!Box-Überwachung: Unterstützung für Fritz!OS 5.59+
+- FRITZ!Box-Überwachung: Unterstützung für AVM FRITZ!Box Fon 7490
+- FRITZ!Box-Überwachung: Startverzögerung beim Synchronisieren nach dem Programmstart
+- FRITZ!Box-Überwachung: XML Encodierung beim FRITZ!Box internen Telefonbuch hinzugefügt
+- FRITZ!Box-Überwachung: Unterstützung für Fritz!OS 5.59+
 - Google Kontakte: Google API Library 3.0 aktualisiert
 
 ===
@@ -68,7 +81,7 @@ Bugfix:
 - Vorwahldatei: Unicodeschreibweise von Orten korrigiert
 
 Module:
-- Fritz!Box-Überwachung: Unterstützung für AVM Fritz!Box Fon 5124, 3370, 6320, 6842, 7360, 6320 v2
+- FRITZ!Box-Überwachung: Unterstützung für AVM FRITZ!Box Fon 5124, 3370, 6320, 6842, 7360, 6320 v2
 - Apple Mac Adressbuch: Filteroption für Kontakte nach Nachname, Stadt, Postleitzahl und Land
 - Microsoft Outlook Kontaktverzeichnis: Filteroption für Kontakte nach Nachname, Stadt, Postleitzahl und Land
 - Google Kontakte: Filteroption für Kontakte nach Nachname, Stadt, Postleitzahl und Land
@@ -93,10 +106,10 @@ Bugfix:
 - Update-Manager: Tray Icon zeigt keinen Komponententitel an
 
 Module:
-- Fritz!Box-Überwachung: Sicherheitslücke beim Anmelden mit Benutzername/Passwort behoben
-- Fritz!Box-Überwachung: Wählhilfe speichert die letzten 10 angwählten Rufnummern
-- Fritz!Box-Überwachung: Änderungen am Zähler für Wiederverbindungen
-- Fritz!Box-Überwachung: Icon Status bei eingeschränkter Funktion wird falsch gesetzt
+- FRITZ!Box-Überwachung: Sicherheitslücke beim Anmelden mit Benutzername/Passwort behoben
+- FRITZ!Box-Überwachung: Wählhilfe speichert die letzten 10 angwählten Rufnummern
+- FRITZ!Box-Überwachung: Änderungen am Zähler für Wiederverbindungen
+- FRITZ!Box-Überwachung: Icon Status bei eingeschränkter Funktion wird falsch gesetzt
 - Telefonauskunft Modul Assistent: Zeichenkodierung hinzugefügt
 - Google Kontakte: Auf Google Contacts API v3 umgestellt
 - Google Kontakte: Identifizierungsproblem bei Kontaktem mit mehreren Rufnummern behoben
@@ -125,11 +138,11 @@ Bugfix:
 - Geokodierung: Mobilfunkanbieter werden vor Geokodierung nicht ausgefiltert.
 
 Module:
-- Fritz!Box-Überwachung: Icon als Telefonbuch-Logo im Journal hinzugefügt
-- Fritz!Box-Überwachung: Hinweis bei Anmeldefehler auf Passwort und Benutzer
-- Fritz!Box-Überwachung: Verbindungsstatus der Überwachung und Synchronisation
-- Fritz!Box-Überwachung: Fehlermeldung bei falschem Passwort
-- Fritz!Box-Überwachung: Fehlermeldung bei nicht erkannter AVM Fritz!Box
+- FRITZ!Box-Überwachung: Icon als Telefonbuch-Logo im Journal hinzugefügt
+- FRITZ!Box-Überwachung: Hinweis bei Anmeldefehler auf Passwort und Benutzer
+- FRITZ!Box-Überwachung: Verbindungsstatus der Überwachung und Synchronisation
+- FRITZ!Box-Überwachung: Fehlermeldung bei falschem Passwort
+- FRITZ!Box-Überwachung: Fehlermeldung bei nicht erkannter AVM FRITZ!Box
 - www.DasOertliche.de: Icon als Telefonbuch-Logo im Journal hinzugefügt
 - DasTelefonbuch.de: Icon als Telefonbuch-Logo im Journal hinzugefügt
 - gelbeseiten.de: Icon als Telefonbuch-Logo im Journal hinzugefügt
@@ -157,8 +170,8 @@ Bugfix:
 - Installer: Standard-Installationsverzeichnis auf C:\jAnrufmonitor geändert
 
 Module:
-- Fritz!Box-Überwachung: Unterstützung für AVM Fritz!Box 6340/6360 Cable von Unitymedia/KabelDeutschland
-- Fritz!Box-Überwachung: Anmeldung mit Benutzer/Passwort ab Fritz!OS 5.50 optimiert
+- FRITZ!Box-Überwachung: Unterstützung für AVM FRITZ!Box 6340/6360 Cable von Unitymedia/KabelDeutschland
+- FRITZ!Box-Überwachung: Anmeldung mit Benutzer/Passwort ab Fritz!OS 5.50 optimiert
 
 ===
 
@@ -176,8 +189,8 @@ Bugfix:
 - Update Manager: Erkennung von Console Version Updates
 
 Module:
-- Fritz!Box-Überwachung: Problem beim Wählen über IP-Adresse behoben
-- Fritz!Box-Überwachung: Firmwareprüfung auf Major- und Minor-Version
+- FRITZ!Box-Überwachung: Problem beim Wählen über IP-Adresse behoben
+- FRITZ!Box-Überwachung: Firmwareprüfung auf Major- und Minor-Version
 - Google Kontakte: Kontakt anlegen über Journal möglich
 - tellows Rufnummer Scoring: Farbauswahl für SPAM Anrufe
 
@@ -196,11 +209,11 @@ Bugfix:
 - Prüfung auf installierte Java Version beim Programmstart
 
 Module:
-- Fritz!Box-Überwachung: XML-Exportdatei für Fritz!Box Telefonbuch
-- Fritz!Box-Überwachung: Umlaute in Fritz!Box Fon Anrufliste werden als ? dargestellt
-- Fritz!Box-Überwachung: Wahlproblem für DECT Telefone behoben
-- Fritz!Box-Überwachung: Wahlproblem für Nebenstellenauswahl behoben
-- Fritz!Box-Überwachung: Option "Immer gesamte Anrufliste synchronisieren" hinzugefügt
+- FRITZ!Box-Überwachung: XML-Exportdatei für FRITZ!Box Telefonbuch
+- FRITZ!Box-Überwachung: Umlaute in FRITZ!Box Fon Anrufliste werden als ? dargestellt
+- FRITZ!Box-Überwachung: Wahlproblem für DECT Telefone behoben
+- FRITZ!Box-Überwachung: Wahlproblem für Nebenstellenauswahl behoben
+- FRITZ!Box-Überwachung: Option "Immer gesamte Anrufliste synchronisieren" hinzugefügt
 - tellows Rufnummer Scoring: Neues Modul
 
 ===
@@ -219,9 +232,9 @@ Bugfix:
 - HTML Dekodierungsfehler für alle Online-Telefonauskünfte beseitigt
 
 Module:
-- Fritz!Box-Überwachung: Umlaute im Fritz!Box Fon Telefonbuch werden als ? dargestellt
-- Fritz!Box-Überwachung: DECT 615 Nebenstelle zur Wahlhilfe hinzugefügt
-- Fritz!Box-Überwachung: Sync-Timer Reset über Konfiguration möglich
+- FRITZ!Box-Überwachung: Umlaute im FRITZ!Box Fon Telefonbuch werden als ? dargestellt
+- FRITZ!Box-Überwachung: DECT 615 Nebenstelle zur Wahlhilfe hinzugefügt
+- FRITZ!Box-Überwachung: Sync-Timer Reset über Konfiguration möglich
 - Ruhezustand Erkennung: Separates Ruhezustand Erkennung Modul wurde gelöscht
 - Client Erweiterung: Re-Connect mit Server nach Ruhezustand
 - MySQL Adressbuch / Journal: Re-Connect mit MySQL Server nach Ruhezustand
@@ -242,9 +255,9 @@ Bugfix:
 - VM Option: -Xmx für MacOS X hinzugefügt
 
 Module:
-- Fritz!Box-Überwachung: Unterstützung für Firmware xx.05.50
-- Fritz!Box-Überwachung: AVM Fritz!Box Fon Telefonbuch in Kontakte auswählbar
-- Fritz!Box-Überwachung: Synchronisation schneidet Vorwahl bei ausgehenden Rufnummern ab
+- FRITZ!Box-Überwachung: Unterstützung für Firmware xx.05.50
+- FRITZ!Box-Überwachung: AVM FRITZ!Box Fon Telefonbuch in Kontakte auswählbar
+- FRITZ!Box-Überwachung: Synchronisation schneidet Vorwahl bei ausgehenden Rufnummern ab
 - PDF-Export-Filter: Seitenränder angepasst
 
 ===
@@ -261,7 +274,7 @@ Bugfix:
 - Adressbuch: Verbesserter vCard (VCF) Import für interner Telefonanlagenrufnummern
 
 Module:
-- Fritz!Box-Überwachung: Unterstützung für AVM Fritz!Box Fon 6340 Cable, 6840 LTE, 7330 SL, 7360 SL, 7312
+- FRITZ!Box-Überwachung: Unterstützung für AVM FRITZ!Box Fon 6340 Cable, 6840 LTE, 7330 SL, 7360 SL, 7312
 - JFritz Journal und Telefonbuch Import: Korrigierter Datenimport für JFritz 0.7.4.1 
 - Apple Mac Adressbuch: Unterstützung für Email Adresse
 
@@ -284,7 +297,7 @@ Bugfix:
 - Überwachungskomponente: Erkennung von internationales Rufnummern korrigiert
 
 Module:
-- Fritz!Box-Überwachung: HTML-Enconding im Fritz!Box internen Adressbuch aktualisiert
+- FRITZ!Box-Überwachung: HTML-Enconding im FRITZ!Box internen Adressbuch aktualisiert
 - CAPI Überwachung: 64-bit Adaption für Linux 
 
 
@@ -301,9 +314,9 @@ Bugfix:
 
 Module:
 - MySQL Modul: Unterstützung für lange MSNs (> 8 Zeichen)
-- Fritz!Box-Überwachung: Unicode Anpassung
-- Fritz!Box-Überwachung: Unterstützung für AVM Fritz!Box Fon 7340 und 5124 Annex A
-- Fritz!Box-Überwachung: AVM Fritz!Box Fon Synchronizer auf Geschwindigkeit optimiert
+- FRITZ!Box-Überwachung: Unicode Anpassung
+- FRITZ!Box-Überwachung: Unterstützung für AVM FRITZ!Box Fon 7340 und 5124 Annex A
+- FRITZ!Box-Überwachung: AVM FRITZ!Box Fon Synchronizer auf Geschwindigkeit optimiert
 - CAPI Überwachung: Unicode Anpassung
 - TAPI Überwachung: Unicode Anpassung
 
@@ -344,9 +357,9 @@ Bugfix:
 
 Module:
 - CAPI Überwachung: Überarbeitung der CAPI-Anbindung unter Linux
-- Fritz!Box-Überwachung: Synchronisations- und Verbindungsprobleme
-- Fritz!Box-Überwachung: Timeout-Problem bei der Firmware
-- Fritz!Box-Überwachung: Unterstützung für Fritz!Box Fon 7320
+- FRITZ!Box-Überwachung: Synchronisations- und Verbindungsprobleme
+- FRITZ!Box-Überwachung: Timeout-Problem bei der Firmware
+- FRITZ!Box-Überwachung: Unterstützung für FRITZ!Box Fon 7320
 - Emailbenachrichtigung: Email-Vorlagen zeigen keine Bilder mehr an
 - HTML/XML Journal: Keine Bilder im HTML Journal
 - HTML/XML Journal: Keine Bilder beim Export ins HTML Format
@@ -386,8 +399,8 @@ Module:
 - TAPI Überwachung: Unterstützung für "Wählen vom Client"
 - TAPI Überwachung: Sonderzeichenerkennung in Rufnummern
 - TAPI Überwachung: Automatische Vorwahlergänzung für lokale Rufnummern
-- Fritz!Box-Überwachung: Unterstützung für "Wählen vom Client"
-- Fritz!Box-Überwachung: Überwachung nach Einstellungsänderungen deaktiv
+- FRITZ!Box-Überwachung: Unterstützung für "Wählen vom Client"
+- FRITZ!Box-Überwachung: Überwachung nach Einstellungsänderungen deaktiv
 - LDAP-basiertes Adressbuch: Verbessertes Laden von Kontakt-Fotos
 - Apple Mac Adressbuch: verbesserte Rufnummern Zuordnung
 - Google Kontakte: Verbesserter Ladeprozess der Kontakte beim Programmstart
@@ -409,7 +422,7 @@ Bugfix:
 - Unicode und Sonderzeichen-Unterstützung für alle Online-Telefonauskünfte
 
 Module:
-- Fritz!Box-Überwachung: Unterstützung für "Letzte Anrufe"-Dialog integriert
+- FRITZ!Box-Überwachung: Unterstützung für "Letzte Anrufe"-Dialog integriert
 - TAPI Überwachung: Unterstützung für "Letzte Anrufe"-Dialog integriert
 - TAPI Überwachung: Wählen von internen Telefonanlagenrufnummern möglich
 - TAPI Überwachung: Führende Null bei ausgehenden Anrufen entfernt
@@ -452,7 +465,7 @@ jAnrufmonitor 5.0.25 (01.10.2010)
 ---------------------------------
 
 Neu:
-- jAnrufmonitor für AVM Fritz!Box Fon auf MacOS X portiert
+- jAnrufmonitor für AVM FRITZ!Box Fon auf MacOS X portiert
 - Adressbuch: Kategorien im- und exportieren
 - Neue SWT Grafikbibliothek Version 3.7
 
@@ -460,8 +473,8 @@ Bugfix:
 - Journal: Anrufer-Foto und Status-Icon können nicht parallel dargestellt werden
 
 Module:
-- Fritz!Box-Überwachung: Erkennung der Fritz!Box Fon 6360
-- Fritz!Box-Überwachung: Anrufliste auf Fritz!Box Löschen mit Firmware xx.04.86
+- FRITZ!Box-Überwachung: Erkennung der FRITZ!Box Fon 6360
+- FRITZ!Box-Überwachung: Anrufliste auf FRITZ!Box Löschen mit Firmware xx.04.86
 - Telefonauskunft tel.search.ch: Erkennung nach API Update geht nicht
 - Notizen: Aktualisierungen an der Benutzeroberfläche
 - Client Erweiterung: Aktualisierungen an der Benutzeroberfläche
@@ -482,8 +495,8 @@ Bugfix:
 - Java 6 (JDK 1.6) spezifische Anpassungen beim Classloading (Programm-Start)
 
 Module:
-- Fritz!Box-Überwachung: Statusmeldungen bei ausgehenden Anrufen werden im TrayIcon angezeigt
-- Fritz!Box-Überwachung: doppeltes Wählpräfix bei ausgehenden Anrufen
+- FRITZ!Box-Überwachung: Statusmeldungen bei ausgehenden Anrufen werden im TrayIcon angezeigt
+- FRITZ!Box-Überwachung: doppeltes Wählpräfix bei ausgehenden Anrufen
 - TAPI Überwachung: doppeltes Wählpräfix bei ausgehenden Anrufen
 - MS Outlook Kontaktverzeichnis: Optimierung des Caches
 - Telefonauskunft 118000.fr: Neues Modul
@@ -504,8 +517,8 @@ Bugfix:
 
 Module:
 - Emailbenachrichtigung: Emailbenachrichtigung versendet keine Testmail
-- Fritz!Box-Überwachung: Synchronizer überschreibt Geokodierung bei neuen Anrufen
-- Fritz!Box-Überwachung: Call-By-Call Präfixauswahl bei Wählhilfe
+- FRITZ!Box-Überwachung: Synchronizer überschreibt Geokodierung bei neuen Anrufen
+- FRITZ!Box-Überwachung: Call-By-Call Präfixauswahl bei Wählhilfe
 - Client Erweiterung: Zentrale Bildverwaltung zu Client Adressbuch hinzugefügt
 - Server Erweiterung: Zentrale Bildverwaltung für Clients zum Server hinzugefügt
 
@@ -527,7 +540,7 @@ Bugfix:
 
 Module:
 - Emailbenachrichtigung: SMTP Port konfigurierbar
-- Fritz!Box-Überwachung: TrayIcon Tooltip erscheint nicht mehr wenn keine Anrufe synchronisiert wurden
+- FRITZ!Box-Überwachung: TrayIcon Tooltip erscheint nicht mehr wenn keine Anrufe synchronisiert wurden
 - TAPI Wahlhilfe für CAPI Variante: neues Modul
 - HTML/XML Journal: Vorlagenbasierte Journal-Generierung
 
@@ -549,7 +562,7 @@ Module:
 - Anrufsimulator: Simulieren von Rufnummern mit Sonderzeichen
 - CAPI Überwachung: Unterstützung von Rufnummern mit Sonderzeichen
 - TAPI Überwachung: Unterstützung von Rufnummern mit Sonderzeichen
-- Fritz!Box-Überwachung: Unterstützung von Rufnummern mit Sonderzeichen
+- FRITZ!Box-Überwachung: Unterstützung von Rufnummern mit Sonderzeichen
 - NT Dienst Integration: Dienst mit initialem Speichern von 16MB starten
 - Erweiterung zum Starten externer Anwendungen: Auf ausgehende Anrufe reagieren
 - Erweiterung zum Starten externer Anwendungen: HTTP Kommandos möglich
@@ -596,8 +609,8 @@ Bugfix:
 - Console Version: jam.sh bash-Zeile mit falscher Syntax
 
 Module:
-- Fritz!Box-Überwachung: Unterstützung für AVM Fritz!Box Fon 7390
-- Fritz!Box-Überwachung: Deutsche Umlauten im AVM Fritz!Box Fon Adressbuch werden nicht dargestellt
+- FRITZ!Box-Überwachung: Unterstützung für AVM FRITZ!Box Fon 7390
+- FRITZ!Box-Überwachung: Deutsche Umlauten im AVM FRITZ!Box Fon Adressbuch werden nicht dargestellt
 - CAPI Überwachung: Bugfix in einer interner Copy-Funktion
 - RSS Add-on: Unterstützung für Atom 1.0 Feeds hinzugefügt
 - Google Kontakte: NPE beim Einlesen von Rufnummerntypen
@@ -618,7 +631,7 @@ Bugfix:
 - Überwachung: NullPointerException beim Abruf des Beschreibungstextes
 
 Module:
-- Fritz!Box-Überwachung: Annex A Firmware Erkennung hinzugefügt
+- FRITZ!Box-Überwachung: Annex A Firmware Erkennung hinzugefügt
 - TAPI-Überwachung: Letzte TAPI-Line bei ausgehenden Anrufen wird zur Vorauswahl gespeichert
 - Telefonauskunft Modul Assistent: Ländercode in der Konfiguration sichtbar gemacht
 - Telefonauskunft Modul Assistent: Ländercode-unabhängiges Modul mit Ländercode 00 erzeugbar
@@ -639,10 +652,10 @@ Bugfix:
 - Startreihenfolge der Dienste und Telefonbücher geändert
 
 Module:
-- Fritz!Box-Überwachung: Fritz!Box Fon internes Telefonbuch im jAnrufmonitor nutzbar (nur für AVM Fritz!Box Fon Hardware mit neuer Login-Firmware)
-- Fritz!Box-Überwachung: Rufnummer aus Journal und Adressbuch in die Fritz!Box Fon Sperrliste aufnehmen  (nur für AVM Fritz!Box Fon Hardware mit neuer Login-Firmware)
-- Fritz!Box-Überwachung: Rufnummer wählen für Console Version hinzugefügt
-- Fritz!Box-Überwachung: Unterstützung für Fritz!Box Fon Anrufer Sperre im Adressbuch (nur für AVM Fritz!Box Fon Hardware mit neuer Login-Firmware)
+- FRITZ!Box-Überwachung: FRITZ!Box Fon internes Telefonbuch im jAnrufmonitor nutzbar (nur für AVM FRITZ!Box Fon Hardware mit neuer Login-Firmware)
+- FRITZ!Box-Überwachung: Rufnummer aus Journal und Adressbuch in die FRITZ!Box Fon Sperrliste aufnehmen  (nur für AVM FRITZ!Box Fon Hardware mit neuer Login-Firmware)
+- FRITZ!Box-Überwachung: Rufnummer wählen für Console Version hinzugefügt
+- FRITZ!Box-Überwachung: Unterstützung für FRITZ!Box Fon Anrufer Sperre im Adressbuch (nur für AVM FRITZ!Box Fon Hardware mit neuer Login-Firmware)
 - Telefonauskunft Modul Assistent: Möglichkeit zum Konfigurations-Update eingefügt
 
 
@@ -661,7 +674,7 @@ Module:
 - Abweisungsdienst: Vorwahlen in der Konfiguration bei gro√üer DPI Einstellung nicht lesbar
 - TAPI-Überwachung: Wähloption für interne Anlagenrufnummern
 - TAPI-Überwachung: UNKNOWN Anrufe werden als CLIR Anrufe (- - - - -) erkannt
-- Fritz!Box-Überwachung: Erkennung neuer AVM Fritz!Box Hardware
+- FRITZ!Box-Überwachung: Erkennung neuer AVM FRITZ!Box Hardware
 - Google Kontakte: Deutscher Beschreibungstext korrigiert und angepasst
 - Telefonauskunft DasTelefonbuch.de: Erkennung des Namens schlägt fehl
 
@@ -680,8 +693,8 @@ Bugfix:
 - Adressbuch: gro√üe Kontakt-Fotos verursachen Dialogabsturz
 
 Module:
-- Fritz!Box-Überwachung: Automatische Session-ID Erneuerung bei neuer AVM Firmware unterbunden (Zuviele Logeinträge auf der Fritz!Box Fon)
-- Fritz!Box-Überwachung: Verbesserte Erkennung von redundanten Informationen beim Synchronisieren der AVM Fritz!Box Fon
+- FRITZ!Box-Überwachung: Automatische Session-ID Erneuerung bei neuer AVM Firmware unterbunden (Zuviele Logeinträge auf der FRITZ!Box Fon)
+- FRITZ!Box-Überwachung: Verbesserte Erkennung von redundanten Informationen beim Synchronisieren der AVM FRITZ!Box Fon
 - Google Kontakte: Verbesserungen bei der Handhabung des Google-Caches
 - TAPI-Überwachung: Erkennung von internen Anlagenrufnummern nicht möglich
 - LDAP-Adressbuch: Neues Modul
@@ -726,10 +739,10 @@ Module:
 - MS Outlook Kontaktverzeichnis: Doppelte Kontakte nach Neuanlage aus dem jAnrufmonitor Adressbuch
 - MS Outlook Kontaktverzeichnis: Verbesserter Kontakte-Import bei Kategoriezuweiung
 - MS Outlook Kontaktverzeichnis: Unterstützung für interne Anlagenrufnummern
-- Fritz!Box-Überwachung: Session ID Unterstützung für neue AVM Fritz!Box Fon Firmware (7270, 7240)
-- Fritz!Box-Überwachung: Detailierte Fehlerbeschreibung bei Verbindungsproblemen mit der Fritz!Box Hardware
-- Fritz!Box-Überwachung: Zeitverschiebung der Fritz!Box führt zu falschen Synchronisationseinträgen
-- Fritz!Box-Überwachung: Finden pro Minute mehere Anrufversuche zur gleichen Zielrufnummer statt, wird nur der letzte Anruf synchronisiert
+- FRITZ!Box-Überwachung: Session ID Unterstützung für neue AVM FRITZ!Box Fon Firmware (7270, 7240)
+- FRITZ!Box-Überwachung: Detailierte Fehlerbeschreibung bei Verbindungsproblemen mit der FRITZ!Box Hardware
+- FRITZ!Box-Überwachung: Zeitverschiebung der FRITZ!Box führt zu falschen Synchronisationseinträgen
+- FRITZ!Box-Überwachung: Finden pro Minute mehere Anrufversuche zur gleichen Zielrufnummer statt, wird nur der letzte Anruf synchronisiert
 - Telefonauskunft www.dasoertliche.de: Auf neue HTML-Struktur angepasst und optimierte Datenabfrage umgestellt
 - Telefonauskunft www.goyellow.de: Auf optimierte Datenabfrage umgestellt
 - Telefonauskunft www.gelbeseiten.de: Auf optimierte Datenabfrage umgestellt
@@ -748,8 +761,8 @@ Neu:
 - Regel-Assistent: Interne Anlagenrufnummern im Regel-Assistent auswählbar
 
 Module:
-- Fritz!Box-Überwachung: DECT-Nebenstellen für ausgehende Anrufe wählbar
-- Fritz!Box-Überwachung: Verbesserte Erkennung von doppelten Journal-Einträgen bei der Synchronisierung
+- FRITZ!Box-Überwachung: DECT-Nebenstellen für ausgehende Anrufe wählbar
+- FRITZ!Box-Überwachung: Verbesserte Erkennung von doppelten Journal-Einträgen bei der Synchronisierung
 - Google Kontakte: Neues Modul
 - Erweiterung zum Starten von Anwendungen: Pfadauflösung für %userhome% Variable funktioniert nicht
 - Emailbenachrichtigung: Emailversand auf gelöschten MSNs unterbunden
@@ -771,11 +784,11 @@ Bugfix:
 
 
 Module:
-- Fritz!Box-Überwachung: Allgemeine Vorwahl und Vorwahl des Fritz!Box Standortes angepasst
-- Fritz!Box-Überwachung: Backup vor Entfernen der redundanten Informationen beim Benutzen des AVM Fritz!Box Fon Synchronizer
+- FRITZ!Box-Überwachung: Allgemeine Vorwahl und Vorwahl des FRITZ!Box Standortes angepasst
+- FRITZ!Box-Überwachung: Backup vor Entfernen der redundanten Informationen beim Benutzen des AVM FRITZ!Box Fon Synchronizer
 - MS Outlook Kontaktverzeichnis: Kontakte aus Journal heraus anlegen nicht möglich
 - Server-Erweiterung: Socket-Probleme unter Linux 
-- Server-Erweiterung: Neue callto-Action (http://<server>:<port>/callto?dial=<number>) nutzbar, wenn AVM Fritz!Box Fon Variante installiert ist.
+- Server-Erweiterung: Neue callto-Action (http://<server>:<port>/callto?dial=<number>) nutzbar, wenn AVM FRITZ!Box Fon Variante installiert ist.
 
 
 ===
@@ -792,9 +805,9 @@ Bugfix:
 
 
 Module:
-- Fritz!Box-Überwachung: Ausgehende Anrufe zeigen keine Gesprächsdauer an
-- Fritz!Box-Überwachung: Standort-Vorwahl aus Konfigurationswizard übernehmen
-- Ruhezustand Erkennung: für TAPI und Fritz!Box erweitert
+- FRITZ!Box-Überwachung: Ausgehende Anrufe zeigen keine Gesprächsdauer an
+- FRITZ!Box-Überwachung: Standort-Vorwahl aus Konfigurationswizard übernehmen
+- Ruhezustand Erkennung: für TAPI und FRITZ!Box erweitert
 - MS Outlook Kontaktverzeichnis: Nebenstellen und Zentralnummern werden nicht erkannt
 - Jörg Heuers ISDNMoni Import-Filter für Journal: Datenbanken mit mehr als 10000 Einträgen werden nicht unterstützt
 - Moony Import-Filter: Datenbanken mit mehr als 10000 Einträgen werden nicht unterstützt
@@ -823,8 +836,8 @@ Module:
 - Emailbenachrichtigung: ausgehende angenommene Anrufe werden erkannt
 - MS Outlook Kontaktverzeichnis: Bildzuweisung im Client/Server Betrieb nutzbar
 - MS Outlook Kontaktverzeichnis: Kategorie-Import über Menü nutzbar
-- Fritz!Box-Überwachung: zeitgesteuerte Synchronisierungsmöglichkeit
-- Fritz!Box-Überwachung: Emailbenachrichtigung nach Synchronisation (Modul Emailbenachrichtigung muss installiert sein)
+- FRITZ!Box-Überwachung: zeitgesteuerte Synchronisierungsmöglichkeit
+- FRITZ!Box-Überwachung: Emailbenachrichtigung nach Synchronisation (Modul Emailbenachrichtigung muss installiert sein)
 
 
 ===
@@ -846,7 +859,7 @@ Bugfix:
 Module:
 - Emailbenachrichtigung: Text- und HTML-Vorlagen mit Platzhalter
 - Emailbenachrichtigung: Neue JavaMail Bibliotheken
-- Fritz!Box-Überwachung: automatische Synchronisierungsmöglichkeit nach Gesprächsende
+- FRITZ!Box-Überwachung: automatische Synchronisierungsmöglichkeit nach Gesprächsende
 - JFritz Journal und Telefonbuch Import: Status-Import angepasst
 - Abweisungsdienst: Status-Erkennung angepasst
 - Client Erweiterung: Status-Erkennung angepasst
@@ -911,7 +924,7 @@ Module:
 - Telefonauskunft Modul Assistent: englische Übersetzung hinzugefügt
 - MS Outlook Kontakverzeichnis: Schreibzugriff auf Kontakte
 - MS Outlook Kontakverzeichnis: Verbesserter Kontakte-Import
-- Fritz!Box-Überwachung: Nebenstelle für ausgehende Anrufe auswählbar
+- FRITZ!Box-Überwachung: Nebenstelle für ausgehende Anrufe auswählbar
 
 
 ===
@@ -956,7 +969,7 @@ Module:
 - Server Erweiterung: nicht alle MSN-abhängige Clients werden über eingehende Anrufe benachrichtigt
 - Server Erweiterung: Port-Anzeige beim Console Server Status
 - Server Erweiterung: Anzahl-Filter benötigt zu viele Systemressourcen beim Filtern
-- Client Erweiterung: Installation ist ausgeschlossen bei gleichzeitigem Nutzen des AVM Fritz!Box Fon Moduls
+- Client Erweiterung: Installation ist ausgeschlossen bei gleichzeitigem Nutzen des AVM FRITZ!Box Fon Moduls
 - Client Erweiterung: Filterung im Serverbasierten Journal wird auch auf dem Client durchgeführt
 
 
@@ -986,9 +999,9 @@ Bugfix:
 - vCard Import-Filter: Auswertung des ORG-Attributes (Firma)
 
 Module:
-- Fritz!Box-Überwachung: Option "Anzahl der zu entfernenden führenden Ziffer" wird ignoriert
-- Fritz!Box-Überwachung: Synchronisationsdialog beim Starten unterbinden
-- Fritz!Box-Überwachung: Konfigurationseinstellungen optimiert
+- FRITZ!Box-Überwachung: Option "Anzahl der zu entfernenden führenden Ziffer" wird ignoriert
+- FRITZ!Box-Überwachung: Synchronisationsdialog beim Starten unterbinden
+- FRITZ!Box-Überwachung: Konfigurationseinstellungen optimiert
 - HTML-Journal: RSS-Erweiterung
 
 
@@ -1008,9 +1021,9 @@ Bugfix:
 - TrayIcon unter KDE 3.x nicht sichtbar
 
 Module:
-- Fritz!Box-Überwachung: Tooltip des TrayIcons mit Synchronisierungsinformationen versehen
-- Fritz!Box-Überwachung: Anzeige der Anzahl synchronisierter Journaleinträge
-- Fritz!Box-Überwachung: Erweiterte Statistiken im Journal: Nebenstellen-Statistik, Call-by-Call Statistik
+- FRITZ!Box-Überwachung: Tooltip des TrayIcons mit Synchronisierungsinformationen versehen
+- FRITZ!Box-Überwachung: Anzeige der Anzahl synchronisierter Journaleinträge
+- FRITZ!Box-Überwachung: Erweiterte Statistiken im Journal: Nebenstellen-Statistik, Call-by-Call Statistik
 - JFritz Journal und Telefonbuch Import: neues Modul
 - Gebeld.nl Telefonauskunft: Englische Übersetzung vervollständigt
 - Emailbenachrichtigung: Überwachung von ausgehenden Telefonaten
@@ -1025,7 +1038,7 @@ jAnrufmonitor 5.0.0 (17.03.2008)
 --------------------------------
 
 Neu:
-- Anruferkennung für TAPI-fähige Endgeräte, CAPI-ISDN-Geräte und AVM Fritz!Box Fon
+- Anruferkennung für TAPI-fähige Endgeräte, CAPI-ISDN-Geräte und AVM FRITZ!Box Fon
 - Java Datenbank hSQLDB (www.hsqldb.org) als Persistenz für Adressbuch, Journal, Caches und Sprachinformationen
 - Eigene, cache-basierte ClassLoader-Infrastruktur für Java Klassen
 - Effizientere Erkennung von Rufnummern mittels Ländercode-Datenbank
@@ -1042,9 +1055,9 @@ Neu:
 - Unterstützung für Windows Vista und Windows 2008 Server
 
 Module:
-- Fritz!Box-Überwachung: POTS/SIPx Erkennung beim Synchronisieren
-- Fritz!Box-Überwachung: Konfiguration der Nebenstelle für abgehende Gespräche mit der QuickDial-Funktion
-- Fritz!Box-Überwachung: Fritz!Box Synchronizer kann Anrufliste auf Fritz!Box nach einer Synchronisation löschen
+- FRITZ!Box-Überwachung: POTS/SIPx Erkennung beim Synchronisieren
+- FRITZ!Box-Überwachung: Konfiguration der Nebenstelle für abgehende Gespräche mit der QuickDial-Funktion
+- FRITZ!Box-Überwachung: FRITZ!Box Synchronizer kann Anrufliste auf FRITZ!Box nach einer Synchronisation löschen
 - TAPI-Überwachung: Mustererkennung von Anrufen bei TAPI-Telefonanlagen
 - MS Outlook Kontakverzeichnis: Erkennung der Kontakt-Attribute in MS Outlook 200x/XP
 - MS Outlook Kontakverzeichnis: Trennung von privaten und Geschäftskontakten

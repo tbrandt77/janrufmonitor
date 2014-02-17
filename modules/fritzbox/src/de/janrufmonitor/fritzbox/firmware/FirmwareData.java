@@ -62,69 +62,69 @@ public class FirmwareData {
         case IFritzBoxFirmware.TYPE_FRITZBOX_5140:
             return "FRITZ!Box Fon 5140";             
         case IFritzBoxFirmware.TYPE_FRITZBOX_7270:
-            return "FRITZ!Box Fon 7270"; 
+            return "FRITZ!Box 7270"; 
         case IFritzBoxFirmware.TYPE_FRITZBOX_7270V3:
-            return "FRITZ!Box Fon 7270 v3";             
+            return "FRITZ!Box 7270 v3";             
         case IFritzBoxFirmware.TYPE_FRITZBOX_7570:
             return "FRITZ!Box Fon 7570";      
         case IFritzBoxFirmware.TYPE_FRITZBOX_7113:
-            return "FRITZ!Box Fon 7113";   
+            return "FRITZ!Box 7113";   
         case IFritzBoxFirmware.TYPE_FRITZBOX_7240:
-            return "FRITZ!Box Fon 7240"; 
+            return "FRITZ!Box 7240"; 
         case IFritzBoxFirmware.TYPE_FRITZBOX_7141:
-            return "FRITZ!Box Fon 7141";    
+            return "FRITZ!Box 7141";    
         case IFritzBoxFirmware.TYPE_FRITZBOX_7112:
-            return "FRITZ!Box Fon 7112";     
+            return "FRITZ!Box 7112";     
         case IFritzBoxFirmware.TYPE_FRITZBOX_7140:
-            return "FRITZ!Box Fon 7140";         
+            return "FRITZ!Box 7140";         
         case IFritzBoxFirmware.TYPE_FRITZBOX_7140_ANNEXA:
-            return "FRITZ!Box Fon 7140 (Annex A/Austria/Schweiz)";   
+            return "FRITZ!Box 7140 (Annex A/Austria/Schweiz)";   
         case IFritzBoxFirmware.TYPE_FRITZBOX_7390:
-            return "FRITZ!Box Fon 7390";   
+            return "FRITZ!Box 7390";   
         case IFritzBoxFirmware.TYPE_FRITZBOX_6360:
-            return "FRITZ!Box Fon 6360";   
+            return "FRITZ!Box 6360";   
         case IFritzBoxFirmware.TYPE_FRITZBOX_7320:
-            return "FRITZ!Box Fon 7320";   
+            return "FRITZ!Box 7320";   
         case IFritzBoxFirmware.TYPE_FRITZBOX_5124_ANNEXB:
-            return "FRITZ!Box Fon 5124 (Annex B)";   
+            return "FRITZ!Box 5124 (Annex B)";   
         case IFritzBoxFirmware.TYPE_FRITZBOX_7170_ANNEXA:
-            return "FRITZ!Box Fon 7170 (Annex A)";  
+            return "FRITZ!Box 7170 (Annex A)";  
         case IFritzBoxFirmware.TYPE_FRITZBOX_7340:
-            return "FRITZ!Box Fon 7340";  
+            return "FRITZ!Box 7340";  
         case IFritzBoxFirmware.TYPE_FRITZBOX_6840_LTE:
-            return "FRITZ!Box Fon 6840 LTE";  
+            return "FRITZ!Box 6840 LTE";  
         case IFritzBoxFirmware.TYPE_FRITZBOX_7330:
-            return "FRITZ!Box Fon 7330";
+            return "FRITZ!Box 7330";
         case IFritzBoxFirmware.TYPE_FRITZBOX_7360_SL:
-            return "FRITZ!Box Fon 7360 SL";
+            return "FRITZ!Box 7360 SL";
         case IFritzBoxFirmware.TYPE_FRITZBOX_7360:
-            return "FRITZ!Box Fon 7360";  
+            return "FRITZ!Box 7360";  
         case IFritzBoxFirmware.TYPE_FRITZBOX_6340_CABLE:
-            return "FRITZ!Box Fon 6340 (Kabel)"; 
+            return "FRITZ!Box 6340 (Kabel)"; 
         case IFritzBoxFirmware.TYPE_FRITZBOX_7330_SL:
-            return "FRITZ!Box Fon 7330 SL";
+            return "FRITZ!Box 7330 SL";
         case IFritzBoxFirmware.TYPE_FRITZBOX_7312:
-            return "FRITZ!Box Fon 7312"; 
+            return "FRITZ!Box 7312"; 
         case IFritzBoxFirmware.TYPE_VOIP_GATEWAY_5188:
             return "AVM VoIP Gateway 5188"; 
         case IFritzBoxFirmware.TYPE_FRITZBOX_5124:
-            return "FRITZ!Box Fon 5124"; 
+            return "FRITZ!Box 5124"; 
         case IFritzBoxFirmware.TYPE_FRITZBOX_3370:
-            return "FRITZ!Box Fon 3370"; 
+            return "FRITZ!Box 3370"; 
         case IFritzBoxFirmware.TYPE_FRITZBOX_6320:
-            return "FRITZ!Box Fon 6320 (Kabel)"; 
+            return "FRITZ!Box 6320 (Kabel)"; 
         case IFritzBoxFirmware.TYPE_FRITZBOX_6842_LTE:
-            return "FRITZ!Box Fon 6842 LTE"; 
+            return "FRITZ!Box 6842 LTE"; 
         case IFritzBoxFirmware.TYPE_FRITZBOX_7360_EWE:
-            return "FRITZ!Box Fon 7360 (EWE Edition)"; 
+            return "FRITZ!Box 7360 (EWE Edition)"; 
         case IFritzBoxFirmware.TYPE_FRITZBOX_6320_V2:
-            return "FRITZ!Box Fon 6320 (Kabel) v2"; 
+            return "FRITZ!Box 6320 (Kabel) v2"; 
         case IFritzBoxFirmware.TYPE_SPEEDPORT_W920V:
             return "Speedport W920V"; 
         case IFritzBoxFirmware.TYPE_FRITZBOX_7490:
-            return "FRITZ!Box Fon 7490"; 
+            return "FRITZ!Box 7490"; 
         case IFritzBoxFirmware.TYPE_FRITZBOX_7362_SL:
-            return "FRITZ!Box Fon 7362 SL"; 
+            return "FRITZ!Box 7362 SL"; 
 		default:			
 		}
 		return "unknown";
