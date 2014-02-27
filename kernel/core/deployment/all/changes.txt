@@ -8,7 +8,7 @@ Bugfix:
 
 Module:
 - FRITZ!Box-Überwachung: Produktname von Fritz!Box auf FRITZ!Box geändert
-- Emailbenachrichtigung: Untersützung von SSLv3 und TLSv1 zur Authentifizierung
+- Emailbenachrichtigung: Unterstützung von SSLv3 und TLSv1 zur Authentifizierung
 - Emailbenachrichtigung: SSL Port freiwählbar, Standardport 465
 
 ===

@@ -18,7 +18,7 @@
 				<component id="app" name="app"/>
 			</components>
 		</feature>
-		<feature description="Installiert die jAnrufmonitor Fritz!Box-Überwachung für AVM Fritz!Box Fon Telefonanlagen." id="fritzbox" name="Fritz!Box-Überwachung">
+		<feature description="Installiert die jAnrufmonitor FRITZ!Box-Überwachung für AVM FRITZ!Box Fon Telefonanlagen." id="fritzbox" name="FRITZ!Box-Überwachung">
 			<components>
 				<component id="fritzbox" name="fritzbox"/>
 			</components>
@@ -114,7 +114,7 @@
 		</feature>
 	</features>
 	<installtypes>
-		<installtype default="1" description="Installiert jAnrufmonitor für eine AVM Fritz!Box. Der PC muss mit der AVM Fritz!Box Fon verbunden und eine Java Runtime Environment JavaSE 6 muss installiert sein. Alternativ: Führen Sie eine 'Benutzerdefinierte Installation' aus und installieren Sie die Java Runtime Environment JavaSE 6." id="{E3442B14-8208-4607-8737-FEE017F90479}" name="jAnrufmonitor für eine AVM Fritz!Box Fon">
+		<installtype default="1" description="Installiert jAnrufmonitor für eine AVM FRITZ!Box. Der PC muss mit der AVM FRITZ!Box Fon verbunden und eine Java Runtime Environment JavaSE 6 muss installiert sein. Alternativ: Führen Sie eine 'Benutzerdefinierte Installation' aus und installieren Sie die Java Runtime Environment JavaSE 6." id="{E3442B14-8208-4607-8737-FEE017F90479}" name="jAnrufmonitor für eine AVM FRITZ!Box Fon">
 			<features>
 				<feature id="application"/>
 				<feature id="fritzbox"/>
@@ -152,7 +152,7 @@
 						<file dst="*.*" src="modules\mod-mon-fritzbox.*.*"/>
 					</files>
 					<shortcuts>
-						<shortcut cmdline="http://fritz.box/" name="%AppFolder%\Fritz!Box Konfiguration"/>
+						<shortcut cmdline="http://fritz.box/" name="%AppFolder%\FRITZ!Box Konfiguration"/>
 					</shortcuts>
 				</component>
 				<component dst="%AppDataFolder%\install" id="simulator" name="Anruf-Simulator">
