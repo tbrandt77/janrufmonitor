@@ -9,33 +9,33 @@ This github repository contains the source files and build infrastructure of jAn
 
 For any commercial usage of this source, the author must be notified and referenced by the commercial product or company.
 
-Please refer also to the software licence agreement located in the guthub repository under ./kernel/core/deployment/all/license.txt.
+Please refer also to the software licence agreement located in the Github repository under ./kernel/core/deployment/all/license.txt.
 
 -----
 Required Software for building/compiling jAnrufmonitor 5.0:
 
-Java JDK 1.5+ (http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+Java JDK 1.6+ (http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 
 Apache Ant 1.8+ (http://ant.apache.org/bindownload.cgi) 
 
 -----
 Build process:
 
-There is a default target "publish" defined in the central build.xml file, which publishes all jAnrufmonitor variants (CAPI, TAPI, AVM Fritz!Box Fon) on all applicable OS platforms to the published/_current/ folder. Always the latest Version gets builds.
+There is a default target "publish" defined in the central build.xml file, which publishes all jAnrufmonitor variants (CAPI, TAPI, AVM FRITZ!Box Fon) on all applicable OS platforms to the published/_current/ folder. Always the latest Version gets builds.
 
 Recommended target commands:
 
-bash>ant
+bash> ant
 
 or
 
-bash>ant publish
+bash> ant publish
 
 For dedicated OS depended builds call
 
-bash>ant publish_<os><arch>
+bash> ant publish_<os><arch>
 
 e.g.
-bash>ant publish_win32
+bash> ant publish_win32
 or
-bash>ant publish_linux64
+bash> ant publish_linux64
