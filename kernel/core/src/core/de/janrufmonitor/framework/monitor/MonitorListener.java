@@ -146,25 +146,31 @@ public class MonitorListener extends AbstractMonitorListener implements IEventRe
 		}
 		
 		this.m_logger.info("Call disconnect reason: "+reason);
-	
-		IAttribute outgoing = call.getAttribute(IJAMConst.ATTRIBUTE_NAME_CALLSTATUS);
-		if (outgoing==null || !outgoing.getValue().equalsIgnoreCase(IJAMConst.ATTRIBUTE_VALUE_OUTGOING)) {
-			long end = new Date().getTime();
-			long start = this.getStartTime(call);
-			call.setAttribute(this.getRuntime().getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_ENDRING, Long.toString(end)));
-			call.setAttribute(this.getRuntime().getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_RINGDURATION, Long.toString((end-start)/1000)));
-		} 
 
+		IAttribute outgoing = call.getAttribute(IJAMConst.ATTRIBUTE_NAME_CALLSTATUS);
+		
 		IEvent ev = null;
 		IEventBroker eventBroker = this.getRuntime().getEventBroker();
 		switch (reason) {
 			case IEventConst.EVENT_TYPE_CALLACCEPTED:
+				if (outgoing==null || !outgoing.getValue().equalsIgnoreCase(IJAMConst.ATTRIBUTE_VALUE_OUTGOING)) {
+					long end = new Date().getTime();
+					long start = this.getStartTime(call);
+					call.setAttribute(this.getRuntime().getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_ENDRING, Long.toString(end)));
+					call.setAttribute(this.getRuntime().getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_RINGDURATION, Long.toString((end-start)/1000)));
+				} 
 				call.setAttribute(this.getRuntime().getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CALLSTATUS, IJAMConst.ATTRIBUTE_VALUE_ACCEPTED));
 				this.m_logger.info("Call was accepted by user.");
 				ev = eventBroker.createEvent(IEventConst.EVENT_TYPE_CALLACCEPTED, call);
 				eventBroker.send(this, ev);
 				break;
 			case IEventConst.EVENT_TYPE_MANUALCALLACCEPTED:
+				if (outgoing==null || !outgoing.getValue().equalsIgnoreCase(IJAMConst.ATTRIBUTE_VALUE_OUTGOING)) {
+					long end = new Date().getTime();
+					long start = this.getStartTime(call);
+					call.setAttribute(this.getRuntime().getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_ENDRING, Long.toString(end)));
+					call.setAttribute(this.getRuntime().getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_RINGDURATION, Long.toString((end-start)/1000)));
+				} 
 				call.setAttribute(this.getRuntime().getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CALLSTATUS, IJAMConst.ATTRIBUTE_VALUE_REJECTED));
 				this.m_logger.info("Call was rejected by user.");
 				ev = eventBroker.createEvent(IEventConst.EVENT_TYPE_MANUALCALLACCEPTED, call);
