@@ -875,18 +875,18 @@ public class MailNotification extends AbstractConfigPage {
 		
 		Group g = new Group(c, SWT.SHADOW_ETCHED_IN);
 		g.setText(this.m_i18n.getString(this.getNamespace(), "events", "label", this.m_language));
-		g.setLayout(new GridLayout(1, false));
+		g.setLayout(new GridLayout(2, true));
 		GridData gd = new GridData();
-        gd.widthHint = 420;
-        gd.heightHint = 140;
+        gd.widthHint = 430;
+        gd.heightHint = 80;
        	g.setLayoutData(gd);
 		
 		
 		label = this.m_i18n.getString(this.getNamespace(), "pre", "label", this.m_language);
-		if (label.length()<150)
-			for (int i=150;i>label.length();i--){
-				label += " ";
-			}
+//		if (label.length()<150)
+//			for (int i=150;i>label.length();i--){
+//				label += " ";
+//			}
 		
 		this.activepre = new Button(g, SWT.CHECK);
 		this.activepre.setText(
@@ -899,10 +899,10 @@ public class MailNotification extends AbstractConfigPage {
 		/**  **/
 		
 		label = this.m_i18n.getString(this.getNamespace(), "mis", "label", this.m_language);
-		if (label.length()<150)
-			for (int i=150;i>label.length();i--){
-				label += " ";
-			}
+//		if (label.length()<150)
+//			for (int i=150;i>label.length();i--){
+//				label += " ";
+//			}
 		
 		this.activemis = new Button(g, SWT.CHECK);
 		this.activemis.setText(
@@ -915,10 +915,10 @@ public class MailNotification extends AbstractConfigPage {
 		/**  **/
 		
 		label = this.m_i18n.getString(this.getNamespace(), "acc", "label", this.m_language);
-		if (label.length()<150)
-			for (int i=150;i>label.length();i--){
-				label += " ";
-			}
+//		if (label.length()<150)
+//			for (int i=150;i>label.length();i--){
+//				label += " ";
+//			}
 		
 		this.activeacc = new Button(g, SWT.CHECK);
 		this.activeacc.setText(
@@ -931,10 +931,10 @@ public class MailNotification extends AbstractConfigPage {
 		/**  **/
 		
 		label = this.m_i18n.getString(this.getNamespace(), "end", "label", this.m_language);
-		if (label.length()<150)
-			for (int i=150;i>label.length();i--){
-				label += " ";
-			}
+//		if (label.length()<150)
+//			for (int i=150;i>label.length();i--){
+//				label += " ";
+//			}
 		
 		this.activeend = new Button(g, SWT.CHECK);
 		this.activeend.setText(
@@ -951,10 +951,10 @@ public class MailNotification extends AbstractConfigPage {
 		/**  **/
 		
 		label = this.m_i18n.getString(this.getNamespace(), "rej", "label", this.m_language);
-		if (label.length()<150)
-			for (int i=150;i>label.length();i--){
-				label += " ";
-			}
+//		if (label.length()<150)
+//			for (int i=150;i>label.length();i--){
+//				label += " ";
+//			}
 		
 		this.activerej = new Button(g, SWT.CHECK);
 		this.activerej.setText(
@@ -967,10 +967,10 @@ public class MailNotification extends AbstractConfigPage {
 		/**  **/
 		
 		label = this.m_i18n.getString(this.getNamespace(), "outgoing", "label", this.m_language);
-		if (label.length()<150)
-			for (int i=150;i>label.length();i--){
-				label += " ";
-			}
+//		if (label.length()<150)
+//			for (int i=150;i>label.length();i--){
+//				label += " ";
+//			}
 		
 		this.activeout = new Button(g, SWT.CHECK);
 		this.activeout.setText(
@@ -993,8 +993,8 @@ public class MailNotification extends AbstractConfigPage {
 		g2.setText(this.m_i18n.getString(this.getNamespace(), "server", "label", this.m_language));
 		g2.setLayout(new GridLayout(2, true));
 		gd = new GridData();
-        gd.widthHint = 420;
-		gd.heightHint = 195;
+        gd.widthHint = 430;
+		gd.heightHint = 225;
 		g2.setLayoutData(gd);
 		
 		new Label(g2, SWT.NONE).setText(
@@ -1023,7 +1023,7 @@ public class MailNotification extends AbstractConfigPage {
         server.setLayoutData(gd);
         
 		gd = new GridData();
-        gd.widthHint = 30;
+        gd.widthHint = 40;
         port.setLayoutData(gd);
         
         new Label(g2, SWT.NONE).setText(
@@ -1126,7 +1126,7 @@ public class MailNotification extends AbstractConfigPage {
 		g3.setText(this.m_i18n.getString(this.getNamespace(), "templates", "label", this.m_language));
 		g3.setLayout(new GridLayout(2, true));
 		gd = new GridData();
-        gd.widthHint = 420;
+        gd.widthHint = 430;
 		gd.heightHint = 100;
 		g3.setLayoutData(gd);
 		

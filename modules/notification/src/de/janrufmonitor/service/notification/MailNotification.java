@@ -182,9 +182,17 @@ public class MailNotification extends AbstractReceiverConfigurableService {
 							MailNotification.CONFIG_USER, "");
 					String password = this.m_configuration.getProperty(
 							MailNotification.CONFIG_PASSWORD, "");
+					
+					boolean usessl = Boolean.parseBoolean(this.m_configuration
+							.getProperty(MailNotification.CONFIG_SMTP_SSL,
+									"false"));
+					
 					if (server.length() > 0) {
 						props.put("mail.smtp.host", server);
+						m_logger.info("Set mail.smtp.host="+server);
 						props.put("mail.smtp.port", this.m_configuration.getProperty(
+								MailNotification.CONFIG_PORT, "25"));
+						m_logger.info("Set mail.smtp.port="+this.m_configuration.getProperty(
 								MailNotification.CONFIG_PORT, "25"));
 						
 						boolean auth = Boolean.parseBoolean(this.m_configuration
@@ -193,24 +201,27 @@ public class MailNotification extends AbstractReceiverConfigurableService {
 						if (auth) {
 							if (user!=null && user.length()>0 && password!=null) {
 								props.put("mail.smtp.auth", "true");
+								m_logger.info("Set mail.smtp.auth=true");
 							} else {
 								m_logger.warning("mail.smtp.auth was enabled, but no user and password provided.");
 								props.put("mail.smtp.auth", "false");
+								m_logger.info("Set mail.smtp.auth=false");
 							}							
 						} else {
 							props.put("mail.smtp.auth", "false");
+							m_logger.info("Set mail.smtp.auth=false");
 						}
 						
-						boolean usessl = Boolean.parseBoolean(this.m_configuration
-								.getProperty(MailNotification.CONFIG_SMTP_SSL,
-										"false"));
-
 						if (usessl) {
 							props.put("mail.smtp.starttls.enable", "true");
+							m_logger.info("Set mail.smtp.starttls.enable=true");
 							props.put("mail.smtp.ssl.enable", "true");
+							m_logger.info("Set mail.smtp.ssl.enable=true");
 						} else {
 							props.put("mail.smtp.starttls.enable", "false");
+							m_logger.info("Set mail.smtp.starttls.enable=false");
 							props.put("mail.smtp.ssl.enable", "false");
+							m_logger.info("Set mail.smtp.ssl.enable=false");
 						}	
 						
 					} else {
@@ -221,9 +232,9 @@ public class MailNotification extends AbstractReceiverConfigurableService {
 					// obtain a mail session
 					Session session = Session.getInstance(props, null);
 
-					Transport transport = session.getTransport("smtp");
+					Transport transport = session.getTransport(usessl ? "smtps" : "smtp");
 
-					m_logger.info("Set protocol to SMTP.");
+					m_logger.info("Set protocol to SMTP"+(usessl ? "S" : "")+".");
 
 					// 2008/12/17: changed do to auth requests on open SMTP server 
 					user = (user.length() == 0 ? null : user);
