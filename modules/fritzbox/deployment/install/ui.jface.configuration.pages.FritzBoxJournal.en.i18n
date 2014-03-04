@@ -31,9 +31,10 @@ ui.jface.configuration.pages.FritzBoxSynchronizer\:syncdialog\:label\:en=Hide di
 ui.jface.configuration.pages.FritzBoxSynchronizer\:syncclean\:label\:en=Remove redundant information
 ui.jface.configuration.pages.FritzBoxSynchronizer\:race\:label\:en=Re-syncronize after call end
 ui.jface.configuration.pages.FritzBoxSynchronizer\:syncnotification\:label\:en=Send mail notification after syncronizing
-ui.jface.configuration.pages.FritzBoxSynchronizer\:synctimer\:label\:en=Timebased syncronizing min]: 
+ui.jface.configuration.pages.FritzBoxSynchronizer\:synctimer\:label\:en=Timebased syncronizing [min]: 
 ui.jface.configuration.pages.FritzBoxSynchronizer\:synctime\:label\:en=Timestamp of last sync: 
 ui.jface.configuration.pages.FritzBoxSynchronizer\:syncall\:label\:en=Allways sync all calls from FRITZ!Box
+ui.jface.configuration.pages.FritzBoxSynchronizer\:startupdelay\:label\:en=Startup delay on syncronizing [sec]: 
 
 ui.jface.configuration.pages.FritzBoxPhonebookManager\:title\:label\:en=AVM FRITZ!Box Fon phonebook
 ui.jface.configuration.pages.FritzBoxPhonebookManager\:description\:label\:en=Identifies callers with the AVM FRITZ!Box Fon phonebook. Hint: Newly created contacts on the AVM FRITZ!Box Fon phonebook are only applied after program restart.

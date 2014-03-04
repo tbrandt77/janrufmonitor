@@ -80,6 +80,14 @@ public class FritzBoxSynchronizer extends AbstractServiceFieldEditorConfigPage {
 		);
 		addField(ife);
 		
+		ife = new IntegerFieldEditor(
+			this.getConfigNamespace()+SEPARATOR+"startupdelay",
+			this.m_i18n.getString(this.getNamespace(), "startupdelay", "label", this.m_language),
+			this.getFieldEditorParent(),
+			3
+		);
+		addField(ife);
+		
 		sfe = new BooleanFieldEditor(
 			this.getConfigNamespace()+SEPARATOR+"syncall",
 			this.m_i18n.getString(this.getNamespace(), "syncall", "label", this.m_language),

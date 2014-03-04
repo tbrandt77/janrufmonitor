@@ -114,11 +114,24 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 					.createEvent(IEventConst.EVENT_TYPE_RETURNED_HIBERNATE));
 			
 			FirmwareManager.getInstance().startup();
-			new SWTExecuter() {
-				protected void execute() {
-					synchronize(false);
-				}}
-			.start();
+			final long delay = 1000 * Long.parseLong(this.m_configuration.getProperty(CFG_STARTUP_DELAY, "0"));
+			this.m_logger.info("Startup delay on fritzbox sync set to "+ delay +" ms.");
+			
+			Thread t = new Thread(new Runnable() {
+				public void run() {
+					try {
+						Thread.sleep(delay);
+					} catch (InterruptedException e) {
+					}
+					new SWTExecuter() {
+						protected void execute() {		
+							synchronize(false);
+						}}
+					.start();
+				}
+			});
+			t.setName("FritzBox-Startup-Syncthread");
+			t.start();
 			
 			boolean isRefreshAfterCallend = this.m_configuration.getProperty(CFG_REFRESH_AFTER_CALLEND, "false").equalsIgnoreCase("true");
 			if (isRefreshAfterCallend) {

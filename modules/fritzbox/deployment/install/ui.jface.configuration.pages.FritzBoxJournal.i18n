@@ -31,9 +31,10 @@ ui.jface.configuration.pages.FritzBoxSynchronizer\:syncdialog\:label\:de=Dialog 
 ui.jface.configuration.pages.FritzBoxSynchronizer\:syncclean\:label\:de=Redundante Informationen entfernen
 ui.jface.configuration.pages.FritzBoxSynchronizer\:race\:label\:de=Nach Gespr\u00E4chsende Anrufliste synchronisieren
 ui.jface.configuration.pages.FritzBoxSynchronizer\:syncnotification\:label\:de=Emailbenachrichtigung nach dem Synchronisieren versenden
-ui.jface.configuration.pages.FritzBoxSynchronizer\:synctimer\:label\:de=Zeitgesteuertes Synchronisieren [min]: 
+ui.jface.configuration.pages.FritzBoxSynchronizer\:synctimer\:label\:de=Zeitgesteuertes Synchronisieren [Min.]: 
 ui.jface.configuration.pages.FritzBoxSynchronizer\:synctime\:label\:de=Zeitstempel der letzten Synchronisation: 
 ui.jface.configuration.pages.FritzBoxSynchronizer\:syncall\:label\:de=Immer gesamte Anrufliste der AVM FRITZ!Box Fon synchronisieren
+ui.jface.configuration.pages.FritzBoxSynchronizer\:startupdelay\:label\:de=Startverz\u00F6gert Synchronisieren [Sek.]: 
 
 ui.jface.configuration.pages.FritzBoxPhonebookManager\:title\:label\:de=AVM FRITZ!Box Fon Telefonbuch
 ui.jface.configuration.pages.FritzBoxPhonebookManager\:description\:label\:de=Identifiziert Anrufe direkt mit den Kontakten des AVM FRITZ!Box Fon Telefonbuchs. Hinweis: Neue Kontakte, die \u00FCber die AVM FRITZ!Box Fon angelegt werden, sind erst nach einem Programmneustart nutzbar.
