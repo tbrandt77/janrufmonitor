@@ -125,8 +125,10 @@ public class MailNotification extends AbstractReceiverConfigurableService {
 					
 					if (usessl) {
 						props.put("mail.smtp.starttls.enable", "true");
+						props.put("mail.smtp.ssl.enable", "true");
 					} else {
 						props.put("mail.smtp.starttls.enable", "false");
+						props.put("mail.smtp.ssl.enable", "false");
 					}	
 					
 				
@@ -205,8 +207,10 @@ public class MailNotification extends AbstractReceiverConfigurableService {
 
 						if (usessl) {
 							props.put("mail.smtp.starttls.enable", "true");
+							props.put("mail.smtp.ssl.enable", "true");
 						} else {
 							props.put("mail.smtp.starttls.enable", "false");
+							props.put("mail.smtp.ssl.enable", "false");
 						}	
 						
 					} else {
