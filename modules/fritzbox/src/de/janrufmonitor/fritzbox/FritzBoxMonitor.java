@@ -264,7 +264,7 @@ public class FritzBoxMonitor implements IMonitor, IConfigurable, FritzBoxConst {
 		
 		public String[] getFritzBoxDescription() {
 			String[] description = new String[] {
-					"FritzBoxMonitor Module","not connected to FritzBox!","","",""
+					"AVM FRITZ!Box Fon Modul f\u00FCr jAnrufmonitor","Keine Verbindung zur AVM FRITZ!Box","","",""
 			};
 			try {
 				String firmware = FirmwareManager.getInstance().getFirmwareDescription();
@@ -392,10 +392,7 @@ public class FritzBoxMonitor implements IMonitor, IConfigurable, FritzBoxConst {
 	public String[] getDescription() {
 		if (this.cmn==null)
 			return new String[] {
-				"FritzBoxMonitor Module","not connected to FritzBox!",
-				"", 
-				"",
-				""
+				"AVM FRITZ!Box Fon Modul f\u00FCr jAnrufmonitor","Keine Verbindung zur AVM FRITZ!Box","","",""
 			};
 		
 		return this.cmn.getFritzBoxDescription();
