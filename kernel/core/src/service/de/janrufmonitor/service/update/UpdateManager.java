@@ -32,6 +32,7 @@ import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.util.io.OSUtils;
 import de.janrufmonitor.util.io.PathResolver;
+import de.janrufmonitor.util.string.StringEscapeUtils;
 import de.janrufmonitor.util.string.StringUtils;
 import de.janrufmonitor.util.uuid.UUID;
 
@@ -112,6 +113,7 @@ public class UpdateManager {
 				this.m_logger.info("User-Agent: "+agent.toString());
 			
 			boolean retry = false;
+			boolean register = false;
 			int retry_counter = 0;
 			do {
 				// added 2009/06/26: Registry call
@@ -120,11 +122,12 @@ public class UpdateManager {
 					String key = getRuntime().getConfigManagerFactory().getConfigManager().getProperty(getNamespace(), "regkey");
 					if (key==null || key.length()==0 || retry) {
 						key = new UUID().toString();
+						register = true;
 						getRuntime().getConfigManagerFactory().getConfigManager().setProperty(getNamespace(), "regkey", key);
 						getRuntime().getConfigManagerFactory().getConfigManager().saveConfiguration();
 					}
 					try {
-						URLConnection c = this.createRequestURL(agent, key); 
+						URLConnection c = this.createRequestURL(agent, key, (register ? "register" : "update")); 
 						c.connect();
 						Object o = c.getContent();
 						if (o instanceof InputStream) {
@@ -194,7 +197,7 @@ public class UpdateManager {
 			return this.p;
 		}
 		
-		private URLConnection createRequestURL(StringBuffer agent, String key) throws IOException {
+		private URLConnection createRequestURL(StringBuffer agent, String key, String action) throws IOException {
 			StringBuffer reg = new StringBuffer();
 			reg.append(m_registry);
 			reg.append("?k=");
@@ -210,6 +213,7 @@ public class UpdateManager {
 			c.setDoInput(true);
 			c.setRequestProperty("User-Agent", agent.toString());
 			c.setRequestProperty("X-JAM-ModuleCount", Integer.toString(InstallerEngine.getInstance().getModuleList().size()));
+			c.setRequestProperty("X-JAM-Action", action);
 			String dc = getDonationContact();
 			if (dc!=null && dc.length()>0)
 				c.setRequestProperty("X-JAM-DonationContact", dc);
@@ -251,13 +255,21 @@ public class UpdateManager {
 						}
 					}	
 					int l = d.length();
-					c.setRequestProperty("X-JAM-Monitor", d.toString().substring(0, (l>1023 ? 1023 : l)));
+					try {
+						c.setRequestProperty("X-JAM-Monitor", StringEscapeUtils.escapeHtml(d.toString().substring(0, (l>1023 ? 1023 : l))));
+					} catch (Exception e) {
+						c.setRequestProperty("X-JAM-Monitor", d.toString().substring(0, (l>1023 ? 1023 : l)));
+					}
 				} else {
 					String signature = getRuntime().getConfigManagerFactory().getConfigManager().getProperty(IJAMConst.GLOBAL_NAMESPACE, "monitorsignature");
 					if (signature!=null && signature.length()>0) {
 						d.append(signature);
 						int l = d.length();
-						c.setRequestProperty("X-JAM-Monitor", d.toString().substring(0, (l>1023 ? 1023 : l)));
+						try {
+							c.setRequestProperty("X-JAM-Monitor", StringEscapeUtils.escapeHtml(d.toString().substring(0, (l>1023 ? 1023 : l))));
+						} catch (Exception e) {
+							c.setRequestProperty("X-JAM-Monitor", d.toString().substring(0, (l>1023 ? 1023 : l)));
+						}
 					}
 				}
 			} else {
@@ -265,7 +277,11 @@ public class UpdateManager {
 				if (signature!=null && signature.length()>0) {
 					d.append(signature);
 					int l = d.length();
-					c.setRequestProperty("X-JAM-Monitor", d.toString().substring(0, (l>1023 ? 1023 : l)));
+					try {
+						c.setRequestProperty("X-JAM-Monitor", StringEscapeUtils.escapeHtml(d.toString().substring(0, (l>1023 ? 1023 : l))));
+					} catch (Exception e) {
+						c.setRequestProperty("X-JAM-Monitor", d.toString().substring(0, (l>1023 ? 1023 : l)));
+					}
 				}
 			}
 			
