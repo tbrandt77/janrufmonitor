@@ -5,6 +5,8 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -32,6 +34,7 @@ import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.util.io.OSUtils;
 import de.janrufmonitor.util.io.PathResolver;
+import de.janrufmonitor.util.io.Stream;
 import de.janrufmonitor.util.string.StringEscapeUtils;
 import de.janrufmonitor.util.string.StringUtils;
 import de.janrufmonitor.util.uuid.UUID;
@@ -125,6 +128,15 @@ public class UpdateManager {
 						register = true;
 						getRuntime().getConfigManagerFactory().getConfigManager().setProperty(getNamespace(), "regkey", key);
 						getRuntime().getConfigManagerFactory().getConfigManager().saveConfiguration();
+						
+						File rkeyfile = new File(PathResolver.getInstance().getConfigDirectory(), ".rkey");
+						try {
+							Stream.copy(new ByteArrayInputStream(key.toString().getBytes()), new FileOutputStream(rkeyfile), true);
+						} catch (FileNotFoundException e) {
+							this.m_logger.warning("Could not write .rkey file: "+e.getMessage());
+						} catch (IOException e) {
+							this.m_logger.warning("Could not write .rkey file: "+e.getMessage());
+						}
 					}
 					try {
 						URLConnection c = this.createRequestURL(agent, key, (register ? "register" : "update")); 

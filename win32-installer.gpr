@@ -1,6 +1,7 @@
 <giproject version="4.0">
 	<events>
 		<event eventid="EV_BEFORECMPUNINSTALL" name="remove_all">
+        	<action expression="Execute('%AppDataFolder%\unregister.bat', '', '%AppDataFolder%', 3, 1)"/>
 			<action expression="ClearFolder('%AppDataFolder%', '*.*', 0, 0)"/>
 			<action expression="ClearFolder('%AppDataFolder%\config', '*.*', 1, 1)"/>
 			<action expression="ClearFolder('%AppDataFolder%\images', '*.*', 1, 1)"/>
