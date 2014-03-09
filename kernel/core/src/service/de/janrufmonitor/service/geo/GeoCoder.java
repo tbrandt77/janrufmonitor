@@ -9,6 +9,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -27,9 +29,11 @@ public class GeoCoder {
 	private static GeoCoder m_instance = null;
 	private Logger m_logger;
 	private Point m_localPosition;
+	private Map m_cache;
 	 
 	private GeoCoder() {
 		this.m_logger = LogManager.getLogManager().getLogger(IJAMConst.DEFAULT_LOGGER);	
+		this.m_cache = new HashMap();
 	}
 	
     public static synchronized GeoCoder getInstance() {
@@ -49,62 +53,6 @@ public class GeoCoder {
     
     public void setLocalPosition(Point p) {
     	this.m_localPosition = p;
-    }
-    
-    public Point getCoordinates(String q) {
-    	String result = null;    	
-    	q = StringUtils.replaceString(q, "\u00C4", "ae");
-    	q = StringUtils.replaceString(q, "\u00E4", "ae");
-    	q = StringUtils.replaceString(q, "\u00D6", "oe");
-    	q = StringUtils.replaceString(q, "\u00F6", "oe");
-    	q = StringUtils.replaceString(q, "\u00DC", "ue");
-    	q = StringUtils.replaceString(q, "\u00FC", "ue");
-    	q = StringUtils.replaceString(q, "\u00DF", "ss");
-    	try {
-			q = URLEncoder.encode(q.trim(), "ISO-8859-1");
-		} catch (UnsupportedEncodingException e) {
-			this.m_logger.log(Level.SEVERE, e.toString(), e);
-		}
-		
-		try {
-			URL url = new URL("http://geo.janrufmonitor.de/code.php?q="+q);
-			URLConnection c = url.openConnection();
-			c.setDoInput(true);
-			c.setRequestProperty("User-Agent", "jAnrufmonitor GeoCoder "+IJAMConst.VERSION_DISPLAY);
-			c.connect();
-			
-			if (this.m_logger!=null && this.m_logger.isLoggable(Level.INFO))
-				this.m_logger.info("Querying URL "+url);
-			
-			Object o = c.getContent();
-			if (o instanceof InputStream) {
-				if (this.m_logger!=null)
-					this.m_logger.info("Content successfully retrieved from "+url);
-				BufferedInputStream bin = new BufferedInputStream((InputStream) o);
-				ByteArrayOutputStream bout = new ByteArrayOutputStream();
-				Stream.copy(bin, bout, true);
-				result = bout.toString();
-				if (this.m_logger!=null)
-					this.m_logger.info("Geocoding raw result: "+result);
-				bin.close();
-			}				
-		} catch (MalformedURLException e) {
-			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-		} catch (IOException e) {
-			this.m_logger.log(Level.SEVERE, e.getMessage(), e);			
-		} 
-		
-		if (result!=null) {
-			String[] values = result.split(",");
-			if (values[0].equalsIgnoreCase("200")) {
-				return new Point(Double.parseDouble(values[3]), Double.parseDouble(values[2]), Integer.parseInt(values[1]));				
-			}		
-			if (values[0].equalsIgnoreCase("201")) {
-				this.m_logger.info("geo.janrufmonitor.de cached data: "+result);
-				return new Point(Double.parseDouble(values[3]), Double.parseDouble(values[2]), Integer.parseInt(values[1]));				
-			}	
-		}
-    	return null;
     }
     
     private boolean hasStreetNo(String street) {
@@ -168,6 +116,12 @@ public class GeoCoder {
     		this.m_logger.info("No relevant attributes for geo coding found.");
     		return null;
     	}
+    	
+    	if (this.m_cache.containsKey(query.toString())) {
+    		this.m_logger.info("Geo coordinates determined from local cache. ");
+    		return (Point) this.m_cache.get(query.toString());
+    	}
+    	
     	try {
 			URL url = new URL("http://geo.janrufmonitor.de/code_v2.php?"+query.toString());
 			URLConnection c = url.openConnection();
@@ -199,11 +153,16 @@ public class GeoCoder {
 		if (result!=null) {
 			String[] values = result.split(",");
 			if (values[0].equalsIgnoreCase("200")) {
-				return new Point(Double.parseDouble(values[3]), Double.parseDouble(values[2]), Integer.parseInt(values[1]));				
+				this.m_logger.info("geo.janrufmonitor.de [200] data: "+result);
+				Point p = new Point(Double.parseDouble(values[3]), Double.parseDouble(values[2]), Integer.parseInt(values[1]));
+				this.m_cache.put(query.toString(), p);
+				return p;				
 			}		
 			if (values[0].equalsIgnoreCase("201")) {
-				this.m_logger.info("geo.janrufmonitor.de cached data: "+result);
-				return new Point(Double.parseDouble(values[3]), Double.parseDouble(values[2]), Integer.parseInt(values[1]));				
+				this.m_logger.info("geo.janrufmonitor.de [201] cached data: "+result);
+				Point p = new Point(Double.parseDouble(values[3]), Double.parseDouble(values[2]), Integer.parseInt(values[1]));
+				this.m_cache.put(query.toString(), p);
+				return p;					
 			}	
 		}
     	return null;   	
