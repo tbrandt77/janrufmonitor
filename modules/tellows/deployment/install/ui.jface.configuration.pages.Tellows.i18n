@@ -11,8 +11,10 @@ ui.jface.application.tellows.rendering.TellowsSearches\:name\:label\:de=tellows 
 ui.jface.application.tellows.rendering.TellowsSearches\:label\:label\:de=tellows SPAM-Anfragen
 ui.jface.application.tellows.rendering.TellowsComments\:name\:label\:de=tellows Kommentare
 ui.jface.application.tellows.rendering.TellowsComments\:label\:label\:de=tellows SPAM-Kommentare
-ui.jface.application.tellows.rendering.TellowsImg\:name\:label\:de=tellows Score (Grafik)
-ui.jface.application.tellows.rendering.TellowsImg\:label\:label\:de=tellows SPAM-Score (Grafik)
+ui.jface.application.tellows.rendering.TellowsImg\:name\:label\:de=tellows Score
+ui.jface.application.tellows.rendering.TellowsImg\:label\:label\:de=tellows SPAM-Score (gr. Grafik)
+ui.jface.application.tellows.rendering.TellowsImgSmall\:name\:label\:de=tellows Score
+ui.jface.application.tellows.rendering.TellowsImgSmall\:label\:label\:de=tellows SPAM-Score (kl. Grafik)
 
 ui.jface.application.tellows.action.OpenTellows\:title\:label\:de=Rufnummer auf tellows kommentieren...
 ui.jface.application.tellows.action.ScoreNumberTellows\:title\:label\:de=Rufnummer Score durch tellows ermitteln...

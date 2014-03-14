@@ -25,9 +25,9 @@ import de.janrufmonitor.ui.swt.DisplayManager;
 import de.janrufmonitor.util.io.PathResolver;
 import de.janrufmonitor.util.io.Stream;
 
-public class TellowsImg extends AbstractTableCellRenderer implements IJournalCellRenderer, IEditorCellRenderer {
+public class TellowsImgSmall extends AbstractTableCellRenderer implements IJournalCellRenderer, IEditorCellRenderer {
 
-	private static String NAMESPACE = "ui.jface.application.tellows.rendering.TellowsImg";
+	private static String NAMESPACE = "ui.jface.application.tellows.rendering.TellowsImgSmall";
 
 	public Image renderAsImage() {
 		if (this.m_o!=null) {
@@ -73,11 +73,11 @@ public class TellowsImg extends AbstractTableCellRenderer implements IJournalCel
 
 				// calculate proportions
 				if (id.height>id.width) {
-					float height = ((float)id.height / (float)id.width) * 90;
-					id = id.scaledTo(90, Math.max((int) height, 90));
+					float height = ((float)id.height / (float)id.width) * 60;
+					id = id.scaledTo(60, Math.max((int) height, 60));
 				} else {
-					float width = ((float)id.width / (float)id.height) * 90;
-					id = id.scaledTo(Math.max((int) width, 90), 90);
+					float width = ((float)id.width / (float)id.height) * 60;
+					id = id.scaledTo(Math.max((int) width, 60), 60);
 				}
 				
 				
@@ -92,7 +92,7 @@ public class TellowsImg extends AbstractTableCellRenderer implements IJournalCel
 	}
 
 	public String getID() {
-		return "TellowsImg".toLowerCase();
+		return "TellowsImgSmall".toLowerCase();
 	}
 	
 	public String getNamespace() {

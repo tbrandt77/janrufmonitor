@@ -9,6 +9,8 @@ ui.jface.application.RendererRegistry\:renderer_tellowscomments\:value=de.janruf
 ui.jface.application.RendererRegistry\:renderer_tellowscomments\:access=system
 ui.jface.application.RendererRegistry\:renderer_tellowsimg\:value=de.janrufmonitor.ui.jface.application.tellows.rendering.TellowsImg
 ui.jface.application.RendererRegistry\:renderer_tellowsimg\:access=system
+ui.jface.application.RendererRegistry\:renderer_tellowsimgsmall\:value=de.janrufmonitor.ui.jface.application.tellows.rendering.TellowsImgSmall
+ui.jface.application.RendererRegistry\:renderer_tellowsimgsmall\:access=system
 
 ui.jface.application.ActionRegistry\:action_opentellows\:value=de.janrufmonitor.ui.jface.application.tellows.action.OpenTellows
 ui.jface.application.ActionRegistry\:action_opentellows\:access=system
