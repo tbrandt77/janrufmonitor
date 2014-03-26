@@ -1,5 +1,27 @@
 ﻿===
 
+jAnrufmonitor 5.0.48 (01.04.2014)
+---------------------------------
+
+Neu:
+- Update Manager: Status zum Update Manager
+- Update Manager: Abmelden beim Update Manager nach Deinstallation
+- Geokodierung: Lokaler Cache zur schnelleren Kodierung
+- Geokodierung: Geocoding API v1 entfernt
+
+Bugfix:
+- Überwachung: Algorythmus für Klingelzeitberechnung geändert
+
+Module:
+- FRITZ!Box-Überwachung: Synchronisationsverzögerung für AVM FRITZ!Box Fon Synchronizer
+- FRITZ!Box-Überwachung: Modul Status mit deutscher Übersetzung
+- Emailbenachrichtigung: SSLv3 Umgebungsvariablen in Java System Properties eingefügt
+- Emailbenachrichtigung: Unterstützung für SMTPS Protkoll
+- tellows Rufnummer Scoring: Lokaler Score-Bilder Cache
+- tellows Rufnummer Scoring: Große Icons für den Score im Journal
+
+===
+
 jAnrufmonitor 5.0.47 (01.03.2014)
 ---------------------------------
 

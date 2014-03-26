@@ -3,11 +3,14 @@ package de.janrufmonitor.service.journaling;
 import java.util.List;
 
 import de.janrufmonitor.framework.ICall;
+import de.janrufmonitor.framework.ICallList;
 import de.janrufmonitor.framework.event.IEvent;
 import de.janrufmonitor.framework.event.IEventBroker;
 import de.janrufmonitor.framework.event.IEventConst;
 import de.janrufmonitor.framework.event.IEventSender;
 import de.janrufmonitor.repository.ICallManager;
+import de.janrufmonitor.repository.filter.UUIDFilter;
+import de.janrufmonitor.repository.types.IReadCallRepository;
 import de.janrufmonitor.repository.types.IWriteCallRepository;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
@@ -87,6 +90,24 @@ public class Journaling extends AbstractReceiverConfigurableService implements I
 
 					// check if the repository manager allows read/write access
 					if (icm.isActive() && icm.isSupported(IWriteCallRepository.class)) {
+						
+						// try to keep old attribute information of call and caller
+						if (icm.isSupported(IReadCallRepository.class)) {
+							this.m_logger.info("Call manager <"+icm.getManagerID()+"> is supporting read mode.");
+							ICallList cl = ((IReadCallRepository)icm).getCalls(new UUIDFilter(new String[]{ updateCall.getUUID() }));
+							if (cl.size()==1) {
+								this.m_logger.info("Found exact 1 old call in call manager <"+icm.getManagerID()+"> with UUID " + updateCall.getUUID());
+								ICall oldCall = cl.get(0);
+								if (oldCall != null) {
+									this.m_logger.info("Setting old call info : " + oldCall + " to new call : " + updateCall);
+									oldCall.getCaller().getAttributes().addAll(updateCall.getCaller().getAttributes());
+									oldCall.getAttributes().addAll(updateCall.getAttributes());
+									updateCall = oldCall;
+									this.m_logger.info("Updated new call : " + updateCall);
+								}
+							}
+						}
+						
 						((IWriteCallRepository)icm).updateCall(updateCall);
 						this.m_logger.info("Call update sent to repository manager <" + icm.getManagerID() + ">: " + updateCall);
 						eventBroker.send(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_UPDATE_CALL, updateCall));
