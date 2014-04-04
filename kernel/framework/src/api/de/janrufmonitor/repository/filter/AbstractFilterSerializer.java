@@ -243,6 +243,10 @@ public abstract class AbstractFilterSerializer {
 					String[] t = st.nextToken().split("=");
 					return new CharacterFilter(t[1].trim(), t[0].trim());
 				}	
+				if (ft.equals(FilterType.UUID)) {
+					String[] uuids = st.nextToken().split(";");
+					return new UUIDFilter(uuids);
+				}	
 				// TODO: more filters to be added here
 			}
 		}
@@ -369,6 +373,15 @@ public abstract class AbstractFilterSerializer {
 				sb.append(((CharacterFilter)f).getAttributeName());
 				sb.append("=");
 				sb.append(((CharacterFilter)f).getCharacter());
+			}	
+			if (ft.equals(FilterType.UUID)) {
+				sb.append(ft.toString());
+				sb.append(",");
+				String[] uuids = ((UUIDFilter)f).getUUID();
+				for (int i=uuids.length, j=0; j<i; j++) {
+					sb.append(uuids[j]);
+					if (j<(i-1)) sb.append(";");
+				}
 			}	
 			// TODO: more filters to be added here
 		}
