@@ -113,7 +113,6 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 			eventBroker.register(this, eventBroker
 					.createEvent(IEventConst.EVENT_TYPE_RETURNED_HIBERNATE));
 			
-			FirmwareManager.getInstance().startup();
 			final long delay = 1000 * Long.parseLong(this.m_configuration.getProperty(CFG_STARTUP_DELAY, "0"));
 			this.m_logger.info("Startup delay on fritzbox sync set to "+ delay +" ms.");
 			
@@ -124,8 +123,12 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 					} catch (InterruptedException e) {
 					}
 					new SWTExecuter() {
-						protected void execute() {		
+						protected void execute() {	
+							FirmwareManager.getInstance().startup();
+							
 							synchronize(false);
+							
+							timebasedSyncing();
 						}}
 					.start();
 				}
@@ -141,7 +144,6 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 				eventBroker.register(this, eventBroker
 						.createEvent(IEventConst.EVENT_TYPE_CALLACCEPTED));
 			}
-			timebasedSyncing();
 		}
 	}
 	

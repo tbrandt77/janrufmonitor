@@ -308,6 +308,22 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 	public void startup() {
 		super.startup();
 		if (this.isActive()) {
+			boolean loggedin = false;
+			int counter = 0;
+			do {
+				try {
+					counter ++;
+					FirmwareManager.getInstance().login();
+					loggedin = true;
+				} catch (FritzBoxLoginException e) {
+					this.m_logger.log(Level.WARNING, "Login to fritzbox trial #"+counter+ "failed. Retrying.", e);
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e1) {
+					}
+				}
+			} while (!loggedin && counter < 5);
+			
 			this.createCallerListFromFritzBoxPhonebook();
 		}
 	}
