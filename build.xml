@@ -395,7 +395,7 @@
       
       <mkdir dir="${jam.dist.dir}/jarbundler/jam50-fritzbox/"/>
       <jarbundler dir="${jam.dist.dir}/jarbundler/jam50-fritzbox/"
-              name="jAnrufmonitor - AVM Fritz!Box Edition"
+              name="jAnrufmonitor - AVM FRITZ!Box Edition"
               shortname="jAnrufmonitor"
               signature="jam"
               mainclass="de.janrufmonitor.application.RunUI64"
