@@ -21,6 +21,7 @@ public class BusinessMacAddressBookMapping extends DefaultMacAddressBookMapping 
 		l.add(DefaultMacAddressBookMapping.PAGER);
 		l.add(DefaultMacAddressBookMapping.MAIN);
 		l.add(DefaultMacAddressBookMapping.OTHER);
+		l.addAll(getAdditionalSupportedNumbers());
 		return l;
 	}
 }

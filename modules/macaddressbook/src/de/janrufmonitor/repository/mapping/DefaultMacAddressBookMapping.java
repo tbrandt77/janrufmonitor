@@ -2,10 +2,12 @@ package de.janrufmonitor.repository.mapping;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import de.janrufmonitor.framework.IAttribute;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
+import de.janrufmonitor.repository.MacAddressBookManager;
 import de.janrufmonitor.runtime.PIMRuntime;
 
 public class DefaultMacAddressBookMapping implements IMacAddressBookMapping {
@@ -20,6 +22,7 @@ public class DefaultMacAddressBookMapping implements IMacAddressBookMapping {
 		l.add(DefaultMacAddressBookMapping.PAGER);
 		l.add(DefaultMacAddressBookMapping.MAIN);
 		l.add(DefaultMacAddressBookMapping.OTHER);
+		l.addAll(getAdditionalSupportedNumbers());
 		return l;
 	}
 
@@ -32,7 +35,7 @@ public class DefaultMacAddressBookMapping implements IMacAddressBookMapping {
 		if (macabNumberType.equalsIgnoreCase(DefaultMacAddressBookMapping.WORK_FAX)) return IJAMConst.ATTRIBUTE_VALUE_FAX_TYPE;
 		if (macabNumberType.equalsIgnoreCase(DefaultMacAddressBookMapping.MOBILE)) return IJAMConst.ATTRIBUTE_VALUE_MOBILE_TYPE;
 		if (macabNumberType.equalsIgnoreCase(DefaultMacAddressBookMapping.PAGER)) return IJAMConst.ATTRIBUTE_VALUE_MOBILE_TYPE;
-		return "";
+		return IJAMConst.ATTRIBUTE_VALUE_LANDLINE_TYPE;
 	}
 
 	public List getSupportedContactFields() {
@@ -111,6 +114,18 @@ public class DefaultMacAddressBookMapping implements IMacAddressBookMapping {
 
 	public String getSupportedEmailType() {
 		return DefaultMacAddressBookMapping.HOME;
+	}
+	
+	protected List getAdditionalSupportedNumbers() {
+		List<String> l = new ArrayList <String>(5);
+		String additionalNumbers = PIMRuntime.getInstance().getConfigManagerFactory().getConfigManager().getProperty(MacAddressBookManager.NAMESPACE, "addnumbers");
+		if (additionalNumbers!=null && additionalNumbers.trim().length()>0) {
+			StringTokenizer st = new StringTokenizer(additionalNumbers, ",");
+			while (st.hasMoreTokens()) {
+				l.add(st.nextToken().trim());
+			}
+		}
+		return l;
 	}
 
 }

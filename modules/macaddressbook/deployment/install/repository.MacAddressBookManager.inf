@@ -8,6 +8,7 @@ repository.MacAddressBookManager\:enabled\:value=true
 repository.MacAddressBookManager\:enabled\:type=boolean
 repository.MacAddressBookManager\:priority\:value=5
 repository.MacAddressBookManager\:priority\:type=integer
+repository.MacAddressBookManager\:addnumbers\:value=iPhone, Handy
 
 ui.jface.application.ActionRegistry\:action_editor_maccategoryimport\:value=de.janrufmonitor.ui.jface.application.editor.action.MacCategoryImportAction
 ui.jface.application.ActionRegistry\:action_editor_maccategoryimport\:access=system

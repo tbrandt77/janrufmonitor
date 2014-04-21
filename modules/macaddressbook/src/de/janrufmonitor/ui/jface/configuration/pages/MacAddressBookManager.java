@@ -1,5 +1,7 @@
 package de.janrufmonitor.ui.jface.configuration.pages;
 
+import org.eclipse.jface.preference.StringFieldEditor;
+
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.ui.jface.configuration.AbstractServiceFieldEditorConfigPage;
@@ -49,6 +51,14 @@ public class MacAddressBookManager extends AbstractServiceFieldEditorConfigPage 
 				this.getFieldEditorParent()
 			);
 			addField(bfe);	
+			
+			StringFieldEditor sfe = new StringFieldEditor(
+					getConfigNamespace()+SEPARATOR+"addnumbers",
+				this.m_i18n.getString(this.getNamespace(), "addnumbers", "label", this.m_language),
+				this.getFieldEditorParent()
+			);
+			sfe.setEmptyStringAllowed(false);
+			addField(sfe);
 		}
 	}
 }
