@@ -1,0 +1,10 @@
+ui.jface.application.editor.rendering.Etiquet\:name\:label\:de=Etikett
+ui.jface.application.editor.rendering.Etiquet\:label\:label\:de=Rufnummernetikett
+ui.jface.application.editor.rendering.Etiquet\:_$!<Home>!$_\:label\:de=Privat
+ui.jface.application.editor.rendering.Etiquet\:_$!<Work>!$_\:label\:de=Arbeit
+ui.jface.application.editor.rendering.Etiquet\:_$!<HomeFAX>!$_\:label\:de=Fax Privat
+ui.jface.application.editor.rendering.Etiquet\:_$!<WorkFAX>!$_\:label\:de=Fax Arbeit
+ui.jface.application.editor.rendering.Etiquet\:_$!<Mobile>!$_\:label\:de=Mobil
+ui.jface.application.editor.rendering.Etiquet\:_$!<Pager>!$_\:label\:de=Pager
+ui.jface.application.editor.rendering.Etiquet\:_$!<Main>!$_\:label\:de=Zentrale
+ui.jface.application.editor.rendering.Etiquet\:_$!<Other>!$_\:label\:de=Andere

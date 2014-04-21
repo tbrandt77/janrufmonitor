@@ -1,0 +1,2 @@
+ui.jface.application.RendererRegistry\:renderer_etiquet\:value=de.janrufmonitor.ui.jface.application.editor.rendering.Etiquet
+ui.jface.application.RendererRegistry\:renderer_etiquet\:access=system

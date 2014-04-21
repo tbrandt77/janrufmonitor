@@ -35,7 +35,7 @@ public class DefaultMacAddressBookMapping implements IMacAddressBookMapping {
 		if (macabNumberType.equalsIgnoreCase(DefaultMacAddressBookMapping.WORK_FAX)) return IJAMConst.ATTRIBUTE_VALUE_FAX_TYPE;
 		if (macabNumberType.equalsIgnoreCase(DefaultMacAddressBookMapping.MOBILE)) return IJAMConst.ATTRIBUTE_VALUE_MOBILE_TYPE;
 		if (macabNumberType.equalsIgnoreCase(DefaultMacAddressBookMapping.PAGER)) return IJAMConst.ATTRIBUTE_VALUE_MOBILE_TYPE;
-		return IJAMConst.ATTRIBUTE_VALUE_LANDLINE_TYPE;
+		return "";
 	}
 
 	public List getSupportedContactFields() {

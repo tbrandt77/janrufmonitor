@@ -2,4 +2,4 @@ ui.jface.configuration.pages.MacAddressBookManager\:title\:label\:de=Apple Mac A
 ui.jface.configuration.pages.MacAddressBookManager\:description\:label\:de=Das Apple Mac Adressbuch erm\u00F6glicht die Identifizierung von Rufnummern mit dem Mac OS X eigenen Adressbuch.
 ui.jface.configuration.pages.MacAddressBookManager\:enabled\:label\:de=Datenablage aktiviert
 ui.jface.configuration.pages.MacAddressBookManager\:keepextension\:label\:de=Erkennung von Nebenstellenanschl\u00FCssen
-ui.jface.configuration.pages.MacAddressBookManager\:addnumbers\:label\:de=pers\u00F6nliche Rufnummernbezeichner
+ui.jface.configuration.pages.MacAddressBookManager\:addnumbers\:label\:de=Eigene Rufnummer-Etikette\n(mit Komma getrennt)
