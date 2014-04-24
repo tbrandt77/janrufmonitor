@@ -205,7 +205,7 @@ public abstract class AbstractFilterCallManager extends AbstractConfigurableCall
 					c = cl.get(i);
 					boolean hasUUID = false;
 					for (int j=0;j<uuids.length;j++) {
-						if (c.getUUID().equalsIgnoreCase(uuids[i]))
+						if (c.getUUID().equalsIgnoreCase(uuids[j]))
 							hasUUID = true;
 					}
 					if (!hasUUID)
