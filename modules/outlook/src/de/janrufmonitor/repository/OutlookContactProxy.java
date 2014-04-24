@@ -62,9 +62,9 @@ public class OutlookContactProxy implements OutlookContactConst {
 	public synchronized ICaller findContact(IPhonenumber pn) throws OutlookContactProxyException {
 		ICaller c = Identifier.identifyDefault(getRuntime(), pn);
 
-		if (c==null && PhonenumberInfo.isInternalNumber(pn)) {
-			IPhonenumber p = getRuntime().getCallerFactory().createInternalPhonenumber(pn.getTelephoneNumber());
-			c = getRuntime().getCallerFactory().createCaller(p);
+		if (c==null && PhonenumberInfo.isInternalNumber(pn.getTelephoneNumber())) {
+			pn = getRuntime().getCallerFactory().createInternalPhonenumber(pn.getTelephoneNumber());
+			c = getRuntime().getCallerFactory().createCaller(pn);
 		}
 		
 		if (c!=null) {
