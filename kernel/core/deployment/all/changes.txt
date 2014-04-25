@@ -1,5 +1,20 @@
 ﻿===
 
+jAnrufmonitor 5.0.49 (01.05.2014)
+---------------------------------
+
+Bugfix:
+- Journal: Bugfix im Filtermechenismus
+- Journal: ArrayOutOfBoundException im Filter behoben
+
+Module:
+- FRITZ!Box-Überwachung: Abrufverzögerung für AVM FRITZ!Box Fon Telefonbuch
+- FRITZ!Box-Überwachung: Schreibfehler in Mac OSX Version gefixt
+- Apple Mac Adressbuch: Unterstützung für persönliche Rufnummern-Etikette 
+- Microsoft Outlook Kontaktverzeichnis: Fehler bei der Erkennung von internen Anlagenrufnummern behoben
+
+===
+
 jAnrufmonitor 5.0.48 (01.04.2014)
 ---------------------------------
 
@@ -16,7 +31,7 @@ Module:
 - FRITZ!Box-Überwachung: Synchronisationsverzögerung für AVM FRITZ!Box Fon Synchronizer
 - FRITZ!Box-Überwachung: Modul Status mit deutscher Übersetzung
 - Emailbenachrichtigung: SSLv3 Umgebungsvariablen in Java System Properties eingefügt
-- Emailbenachrichtigung: Unterstützung für SMTPS Protkoll
+- Emailbenachrichtigung: Unterstützung für SMTPS Protokoll
 - tellows Rufnummer Scoring: Lokaler Score-Bilder Cache
 - tellows Rufnummer Scoring: Große Icons für den Score im Journal
 
