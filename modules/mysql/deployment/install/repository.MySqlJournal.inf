@@ -8,6 +8,7 @@ repository.MySqlJournal\:dbport\:value=3306
 repository.MySqlJournal\:dbport\:type=integer
 repository.MySqlJournal\:dbuser\:value=root
 repository.MySqlJournal\:dbpassword\:value=
+repository.MySqlJournal\:dbpassword\:type=password
 repository.CallManagerFactory\:manager_mysqljournal\:value=de.janrufmonitor.repository.MySqlJournal
 repository.CallManagerFactory\:manager_mysqljournal\:access=system
 
@@ -21,6 +22,7 @@ repository.MySqlAddressbook\:dbport\:type=integer
 repository.MySqlAddressbook\:dbdb\:value=addressbook
 repository.MySqlAddressbook\:dbuser\:value=root
 repository.MySqlAddressbook\:dbpassword\:value=
+repository.MySqlAddressbook\:dbpassword\:type=password
 repository.CallerManagerFactory\:manager_mysqladdressbook\:value=de.janrufmonitor.repository.MySqlAddressbook
 repository.CallerManagerFactory\:manager_mysqladdressbook\:access=system
 
@@ -34,5 +36,6 @@ repository.MySqlLogJournal\:dbport\:value=3306
 repository.MySqlLogJournal\:dbport\:type=integer
 repository.MySqlLogJournal\:dbuser\:value=root
 repository.MySqlLogJournal\:dbpassword\:value=
+repository.MySqlLogJournal\:dbpassword\:type=password
 repository.CallManagerFactory\:manager_mysqllogjournal\:value=de.janrufmonitor.repository.MySqlLogJournal
 repository.CallManagerFactory\:manager_mysqllogjournal\:access=system
