@@ -179,7 +179,7 @@ public class InfHandler {
 						cpm.setProperty(namespace, parameter, metainfo, value, true);
 						this.m_logger.info("Addings value for "+namespace+"\\:"+parameter+"\\:"+metainfo);
 					} else {
-						this.m_logger.info("Value for "+namespace+"\\:"+parameter+"\\:"+metainfo+" alreaydy exists.");
+						this.m_logger.info("Value for "+namespace+"\\:"+parameter+"\\:"+metainfo+" already exists.");
 					}
 				// add always (force)
                 } else if (namespace.startsWith("%")) {

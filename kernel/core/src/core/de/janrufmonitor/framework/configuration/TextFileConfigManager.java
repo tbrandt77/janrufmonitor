@@ -4,11 +4,20 @@ import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.util.io.PathResolver;
 import de.janrufmonitor.framework.IJAMConst;
 
+import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import java.io.*;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.SecretKeySpec;
 
 public class TextFileConfigManager implements IConfigManager {
     
@@ -35,6 +44,8 @@ public class TextFileConfigManager implements IConfigManager {
     private String DEFAULT_ACCESS_IDENTIFIER = "access";
     private String DEFAULT_ACCESS_IDENTIFIER_VALUE = "user";
     private String SYSTEM_ACCESS_IDENTIFIER_VALUE = "system";
+    private String PASSWORD_TYPE_IDENTIFIER_VALUE = "password";
+    private String PASSWORD_ENCRYPTED_TYPE_IDENTIFIER_VALUE = "password_encrypted";
     private String DEFAULT_DEFAULT_IDENTIFIER = "default";
    
     private String DEFAULT_TRUNCATE = "0";
@@ -291,7 +302,21 @@ public class TextFileConfigManager implements IConfigManager {
     }
     
     public String getProperty(String namespace, String name, String metadata) {
-    	String value = this.m_userConfiguration.getProperty(namespace + NAMESPACE_SEPARATOR + name + NAMESPACE_SEPARATOR + metadata); 
+    	String value = this.m_userConfiguration.getProperty(namespace + NAMESPACE_SEPARATOR + name + NAMESPACE_SEPARATOR + metadata);
+    	
+    	// added 2014/04/29: decrypt password types
+    	if (value!=null && value.length()>0) {
+    		String type = this.m_userConfiguration.getProperty(namespace + NAMESPACE_SEPARATOR + name + NAMESPACE_SEPARATOR + DEFAULT_TYPE_IDENTIFIER);
+    		if (type != null && type.length()>0 && (type.equalsIgnoreCase(PASSWORD_ENCRYPTED_TYPE_IDENTIFIER_VALUE))) {
+    			try {
+					this.m_logger.info("Password decryption step 1 - encrypted data: "+value);
+					value = decrypt(value);
+					this.m_logger.info("Password decryption step 2 - decrypted data: "+value);
+				} catch (Exception e) {
+					this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+				} 
+    		}
+    	}
         return (value==null ? this.m_systemConfiguration.getProperty(namespace + NAMESPACE_SEPARATOR + name + NAMESPACE_SEPARATOR + metadata, DEFAULT_VALUE_IDENTIFIER_VALUE) : value);        
     }
     
@@ -445,14 +470,44 @@ public class TextFileConfigManager implements IConfigManager {
         	if (v==null) {
         		this.m_userConfiguration.setProperty(namespace + NAMESPACE_SEPARATOR + name + NAMESPACE_SEPARATOR + DEFAULT_TYPE_IDENTIFIER, DEFAULT_TYPE_IDENTIFIER_VALUE);
         	}
-        } 
+        }
         
         if (metadata.equalsIgnoreCase(this.DEFAULT_VALUE_IDENTIFIER)) {
         	String v = this.m_userConfiguration.getProperty(namespace + NAMESPACE_SEPARATOR + name + NAMESPACE_SEPARATOR + DEFAULT_DEFAULT_IDENTIFIER);
         	if (v==null){
         		this.m_userConfiguration.setProperty(namespace + NAMESPACE_SEPARATOR + name + NAMESPACE_SEPARATOR + DEFAULT_DEFAULT_IDENTIFIER, value);
         	}
+        	
+        	// added 2014/04/29: check for password type
+        	v =  this.m_userConfiguration.getProperty(namespace + NAMESPACE_SEPARATOR + name + NAMESPACE_SEPARATOR + DEFAULT_TYPE_IDENTIFIER);
+            if (v!=null && v.length()>0 && value!= null & value.length()>0 && (v.equalsIgnoreCase(PASSWORD_TYPE_IDENTIFIER_VALUE) || v.equalsIgnoreCase(PASSWORD_ENCRYPTED_TYPE_IDENTIFIER_VALUE))) {
+            	try {
+            		this.m_logger.info("Password encryption step 1 - raw data: "+value);
+            		value = encrypt(value);
+            		this.m_logger.info("Password encryption step 2 - encrypted data: "+value);
+    				this.m_userConfiguration.setProperty(namespace + NAMESPACE_SEPARATOR + name + NAMESPACE_SEPARATOR + DEFAULT_TYPE_IDENTIFIER, PASSWORD_ENCRYPTED_TYPE_IDENTIFIER_VALUE);
+    			} catch (Exception e) {
+    				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+    			} 
+            }
         }
+
+        // added 2014/04/29: check for password type
+        if (metadata.equalsIgnoreCase(this.DEFAULT_TYPE_IDENTIFIER) && value != null && (value.equalsIgnoreCase(PASSWORD_TYPE_IDENTIFIER_VALUE))) {
+			String v = this.m_userConfiguration.getProperty(namespace + NAMESPACE_SEPARATOR + name + NAMESPACE_SEPARATOR + DEFAULT_VALUE_IDENTIFIER);
+			if (v!=null && v.length()>0) {
+				try {
+					this.m_logger.info("Password encryption step 1 - raw data: "+v);
+					v = encrypt(v);
+					this.m_logger.info("Password encryption step 2 - encrypted data: "+v);
+					this.m_userConfiguration.setProperty(namespace + NAMESPACE_SEPARATOR + name + NAMESPACE_SEPARATOR + DEFAULT_VALUE_IDENTIFIER, v);
+					value = PASSWORD_ENCRYPTED_TYPE_IDENTIFIER_VALUE;
+				} catch (Exception e) {
+					this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+				} 
+			}
+        }
+        
         this.m_userConfiguration.setProperty(namespace + NAMESPACE_SEPARATOR + name + NAMESPACE_SEPARATOR + metadata, value);     
     }
     
@@ -554,6 +609,26 @@ public class TextFileConfigManager implements IConfigManager {
     
     public boolean isActive(){
     	return true;
+    }
+    
+    private String encrypt(String s) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+    	// Create key and cipher
+    	Key aesKey = new SecretKeySpec("jAnrufm0nit0r500".getBytes(), "AES");
+    	Cipher cipher = Cipher.getInstance("AES");
+    	
+    	// encrypt the text
+    	cipher.init(Cipher.ENCRYPT_MODE, aesKey);
+    	return new String(cipher.doFinal(s.getBytes()));
+    }
+    
+    private String decrypt(String s) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+    	 // Create key and cipher
+      Key aesKey = new SecretKeySpec("jAnrufm0nit0r500".getBytes(), "AES");
+      Cipher cipher = Cipher.getInstance("AES");
+
+      // decrypt the text
+      cipher.init(Cipher.DECRYPT_MODE, aesKey);
+      return new String(cipher.doFinal(s.getBytes()));
     }
   
     private void checkConfigConsistency() {
