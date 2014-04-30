@@ -6,6 +6,7 @@ repository.GoogleContactsCallerManager\:priority\:value=5
 repository.GoogleContactsCallerManager\:priority\:type=integer
 repository.GoogleContactsCallerManager\:user\:value=
 repository.GoogleContactsCallerManager\:password\:value=
+repository.GoogleContactsCallerManager\:password\:type=password
 repository.GoogleContactsCallerManager\:maxresults\:value=500
 repository.GoogleContactsCallerManager\:maxresults\:type=integer
 repository.GoogleContactsCallerManager\:keepextension\:value=true
