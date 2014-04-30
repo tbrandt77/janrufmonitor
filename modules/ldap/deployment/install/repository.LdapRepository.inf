@@ -13,3 +13,5 @@ repository.LdapRepository\:scope\:type=integer
 repository.LdapRepository\:server\:value=localhost
 repository.LdapRepository\:basedn\:value=ou=People,dc=company,dc=com
 repository.LdapRepository\:user\:value=cn=Administrator
+repository.LdapRepository\:password\:value=
+repository.LdapRepository\:password\:type=password
