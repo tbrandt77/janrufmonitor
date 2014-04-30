@@ -8,6 +8,7 @@ repository.ImExportFactory\:export_fritzbox\:access=system
 
 monitor.FritzBoxMonitor\:boxip\:value=fritz.box
 monitor.FritzBoxMonitor\:boxpassword\:value=
+monitor.FritzBoxMonitor\:boxpassword\:type=password
 monitor.FritzBoxMonitor\:boxport\:value=80
 monitor.FritzBoxMonitor\:boxmport\:value=1012
 monitor.FritzBoxMonitor\:boxdate\:value=dd.MM.yy HH:mm
