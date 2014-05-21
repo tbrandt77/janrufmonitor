@@ -76,7 +76,7 @@ public class TapiClickDialAction extends AbstractAction implements XTapiConst {
 					if (((IPhonenumber)o).isClired()) return;
 					
 					String dial = ((IPhonenumber)o).getTelephoneNumber();
-					if (PhonenumberInfo.isInternalNumber((IPhonenumber)o)) {
+					if (PhonenumberInfo.isInternalNumber(dial)) {
 						dial = ((IPhonenumber)o).getCallNumber();
 					} else {
 						if (!((IPhonenumber)o).getIntAreaCode().equalsIgnoreCase(this.getRuntime().getConfigManagerFactory().getConfigManager().getProperty(IJAMConst.GLOBAL_NAMESPACE, IJAMConst.GLOBAL_INTAREA))) {
