@@ -148,13 +148,15 @@ public class HttpCallManager extends AbstractFilterCallManager implements IRemot
 		String xml = this.getXmlContent(resp);
 		this.handleRequester(resp, r);
  
-		ICallList l = XMLSerializer.toCallList(xml);	
-		if (l!=null)
-			return l;
-	
-		this.m_logger.warning("Calllist from remote host was empty.");
+		if (xml!=null && xml.length()>0) { 
+			ICallList l = XMLSerializer.toCallList(xml);	
+			if (l!=null)
+				return l;
 		
-		PropagationFactory.getInstance().fire(new Message(Message.ERROR, getNamespace(), "empty", new Exception("CallList from server has either a wrong format, contains forbidden characters or was empty.")));
+			this.m_logger.warning("Calllist from remote host was empty.");
+			
+			PropagationFactory.getInstance().fire(new Message(Message.ERROR, getNamespace(), "empty", new Exception("CallList from server has either a wrong format, contains forbidden characters or was empty.")));
+		}
 		
 		return this.getRuntime().getCallFactory().createCallList();
 	}
