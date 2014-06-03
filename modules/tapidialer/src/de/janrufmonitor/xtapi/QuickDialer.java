@@ -13,7 +13,7 @@ import de.janrufmonitor.util.formatter.Formatter;
 
 public class QuickDialer implements IXTapiCallBack {
 	
-	public static String[] getAllExtensions() throws Exception {
+	public static synchronized String[] getAllExtensions() throws Exception {
 		List l = new ArrayList();
 		final MSTAPI m_tapi = new MSTAPI();
 		int n = m_tapi.init(new QuickDialer());
@@ -26,10 +26,21 @@ public class QuickDialer implements IXTapiCallBack {
 				l.add(nameOfLine.toString());
 			}
 		}
-		try {
-			m_tapi.shutdownTapi();
-		} catch (Exception e) {}
 		
+		Thread t = new Thread() {
+			
+			public void run() {
+				try {
+					Thread.sleep(30000);
+				} catch (InterruptedException e) {
+				}
+				try {
+					m_tapi.shutdownTapi();
+				} catch (Exception e) {}
+			}
+		};
+		t.setName("JAM-XTapiGetAllExtension-Thread-(non-deamon)");
+		t.start();
 		
 		String[] r = new String[l.size()];
 		for (int i=0;i<r.length;i++) {
@@ -81,7 +92,7 @@ public class QuickDialer implements IXTapiCallBack {
 				m_tapi.shutdownTapi();
 			}
 		};
-		t.setName("JAM-XtapiCallto-Thread-(non-deamon)");
+		t.setName("JAM-XTapiCallto-Thread-(non-deamon)");
 		t.start();
 	}
 
