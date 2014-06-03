@@ -263,6 +263,17 @@ public class MonitorListener extends AbstractMonitorListener implements IEventRe
         	
         	long delayTime = this.getDelayTime() * 1000;
         	if (delayTime>0) {
+        		ICommand c = PIMRuntime.getInstance().getCommandFactory().getCommand("Activator");
+    			if (c!=null) {
+    				try {
+    					Map m = new HashMap();
+    					m.put("status", "delay");
+    					c.setParameters(m); // this method executes the command as well !!
+    				} catch (Exception e) {
+    					m_logger.log(Level.SEVERE, e.toString(), e);
+    				}
+    			}
+        		
         		this.m_logger.info("Delaying startup of monitor for "+delayTime+" ms");
         		try {
 					Thread.sleep(delayTime);
@@ -338,6 +349,20 @@ public class MonitorListener extends AbstractMonitorListener implements IEventRe
             m_mac = new MonitorActiveCheck(this);
             m_mac.setName("JAM-MonitorActiveCheck-Thread-(non-deamon)");
             m_mac.start();
+            
+            // activate icon if it has to
+            if (delayTime>0) {
+        		ICommand c = PIMRuntime.getInstance().getCommandFactory().getCommand("Activator");
+    			if (c!=null) {
+    				try {
+    					Map mp = new HashMap();
+    					mp.put("status", "delay");
+    					c.setParameters(mp); // this method executes the command as well !!
+    				} catch (Exception e) {
+    					m_logger.log(Level.SEVERE, e.toString(), e);
+    				}
+    			}
+        	}
         }
 		this.m_logger.exiting(MonitorListener.class.getName(), "start");
     }

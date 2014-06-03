@@ -72,27 +72,31 @@ public class Activator extends AbstractCommand implements IEventSender {
 				if (status.equalsIgnoreCase("revert")) {
 					ml.start();		
 				}
+				if (status.equalsIgnoreCase("delay")) {
+					// do nothing so far	
+				}
 				IService tray = this.getRuntime().getServiceFactory().getService("TrayIcon");
 				if (tray != null && tray instanceof TrayIcon) {
 					((TrayIcon) tray).setIconStateMonitorListener();
 				}
 				
-				PropagationFactory.getInstance().fire(new Message(
-						(ml.isRunning() ? Message.INFO: Message.WARNING),
-						getRuntime().getI18nManagerFactory().getI18nManager().getString("monitor.MonitorListener", "title", "label", 
-						getRuntime().getConfigManagerFactory().getConfigManager().getProperty(
-								IJAMConst.GLOBAL_NAMESPACE,
-								IJAMConst.GLOBAL_LANGUAGE)),
-						new Exception((ml.isRunning() ? getRuntime().getI18nManagerFactory().getI18nManager().getString("monitor.MonitorListener", "on", "label", 
-								getRuntime().getConfigManagerFactory().getConfigManager().getProperty(
-										IJAMConst.GLOBAL_NAMESPACE,
-										IJAMConst.GLOBAL_LANGUAGE)): 
-
-								getRuntime().getI18nManagerFactory().getI18nManager().getString("monitor.MonitorListener", "off", "label", 
-										getRuntime().getConfigManagerFactory().getConfigManager().getProperty(
-												IJAMConst.GLOBAL_NAMESPACE,
-												IJAMConst.GLOBAL_LANGUAGE))))
-				), "Tray");
+				if (!status.equalsIgnoreCase("delay"))
+					PropagationFactory.getInstance().fire(new Message(
+							(ml.isRunning() ? Message.INFO: Message.WARNING),
+							getRuntime().getI18nManagerFactory().getI18nManager().getString("monitor.MonitorListener", "title", "label", 
+							getRuntime().getConfigManagerFactory().getConfigManager().getProperty(
+									IJAMConst.GLOBAL_NAMESPACE,
+									IJAMConst.GLOBAL_LANGUAGE)),
+							new Exception((ml.isRunning() ? getRuntime().getI18nManagerFactory().getI18nManager().getString("monitor.MonitorListener", "on", "label", 
+									getRuntime().getConfigManagerFactory().getConfigManager().getProperty(
+											IJAMConst.GLOBAL_NAMESPACE,
+											IJAMConst.GLOBAL_LANGUAGE)): 
+	
+									getRuntime().getI18nManagerFactory().getI18nManager().getString("monitor.MonitorListener", "off", "label", 
+											getRuntime().getConfigManagerFactory().getConfigManager().getProperty(
+													IJAMConst.GLOBAL_NAMESPACE,
+													IJAMConst.GLOBAL_LANGUAGE))))
+					), "Tray");
 			}
 		}
 	}
