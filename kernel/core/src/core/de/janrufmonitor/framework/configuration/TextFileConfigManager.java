@@ -6,21 +6,11 @@ import de.janrufmonitor.util.io.Base64Encoder;
 import de.janrufmonitor.util.io.PathResolver;
 import de.janrufmonitor.framework.IJAMConst;
 
-import java.security.InvalidKeyException;
-import java.security.Key;
-import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import java.io.*;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.ShortBufferException;
-import javax.crypto.spec.SecretKeySpec;
 
 public class TextFileConfigManager implements IConfigManager {
     
@@ -614,30 +604,14 @@ public class TextFileConfigManager implements IConfigManager {
     	return true;
     }
     
-    private String encrypt(String s) throws NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException, ShortBufferException, IllegalBlockSizeException, BadPaddingException {
+    private String encrypt(String s) throws Exception {
     	return Base64Encoder.encode(s);
-    	
-//    	// Create key and cipher
-//    	Key aesKey = new SecretKeySpec("jAnrufm0nit0r500".getBytes(), "AES");
-//    	Cipher cipher = Cipher.getInstance("AES");
-//    	
-//    	// encrypt the text
-//    	cipher.init(Cipher.ENCRYPT_MODE, aesKey);
-//    	return new String(cipher.doFinal(s.getBytes()));
     }
     
-    private String decrypt(String s) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, ShortBufferException, IllegalBlockSizeException, BadPaddingException {
+    private String decrypt(String s) throws Exception {
     	if (Base64Decoder.isBase64(s))
     		return Base64Decoder.decode(s);
     	return s;
-    	
-//      // Create key and cipher
-//      Key aesKey = new SecretKeySpec("jAnrufm0nit0r500".getBytes(), "AES");
-//      Cipher cipher = Cipher.getInstance("AES/ECB/NoPadding");
-//
-//      // decrypt the text
-//      cipher.init(Cipher.DECRYPT_MODE, aesKey);
-//      return new String(cipher.doFinal(s.getBytes()));
     }
   
     private void checkConfigConsistency() {
