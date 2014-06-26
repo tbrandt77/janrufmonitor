@@ -15,6 +15,7 @@ Module:
 - TAPI Überwachung: TAPI Shutdown thread-sicher implementiert
 - TAPI Überwachung: QuickDialer verursacht Programmabsturz
 - FRITZ!Box-Überwachung: Unterstützung für verschlüsselte Passwörter
+- FRITZ!Box-Überwachung: Erkennung von nicht-unterstützten Firmware Versionen
 - Google Kontakte: Unterstützung für verschlüsselte Passwörter
 - LDAP-basiertes Adressbuch: Unterstützung für verschlüsselte Passwörter
 - MySQL Adressbuch / Journal: Unterstützung für verschlüsselte Passwörter
