@@ -1,5 +1,26 @@
 ﻿===
 
+jAnrufmonitor 5.0.50 (01.07.2014)
+---------------------------------
+Neu:
+- Konfiguration: Passwörter werden verschlüsselt gespeichert
+- Konfiguration: Base64 Encodierte Felder in der Konfiguration
+
+Bugfix:
+- Vorwahldatenbank: aktualisierte spanische Städtevorwahlen
+- Icon: Falsches Icon bei verzögertem Überwachungsstart geändert
+
+Module:
+- Client Erweiterung: Fehler bei der XML Transformation von Anruflisten behoben
+- TAPI Überwachung: TAPI Shutdown thread-sicher implementiert
+- TAPI Überwachung: QuickDialer verursacht Programmabsturz
+- FRITZ!Box-Überwachung: Unterstützung für verschlüsselte Passwörter
+- Google Kontakte: Unterstützung für verschlüsselte Passwörter
+- LDAP-basiertes Adressbuch: Unterstützung für verschlüsselte Passwörter
+- MySQL Adressbuch / Journal: Unterstützung für verschlüsselte Passwörter
+
+===
+
 jAnrufmonitor 5.0.49 (01.05.2014)
 ---------------------------------
 
@@ -72,7 +93,7 @@ Bugfix:
 Module:
 - FRITZ!Box-Überwachung: Dekodierungsproblem von UTF-8 Einträgen behoben
 - FRITZ!Box-Überwachung: Dekodierungsproblem bei Fritz!OS 6.00 behoben
-- MySQL Adressbuch / Journal:Datentypanpassung VARCHAR -> TEXT
+- MySQL Adressbuch / Journal: Datentypanpassung VARCHAR -> TEXT
 
 ===
 
