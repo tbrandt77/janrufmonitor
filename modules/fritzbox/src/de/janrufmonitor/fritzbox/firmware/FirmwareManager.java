@@ -65,6 +65,14 @@ public class FirmwareManager {
 				this.createFirmwareInstance();
 			} catch (FritzBoxInitializationException e) {
 				this.m_fw = null;
+				if (e.isUnsupportedFirmware()) {
+					PropagationFactory.getInstance().fire(
+							new Message(Message.ERROR,
+							"fritzbox.firmware.hardware",
+							"unsupported",
+							e,
+							true));
+				}
 				throw new FritzBoxLoginException(e.getMessage());
 			} catch (FritzBoxNotFoundException e) {
 				this.m_fw = null;
@@ -335,7 +343,9 @@ public class FirmwareManager {
 				this.m_fw.init();
 				if (this.m_logger.isLoggable(Level.INFO))
 					this.m_logger.info("Detected Fritz!OS 05.59+ firmware: "+this.m_fw.toString());
-			} catch (FritzBoxInitializationException exp1) {
+			} catch (FritzBoxInitializationException e1) {
+				if (e1.isUnsupportedFirmware()) throw e1;
+				
 				if (this.m_logger.isLoggable(Level.INFO))
 					this.m_logger.info("No Fritz!OS 05.59+ Firmware detected.");
 	    		this.m_fw = new FritzOSFirmware(getFritzBoxAddress(), getFritzBoxPort(), getFritzBoxPassword(), getFritzBoxUser());

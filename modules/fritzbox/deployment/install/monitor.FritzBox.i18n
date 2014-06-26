@@ -14,3 +14,4 @@ fritzbox.firmware.login\:loginfailed\:label\:de=Die Anmeldung an der FRITZ!Box F
 
 fritzbox.firmware.hardware\:title\:label\:de=FRITZ!Box Fon Hardware Erkennung
 fritzbox.firmware.hardware\:notfound\:label\:de=Die FRITZ!Box Fon {%1} auf Port {%2} konnte nicht gefunden werden. Bitte pr\u00FCfen Sie die IP-Adresse der FRITZ!Box Fon unter Administration -> Einstellungen -> AVM FRITZ!Box Fon-Einstellungen.
+fritzbox.firmware.hardware\:unsupported\:label\:de=Die Firmware Version auf der FRITZ!Box Fon wird von jAnrufmonitor nicht erkannt. Entweder ist es eine Labor-Firmware oder eine nicht unterst\u00FCtzte Version. jAnrufmonitor kann nicht mit dieser FRITZ!Box Fon genutzt werden.

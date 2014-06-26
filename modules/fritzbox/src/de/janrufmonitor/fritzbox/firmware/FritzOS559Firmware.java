@@ -146,7 +146,7 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 		} catch (CreateSessionIDException e) {
 			throw new FritzBoxInitializationException("FritzBox initialization failed: "+e.getMessage());
 		} catch (FritzBoxDetectFirmwareException e) {
-			throw new FritzBoxInitializationException("FritzBox initialization failed: "+e.getMessage());
+			throw new FritzBoxInitializationException("FritzBox initialization failed: "+e.getMessage(), e);
 		}
 	}
 

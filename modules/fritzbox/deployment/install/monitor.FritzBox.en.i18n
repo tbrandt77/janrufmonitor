@@ -14,3 +14,4 @@ fritzbox.firmware.login\:title\:label\:en=FRITZ!Box Fon login
 
 fritzbox.firmware.hardware\:title\:label\:en=FRITZ!Box Fon hardware detection
 fritzbox.firmware.hardware\:notfound\:label\:en=A FRITZ!Box Fon could not be found. Please check the configuration.
+fritzbox.firmware.hardware\:unsuported\:label\:en=The firmware version on this FRITZ!Box is not supported.
