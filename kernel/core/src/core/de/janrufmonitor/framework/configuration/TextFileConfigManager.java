@@ -232,6 +232,7 @@ public class TextFileConfigManager implements IConfigManager {
             if (key.startsWith(namespace) && key.endsWith(this.DEFAULT_VALUE_IDENTIFIER)) {
                 String value = this.m_userConfiguration.getProperty(key);
                 key = key.substring(namespace.length() + 1, (key.length() - NAMESPACE_SEPARATOR.length() - DEFAULT_VALUE_IDENTIFIER.length()));
+                value = checkDecryption(namespace, key, value);
                 if (selected) {
                     String access = this.getProperty(namespace, key, DEFAULT_ACCESS_IDENTIFIER);
                     if (access.length()==0 || access.equalsIgnoreCase(DEFAULT_ACCESS_IDENTIFIER_VALUE))
@@ -274,6 +275,7 @@ public class TextFileConfigManager implements IConfigManager {
             key = (String) iter.next();
             if (key.startsWith(namespace + NAMESPACE_SEPARATOR + name) && key.endsWith(this.DEFAULT_VALUE_IDENTIFIER)) {
                 String value = this.m_userConfiguration.getProperty(key);
+                value = checkDecryption(namespace, name, value);
                 key = key.substring(namespace.length() + name.length() + 1, (key.length() - NAMESPACE_SEPARATOR.length() - DEFAULT_VALUE_IDENTIFIER.length()));
                 
                 if (selected) {
@@ -297,7 +299,12 @@ public class TextFileConfigManager implements IConfigManager {
     public String getProperty(String namespace, String name, String metadata) {
     	String value = this.m_userConfiguration.getProperty(namespace + NAMESPACE_SEPARATOR + name + NAMESPACE_SEPARATOR + metadata);
     	
-    	// added 2014/04/29: decrypt password types
+    	value = checkDecryption(namespace, name, value);
+    	
+        return (value==null ? this.m_systemConfiguration.getProperty(namespace + NAMESPACE_SEPARATOR + name + NAMESPACE_SEPARATOR + metadata, DEFAULT_VALUE_IDENTIFIER_VALUE) : value);        
+    }
+    
+    private String checkDecryption(String namespace, String name, String value) {
     	if (value!=null && value.length()>0) {
     		String type = this.m_userConfiguration.getProperty(namespace + NAMESPACE_SEPARATOR + name + NAMESPACE_SEPARATOR + DEFAULT_TYPE_IDENTIFIER);
     		if (type != null && type.length()>0 && (type.equalsIgnoreCase(PASSWORD_ENCRYPTED_TYPE_IDENTIFIER_VALUE))) {
@@ -310,7 +317,7 @@ public class TextFileConfigManager implements IConfigManager {
 				} 
     		}
     	}
-        return (value==null ? this.m_systemConfiguration.getProperty(namespace + NAMESPACE_SEPARATOR + name + NAMESPACE_SEPARATOR + metadata, DEFAULT_VALUE_IDENTIFIER_VALUE) : value);        
+    	return value;
     }
     
     private boolean existsProperty(String namespace, String name, String metadata) {
