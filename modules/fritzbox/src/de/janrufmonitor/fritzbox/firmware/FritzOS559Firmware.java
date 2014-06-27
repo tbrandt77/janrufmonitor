@@ -146,7 +146,9 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 		} catch (CreateSessionIDException e) {
 			throw new FritzBoxInitializationException("FritzBox initialization failed: "+e.getMessage());
 		} catch (FritzBoxDetectFirmwareException e) {
-			throw new FritzBoxInitializationException("FritzBox initialization failed: "+e.getMessage(), e);
+			if (e.isLaborFirmware())
+				throw new FritzBoxInitializationException("FritzBox initialization failed: "+e.getMessage(), e);
+			throw new FritzBoxInitializationException("FritzBox initialization failed: "+e.getMessage());
 		}
 	}
 
@@ -569,7 +571,7 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 			this.m_logger.log(Level.WARNING, e.getMessage(), e);
 		} catch (IOException e) {
 			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-			throw new FritzBoxDetectFirmwareException("Could not detect fritzbox firmware: "+e.getMessage());
+			throw new FritzBoxDetectFirmwareException("I/O exception during detection of FRITZ!Box firmware: "+e.getMessage(), false);
 		} 
 	
 		Pattern p = Pattern.compile(PATTERN_DETECT_LANGUAGE);
@@ -579,7 +581,7 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 			detected = true;
 		}
 		
-		if (!detected ) throw new FritzBoxDetectFirmwareException("Unable to detect FritzBox firmware.");
+		if (!detected ) throw new FritzBoxDetectFirmwareException("Pattern did not match FRITZ!Box firmware: "+PATTERN_DETECT_LANGUAGE, true);
 	
 		this.m_logger.info("Using firmware detection pattern: "+PATTERN_DETECT_FIRMWARE);
 		p = Pattern.compile(PATTERN_DETECT_FIRMWARE);
@@ -594,9 +596,12 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 			if (fwd.getMajor()==6) is600 = true;
 			if ((fwd.getMajor()==5 && fwd.getMinor()>=59) || fwd.getMajor()==6)
 				return fwd;
+			
+			throw new FritzBoxDetectFirmwareException(
+			"FRITZ!Box firmware version < 5.59", false); 
 		} 
 		throw new FritzBoxDetectFirmwareException(
-			"Could not detect FRITZ!Box firmware version."); 
+			"Could not detect FRITZ!Box firmware version.", true); 
 	}
 
 	private void createSessionID() throws CreateSessionIDException, FritzBoxNotFoundException, InvalidSessionIDException {
@@ -630,12 +635,12 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 		String challenge = find(Pattern.compile(PATTERN_DETECT_CHALLENGE, Pattern.UNICODE_CASE), data);
 		if (challenge!=null) {
 			if (this.m_logger.isLoggable(Level.INFO))
-				this.m_logger.info("Detected FritzBox challenge code: "+challenge);
+				this.m_logger.info("Detected FRITZ!Box challenge code: "+challenge);
 			
 			this.m_response = FritzBoxMD5Handler.getResponse(challenge, this.m_password);
 			
 			if (this.m_logger.isLoggable(Level.INFO))
-				this.m_logger.info("Calculated FritzBox response code: "+this.m_response);
+				this.m_logger.info("Calculated FRITZ!Box response code: "+this.m_response);
 			
 			data = new StringBuffer(); 
 			try {
@@ -647,7 +652,7 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 				this.m_logger.warning(e.getMessage());
 			} catch (IOException e) {
 				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-				throw new CreateSessionIDException("Could not get a valid Session ID from the FritzBox.");
+				throw new CreateSessionIDException("Could not get a valid Session ID from the FRITZ!Box.");
 			} 
 			
 			String sid = find(Pattern.compile(PATTERN_DETECT_SID, Pattern.UNICODE_CASE), data);
@@ -659,10 +664,10 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 				}
 				this.m_sid = sid;
 			} else {
-				throw new CreateSessionIDException("Could not get session ID from FritzBox.");		
+				throw new CreateSessionIDException("Could not get session ID from FRITZ!Box.");		
 			}
 		} else {
-			throw new CreateSessionIDException("Could not generate challenge code for FritzBox password.");
+			throw new CreateSessionIDException("Could not generate challenge code for FRITZ!Box password.");
 		}
 	}
 
@@ -684,7 +689,7 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 			s.append(this.m_language);
 			return s.toString();
 		} 
-		return "No Fritz!Box firmware detected.";
+		return "No FRITZ!Box firmware detected.";
 	}
 
 	@Override
