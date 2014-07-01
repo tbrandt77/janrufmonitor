@@ -223,17 +223,28 @@ public class CountryDirectory extends AbstractReadOnlyDatabaseCallerManager {
 			if (pn.getIntAreaCode().length() == 0
 					&& pn.getTelephoneNumber().startsWith(this.getPrefix())) {
 				String intAreaCode = pn.getTelephoneNumber();
+				if (this.m_logger.isLoggable(Level.INFO))
+					this.m_logger.info("Complete number to check int area code: "+intAreaCode);
+				
 				// remove trailing prefix
 				intAreaCode = intAreaCode.substring(intAreaCode.indexOf(this
 						.getPrefix())
 						+ this.getPrefix().length(), intAreaCode.length());
+				
+				if (this.m_logger.isLoggable(Level.INFO))
+					this.m_logger.info("Removed prefix ("+this.getPrefix()+"): "+intAreaCode);
+				
 				for (int i = 1; i < intAreaCode.length() - 1; i++) {
 					String check = intAreaCode.substring(0, i);
+					if (this.m_logger.isLoggable(Level.INFO))
+						this.m_logger.info("Check int area code: "+check);
 					if (this.isIntAreaCodeExisting(check)) {
+						if (this.m_logger.isLoggable(Level.INFO))
+							this.m_logger.info("Found int area code: "+check);
 						return check;
 					}
 				}
-				this.m_logger.warning("number contains invalid intareacode: "+pn.getTelephoneNumber());
+				this.m_logger.warning("number contains invalid int area code: "+pn.getTelephoneNumber());
 				if (pn.getTelephoneNumber().length()>3)
 					return pn.getTelephoneNumber().substring(1,3);
 			}
