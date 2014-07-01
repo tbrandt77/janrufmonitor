@@ -82,16 +82,19 @@ public abstract class AbstractWebCallerManager extends AbstractReadOnlyCallerMan
 		return this.getRuntime().getConfigManagerFactory().getConfigManager().getProperty(IJAMConst.GLOBAL_NAMESPACE, IJAMConst.GLOBAL_INTAREA);
 	}
 	
-	public ICaller getCaller(IPhonenumber number) throws CallerNotFoundException {
-    	if (number==null)
+	public ICaller getCaller(IPhonenumber p) throws CallerNotFoundException {
+		
+    	if (p==null)
 			throw new CallerNotFoundException("Phone number is not set (null). No caller found.");
 		
-		if (number.isClired())
+		if (p.isClired())
 			throw new CallerNotFoundException("Phone number is CLIR. Identification impossible.");
 		
-		if (this.isInternalNumber(number))
+		if (this.isInternalNumber(p))
 			throw new CallerNotFoundException("Phone number is internal number.");
 
+		IPhonenumber number = this.getRuntime().getCallerFactory().createPhonenumber(p.getTelephoneNumber());
+		
 		if (isUsedCache() && this.m_unidentified!=null && this.m_unidentified.containsKey(number.getTelephoneNumber())) {
 			Integer io = (Integer) this.m_unidentified.get(number.getTelephoneNumber());
 			if (io.intValue()==10) {
