@@ -1,11 +1,11 @@
 ui.jface.configuration.pages.Reject\:title\:label\:de=Abweisungsdienst
-ui.jface.configuration.pages.Reject\:description\:label\:de=Mit Hilfe des Abweisungsdienstes können unbeliebte Anrufe permanent unterdrückt werden. Dem Anrufer entstehen dadurch Kosten in Höhe einer Telefoneinheit.
+ui.jface.configuration.pages.Reject\:description\:label\:de=Mit Hilfe des Abweisungsdienstes k\u00F6nnen unbeliebte Anrufe permanent unterdr\u00FCckt werden. Dem Anrufer entstehen dadurch Kosten in H\u00F6he einer Telefoneinheit.
 ui.jface.configuration.pages.Reject\:enabled\:label\:de=Dienst aktiviert
-ui.jface.configuration.pages.Reject\:allclir\:label\:de=Alle CLIR-Anrufer abweisen (Diese Option ist kostenpflichtig für den Anrufer!)
+ui.jface.configuration.pages.Reject\:allclir\:label\:de=Alle CLIR-Anrufer abweisen (Diese Option ist kostenpflichtig f\u00FCr den Anrufer!)
 ui.jface.configuration.pages.Reject\:areacodes\:label\:de=Abzuweisende Rufnummer\noder Rufnummernbereiche 
-ui.jface.configuration.pages.Reject\:add\:label\:de=hinzufügen
+ui.jface.configuration.pages.Reject\:add\:label\:de=hinzuf\u00FCgen
 ui.jface.configuration.pages.Reject\:remove\:label\:de=entfernen
 ui.jface.configuration.pages.Reject\:edit\:label\:de=Abzuweisende Rufnummer
 
 ui.jface.application.editor.action.QuickRejectAction\:title\:label\:de=automatisches Abweisen ein-/ausschalten
-ui.jface.application.journal.action.RejectAction\:title\:label\:de=Rufnummer zukünftig abweisen
+ui.jface.application.journal.action.RejectAction\:title\:label\:de=Rufnummer zuk\u00FCnftig abweisen

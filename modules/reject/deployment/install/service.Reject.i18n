@@ -1,5 +1,5 @@
 service.Reject\:title\:label\:de=Abweisungsdienst
 service.Reject\:reject_config\:description\:de=Der Anrufer {%1} wurde aufgrund einer Rufnummerneinstellung im Abweisungsdienst abgewiesen.
 service.Reject\:reject_msn\:description\:de=Der Anrufer {%1} wurde aufgrund einer Regel im Regel-Assistenten abgewiesen.
-service.Reject\:reject_clir\:description\:de=Der Anrufer wurde abgewiesen, da er keine Rufnummer übermittelt (CLIR-Anruf).
-service.Reject\:reject_caller\:description\:de=Der Anrufer {%1} wurde abgewiesen, da der zugehörige Adressbuch-Kontakt als abzuweisen markiert ist.
+service.Reject\:reject_clir\:description\:de=Der Anrufer wurde abgewiesen, da er keine Rufnummer \u00FCbermittelt (CLIR-Anruf).
+service.Reject\:reject_caller\:description\:de=Der Anrufer {%1} wurde abgewiesen, da der zugeh\u00F6rige Adressbuch-Kontakt als abzuweisen markiert ist.
