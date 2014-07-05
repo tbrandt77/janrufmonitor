@@ -581,7 +581,7 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 			detected = true;
 		}
 		
-		if (!detected ) throw new FritzBoxDetectFirmwareException("Pattern did not match FRITZ!Box firmware: "+PATTERN_DETECT_LANGUAGE, true);
+		if (!detected ) throw new FritzBoxDetectFirmwareException("Pattern did not match FRITZ!Box firmware: "+PATTERN_DETECT_LANGUAGE, false);
 	
 		this.m_logger.info("Using firmware detection pattern: "+PATTERN_DETECT_FIRMWARE);
 		p = Pattern.compile(PATTERN_DETECT_FIRMWARE);
