@@ -1,5 +1,17 @@
 ﻿===
 
+jAnrufmonitor 5.0.51 (01.08.2014)
+---------------------------------
+Bugfix:
+- Konfiguration: Passwörter über Massenänderung werden nicht verschlüsselt gespeichert
+- Onlinetelefonauskünfte: Verlust der Länderkennung beim Identifizieren
+
+Module:
+- FRITZ!Box-Überwachung: Erkennung von alten Firmware Versionen (nicht FRITZ!OS)
+- Abweisungsdienst: Fehlerhafte Textübersetzungen behoben
+
+===
+
 jAnrufmonitor 5.0.50 (01.07.2014)
 ---------------------------------
 Neu:
