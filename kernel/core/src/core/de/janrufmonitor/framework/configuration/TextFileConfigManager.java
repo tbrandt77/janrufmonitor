@@ -550,6 +550,11 @@ public class TextFileConfigManager implements IConfigManager {
     		}
     	}
     	
+    	if (!overwrite && metadata.equalsIgnoreCase(DEFAULT_TYPE_IDENTIFIER) && value.equalsIgnoreCase(PASSWORD_TYPE_IDENTIFIER_VALUE)) {
+    		this.m_logger.info("Password property already extist: "+namespace + NAMESPACE_SEPARATOR + name + NAMESPACE_SEPARATOR + metadata+ " and will not be overwritten.");
+    		return;
+    	}
+    	
     	if (this.isUserAccess(namespace, name)) {
     		this.interalSetUserProperty(namespace, name, metadata, value);
     		return;
