@@ -163,6 +163,8 @@ public class InitMsnPage extends AbstractPage {
 
 		this.getRuntime().getConfigManagerFactory().getConfigManager()
 				.saveConfiguration();
+		
+		this.getRuntime().getConfigurableNotifier().notifyByNamespace(this.CONFIG_NAMESPACE);
 
 		try {
 			Thread.sleep(1000);
