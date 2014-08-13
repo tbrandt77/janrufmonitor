@@ -61,6 +61,7 @@ public interface IFritzBoxFirmware {
     
     public final static byte TYPE_FRITZBOX_6840_LTE = 105;
     public final static byte TYPE_FRITZBOX_7330 = 107;
+    public final static byte TYPE_FRITZBOX_6810 = 108;
     public final static byte TYPE_FRITZBOX_7360_SL = 109;
     public final static byte TYPE_FRITZBOX_6320_V2 = 110;
     public final static byte TYPE_FRITZBOX_7360 = 111;
@@ -69,6 +70,7 @@ public interface IFritzBoxFirmware {
     public final static byte TYPE_FRITZBOX_7330_SL = 116;
     public final static byte TYPE_FRITZBOX_7312 = 117;
     
+    public final static byte TYPE_FRITZBOX_7272 = 120;
     public final static byte TYPE_FRITZBOX_6842_LTE = 123;
     public final static byte TYPE_FRITZBOX_7360_EWE = 124;
     

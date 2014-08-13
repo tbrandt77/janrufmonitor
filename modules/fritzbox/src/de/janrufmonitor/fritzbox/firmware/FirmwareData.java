@@ -125,6 +125,10 @@ public class FirmwareData {
             return "FRITZ!Box 7490"; 
         case IFritzBoxFirmware.TYPE_FRITZBOX_7362_SL:
             return "FRITZ!Box 7362 SL"; 
+        case IFritzBoxFirmware.TYPE_FRITZBOX_7272:
+            return "FRITZ!Box 7272"; 
+        case IFritzBoxFirmware.TYPE_FRITZBOX_6810:
+            return "FRITZ!Box 6810"; 
 		default:			
 		}
 		return "unknown";
