@@ -1,5 +1,17 @@
 ﻿===
 
+jAnrufmonitor 5.0.52 (01.10.2014)
+---------------------------------
+Bugfix:
+- Konfiguration: Bug in Passwortverschlüsselung behoben
+- Installationsassistent: Speicherproblem bei MSNs behoben
+- Länder- und Vorwahlverzeichnis: Landzuordnung für 0049 korrigiert
+
+Module:
+- FRITZ!Box-Überwachung: Unterstützung für FRITZ!Box 7272 und 6810
+
+===
+
 jAnrufmonitor 5.0.51 (01.08.2014)
 ---------------------------------
 Bugfix:
