@@ -7,7 +7,7 @@ ui.jface.configuration.pages.GoogleContactsCallerManager\:keepextension\:label\:
 ui.jface.configuration.pages.GoogleContactsCallerManager\:mode\:label\:de=Zugriffsrechte: 
 ui.jface.configuration.pages.GoogleContactsCallerManager\:mode1\:label\:de=identifizieren, Adressbuch (nur lesen)
 ui.jface.configuration.pages.GoogleContactsCallerManager\:mode2\:label\:de=identifizieren, Adressbuch (lesen/schreiben)
-ui.jface.configuration.pages.GoogleContactsCallerManager\:check\:label\:de=Login prüfen
+ui.jface.configuration.pages.GoogleContactsCallerManager\:check\:label\:de=Login pr\u00FCfen
 ui.jface.configuration.pages.GoogleContactsCallerManager\:syncstart\:label\:de=Google Kontakte beim Programmstart automatisch synchronisieren
 
 ui.jface.configuration.pages.GoogleContactsCallerManager\:success\:label\:de=Login erforlgreich

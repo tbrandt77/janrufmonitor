@@ -376,7 +376,7 @@ public class VcfParser30 {
 	}
 	
 	private String getImageFromURL(String url) {
-		if (!url.toLowerCase().startsWith("http://")) return null;
+		if (!url.toLowerCase().startsWith("http")) return null;
 		try {
 			URL u  = new URL(url);
 			URLConnection c = u.openConnection();
