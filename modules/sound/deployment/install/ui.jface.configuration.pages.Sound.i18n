@@ -2,7 +2,7 @@ ui.jface.configuration.pages.Sound\:title\:label\:de=Akustische Benachrichtigung
 ui.jface.configuration.pages.Sound\:description\:label\:de=Mit Hilfe der Akustischen Benachrichtigung k\u00F6nnen bei Anrufeingang Sound-Dateien (WAV/MP3-Dateien) abgespielt werden.
 ui.jface.configuration.pages.Sound\:enabled\:label\:de=Dienst aktiviert
 ui.jface.configuration.pages.Sound\:msn\:label\:de=MSN
-ui.jface.configuration.pages.Sound\:add\:label\:de=hinzufügen
+ui.jface.configuration.pages.Sound\:add\:label\:de=hinzuf\u00FCgen
 ui.jface.configuration.pages.Sound\:remove\:label\:de=entfernen
 ui.jface.configuration.pages.Sound\:edit\:label\:de=ändern
 ui.jface.configuration.pages.Sound\:alias\:label\:de=Sound-Datei
@@ -12,8 +12,8 @@ ui.jface.application.sound.rendering.Sound\:name\:label\:de=Sound-Datei
 ui.jface.application.sound.rendering.Sound\:yes\:label\:de=Ja
 
 
-ui.jface.application.sound.action.DeleteAction\:title\:label\:de=Sound-Datei löschen
-ui.jface.application.sound.action.DeleteAction\:delete\:label\:de=Sound-Datei für markierten Anrufer löschen
-ui.jface.application.sound.action.DeleteAction\:delete\:description\:de=Möchten Sie wirklich die Sound-Datei des markierten Anrufers löschen?
+ui.jface.application.sound.action.DeleteAction\:title\:label\:de=Sound-Datei l\u00F6schen
+ui.jface.application.sound.action.DeleteAction\:delete\:label\:de=Sound-Datei f\u00FCr markierten Anrufer l\u00F6schen
+ui.jface.application.sound.action.DeleteAction\:delete\:description\:de=M\u00F6chten Sie wirklich die Sound-Datei des markierten Anrufers l\u00F6schen?
 
 ui.jface.application.sound.action.ChangeAction\:title\:label\:de=Sound-Datei zuweisen

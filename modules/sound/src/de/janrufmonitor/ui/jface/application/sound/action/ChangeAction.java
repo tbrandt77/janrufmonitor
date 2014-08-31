@@ -160,7 +160,7 @@ public class ChangeAction extends AbstractAction {
 		
 		protected String changePressed(Text t) {
 			FileDialog dlg = new FileDialog(t.getShell(), SWT.OPEN);
-			dlg.setFilterExtensions(new String[] {"*.wav"});
+			dlg.setFilterExtensions(new String[] {"*.wav", "*.mp3"});
 			dlg.setFileName(t.getText());
 			String f = dlg.open();
 			return f;
