@@ -1,0 +1,8 @@
+ui.jface.configuration.pages.NcidVoip\:title\:label\:en=NCID Server settings
+ui.jface.configuration.pages.NcidVoip\:description\:label\:en=The NCID (Network Caller ID) server allows to monitor telephony activities for ISDN and VoIP calls.
+ui.jface.configuration.pages.NcidVoip\:boxip\:label\:en=IP address of NCID Server: 
+ui.jface.configuration.pages.NcidVoip\:boxmport\:label\:en=Port: 
+ui.jface.configuration.pages.NcidVoip\:activemonitor\:label\:en=Monitor enabled (restart required)
+ui.jface.configuration.pages.NcidVoip\:retrymax\:label\:en=Connection retry #: 
+ui.jface.configuration.pages.NcidVoip\:festnetzalias\:label\:en=MSN for "Festnetz" calls:
+ui.jface.configuration.pages.NcidVoip\:fbinfo\:label\:en=NCID Server info:

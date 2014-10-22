@@ -1,0 +1,10 @@
+monitor.MonitorListener\:monitor_ncid\:value=de.janrufmonitor.ncid.NcidMonitor
+monitor.MonitorListener\:monitor_ncid\:access=system
+
+monitor.NcidMonitor\:boxip\:value=192.168.2.1
+monitor.NcidMonitor\:boxmport\:value=3333
+monitor.NcidMonitor\:activemonitor\:value=false
+monitor.NcidMonitor\:activemonitor\:type=boolean
+monitor.NcidMonitor\:retrymax\:value=3
+monitor.NcidMonitor\:autoreconnect\:value=true
+monitor.NcidMonitor\:autoreconnect\:type=boolean

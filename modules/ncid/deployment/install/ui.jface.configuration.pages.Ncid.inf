@@ -1,0 +1,2 @@
+ui.jface.configuration.ConfigurationCommand\:page_ncid\:value=de.janrufmonitor.ui.jface.configuration.pages.NcidVoip
+ui.jface.configuration.ConfigurationCommand\:page_ncid\:access=system

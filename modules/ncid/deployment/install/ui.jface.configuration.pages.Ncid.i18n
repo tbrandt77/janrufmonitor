@@ -1,0 +1,8 @@
+ui.jface.configuration.pages.NcidVoip\:title\:label\:de=NCID Server-Einstellungen
+ui.jface.configuration.pages.NcidVoip\:description\:label\:de=Ein NCID (Network Caller ID) Server bietet die M\u00F6glichkeit Anrufe zu erkennen. Hier k\u00F6nnen Sie die notwendigen Einstellungen Ihres NCID Servers vornehmen.
+ui.jface.configuration.pages.NcidVoip\:boxip\:label\:de=IP-Adresse des NCID Servers: 
+ui.jface.configuration.pages.NcidVoip\:boxmport\:label\:de=Port: 
+ui.jface.configuration.pages.NcidVoip\:activemonitor\:label\:de=\u00DCberwachung aktiviert (erfordert Programmneustart)
+ui.jface.configuration.pages.NcidVoip\:retrymax\:label\:de=Anzahl der autom. Verbindungsversuche: 
+ui.jface.configuration.pages.NcidVoip\:festnetzalias\:label\:de=MSN f\u00FCr "Festnetz" Anrufe:
+ui.jface.configuration.pages.NcidVoip\:fbinfo\:label\:de=NCID Server-Infos:

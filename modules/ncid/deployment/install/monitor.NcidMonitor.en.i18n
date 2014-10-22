@@ -1,0 +1,4 @@
+monitor.FritzBoxMonitor\:title\:label\:en=NCID Server monitor
+monitor.FritzBoxMonitor\:error\:label\:en=Login to NCID Server failed. Either the NCID Server is not reachable or the login data is wrong. No data could be fetched from the NCID Server. Please check the configuration.
+monitor.FritzBoxMonitor\:connectlost\:label\:en=Connection lost\n\nThe connection to NCID Server is lost. No identification will be done. A connection retry is started to login again. If the error persists please check the configuration and the network availability.
+monitor.FritzBoxMonitor\:connect\:label\:en=No Connection\n\nConnection could not be established to NCID Server due to network problems. Please check your network settings and make sure that the NCID Server is reachable and activated for monitoring.\n\nConnection retries left: {%1}
