@@ -2,6 +2,9 @@
 
 jAnrufmonitor 5.0.52 (01.10.2014)
 ---------------------------------
+Neu:
+- VCF-Import: Unterstützung für https-basierte Foto-URLs hinzugefügt
+
 Bugfix:
 - Konfiguration: Bug in Passwortverschlüsselung behoben
 - Installationsassistent: Speicherproblem bei MSNs behoben
@@ -9,6 +12,7 @@ Bugfix:
 
 Module:
 - FRITZ!Box-Überwachung: Unterstützung für FRITZ!Box 7272 und 6810
+- Akustische Benachrichtigung: Auswahl für MP3-Dateien hinzugefügt
 
 ===
 
