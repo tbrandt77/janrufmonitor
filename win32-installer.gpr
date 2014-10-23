@@ -1,7 +1,7 @@
 <giproject version="4.0">
 	<events>
 		<event eventid="EV_BEFORECMPUNINSTALL" name="remove_all">
-        	<action expression="Execute('%AppDataFolder%\unregister.bat', '', '%AppDataFolder%', 3, 1)"/>
+			<action expression="Execute('%AppDataFolder%\unregister.bat', '', '%AppDataFolder%', 3, 1)"/>
 			<action expression="ClearFolder('%AppDataFolder%', '*.*', 0, 0)"/>
 			<action expression="ClearFolder('%AppDataFolder%\config', '*.*', 1, 1)"/>
 			<action expression="ClearFolder('%AppDataFolder%\images', '*.*', 1, 1)"/>
@@ -25,6 +25,7 @@
 			</components>
 			<excepts>
 				<feature id="fritzbox"/>
+				<feature id="ncid"/>
 				<feature id="tapi"/>
 				<feature id="f11"/>
 			</excepts>
@@ -34,6 +35,18 @@
 				<component id="fritzbox" name="fritzbox"/>
 			</components>
 			<excepts>
+				<feature id="ncid"/>
+				<feature id="capi"/>
+				<feature id="tapi"/>
+				<feature id="f11"/>
+			</excepts>
+		</feature>
+		<feature description="Installiert die jAnrufmonitor für NCID Server." id="ncid" name="NCID Server-Überwachung">
+			<components>
+				<component id="ncid" name="ncid"/>
+			</components>
+			<excepts>
+				<feature id="fritzbox"/>
 				<feature id="capi"/>
 				<feature id="tapi"/>
 				<feature id="f11"/>
@@ -46,6 +59,7 @@
 			<excepts>
 				<feature id="fritzbox"/>
 				<feature id="capi"/>
+				<feature id="ncid"/>
 				<feature id="f11"/>
 			</excepts>
 		</feature>
@@ -113,6 +127,7 @@
 								<feature id="tapi"/>
 								<feature id="capi"/>
 								<feature id="fritzbox"/>
+								<feature id="ncid"/>
 							</excepts>
 						</feature>
 						<feature description="Dienst speichert Gesprächsnotizen zu eingehenden Anrufen." id="f13" name="Notizen-Dienst">
@@ -161,6 +176,12 @@
 			<features>
 				<feature id="application"/>
 				<feature id="fritzbox"/>
+			</features>
+		</installtype>
+		<installtype description="Installiert jAnrufmonitor für NCID Server. Der PC muss mit einem NCID Sever verbunden und eine Java Runtime Environment JavaSE 6 muss installiert sein. Alternativ: Führen Sie eine 'Benutzerdefinierte Installation' aus und installieren Sie die Java Runtime Environment JavaSE 6." id="{193C6F22-4ACC-434B-85E4-33FC9838B851}" name="jAnrufmonitor für NCID Server">
+			<features>
+				<feature id="application"/>
+				<feature id="ncid"/>
 			</features>
 		</installtype>
 		<installtype custom="1" description="Installiert eine benutzerdefinierte Version von jAnrufmonitor (inkl. Java Runtime Environment JavaSE 6 und ausgewählte Module)." id="{4431F8C1-6DED-4881-87C7-617BAF27ADD8}" name="Benutzerdefinierte Installation">
@@ -212,6 +233,14 @@
 					</files>
 					<shortcuts>
 						<shortcut cmdline="http://fritz.box/" name="%AppFolder%\FRITZ!Box Konfiguration"/>
+					</shortcuts>
+				</component>
+				<component dst="%AppDataFolder%\install" id="ncid" name="ncid">
+					<files>
+						<file dst="*.*" src="modules\mod-mon-ncid.*.*"/>
+					</files>
+					<shortcuts>
+						<shortcut cmdline="http://ncid.sourceforge.net/" name="%AppFolder%\Mehr Informationen zum NCID Server..."/>
 					</shortcuts>
 				</component>
 				<component dst="%AppDataFolder%\install" id="tapi" name="tapi">

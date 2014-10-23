@@ -100,6 +100,9 @@
         <subant target="bundle_headless">
             <fileset dir="modules/fritzbox" includes="build.xml"/>
         </subant>
+        <subant target="bundle_headless">
+            <fileset dir="modules/ncid" includes="build.xml"/>
+        </subant>
     </target>
     
     <target name="init_distribution" depends="build_kernel" description="initialize the distribution..." >
@@ -208,6 +211,15 @@
       </copy>
       <zip zipfile="${jam.pub.dir}/jam50-console-fritzbox.zip" basedir="${jam.dist.dir}/jam50-console-fritzbox"/>   
       
+      <echo message="Publishing console ncid version..." />      
+      <copy todir="${jam.dist.dir}/jam50-console-ncid">
+          <fileset dir="${jam.dist.dir}/jam50-console32"/>
+      </copy>
+      <copy todir="${jam.dist.dir}/jam50-console-ncid/install">
+          <fileset dir="${jam.dist.dir}/modules/headless/" includes="*ncid*.jam.zip"/>
+      </copy>
+      <zip zipfile="${jam.pub.dir}/jam50-console-ncid.zip" basedir="${jam.dist.dir}/jam50-console-ncid"/>   
+
     </target>
     
     <target name="bundle_win32" depends="init_bundle,win32_distribution" description="create win32 bundles" >
@@ -250,7 +262,16 @@
           <fileset dir="${jam.dist.dir}/modules" includes="*fritzbox*.jam.zip"/>
       </copy>
       <zip zipfile="${jam.pub.dir}/jam50-win32-fritzbox.zip" basedir="${jam.dist.dir}/jam50-win32-fritzbox"/>  
-      
+
+ 	  <echo message="Publishing win32 ncid version..." />
+      <copy todir="${jam.dist.dir}/jam50-win32-ncid">
+          <fileset dir="${jam.dist.dir}/jam50-win32"/>
+      </copy>
+      <copy todir="${jam.dist.dir}/jam50-win32-ncid/install">
+          <fileset dir="${jam.dist.dir}/modules" includes="*mon-ncid*.jam.zip"/>
+      </copy>
+      <zip zipfile="${jam.pub.dir}/jam50-win32-ncid.zip" basedir="${jam.dist.dir}/jam50-win32-ncid"/>  
+
       <echo message="Publishing win32 client version..." />
       <copy todir="${jam.dist.dir}/jam50-win32-client">
           <fileset dir="${jam.dist.dir}/jam50-win32"/>
@@ -271,6 +292,16 @@
       </copy>
       <zip zipfile="${jam.pub.dir}/jam50-win64-fritzbox.zip" basedir="${jam.dist.dir}/jam50-win64-fritzbox"/>  
       
+      <echo message="Publishing win64 ncid version..." />
+      <copy todir="${jam.dist.dir}/jam50-win64-ncid">
+          <fileset dir="${jam.dist.dir}/jam50-win64"/>
+      </copy>
+      <copy todir="${jam.dist.dir}/jam50-win64-ncid/install">
+          <fileset dir="${jam.dist.dir}/modules" includes="*ncid*.jam.zip"/>
+      </copy>
+      <zip zipfile="${jam.pub.dir}/jam50-win64-ncid.zip" basedir="${jam.dist.dir}/jam50-win64-ncid"/>  
+
+
       <echo message="Publishing win64 client version..." />
       <copy todir="${jam.dist.dir}/jam50-win64-client">
           <fileset dir="${jam.dist.dir}/jam50-win64"/>
@@ -307,6 +338,19 @@
 		  <include name="${jam.dist.dir}/jam50-linux32-fritzbox/jam.sh"/>
 	    </tarfileset>
 	  </tar> 
+	
+	      <echo message="Publishing linux32 ncid version..." />
+      <copy todir="${jam.dist.dir}/jam50-linux32-ncid">
+          <fileset dir="${jam.dist.dir}/jam50-linux32"/>
+      </copy>
+      <copy todir="${jam.dist.dir}/jam50-linux32-ncid/install">
+          <fileset dir="${jam.dist.dir}/modules" includes="*ncid*.jam.zip"/>
+      </copy>
+      <tar destfile="${jam.pub.dir}/jam50-linux-ncid.tar.gz" basedir="${jam.dist.dir}/jam50-linux32-ncid" compression="gzip">
+	    <tarfileset dir="${jam.dist.dir}/jam50-linux32-ncid" mode="755" username="root" group="root">
+		  <include name="${jam.dist.dir}/jam50-linux32-ncid/jam.sh"/>
+	    </tarfileset>
+	  </tar> 
       
       <echo message="Publishing linux32 client version..." />
       <copy todir="${jam.dist.dir}/jam50-linux32-client">
@@ -334,6 +378,19 @@
       <tar destfile="${jam.pub.dir}/jam50-linux64-fritzbox.tar.gz" basedir="${jam.dist.dir}/jam50-linux64-fritzbox" compression="gzip">
 	    <tarfileset dir="${jam.dist.dir}/jam50-linux64-fritzbox" mode="755" username="root" group="root">
 		  <include name="${jam.dist.dir}/jam50-linux64-fritzbox/jam.sh"/>
+	    </tarfileset>
+	  </tar>
+	
+	      <echo message="Publishing linux64 ncid version..." />
+      <copy todir="${jam.dist.dir}/jam50-linux64-ncid">
+          <fileset dir="${jam.dist.dir}/jam50-linux64"/>
+      </copy>
+      <copy todir="${jam.dist.dir}/jam50-linux64-ncid/install">
+          <fileset dir="${jam.dist.dir}/modules" includes="*ncid*.jam.zip"/>
+      </copy>
+      <tar destfile="${jam.pub.dir}/jam50-linux64-ncid.tar.gz" basedir="${jam.dist.dir}/jam50-linux64-ncid" compression="gzip">
+	    <tarfileset dir="${jam.dist.dir}/jam50-linux64-ncid" mode="755" username="root" group="root">
+		  <include name="${jam.dist.dir}/jam50-linux64-ncid/jam.sh"/>
 	    </tarfileset>
 	  </tar>
             
@@ -402,7 +459,7 @@
               icon="./kernel/core/deployment/macosx64/images/jam.icns"
               jvmversion="1.4+"
               version="${jam.version}"
-              infostring="jAnrufmonitor 5.0, copyright 2008 - 2012"
+              infostring="jAnrufmonitor 5.0, copyright 2008 - 2014"
               build="${jam.version}"
               bundleid="de.janrufmonitor.core" 
               startOnMainThread="true"
@@ -435,6 +492,87 @@
         <arg value="./mkdmg.sh /Users/brandtt/git/janrufmonitor/ ./${jam.dist.dir}/jarbundler/jam50-fritzbox/ ./${jam.pub.dir}/ jam50-macosx-fritzbox"/>
       </exec>
       
+
+      <echo message="Publishing macosx64 NCID version..." />
+      <copy todir="${jam.dist.dir}/jam50-macosx64-ncid">
+          <fileset dir="${jam.dist.dir}/jam50-macosx64"/>
+      </copy>
+      
+      <delete file="${jam.dist.dir}/jam50-macosx64-ncid/lib/osgi.jar" />
+      <delete file="${jam.dist.dir}/jam50-macosx64-ncid/lib/runtime.jar" />
+      <delete file="${jam.dist.dir}/jam50-macosx64-ncid/lib/jface.jar" />
+      <delete file="${jam.dist.dir}/jam50-macosx64-ncid/lib/i18n.jar" />
+      <delete file="${jam.dist.dir}/jam50-macosx64-ncid/lib/commands.jar" />
+      
+      <copy todir="${jam.dist.dir}/jam50-macosx64-ncid">
+          <fileset dir="${jam.dist.dir}/jam50-macosx64/lib"/>
+      </copy>
+      
+      <delete file="${jam.dist.dir}/jam50-macosx64-ncid/jamui.jar" />
+      
+      <copy todir="${jam.dist.dir}/jam50-macosx64-ncid/install">
+          <fileset dir="${jam.dist.dir}/modules" includes="*ncid*.jam.zip"/>
+          <fileset dir="${jam.dist.dir}/modules" includes="*macab*.jam.zip"/>
+      </copy>
+      <copy todir="${jam.dist.dir}/jam50-macosx64-ncid">
+        <fileset dir="${jam.build.dir}/lib/modules/mod-mon-ncid" includes="**/*.jar" />
+        <fileset dir="${jam.build.dir}/lib/modules/mod-rep-macab" includes="**/*.jar" />
+      </copy>
+      
+      <loadfile srcFile="./kernel/core/deployment/all/~meta-inf/descriptor.properties" property="jam.version">
+		<filterchain>
+			<linecontains>
+			  	<contains value="jam.mod.version="/>	
+			</linecontains>
+			<tokenfilter>
+		    	<replacestring from="jam.mod.version="/>
+			</tokenfilter>
+			<striplinebreaks/>					
+		</filterchain>
+	  </loadfile>
+      
+      <mkdir dir="${jam.dist.dir}/jarbundler/jam50-ncid/"/>
+      <jarbundler dir="${jam.dist.dir}/jarbundler/jam50-ncid/"
+              name="jAnrufmonitor - NCID Server Edition"
+              shortname="jAnrufmonitor"
+              signature="jam"
+              mainclass="de.janrufmonitor.application.RunUI64"
+              icon="./kernel/core/deployment/macosx64/images/jam.icns"
+              jvmversion="1.4+"
+              version="${jam.version}"
+              infostring="jAnrufmonitor 5.0, copyright 2008 - 2014"
+              build="${jam.version}"
+              bundleid="de.janrufmonitor.core" 
+              startOnMainThread="true"
+              developmentregion="German"
+              vmoptions="-Djam.ui.toplevel=false -Djam.ui.trayitem=true -Xms16m -Xmx256m"> 
+                
+        <!-- Adjust the look, feel and behavior -->
+    
+        <javaproperty name="apple.laf.useScreenMenuBar" value="true"/>
+        <javaproperty name="apple.awt.brushMetal" value="true"/>
+        <javaproperty name="apple.awt.showGrowBox" value="false"/>
+
+    
+        <!-- Just proving we can include a file.  Might use it in the About box --> 
+    
+        <javafileset dir="${jam.dist.dir}/jam50-macosx64-ncid" >
+            <exclude name="**/*.jar" />
+        </javafileset>
+    
+        <jarfileset dir="${jam.dist.dir}/jam50-macosx64-ncid" >
+            <include name="**/*.jar" />
+        </jarfileset>
+                           
+      </jarbundler>
+      
+       <delete file="${jam.pub.dir}/jam50-macosx-ncid.dmg" />
+      
+      <exec dir="." os="Mac OS X" executable="/bin/sh">
+        <arg value="-c"/>
+        <arg value="./mkdmg.sh /Users/brandtt/git/janrufmonitor/ ./${jam.dist.dir}/jarbundler/jam50-ncid/ ./${jam.pub.dir}/ jam50-macosx-ncid"/>
+      </exec>
+
       
       <echo message="Publishing macosx64 client version..." />
       <copy todir="${jam.dist.dir}/jam50-macosx64-client">
@@ -483,7 +621,7 @@
               icon="./kernel/core/deployment/macosx64/images/jam.icns"
               jvmversion="1.4+"
               version="${jam.version}"
-              infostring="jAnrufmonitor 5.0, copyright 2008 - 2012"
+              infostring="jAnrufmonitor 5.0, copyright 2008 - 2014"
               build="${jam.version}"
               bundleid="de.janrufmonitor.core" 
               startOnMainThread="true"
@@ -683,7 +821,7 @@
     <target name="publish_javadoc" description="publish javadoc">
         <javadoc overview="${jam.kernel.root}/framework/src/api/overview.html" packagenames="de.janrufmonitor.*" sourcepath="${jam.kernel.root}/framework/src/api" defaultexcludes="yes" destdir="${jam.doc.root}/javadoc" author="true" version="true" use="true" windowtitle="jAnrufmonitor Framework 5.0"> 
             <doctitle><![CDATA[<h1>jAnrufmonitor Framework 5.0</h1>]]></doctitle>
-            <bottom><![CDATA[<i>Copyright &#169; 2011 by Thilo Brandt. All Rights Reserved.</i>]]></bottom> 
+            <bottom><![CDATA[<i>Copyright &#169; 2008 - 2014 by Thilo Brandt. All Rights Reserved.</i>]]></bottom> 
             <group title="Framework" packages="de.janrufmonitor.framework:de.janrufmonitor.framework.*"/>
             <group title="Runtime Environment" packages="de.janrufmonitor.runtime:de.janrufmonitor.runtime.*"/> 
             <group title="Services" packages="de.janrufmonitor.service"/> 
