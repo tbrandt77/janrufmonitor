@@ -54,7 +54,7 @@ public class ChangeLog2RSS {
 				output.append("<channel>");output.append(IJAMConst.CRLF);
 				output.append("<title>jAnrufmonitor Changelog</title>");output.append(IJAMConst.CRLF);
 				output.append("<link>http://www.janrufmonitor.de/changes.rss</link>");output.append(IJAMConst.CRLF);
-				output.append("<image><url>http://www.janrufmonitor.de/mimes/images/logo.gif</url></image>");output.append(IJAMConst.CRLF);
+				output.append("<image><url>http://www.janrufmonitor.de/files/images/logo.gif</url></image>");output.append(IJAMConst.CRLF);
 				output.append("<description>Neuigkeiten und Anpassungen zur Software jAnrufmonitor.</description>");output.append(IJAMConst.CRLF);
 				output.append("<language>de-de</language>");output.append(IJAMConst.CRLF);
 				output.append("<ttl>60</ttl>");output.append(IJAMConst.CRLF);
@@ -112,7 +112,7 @@ public class ChangeLog2RSS {
 		String[] lines = c.split(IJAMConst.CRLF);
 		boolean isList = false;
 		StringBuffer s = new StringBuffer(c.length());
-		s.append(StringEscapeUtils.escapeXml("<img src=\"http://www.janrufmonitor.de/mimes/images/logo.gif\" alt=\"jAnrufmonitor Logo\"/>"));
+		s.append(StringEscapeUtils.escapeXml("<img src=\"http://www.janrufmonitor.de/files/images/logo.gif\" alt=\"jAnrufmonitor Logo\"/>"));
 		for (int i=0;i<lines.length;i++) {
 			if (lines[i].trim().length()==0) {
 				if (isList) {
