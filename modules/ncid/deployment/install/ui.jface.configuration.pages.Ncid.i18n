@@ -6,3 +6,4 @@ ui.jface.configuration.pages.NcidVoip\:activemonitor\:label\:de=\u00DCberwachung
 ui.jface.configuration.pages.NcidVoip\:retrymax\:label\:de=Anzahl der autom. Verbindungsversuche: 
 ui.jface.configuration.pages.NcidVoip\:festnetzalias\:label\:de=MSN f\u00FCr "Festnetz" Anrufe:
 ui.jface.configuration.pages.NcidVoip\:fbinfo\:label\:de=NCID Server-Infos:
+ui.jface.configuration.pages.NcidVoip\:outgoing\:label\:de=Ausgehende Anrufe \u00FCberwachen

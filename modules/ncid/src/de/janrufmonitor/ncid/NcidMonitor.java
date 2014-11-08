@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 
 import de.janrufmonitor.exception.Message;
 import de.janrufmonitor.exception.PropagationFactory;
+import de.janrufmonitor.framework.IAttribute;
 import de.janrufmonitor.framework.ICall;
 import de.janrufmonitor.framework.IMsn;
 import de.janrufmonitor.framework.IJAMConst;
@@ -50,6 +51,7 @@ public class NcidMonitor implements IMonitor, IConfigurable, NcidConst {
 				if (connect()) {
 					IEventBroker broker = this.getRuntime().getEventBroker();
 					broker.register(this, broker.createEvent(IEventConst.EVENT_TYPE_IDENTIFIED_CALL));
+					broker.register(this, broker.createEvent(IEventConst.EVENT_TYPE_IDENTIFIED_OUTGOING_CALL));
 					
 					this.isRunning = true;
 					m_connections = new HashMap(5);
@@ -86,6 +88,7 @@ public class NcidMonitor implements IMonitor, IConfigurable, NcidConst {
 					} finally {
 						if (broker!=null) {
 							broker.unregister(this, broker.createEvent(IEventConst.EVENT_TYPE_IDENTIFIED_CALL));
+							broker.unregister(this, broker.createEvent(IEventConst.EVENT_TYPE_IDENTIFIED_OUTGOING_CALL));
 						}
 					}
 				} else {
@@ -115,6 +118,31 @@ public class NcidMonitor implements IMonitor, IConfigurable, NcidConst {
 					}
 				} else {
 					m_logger.severe("Call from Ncid is invalid: "+c);
+				}
+			}
+			if (action.equalsIgnoreCase("OUT:") && this.m_configuration.getProperty(CFG_OUTGOING, "false").equalsIgnoreCase("true")) {
+				NcidCallRaw rawCall = new NcidCallRaw(c, this.m_configuration);
+				if (rawCall.isValid()) {
+					IMsn called = rawCall.toCall().getMSN();
+					if (called!=null && getRuntime().getMsnManager().isMsnMonitored(called)) {
+						this.m_connections.put(NcidCallRaw.getLine(c), rawCall.toCall());
+						this.getListener().doCallConnect(rawCall.toCall());
+					}
+				} else {
+					m_logger.severe("Call from Ncid is invalid: "+c);
+				}
+			}
+			if (action.equalsIgnoreCase("CIDINFO:")) {
+				ICall nc = (ICall) m_connections.get(NcidCallRaw.getLine(c));
+				if (nc!=null && NcidCallRaw.getCallState(c).equalsIgnoreCase(IJAMConst.ATTRIBUTE_VALUE_ACCEPTED)) {
+					IAttribute outgoing = nc.getAttribute(IJAMConst.ATTRIBUTE_NAME_CALLSTATUS);
+					if (outgoing==null || !outgoing.getValue().equalsIgnoreCase(IJAMConst.ATTRIBUTE_VALUE_OUTGOING))
+						nc.setAttribute(this.getRuntime().getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_REASON, Integer.toString(IEventConst.EVENT_TYPE_CALLACCEPTED)));
+					if (outgoing.getValue().equalsIgnoreCase(IJAMConst.ATTRIBUTE_VALUE_OUTGOING)) {
+						nc.setAttribute(this.getRuntime().getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_REASON, Integer.toString(IEventConst.EVENT_TYPE_IDENTIFIED_OUTGOING_CALL_ACCEPTED)));
+					}
+					
+					this.getListener().doCallDisconnect(nc);	
 				}
 			}
 		}
@@ -198,7 +226,7 @@ public class NcidMonitor implements IMonitor, IConfigurable, NcidConst {
 		}
 
 		public void received(IEvent event) {
-			if (event.getType() == IEventConst.EVENT_TYPE_IDENTIFIED_CALL) {
+			if (event.getType() == IEventConst.EVENT_TYPE_IDENTIFIED_CALL || event.getType() == IEventConst.EVENT_TYPE_IDENTIFIED_OUTGOING_CALL) {
 				ICall c = (ICall)event.getData();
 	        	if (c!=null) {
 	        		String key = NcidCallRaw.getKey(c);

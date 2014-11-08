@@ -23,7 +23,7 @@ public class NcidCallRaw extends AbstractNcidCall {
 	
 	public NcidCallRaw(String rawline, Properties config) {
 		// INCOMING
-		//CID:
+		//CID: / OUT:
 		//	*DATE*<date>*TIME*<time>*LINE*<label>*NMBR*<number>*MESG*<
 		//	msg>*NAME*<name>*	
 
@@ -43,6 +43,12 @@ public class NcidCallRaw extends AbstractNcidCall {
 		// Date = 2+4
 		// MSN = 6
 		// callnumber = 8
+		
+		// CIDINFO: *LINE*1*RING*0*TIME*16:20:05*
+		// RING*count* where number is 0, -1, -2 or the ring count
+		// 0 = ringing has stopped because call was answered
+		// -1 = ringing has stopped, call was not answered
+		// -2 = call hangup after being answered
 		
 		super(rawline, config);
 	}
@@ -89,7 +95,7 @@ public class NcidCallRaw extends AbstractNcidCall {
 				// create attributes
 				IAttributeMap am = r.getCallFactory().createAttributeMap();
 
-				am.add(r.getCallFactory().createAttribute("Ncid.key", this.m_line));
+				am.add(r.getCallFactory().createAttribute("Ncid.key", call[6]));
 				if (call.length>=12) {
 					am.add(r.getCallFactory().createAttribute("Ncid.msg", call[10]));
 					am.add(r.getCallFactory().createAttribute("Ncid.callername", call[12]));
@@ -164,7 +170,7 @@ public class NcidCallRaw extends AbstractNcidCall {
 				// create attributes
 				IAttributeMap am = r.getCallFactory().createAttributeMap();
 
-				am.add(r.getCallFactory().createAttribute("Ncid.key", this.m_line));
+				am.add(r.getCallFactory().createAttribute("Ncid.key", call[6]));
 				if (call.length>=12) {
 					am.add(r.getCallFactory().createAttribute("Ncid.msg", call[10]));
 					am.add(r.getCallFactory().createAttribute("Ncid.callername", call[12]));
@@ -202,10 +208,25 @@ public class NcidCallRaw extends AbstractNcidCall {
 
 	public static String getLine(String c) {
 		String[] call = c.split("\\*");
-		if (call.length>=6) {
+		if (call.length>=6 && (call[0].trim().equalsIgnoreCase("OUT:") || call[0].trim().equalsIgnoreCase("CID:"))) {
 			return call[6];
 		}
+		if (call.length>=4 && call[0].trim().equalsIgnoreCase("CIDINFO:")) {
+			return call[2];
+		}
 		return null;
+	}
+	
+	public static String getCallState(String c) {
+		String[] call = c.split("\\*");
+		if (call.length>=4 && call[0].trim().equalsIgnoreCase("CIDINFO:")) {
+			if (call[2]!=null && call[2].trim().length()>0) {
+				if (call[2].equalsIgnoreCase("0")) return IJAMConst.ATTRIBUTE_VALUE_ACCEPTED;
+				if (call[2].equalsIgnoreCase("-1")) return IJAMConst.ATTRIBUTE_VALUE_MISSED;
+				if (call[2].equalsIgnoreCase("-2")) return IJAMConst.ATTRIBUTE_VALUE_ACCEPTED;
+			}
+		}
+		return IJAMConst.ATTRIBUTE_VALUE_MISSED;
 	}
 	
 	public static String getKey(ICall call) {

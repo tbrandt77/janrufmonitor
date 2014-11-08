@@ -6,3 +6,4 @@ ui.jface.configuration.pages.NcidVoip\:activemonitor\:label\:en=Monitor enabled 
 ui.jface.configuration.pages.NcidVoip\:retrymax\:label\:en=Connection retry #: 
 ui.jface.configuration.pages.NcidVoip\:festnetzalias\:label\:en=MSN for "Festnetz" calls:
 ui.jface.configuration.pages.NcidVoip\:fbinfo\:label\:en=NCID Server info:
+ui.jface.configuration.pages.NcidVoip\:outgoing\:label\:en=Monitor outgoing calls

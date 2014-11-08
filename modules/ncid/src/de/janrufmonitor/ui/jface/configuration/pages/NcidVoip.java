@@ -55,6 +55,15 @@ public class NcidVoip extends AbstractFieldEditorConfigPage {
 		);
 		addField(bfe);	
 		
+		if (isExpertMode()) {
+			bfe = new BooleanFieldEditor(
+					getConfigNamespace()+SEPARATOR+"outgoing",
+				this.m_i18n.getString(this.getNamespace(), "outgoing", "label", this.m_language),
+				this.getFieldEditorParent()
+			);
+			addField(bfe);
+		}
+		
 		sfe = new StringFieldEditor(
 				getConfigNamespace()+SEPARATOR+"boxip",
 			this.m_i18n.getString(this.getNamespace(), "boxip", "label", this.m_language),
