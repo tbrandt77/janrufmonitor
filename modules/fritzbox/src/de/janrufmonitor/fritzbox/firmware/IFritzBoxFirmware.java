@@ -73,8 +73,10 @@ public interface IFritzBoxFirmware {
     public final static byte TYPE_FRITZBOX_7272 = 120;
     public final static byte TYPE_FRITZBOX_6842_LTE = 123;
     public final static byte TYPE_FRITZBOX_7360_EWE = 124;
+    public final static byte TYPE_FRITZBOX_3272 = 126;
     
     public final static int TYPE_FRITZBOX_7362_SL = 131;
+    public final static int TYPE_FRITZBOX_6490_CABLE = 141;
 
     public void login() throws FritzBoxLoginException;
     
