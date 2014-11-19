@@ -1,6 +1,6 @@
 ﻿===
 
-jAnrufmonitor 5.0.52 (15.11.2014)
+jAnrufmonitor 5.0.53 (15.11.2014)
 ---------------------------------
 Neu:
 - jAnrufmonitor für NCID-fähige Endgeräte, z.B. Vodafone Easybox 802/803/904
