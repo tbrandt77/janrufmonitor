@@ -571,8 +571,8 @@ public class GoogleContactsProxy implements IGoogleContactsConst {
 					entry.addPhoneNumber(pn);
 				}
 								
-				URL postUrl = new URL("http://www.google.com/m8/feeds/contacts/"
-						+ getLoginUser() + "/full");
+				URL postUrl = new URL("https://www.google.com/m8/feeds/contacts/"
+					+ getLoginUser() + "/full");
 				entry = (ContactEntry) cs.insert(postUrl, entry);
 				
 				if (m.contains(IJAMConst.ATTRIBUTE_NAME_IMAGEPATH)) {
