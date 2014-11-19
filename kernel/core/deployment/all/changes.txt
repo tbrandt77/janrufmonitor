@@ -1,5 +1,15 @@
 ﻿===
 
+jAnrufmonitor 5.0.54 (01.12.2014)
+---------------------------------
+Bugfix:
+- Länder- und Vorwahlverzeichnis: Falschdarstellung von Umlauten in Städtenamen korrigiert
+
+Module:
+- Google Kontakte: Anpassung bei der Erstellung von neuen Kontakten an die Contacts v3 API
+
+===
+
 jAnrufmonitor 5.0.53 (15.11.2014)
 ---------------------------------
 Neu:
