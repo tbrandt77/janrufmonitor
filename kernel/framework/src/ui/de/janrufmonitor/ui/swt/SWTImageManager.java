@@ -80,6 +80,18 @@ public class SWTImageManager {
 			if (img!=null)
 				this.m_ir.put(IJAMConst.IMAGE_KEY_ACCEPTED_GIF, img);
 			
+			img = this.getResizedImage(IJAMConst.IMAGE_KEY_CALL_IN_ACTIVE_PNG, 24, 24);
+			if (img!=null)
+				this.m_ir.put(IJAMConst.IMAGE_KEY_CALL_IN_ACTIVE_PNG, img);
+			
+			img = this.getResizedImage(IJAMConst.IMAGE_KEY_CALL_OUT_ACTIVE_PNG, 24, 24);
+			if (img!=null)
+				this.m_ir.put(IJAMConst.IMAGE_KEY_CALL_OUT_ACTIVE_PNG, img);
+			
+			img = this.getResizedImage(IJAMConst.IMAGE_KEY_CALL_END_5MIN_PNG, 24, 24);
+			if (img!=null)
+				this.m_ir.put(IJAMConst.IMAGE_KEY_CALL_END_5MIN_PNG, img);
+			
 			img = this.getResizedImage(IJAMConst.IMAGE_KEY_REJECTED_GIF, 16, 16);
 			if (img!=null)
 				this.m_ir.put(IJAMConst.IMAGE_KEY_REJECTED_GIF, img);

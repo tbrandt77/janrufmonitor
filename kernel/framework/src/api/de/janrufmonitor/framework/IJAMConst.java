@@ -429,9 +429,19 @@ public interface IJAMConst {
 	public final static String ATTRIBUTE_NAME_OUTGOING = "outgoing";
 	
 	/**
-	 * Attribute name for call statsu attribute.
+	 * Attribute name for call status attribute.
 	 */
 	public final static String ATTRIBUTE_NAME_CALLSTATUS = "status";
+	
+	/**
+	 * Attribute name for call active indicator attribute.
+	 */
+	public final static String ATTRIBUTE_NAME_CALL_ACTIVE_INDICATOR = "call.active-indicator";
+	
+	/**
+	 * Attribute name for call duration attribute.
+	 */
+	public final static String ATTRIBUTE_NAME_CALL_DURATION = "call.duration";
 	
 	/**
 	 * Attribute name for spoofed calls.
@@ -712,4 +722,19 @@ public interface IJAMConst {
 	 * Image key of SWTImageManager for jam.jpg
 	 */
 	public final static String IMAGE_KEY_PIM_JPG = "jam.jpg";
+	
+	/**
+	 * Image key of SWTImageManager for call-in-active.png
+	 */
+	public final static String IMAGE_KEY_CALL_IN_ACTIVE_PNG = "call-in-active.png";
+	
+	/**
+	 * Image key of SWTImageManager for call-out-active.png
+	 */
+	public final static String IMAGE_KEY_CALL_OUT_ACTIVE_PNG = "call-out-active.png";
+	
+	/**
+	 * Image key of SWTImageManager for call-end-5min.png
+	 */
+	public final static String IMAGE_KEY_CALL_END_5MIN_PNG = "call-end-5min.png";
 }

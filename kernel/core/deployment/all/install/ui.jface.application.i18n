@@ -380,6 +380,8 @@ ui.jface.application.journal.rendering.NotesAuthor\:name\:label\:de=Bearbeiter
 ui.jface.application.journal.rendering.NotesAuthor\:label\:label\:de=Kommentar-Bearbeiter
 ui.jface.application.journal.rendering.Date\:name\:label\:de=Datum
 ui.jface.application.journal.rendering.BChannel\:name\:label\:de=B-Kanal
+ui.jface.application.journal.rendering.CallActive\:name\:label\:de=Aktiv
+ui.jface.application.journal.rendering.CallActive\:label\:label\:de=Gespr\u00E4ch aktiv
 
 ui.jface.application.update.UpdatesCommand\:label\:label\:de=Updates...
 ui.jface.application.update.UpdatesCommand\:title\:label\:de=Updates...

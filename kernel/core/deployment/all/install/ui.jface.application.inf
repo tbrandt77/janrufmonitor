@@ -407,3 +407,7 @@ ui.jface.application.RendererRegistry\:renderer_cmlogo\:access=system
 -ui.jface.application.editor.Editor\:filter_pcode_\ \:default=(11,ln\= )
 -ui.jface.application.editor.Editor\:filter_pcode_\ \:type=text
 -ui.jface.application.editor.Editor\:filter_pcode_\ \:value=(11,pcode\= )
+
+# added 5.0.55
+ui.jface.application.RendererRegistry\:renderer_callactive\:value=de.janrufmonitor.ui.jface.application.journal.rendering.CallActive
+ui.jface.application.RendererRegistry\:renderer_callactive\:access=system
