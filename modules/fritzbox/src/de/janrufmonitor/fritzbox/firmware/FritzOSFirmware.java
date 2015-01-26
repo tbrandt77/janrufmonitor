@@ -588,7 +588,7 @@ public class FritzOSFirmware extends AbstractFritzBoxFirmware implements IFritzB
 					m.group(3),
 					m.group(4).trim()
 			);
-			if (fwd.getMajor()>=5 && fwd.getMinor()>=50)
+			if (fwd.getMajor()>=5 && fwd.getMinor()>=50 && fwd.getMinor()<59)
 				return fwd;
 		} 
 		throw new FritzBoxDetectFirmwareException(

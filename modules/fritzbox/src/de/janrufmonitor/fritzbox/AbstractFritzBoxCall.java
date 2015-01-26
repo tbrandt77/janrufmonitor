@@ -4,6 +4,10 @@ import java.util.Properties;
 
 import de.janrufmonitor.framework.ICall;
 import de.janrufmonitor.framework.IJAMConst;
+import de.janrufmonitor.fritzbox.firmware.FirmwareManager;
+import de.janrufmonitor.fritzbox.firmware.PasswordFritzBoxFirmware;
+import de.janrufmonitor.fritzbox.firmware.SessionIDFritzBoxFirmware;
+import de.janrufmonitor.fritzbox.firmware.UnitymediaFirmware;
 import de.janrufmonitor.runtime.PIMRuntime;
 
 public abstract class AbstractFritzBoxCall implements IFritzBoxCall, FritzBoxConst {
@@ -11,6 +15,7 @@ public abstract class AbstractFritzBoxCall implements IFritzBoxCall, FritzBoxCon
 	protected String m_line;
 	protected ICall m_call;
 	protected Properties m_config;
+	protected int m_outgoingState = -1;
 	
 	public AbstractFritzBoxCall(String line, Properties config) {
 		this.m_line = line;
@@ -55,6 +60,25 @@ public abstract class AbstractFritzBoxCall implements IFritzBoxCall, FritzBoxCon
 		String value = PIMRuntime.getInstance().getConfigManagerFactory().getConfigManager().getProperty(IJAMConst.GLOBAL_NAMESPACE, IJAMConst.GLOBAL_AREACODE);
 		if (value==null || value.length()==0) value = "0";
 		return value;
+	}
+	
+	protected int getOutgoingState() {
+		if (this.m_outgoingState == -1) {
+			this.m_outgoingState = 4;
+			if (FirmwareManager.getInstance().isInstance(UnitymediaFirmware.class)) this.m_outgoingState = 3;
+			if (FirmwareManager.getInstance().isInstance(SessionIDFritzBoxFirmware.class)) this.m_outgoingState = 3;
+			if (FirmwareManager.getInstance().isInstance(PasswordFritzBoxFirmware.class)) this.m_outgoingState = 3;
+		}
+		return this.m_outgoingState;
+	}
+	
+	protected boolean hasRejectedState(){
+		return (getOutgoingState() == 4);
+	}
+	
+	protected int getRejectedState() {
+		if (getOutgoingState() == 4) return 3;
+		return -1;
 	}
 	
 	public abstract ICall toCall();

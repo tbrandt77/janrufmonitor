@@ -74,18 +74,15 @@ public class FritzBoxCallCsv extends AbstractFritzBoxCall {
 					
 					// create caller data
 					int state = Integer.parseInt(call[0]);
-					// added with FritzOS 5.50 State 4 == State 3
-					if (state == 4) state = 3;
 					
 					String callByCall = null;
 					ICaller caller = null;
 
-					
 					IPhonenumber pn = PhonenumberAnalyzer.getInstance().createClirPhonenumberFromRaw(call[3].trim());
 					// if no CLIR call, check internal
-					if (pn==null && state !=3) pn = PhonenumberAnalyzer.getInstance().createInternalPhonenumberFromRaw(call[3].trim(), msn.getMSN());
+					if (pn==null && state != this.getOutgoingState()) pn = PhonenumberAnalyzer.getInstance().createInternalPhonenumberFromRaw(call[3].trim(), msn.getMSN());
 					// if no internal call, check regular
-					if (pn==null && state !=3)  {
+					if (pn==null && state != this.getOutgoingState())  {
 						// if incoming call does not start with 0, the Provider number seems to have the wrong format
 						// assume it is an international format 4971657110
 						if (!call[3].startsWith("0") && !PhonenumberInfo.containsSpecialChars(call[3])) {
@@ -93,9 +90,9 @@ public class FritzBoxCallCsv extends AbstractFritzBoxCall {
 						}
 						pn = PhonenumberAnalyzer.getInstance().createPhonenumberFromRaw(call[3].trim(), msn.getMSN());
 					}
-					if (pn==null && state == 3)  {
+					if (pn==null && state ==  this.getOutgoingState())  {
 						// added 2006/08/10: trim call-by-call information
-						// only can occure on state 3 (out-going calls)
+						// only can occure on state 3/4 (out-going calls)
 						callByCall = getCallByCall(call[3]);
 						if (callByCall!=null) {
 							call[3] = call[3].substring(callByCall.length());
@@ -139,10 +136,15 @@ public class FritzBoxCallCsv extends AbstractFritzBoxCall {
 					
 					// create attributes
 					IAttributeMap am = r.getCallFactory().createAttributeMap();
-					switch (state) {
-						case 1: am.add(r.getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CALLSTATUS, IJAMConst.ATTRIBUTE_VALUE_ACCEPTED)); break;
-						case 3: am.add(r.getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CALLSTATUS, IJAMConst.ATTRIBUTE_VALUE_OUTGOING)); break;
-						default: am.add(r.getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CALLSTATUS, IJAMConst.ATTRIBUTE_VALUE_MISSED)); break;
+					
+					if (state == 1) {
+						am.add(r.getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CALLSTATUS, IJAMConst.ATTRIBUTE_VALUE_ACCEPTED));
+					} else if (state == this.getOutgoingState()) {
+						am.add(r.getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CALLSTATUS, IJAMConst.ATTRIBUTE_VALUE_OUTGOING));
+					} else if (this.hasRejectedState() && state == this.getRejectedState()) {
+						am.add(r.getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CALLSTATUS, IJAMConst.ATTRIBUTE_VALUE_REJECTED));
+					} else {
+						am.add(r.getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CALLSTATUS, IJAMConst.ATTRIBUTE_VALUE_MISSED)); 
 					}
 					am.add(r.getCallFactory().createAttribute("fritzbox.line", call[4]));
 					am.add(r.getCallFactory().createAttribute("fritzbox.duration", Integer.toString(getTime(call[6]))));
