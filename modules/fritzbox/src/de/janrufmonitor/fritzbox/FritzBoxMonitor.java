@@ -133,7 +133,7 @@ public class FritzBoxMonitor implements IMonitor, IConfigurable, FritzBoxConst {
 					if (outgoing.getValue().equalsIgnoreCase(IJAMConst.ATTRIBUTE_VALUE_OUTGOING)) {
 						nc.setAttribute(this.getRuntime().getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_REASON, Integer.toString(IEventConst.EVENT_TYPE_IDENTIFIED_OUTGOING_CALL_ACCEPTED)));
 					}
-					
+					nc.setAttribute(this.getRuntime().getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CALL_ACTIVE_INDICATOR, IJAMConst.ATTRIBUTE_VALUE_YES));
 					this.getListener().doCallDisconnect(nc);	
 				}
 			}
@@ -142,6 +142,8 @@ public class FritzBoxMonitor implements IMonitor, IConfigurable, FritzBoxConst {
 				ICall nc = (ICall) m_connections.remove(FritzBoxCallRaw.getLine(c));
 				if (nc!=null) {
 					nc.setAttribute(this.getRuntime().getCallFactory().createAttribute("fritzbox.duration", FritzBoxCallRaw.getDuration(c)));
+					nc.setAttribute(this.getRuntime().getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CALL_DURATION, FritzBoxCallRaw.getDuration(c)));
+					nc.setAttribute(this.getRuntime().getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CALL_ACTIVE_INDICATOR, IJAMConst.ATTRIBUTE_VALUE_NO));
 					this.getListener().doCallDisconnect(nc);	
 				}
 			}
