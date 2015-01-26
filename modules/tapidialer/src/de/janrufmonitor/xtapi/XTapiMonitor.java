@@ -276,11 +276,12 @@ public class XTapiMonitor implements IMonitor, IConfigurable, XTapiConst {
 					nc.setAttribute(this.getRuntime().getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_REASON, Integer.toString(IEventConst.EVENT_TYPE_IDENTIFIED_OUTGOING_CALL_ACCEPTED)));
 				}	
 				nc.setAttribute(this.getRuntime().getCallFactory().createAttribute("tapi.acceptedtime", Long.toString(System.currentTimeMillis())));
+				nc.setAttribute(this.getRuntime().getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CALL_ACTIVE_INDICATOR, IJAMConst.ATTRIBUTE_VALUE_YES));
 				this.getListener().doCallDisconnect(nc);	
 			}
 		}
 
-		private void signalDoOutgoingCallDisconnect(int dwDevice, int dwInstance) {
+		private void signalDoOutgoingCallConnect(int dwDevice, int dwInstance) {
 			String[] callerInfo = this.getCallerInfoFromTapi(dwDevice);
 			if (callerInfo == null) {
 				return;
@@ -355,7 +356,9 @@ public class XTapiMonitor implements IMonitor, IConfigurable, XTapiConst {
 					long st = Long.parseLong(at.getValue());
 					long duration = (System.currentTimeMillis() - st) / 1000;
 					nc.setAttribute(this.getRuntime().getCallFactory().createAttribute("tapi.duration", Long.toString(duration)));	
+					nc.setAttribute(this.getRuntime().getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CALL_DURATION, Long.toString(duration)));	
 				}			
+				nc.setAttribute(this.getRuntime().getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CALL_ACTIVE_INDICATOR, IJAMConst.ATTRIBUTE_VALUE_NO));
 				this.getListener().doCallDisconnect(nc);	
 			}
 		}
@@ -463,7 +466,7 @@ public class XTapiMonitor implements IMonitor, IConfigurable, XTapiConst {
 						if (this.m_configuration.getProperty(CFG_OUTGOING, "false").equalsIgnoreCase("true")) {
 							if (!this.m_proceededCalls.contains(Integer.toString(dwDevice))) {
 								this.m_proceededCalls.add(Integer.toString(dwDevice));
-								this.signalDoOutgoingCallDisconnect(dwDevice, dwInstance);
+								this.signalDoOutgoingCallConnect(dwDevice, dwInstance);
 							} else {
 								m_logger.info("TAPI param1: LINECALLSTATE_RINGBACK: Already notified as outgoing call.");
 							}
@@ -475,7 +478,7 @@ public class XTapiMonitor implements IMonitor, IConfigurable, XTapiConst {
 						if (this.m_configuration.getProperty(CFG_OUTGOING, "false").equalsIgnoreCase("true")) {
 							if (!this.m_proceededCalls.contains(Integer.toString(dwDevice))) {
 								this.m_proceededCalls.add(Integer.toString(dwDevice));
-								this.signalDoOutgoingCallDisconnect(dwDevice, dwInstance);
+								this.signalDoOutgoingCallConnect(dwDevice, dwInstance);
 							} else {
 								m_logger.info("TAPI param1: LINECALLSTATE_PROCEEDING: Already notified as outgoing call.");
 							}
