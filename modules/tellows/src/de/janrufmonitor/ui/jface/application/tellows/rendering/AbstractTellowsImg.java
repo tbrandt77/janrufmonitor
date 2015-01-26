@@ -10,6 +10,8 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.Image;
@@ -58,7 +60,7 @@ public abstract class AbstractTellowsImg extends AbstractTableCellRenderer imple
 							}
 						} catch (MalformedURLException e) {
 						} catch (IOException e) {
-							e.printStackTrace();
+							Logger.getLogger(IJAMConst.DEFAULT_LOGGER).log(Level.WARNING, e.getLocalizedMessage(), e);
 						}
 					}
 				}
