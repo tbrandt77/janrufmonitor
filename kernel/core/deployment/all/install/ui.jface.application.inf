@@ -411,3 +411,5 @@ ui.jface.application.RendererRegistry\:renderer_cmlogo\:access=system
 # added 5.0.55
 ui.jface.application.RendererRegistry\:renderer_callactive\:value=de.janrufmonitor.ui.jface.application.journal.rendering.CallActive
 ui.jface.application.RendererRegistry\:renderer_callactive\:access=system
+ui.jface.application.RendererRegistry\:renderer_callduration\:value=de.janrufmonitor.ui.jface.application.journal.rendering.CallDuration
+ui.jface.application.RendererRegistry\:renderer_callduration\:access=system

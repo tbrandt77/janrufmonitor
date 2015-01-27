@@ -220,7 +220,7 @@ public class InfoDialog extends TitleAreaDialog {
 			new MouseAdapter() {
 				public void mouseDown(MouseEvent e) {
 					if (e.button==1)
-					Program.launch("http://www.janrufmonitor.de/support-request.php?k="+rkey);
+					Program.launch("http://www.janrufmonitor.de/support/");
 				}
 			}
 		);		
@@ -256,7 +256,7 @@ public class InfoDialog extends TitleAreaDialog {
 		
 		l = new Label(composite, SWT.RIGHT);
 		l.setText(
-			"(c) 2008 - 2014 by Thilo Brandt      "
+			"(c) 2008 - 2015 by Thilo Brandt      "
 		);
 		l.setLayoutData(gd);
 		

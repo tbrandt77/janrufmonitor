@@ -360,6 +360,8 @@ ui.jface.application.journal.rendering.Date\:name\:label\:en=Date
 ui.jface.application.journal.rendering.BChannel\:name\:label\:en=B channel
 ui.jface.application.journal.rendering.CallActive\:name\:label\:en=active
 ui.jface.application.journal.rendering.CallActive\:label\:label\:en=Call active
+ui.jface.application.journal.rendering.CallDuration\:name\:label\:en=Duration
+ui.jface.application.journal.rendering.CallDuration\:label\:label\:en=Call duration
 
 ui.jface.application.update.UpdatesCommand\:label\:label\:en=Updates...
 ui.jface.application.update.UpdatesCommand\:title\:label\:en=Updates...
