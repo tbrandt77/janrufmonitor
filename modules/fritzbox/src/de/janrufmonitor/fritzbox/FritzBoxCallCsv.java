@@ -148,6 +148,8 @@ public class FritzBoxCallCsv extends AbstractFritzBoxCall {
 					}
 					am.add(r.getCallFactory().createAttribute("fritzbox.line", call[4]));
 					am.add(r.getCallFactory().createAttribute("fritzbox.duration", Integer.toString(getTime(call[6]))));
+					am.add(r.getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CALL_DURATION, Integer.toString(getTime(call[6]))));
+					am.add(r.getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CALL_ACTIVE_INDICATOR, IJAMConst.ATTRIBUTE_VALUE_NO));
 					if (callByCall!=null)
 						am.add(r.getCallFactory().createAttribute("fritzbox.callbycall", callByCall));
 					
