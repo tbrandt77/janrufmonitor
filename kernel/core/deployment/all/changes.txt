@@ -1,5 +1,26 @@
 ﻿===
 
+jAnrufmonitor 5.0.55 (01.02.2015)
+---------------------------------
+Neu:
+- Journal: Gesprächsdauer als Spalte anzeigbar
+- Journal: Aktive Gespräche als Spalte anzeigbar
+
+Bugfix:
+- Konfiguration: Unicode Bug behoben
+
+Module:
+- FRITZ!Box-Überwachung: Unterstützung für aktive Gesprächsereignisse
+- FRITZ!Box-Überwachung: Gesprächsdauer für Client-Übermittlung angepasst
+- FRITZ!Box-Überwachung: Symbol für FRITZ!Box Telefonbuch angepasst
+- FRITZ!Box-Überwachung: Gepserrte Anrufe in Echtzeit erkennen (ab FRITZ!OS 6.23)
+- TAPI Überwachung: Unterstützung für aktive Gesprächsereignisse
+- TAPI Überwachung: Gesprächsdauer für Client-Übermittlung angepasst
+- Emailbenachrichtigung: Unterstützung für SMTP Passwortverschlüsselung
+- tellows Rufnummer Scoring: Tellows-Score Bilder werden nicht angezeigt
+
+===
+
 jAnrufmonitor 5.0.54 (01.12.2014)
 ---------------------------------
 Bugfix:
