@@ -5,7 +5,9 @@ import java.lang.reflect.Method;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Label;
 
 import de.janrufmonitor.framework.monitor.IMonitor;
@@ -17,13 +19,16 @@ import de.janrufmonitor.service.IService;
 import de.janrufmonitor.ui.jface.configuration.AbstractFieldEditorConfigPage;
 import de.janrufmonitor.ui.jface.configuration.IConfigPage;
 import de.janrufmonitor.ui.jface.configuration.controls.BooleanFieldEditor;
+import de.janrufmonitor.ui.swt.DisplayManager;
 
 public class FritzBoxVoip extends AbstractFieldEditorConfigPage {
 
 	private String NAMESPACE = "ui.jface.configuration.pages.FritzBoxVoip";
 
     private IRuntime m_runtime;
-    
+    private StringFieldEditor user;
+    private ComboFieldEditor mode;
+
 	public String getConfigNamespace() {
 		return FritzBoxMonitor.NAMESPACE;
 	}
@@ -78,12 +83,30 @@ public class FritzBoxVoip extends AbstractFieldEditorConfigPage {
 			addField(sfe);
 		}
 		
-		sfe = new StringFieldEditor(
+		mode = new ComboFieldEditor(
+				getConfigNamespace()+SEPARATOR+"boxloginmode",
+				this.m_i18n.getString(this.getNamespace(), "boxloginmode", "label", this.m_language),
+				new String[][] { 
+					{this.m_i18n.getString(this.getNamespace(), "userpassword", "label", this.m_language), "0"}, 
+					{this.m_i18n.getString(this.getNamespace(), "password_only", "label", this.m_language), "1"}
+				},
+			this.getFieldEditorParent()
+		);
+		addField(mode);	
+		
+		this.user = new StringFieldEditor(
 				getConfigNamespace()+SEPARATOR+"boxuser",
 			this.m_i18n.getString(this.getNamespace(), "boxuser", "label", this.m_language),
 			this.getFieldEditorParent()
 		);
-		addField(sfe);
+		addField(this.user);
+
+		String state = this.getPreferenceStore().getString(getConfigNamespace()+SEPARATOR+"boxloginmode");
+		if (state.equalsIgnoreCase("1")) {
+			this.user.setEnabled(false, this.getFieldEditorParent());
+			this.user.getTextControl(getFieldEditorParent()).setBackground(new Color(DisplayManager.getDefaultDisplay(), 190, 190, 190));
+			this.user.setStringValue("");
+		}
 		
 		sfe = new StringFieldEditor(
 				getConfigNamespace()+SEPARATOR+"boxpassword",
@@ -218,4 +241,25 @@ public class FritzBoxVoip extends AbstractFieldEditorConfigPage {
 		}
 		
 	}
+	
+
+	@Override
+	public void propertyChange(PropertyChangeEvent event) {
+		super.propertyChange(event);
+		if (event!= null && event.getSource() instanceof ComboFieldEditor) {
+			ComboFieldEditor cfe = (ComboFieldEditor) event.getSource();
+			if (cfe != null && cfe.getPreferenceName().equalsIgnoreCase(getConfigNamespace()+SEPARATOR+"boxloginmode")) {
+				String value = (String) event.getNewValue();
+				if (value.equalsIgnoreCase("0")) {
+					this.user.setEnabled(true, this.getFieldEditorParent());
+					this.user.getTextControl(getFieldEditorParent()).setBackground(new Color(DisplayManager.getDefaultDisplay(), 255, 255, 255));
+				} else {
+					this.user.setEnabled(false, this.getFieldEditorParent());
+					this.user.getTextControl(getFieldEditorParent()).setBackground(new Color(DisplayManager.getDefaultDisplay(), 190, 190, 190));
+					this.user.setStringValue("");
+				}
+			}
+		}
+	}
+
 }
