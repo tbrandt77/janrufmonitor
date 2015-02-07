@@ -4,10 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 
+import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -20,6 +22,7 @@ import de.janrufmonitor.fritzbox.FritzBoxMonitor;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.ui.jface.configuration.controls.BooleanFieldEditor;
+import de.janrufmonitor.ui.swt.DisplayManager;
 
 public class InitFritzBoxVariantPage extends InitVariantPage {
 	
@@ -35,7 +38,7 @@ public class InitFritzBoxVariantPage extends InitVariantPage {
 		setTitle(this.m_i18n.getString("ui.jface.configuration.pages.FritzBoxVoip", "title", "label", this.m_language));
 		setDescription(this.m_i18n.getString("ui.jface.configuration.pages.FritzBoxVoip", "description", "label", this.m_language));
 
-		Composite c = new Composite(parent, SWT.NONE);
+		final Composite c = new Composite(parent, SWT.NONE);
 	    c.setLayout(new GridLayout(1, false));
 	    c.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
@@ -73,15 +76,46 @@ public class InitFritzBoxVariantPage extends InitVariantPage {
 			   
 		   });
 	    
-	    sfe = new StringFieldEditor(
+	    
+	    ComboFieldEditor mode = new ComboFieldEditor(
+				"boxloginmode",
+				this.m_i18n.getString("ui.jface.configuration.pages.FritzBoxVoip", "boxloginmode", "label", this.m_language),
+				new String[][] { 
+					{this.m_i18n.getString("ui.jface.configuration.pages.FritzBoxVoip", "userpassword", "label", this.m_language), "0"}, 
+					{this.m_i18n.getString("ui.jface.configuration.pages.FritzBoxVoip", "password_only", "label", this.m_language), "1"}
+				},
+			c
+		);
+	    
+	    final StringFieldEditor sfe1 = new StringFieldEditor(
 	    		"boxuser",
 				this.m_i18n.getString("ui.jface.configuration.pages.FritzBoxVoip", "boxuser", "label", this.m_language),
 				c);
 	    
-	    sfe.setStringValue("");
+	    sfe1.setStringValue("");
 	    this.m_boxuser = "";
 	    
-	    sfe.setPropertyChangeListener(new IPropertyChangeListener() {
+	    
+	    mode.setPropertyChangeListener(new IPropertyChangeListener() {
+
+			public void propertyChange(PropertyChangeEvent e) {
+				if (e!=null && e.getNewValue()!=null && e.getNewValue() instanceof String) {
+					String state = (String) e.getNewValue();
+					if (state.equalsIgnoreCase("1")) {
+						sfe1.setEnabled(false, c);
+						sfe1.setStringValue("");
+						sfe1.getTextControl(c).setBackground(new Color(DisplayManager.getDefaultDisplay(), 190, 190, 190));
+						m_boxuser = "";
+					} else {
+						sfe1.setEnabled(true, c);
+						sfe1.getTextControl(c).setBackground(new Color(DisplayManager.getDefaultDisplay(), 255, 255, 255));
+					}
+				}
+			}
+			   
+		   });
+	    
+	    sfe1.setPropertyChangeListener(new IPropertyChangeListener() {
 
 			public void propertyChange(PropertyChangeEvent e) {
 				if (e!=null && e.getNewValue()!=null && e.getNewValue() instanceof String)
