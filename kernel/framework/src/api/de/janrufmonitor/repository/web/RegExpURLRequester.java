@@ -92,8 +92,8 @@ public class RegExpURLRequester extends AbstractURLRequester {
 
 		//Thread.sleep(100);
 
-		Object o = c.getContent();
-		if (o instanceof InputStream) {
+		Object o = c.getInputStream();
+		if (o != null && o instanceof InputStream) {
 
 			this.m_logger.info("Content successfully retrieved from "+url.getHost()+"...");
 			InputStreamReader isr = new InputStreamReader((InputStream) o, this.m_config.getProperty(ENCODING,"iso-8859-1"));

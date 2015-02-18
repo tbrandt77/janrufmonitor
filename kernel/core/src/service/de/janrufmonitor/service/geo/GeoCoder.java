@@ -132,8 +132,8 @@ public class GeoCoder {
 			if (this.m_logger!=null && this.m_logger.isLoggable(Level.INFO))
 				this.m_logger.info("Querying URL "+url);
 			
-			Object o = c.getContent();
-			if (o instanceof InputStream) {
+			Object o = c.getInputStream();
+			if (o !=null && o instanceof InputStream) {
 				if (this.m_logger!=null)
 					this.m_logger.info("Content successfully retrieved from "+url);
 				BufferedInputStream bin = new BufferedInputStream((InputStream) o);

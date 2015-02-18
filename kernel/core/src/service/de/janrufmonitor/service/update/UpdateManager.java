@@ -141,8 +141,8 @@ public class UpdateManager {
 					try {
 						URLConnection c = this.createRequestURL(agent, key, (register ? "register" : "update")); 
 						c.connect();
-						Object o = c.getContent();
-						if (o instanceof InputStream) {
+						Object o = c.getInputStream();
+						if (o != null && o instanceof InputStream) {
 							BufferedInputStream bin = new BufferedInputStream((InputStream) o);						
 							StringBuffer retvalue = new StringBuffer();
 							BufferedReader br = new BufferedReader(new InputStreamReader(bin));
@@ -187,8 +187,8 @@ public class UpdateManager {
 				if (m_logger.isLoggable(Level.INFO))
 					this.m_logger.info("Querying URL "+this.url);
 				
-				Object o = c.getContent();
-				if (o instanceof InputStream) {
+				Object o = c.getInputStream();
+				if (o != null && o instanceof InputStream) {
 					this.m_logger.info("Content successfully retrieved from "+this.url);
 					BufferedInputStream bin = new BufferedInputStream((InputStream) o);
 					this.p = new Properties();
