@@ -187,6 +187,7 @@ public abstract class HsqldbCallDatabaseHandler extends AbstractCallDatabaseHand
 				}
 				
 				if (f.getType()==FilterType.CALLER) {
+					if (!isCallerFilter) sql.append("(");
 					isCallerFilter = true;
 					ICaller c = (ICaller)f.getFilterObject();
 					IPhonenumber pn = c.getPhoneNumber();
@@ -197,9 +198,11 @@ public abstract class HsqldbCallDatabaseHandler extends AbstractCallDatabaseHand
 					sql.append("' AND calls.number='");
 					sql.append(pn.getCallNumber());
 					sql.append("')");
+					if (isCallerFilter && ((i+1)>=filters.length || (filters[i+1] != null && (filters[i+1].getType()!=FilterType.CALLER)))) sql.append(")");
 				}
 				
 				if (f.getType()==FilterType.PHONENUMBER) {
+					if (!isCallerFilter) sql.append("(");
 					isCallerFilter = true;
 					IPhonenumber pn = (IPhonenumber)f.getFilterObject();
 					sql.append("(calls.country='");
@@ -209,6 +212,7 @@ public abstract class HsqldbCallDatabaseHandler extends AbstractCallDatabaseHand
 					sql.append("' AND calls.number='");
 					sql.append(pn.getCallNumber());
 					sql.append("')");
+					if (isCallerFilter && ((i+1)>=filters.length || (filters[i+1] != null && (filters[i+1].getType()!=FilterType.PHONENUMBER)))) sql.append(")");
 				}			
 				
 				if (f.getType()==FilterType.CIP) {
@@ -219,9 +223,10 @@ public abstract class HsqldbCallDatabaseHandler extends AbstractCallDatabaseHand
 				}		
 				
 				if (f.getType()==FilterType.MSN) {
-					isMsnFilter = true;
 					IMsn[] msn = (IMsn[])f.getFilterObject();
 					if (msn!=null && msn.length>0) {
+						if (!isMsnFilter) sql.append("(");
+						isMsnFilter = true; 
 						sql.append("(");
 						for (int j=0;j<msn.length;j++) {
 							if (j>0) sql.append(" OR ");
@@ -229,7 +234,8 @@ public abstract class HsqldbCallDatabaseHandler extends AbstractCallDatabaseHand
 							sql.append(msn[j].getMSN());
 							sql.append("'");
 						}
-						sql.append(")");	
+						sql.append(")"); 
+						if (isMsnFilter && ((i+1)>=filters.length || (filters[i+1] != null && (filters[i+1].getType()!=FilterType.MSN)))) sql.append(")");
 					}
 				}			
 				
