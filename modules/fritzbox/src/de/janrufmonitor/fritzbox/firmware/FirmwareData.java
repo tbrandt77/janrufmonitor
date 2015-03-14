@@ -133,6 +133,12 @@ public class FirmwareData {
             return "FRITZ!Box 3272"; 
         case IFritzBoxFirmware.TYPE_FRITZBOX_6490_CABLE:
             return "FRITZ!Box 6490 (Kabel)"; 
+        case IFritzBoxFirmware.TYPE_FRITZBOX_3270:
+            return "FRITZ!Box 3270"; 
+        case IFritzBoxFirmware.TYPE_FRITZBOX_3270V3:
+            return "FRITZ!Box 3270 v3";
+        case IFritzBoxFirmware.TYPE_FRITZBOX_7412:
+            return "FRITZ!Box 7412"; 
 		default:			
 		}
 		return "unknown";

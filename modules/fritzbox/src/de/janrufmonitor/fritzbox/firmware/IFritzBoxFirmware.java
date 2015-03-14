@@ -46,6 +46,7 @@ public interface IFritzBoxFirmware {
     public final static byte TYPE_FRITZBOX_7113 = 60;
     
     public final static byte TYPE_SPEEDPORT_W920V = 65;
+    public final static byte TYPE_FRITZBOX_3270 = 67;
     
     public final static byte TYPE_FRITZBOX_7240 = 73;
     public final static byte TYPE_FRITZBOX_7270V3 = 74;
@@ -53,6 +54,7 @@ public interface IFritzBoxFirmware {
     public final static byte TYPE_FRITZBOX_7390 = 84;
     public final static byte TYPE_FRITZBOX_6360 = 85;
     public final static byte TYPE_FRITZBOX_7112 = 87;
+    public final static byte TYPE_FRITZBOX_3270V3 = 96;
     public final static byte TYPE_FRITZBOX_7340 = 99;
     public final static byte TYPE_FRITZBOX_7320 = 100;
     
@@ -76,6 +78,7 @@ public interface IFritzBoxFirmware {
     public final static byte TYPE_FRITZBOX_3272 = 126;
     
     public final static int TYPE_FRITZBOX_7362_SL = 131;
+    public final static int TYPE_FRITZBOX_7412 = 137;
     public final static int TYPE_FRITZBOX_6490_CABLE = 141;
 
     public void login() throws FritzBoxLoginException;
