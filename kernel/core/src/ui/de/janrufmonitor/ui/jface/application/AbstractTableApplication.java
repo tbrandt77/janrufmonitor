@@ -2,6 +2,8 @@ package de.janrufmonitor.ui.jface.application;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -95,6 +97,20 @@ public abstract class AbstractTableApplication extends AbstractBaseApplication i
 					l.add(jfm.getFiltersFromString(filter));
 				}
 			}
+			
+			// added 2015/04/01: sort filter list
+			Collections.sort(l, new Comparator() {
+
+				public int compare(Object f1, Object f2) {
+					if (f1!=null && f2!=null && f1 instanceof IFilter[] && f2 instanceof IFilter[]) {
+						if (((IFilter[])f1).length==((IFilter[])f2).length) {
+							return (((IFilter[])f1)[0].toString().compareTo(((IFilter[])f2)[0].toString()));
+						}
+						if (((IFilter[])f1).length<((IFilter[])f2).length) return -1;
+						return 1;
+					}
+					return 0;
+				}});
 			
 			String[] filters = new String[l.size()];
 			int select = -1;
