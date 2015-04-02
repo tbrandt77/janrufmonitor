@@ -408,6 +408,75 @@
 	  </tar>
      
     </target>
+
+	<target name="bundle_macosx64_oracle" depends="init_bundle,macosx64_distribution" description="create macosx64 bundles" if="is.macosx">
+	  <property environment="env"/>
+
+	  <!-- Define the appbundler task -->
+	  <taskdef name="appbundler" classname="com.oracle.appbundler.AppBundlerTask" classpath="./ant/lib/appbundler-1.0.jar"/>
+  
+      <echo message="Publishing macosx64 fritzbox version..." />
+      <copy todir="${jam.dist.dir}/jam50-macosx64-fritzbox">
+          <fileset dir="${jam.dist.dir}/jam50-macosx64"/>
+      </copy>
+      
+      <delete file="${jam.dist.dir}/jam50-macosx64-fritzbox/lib/osgi.jar" />
+      <delete file="${jam.dist.dir}/jam50-macosx64-fritzbox/lib/runtime.jar" />
+      <delete file="${jam.dist.dir}/jam50-macosx64-fritzbox/lib/jface.jar" />
+      <delete file="${jam.dist.dir}/jam50-macosx64-fritzbox/lib/i18n.jar" />
+      <delete file="${jam.dist.dir}/jam50-macosx64-fritzbox/lib/commands.jar" />
+      
+      <copy todir="${jam.dist.dir}/jam50-macosx64-fritzbox">
+          <fileset dir="${jam.dist.dir}/jam50-macosx64/lib"/>
+      </copy>
+      
+      <delete file="${jam.dist.dir}/jam50-macosx64-fritzbox/jamui.jar" />
+      
+      <copy todir="${jam.dist.dir}/jam50-macosx64-fritzbox/install">
+          <fileset dir="${jam.dist.dir}/modules" includes="*fritzbox*.jam.zip"/>
+          <fileset dir="${jam.dist.dir}/modules" includes="*macab*.jam.zip"/>
+      </copy>
+      <copy todir="${jam.dist.dir}/jam50-macosx64-fritzbox">
+        <fileset dir="${jam.build.dir}/lib/modules/mod-mon-fritzbox" includes="**/*.jar" />
+        <fileset dir="${jam.build.dir}/lib/modules/mod-rep-macab" includes="**/*.jar" />
+      </copy>
+      
+      <loadfile srcFile="./kernel/core/deployment/all/~meta-inf/descriptor.properties" property="jam.version">
+		<filterchain>
+			<linecontains>
+			  	<contains value="jam.mod.version="/>	
+			</linecontains>
+			<tokenfilter>
+		    	<replacestring from="jam.mod.version="/>
+			</tokenfilter>
+			<striplinebreaks/>					
+		</filterchain>
+	  </loadfile>
+      
+      <mkdir dir="${jam.dist.dir}/jarbundler/jam50-fritzbox/"/>
+	  <appbundler outputdirectory="${jam.dist.dir}/jarbundler/jam50-fritzbox/"
+        name="jAnrufmonitor - AVM FRITZ!Box Edition"
+        displayname="jAnrufmonitor - AVM FRITZ!Box Edition"
+        identifier="de.janrufmonitor.core"
+        icon="./kernel/core/deployment/macosx64/images/jam.icns" 
+        shortversion="${jam.version}"
+        applicationCategory="public.app-category.productivity"
+        mainclassname="de/janrufmonitor/application/RunUI64">
+		<runtime dir="${env.JAVA_HOME}" />
+		<classpath dir="${jam.dist.dir}/jam50-macosx64-fritzbox" >
+            <include name="*.jar" />
+			<include name="lib/*.jar" />
+        </classpath>
+        <option value="-Djam.ui.toplevel=false -Djam.ui.trayitem=true -Xms16m -Xmx256m -Dapple.laf.useScreenMenuBar=true -Dapple.awt.brushMetal=true -Dapple.awt.showGrowBox=false"/>
+      </appbundler>
+
+       <delete file="${jam.pub.dir}/jam50-macosx-fritzbox.dmg" />
+      
+      <exec dir="." os="Mac OS X" executable="/bin/sh">
+        <arg value="-c"/>
+        <arg value="./mkdmg.sh /Users/brandtt/git/janrufmonitor/ ./${jam.dist.dir}/jarbundler/jam50-fritzbox/ ./${jam.pub.dir}/ jam50-macosx-fritzbox"/>
+      </exec>
+	</target>
     
     <target name="bundle_macosx64" depends="init_bundle,macosx64_distribution" description="create macosx64 bundles" if="is.macosx">
       <taskdef name="jarbundler" classname="net.sourceforge.jarbundler.JarBundler" classpath="./ant/lib/jarbundler-2.1.0.jar"/>
