@@ -28,6 +28,8 @@ import de.janrufmonitor.repository.filter.DateFilter;
 import de.janrufmonitor.repository.filter.FilterType;
 import de.janrufmonitor.repository.filter.IFilter;
 import de.janrufmonitor.repository.filter.ItemCountFilter;
+import de.janrufmonitor.repository.filter.MonthYearFilter;
+import de.janrufmonitor.repository.filter.YearFilter;
 import de.janrufmonitor.repository.types.IRemoteRepository;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
@@ -205,6 +207,24 @@ public class MySqlJournal extends AbstractDatabaseCallManager implements IRemote
 						sql.append((df.getDateTo()==null ? new Date().getTime() : df.getDateTo().getTime()));
 						sql.append(" AND calls.cdate<");
 						sql.append((df.getDateFrom()==null ? new Date().getTime() : df.getDateFrom().getTime()));
+						sql.append(")");
+					}
+					
+					if (f.getType()==FilterType.YEAR) {
+						YearFilter df = (YearFilter)f;
+						sql.append("(calls.cdate>");
+						sql.append((df.getDateFrom()==null ? new Date().getTime() : df.getDateFrom().getTime()));
+						sql.append(" AND calls.cdate<");
+						sql.append((df.getDateTo()==null ? new Date().getTime() : df.getDateTo().getTime()));
+						sql.append(")");
+					}
+					
+					if (f.getType()==FilterType.MONTH_YEAR) {
+						MonthYearFilter df = (MonthYearFilter)f;
+						sql.append("(calls.cdate>");
+						sql.append((df.getDateFrom()==null ? new Date().getTime() : df.getDateFrom().getTime()));
+						sql.append(" AND calls.cdate<");
+						sql.append((df.getDateTo()==null ? new Date().getTime() : df.getDateTo().getTime()));
 						sql.append(")");
 					}
 					
