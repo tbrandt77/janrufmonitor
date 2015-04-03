@@ -21,6 +21,8 @@ import de.janrufmonitor.repository.filter.IFilter;
 import de.janrufmonitor.repository.filter.ItemCountFilter;
 import de.janrufmonitor.repository.filter.MsnFilter;
 import de.janrufmonitor.repository.filter.PhonenumberFilter;
+import de.janrufmonitor.repository.filter.YearFilter;
+import de.janrufmonitor.repository.filter.MonthYearFilter;
 import de.janrufmonitor.repository.identify.Identifier;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
@@ -101,6 +103,28 @@ public abstract class AbstractFilterManager extends AbstractFilterSerializer imp
 						if ((i + 1) < f.length)
 							sb.append(", ");						
 					}
+				}
+				if (f1.getType().equals(FilterType.YEAR)) {
+					sb.append(this.getI18nManager().getString(
+							this.getNamespace(), "view_date", "label",
+							this.getLanguage()));
+					sb.append("[");
+					sb.append(((YearFilter)f1).getYear());
+					sb.append("]");
+					if ((i + 1) < f.length)
+						sb.append(", ");
+				}
+				if (f1.getType().equals(FilterType.MONTH_YEAR)) {
+					sb.append(this.getI18nManager().getString(
+							this.getNamespace(), "view_date", "label",
+							this.getLanguage()));
+					sb.append("[");
+					sb.append(((MonthYearFilter)f1).getYear());
+					sb.append(".");
+					sb.append((((MonthYearFilter)f1).getMonth()>9 ? ((MonthYearFilter)f1).getMonth() : "0"+((MonthYearFilter)f1).getMonth()));
+					sb.append("]");
+					if ((i + 1) < f.length)
+						sb.append(", ");
 				}
 				if (f1.getType().equals(FilterType.CALLER) && !processedCaller) {
 					sb.append(this.getI18nManager().getString(
@@ -239,6 +263,14 @@ public abstract class AbstractFilterManager extends AbstractFilterSerializer imp
 				);
 		}
 		return this.m_language;
+	}
+	
+	public boolean hasRuntimeFilters() {
+		return false;
+	}
+
+	public IFilter[][] getRuntimeFilters() {
+		return null;
 	}
 	
 	public abstract String getNamespace();

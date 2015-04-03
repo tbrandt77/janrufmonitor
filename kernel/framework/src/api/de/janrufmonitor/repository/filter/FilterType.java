@@ -37,6 +37,8 @@ public class FilterType {
 	public static FilterType USERDEFINED = new FilterType(9); 
 	public static FilterType ITEMCOUNT = new FilterType(10); 
 	public static FilterType CHARACTER = new FilterType(11); 
+	public static FilterType YEAR = new FilterType(12); 
+	public static FilterType MONTH_YEAR = new FilterType(13); 
 	
 	private int _type;
 	

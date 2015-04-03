@@ -163,6 +163,15 @@ public abstract class AbstractFilterSerializer {
 					
 					return new DateFilter(d1,d2);
 				}
+				if (ft.equals(FilterType.YEAR)) {
+					String y = st.nextToken();
+					return new YearFilter(Integer.parseInt(y));
+				}
+				if (ft.equals(FilterType.MONTH_YEAR)) {
+					String y = st.nextToken();
+					String m = st.nextToken();
+					return new MonthYearFilter(Integer.parseInt(y), Integer.parseInt(m));
+				}
 				if (ft.equals(FilterType.MSN)) {
 					IMsn[]msns = new IMsn[st.countTokens()];
 					int i = 0;
@@ -297,6 +306,20 @@ public abstract class AbstractFilterSerializer {
 					sb.append(",");
 					sb.append(((DateFilter)f).getTimeframe());
 				}
+			}
+			
+			if (ft.equals(FilterType.YEAR)) {
+				sb.append(ft.toString());
+				sb.append(",");
+				sb.append(((YearFilter)f).getYear());
+			}
+			
+			if (ft.equals(FilterType.MONTH_YEAR)) {
+				sb.append(ft.toString());
+				sb.append(",");
+				sb.append(((MonthYearFilter)f).getYear());
+				sb.append(",");
+				sb.append(((MonthYearFilter)f).getMonth());
 			}
 			
 			if (ft.equals(FilterType.CIP)) {

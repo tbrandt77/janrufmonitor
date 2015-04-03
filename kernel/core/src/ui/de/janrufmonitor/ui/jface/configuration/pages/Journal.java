@@ -1,11 +1,14 @@
 package de.janrufmonitor.ui.jface.configuration.pages;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
 import org.eclipse.jface.preference.ComboFieldEditor;
+import org.eclipse.jface.preference.StringFieldEditor;
 
 import de.janrufmonitor.repository.filter.IFilter;
 import de.janrufmonitor.runtime.IRuntime;
@@ -66,6 +69,29 @@ public class Journal extends AbstractFieldEditorConfigPage {
 			}
 		}
 		
+		// added 2015/04/03: added runtime filters
+		if (jfm.hasRuntimeFilters()) {
+			IFilter[][] rf = jfm.getRuntimeFilters();
+			if (rf!=null && rf.length>0) {
+				for (int i=0;i<rf.length;i++)
+					l.add(rf[i]);
+			}
+		}
+		
+		// added 2015/04/01: sort filter list
+		Collections.sort(l, new Comparator() {
+
+			public int compare(Object f1, Object f2) {
+				if (f1!=null && f2!=null && f1 instanceof IFilter[] && f2 instanceof IFilter[]) {
+					if (((IFilter[])f1).length==((IFilter[])f2).length) {
+						return (((IFilter[])f2)[0].toString().compareTo(((IFilter[])f1)[0].toString()));
+					}
+					if (((IFilter[])f1).length<((IFilter[])f2).length) return -1;
+					return 1;
+				}
+				return 0;
+			}});
+		
 		String[][] filters = new String[l.size()][2];
 		for (int i=0;i<l.size();i++) {
 			filters[i][0] = jfm.getFiltersToLabelText((IFilter[]) l.get(i), 45);
@@ -78,6 +104,15 @@ public class Journal extends AbstractFieldEditorConfigPage {
 			   , filters, 
 			   this.getFieldEditorParent());
 		addField(cfe);
+		
+		StringFieldEditor sfe = new StringFieldEditor(
+				getConfigNamespace()+SEPARATOR+"rt_filters_years",
+				this.m_i18n.getString(this.getNamespace(), "rt_filters_years", "label", this.m_language),
+				2,
+				this.getFieldEditorParent()
+			);
+		sfe.setTextLimit(2);
+		addField(sfe);
 		
 	}
 	

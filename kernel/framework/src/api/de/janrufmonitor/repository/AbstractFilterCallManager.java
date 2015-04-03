@@ -17,6 +17,8 @@ import de.janrufmonitor.repository.filter.DateFilter;
 import de.janrufmonitor.repository.filter.FilterType;
 import de.janrufmonitor.repository.filter.IFilter;
 import de.janrufmonitor.repository.filter.ItemCountFilter;
+import de.janrufmonitor.repository.filter.MonthYearFilter;
+import de.janrufmonitor.repository.filter.YearFilter;
 import de.janrufmonitor.repository.types.IReadCallRepository;
 
 /**
@@ -146,25 +148,37 @@ public abstract class AbstractFilterCallManager extends AbstractConfigurableCall
 		this.m_logger.info("CallList size before filtering: "+cl.size());
 		ICall c = null;
 		if (filter!=null) {
-			if (filter.getType().equals(FilterType.DATE)) {
+			if (filter.getType().equals(FilterType.DATE) || filter.getType().equals(FilterType.YEAR) || filter.getType().equals(FilterType.MONTH_YEAR)) {
+				long from = 0;
+				long to = 0;
+				
 				if (filter instanceof DateFilter) {
 					DateFilter df = (DateFilter)filter;
-					long from = (df.getDateFrom()==null ? 0 : df.getDateFrom().getTime());
-					long to = df.getDateTo().getTime();
-					
-					long cdate = 0;
-					for (int i=cl.size()-1;i>=0;i--) {
-						c = cl.get(i);
-						cdate = c.getDate().getTime();
-						if (from>0) {
-							if (cdate<to || cdate>from)
-								cl.remove(c);
-						} else {
-							if (cdate<to)
-								cl.remove(c);
-						}
-					}
+					to = (df.getDateFrom()==null ? 0 : df.getDateFrom().getTime());
+					from = df.getDateTo().getTime();
 				}
+				if (filter instanceof YearFilter) {
+					YearFilter df = (YearFilter)filter;
+					from = (df.getDateFrom()==null ? 0 : df.getDateFrom().getTime());
+					to = df.getDateTo().getTime();
+				}
+				if (filter instanceof MonthYearFilter) {
+					MonthYearFilter df = (MonthYearFilter)filter;
+					from = (df.getDateFrom()==null ? 0 : df.getDateFrom().getTime());
+					to = df.getDateTo().getTime();
+				}
+				long cdate = 0;
+				for (int i=cl.size()-1;i>=0;i--) {
+					c = cl.get(i);
+					cdate = c.getDate().getTime();
+					if (to>0) {
+						if (cdate<from || cdate>to)
+							cl.remove(c);
+					} else {
+						if (cdate<from)
+							cl.remove(c);
+					}
+				}				
 			}
 			if (filter.getType().equals(FilterType.CALLER)) {	
 				ICaller cfilter = (ICaller)filter.getFilterObject();

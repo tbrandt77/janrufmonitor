@@ -98,13 +98,22 @@ public abstract class AbstractTableApplication extends AbstractBaseApplication i
 				}
 			}
 			
+			// added 2015/04/03: added runtime filters
+			if (jfm.hasRuntimeFilters()) {
+				IFilter[][] rf = jfm.getRuntimeFilters();
+				if (rf!=null && rf.length>0) {
+					for (int i=0;i<rf.length;i++)
+						l.add(rf[i]);
+				}
+			}
+			
 			// added 2015/04/01: sort filter list
 			Collections.sort(l, new Comparator() {
 
 				public int compare(Object f1, Object f2) {
 					if (f1!=null && f2!=null && f1 instanceof IFilter[] && f2 instanceof IFilter[]) {
 						if (((IFilter[])f1).length==((IFilter[])f2).length) {
-							return (((IFilter[])f1)[0].toString().compareTo(((IFilter[])f2)[0].toString()));
+							return (((IFilter[])f2)[0].toString().compareTo(((IFilter[])f1)[0].toString()));
 						}
 						if (((IFilter[])f1).length<((IFilter[])f2).length) return -1;
 						return 1;

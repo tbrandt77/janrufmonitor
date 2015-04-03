@@ -413,3 +413,7 @@ ui.jface.application.RendererRegistry\:renderer_callactive\:value=de.janrufmonit
 ui.jface.application.RendererRegistry\:renderer_callactive\:access=system
 ui.jface.application.RendererRegistry\:renderer_callduration\:value=de.janrufmonitor.ui.jface.application.journal.rendering.CallDuration
 ui.jface.application.RendererRegistry\:renderer_callduration\:access=system
+
+# added 5.0.57
+ui.jface.application.journal.Journal\:rt_filters_years\:value=3
+ui.jface.application.journal.Journal\:rt_filters_years\:type=integer

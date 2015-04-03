@@ -17,4 +17,8 @@ public interface IFilterSerializer {
 	
 	public String getFiltersToString(IFilter[] filters);
 	
+	public boolean hasRuntimeFilters();
+	
+	public IFilter[][] getRuntimeFilters();
+	
 }

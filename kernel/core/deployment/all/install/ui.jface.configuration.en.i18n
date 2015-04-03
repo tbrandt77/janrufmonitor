@@ -106,6 +106,8 @@ ui.jface.configuration.pages.Info\:modules\:label\:en=Installed modules:
 ui.jface.configuration.pages.Journal\:title\:label\:en=Journals
 ui.jface.configuration.pages.Journal\:description\:label\:en=Journals are used for storing calls in differnt formats.
 ui.jface.configuration.pages.Journal\:filter\:label\:en=active journal filter
+ui.jface.configuration.pages.Journal\:rt_filters_years\:label\:en=Create time filters for the last n years:  
+
 
 ui.jface.configuration.pages.ModuleManager\:title\:label\:en=Module Manager
 ui.jface.configuration.pages.ModuleManager\:description\:label\:en=Managing additional modules adds advanced fuctions to the jAnrufmonitor. The Module Manager allows you to install and uninstall certain modules.
