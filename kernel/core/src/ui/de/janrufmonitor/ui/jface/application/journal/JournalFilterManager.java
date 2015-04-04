@@ -27,10 +27,13 @@ public class JournalFilterManager extends AbstractFilterManager {
 		if (cfg!=null && cfg.length()>0) {
 			years = Integer.parseInt(cfg);
 		}
+		
+		if (years<0) return new IFilter[][] {};
+		
 		int c_y = Calendar.getInstance().get(Calendar.YEAR);
 		int c_m = Calendar.getInstance().get(Calendar.MONTH);
 	
-		List filters = new ArrayList(years*12);
+		List filters = new ArrayList(years*12+years);
 		
 		for (int y= c_y - years;y<=c_y;y++) {
 			filters.add(new YearFilter(y));
