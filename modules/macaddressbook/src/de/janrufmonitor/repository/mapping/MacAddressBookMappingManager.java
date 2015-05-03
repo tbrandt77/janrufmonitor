@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -110,6 +111,12 @@ public class MacAddressBookMappingManager {
 		
 		// processing the numbers
 		List macNumberMappings = om.getSupportedNumbers();
+		
+		// added 2015/05/03: added generic etiketts 
+		if (macNumberMappings.contains("*")) {
+			macNumberMappings.addAll(this.getGenericMappings(((List)oCaller.get(IMacAddressBookConst.PHONE))));
+		}
+		
 		List phones = new ArrayList(macNumberMappings.size());
 		String numbertype = null;
 		String number = null;
@@ -397,6 +404,19 @@ public class MacAddressBookMappingManager {
 			}
 		}
 		return 0;
+	}
+	
+	private List getGenericMappings(List numbers) {
+		List allMappings = new ArrayList();
+		for (Object entry : numbers) {
+			if (entry instanceof Map <?,?>) {
+				Iterator iter = ((Map)entry).keySet().iterator();
+				while (iter.hasNext()) {
+					allMappings.add(iter.next());
+				}
+			}
+		}
+		return allMappings;
 	}
 
 	private String getRawNumber(List numbers, String numbertype) {
