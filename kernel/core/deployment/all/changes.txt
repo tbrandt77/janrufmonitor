@@ -1,5 +1,20 @@
 ﻿===
 
+jAnrufmonitor 5.0.57 (01.06.2015)
+---------------------------------
+Neu:
+- Journal: mtl. und jhrl. Filter im Journal
+- Journal: Zeitfilter ein- / ausschaltbar gemacht
+
+Bugfix:
+- Journal: Sortierreihenfolge der Filter im Journal korrigiert
+
+Module:
+- Apple Mac Adressbuch: Unterstützung für beliebige Rufnummern-Etikette 
+- MySQL Journal: Unterstützung für mtl. und jhrl. Filter
+
+===
+
 jAnrufmonitor 5.0.56 (31.03.2015)
 ---------------------------------
 Bugfix:
