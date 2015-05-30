@@ -84,6 +84,11 @@ public interface IJAMConst {
     // FILE AND DIRECTORY PLACEHOLDERS
     
     /**
+     *  Wildcard for base path
+     */
+    public final static String PATHKEY_BASEPATH = "%basepath%";
+    
+    /**
      *  Wildcard for install path
      */
     public final static String PATHKEY_INSTALLPATH = "%installpath%";
@@ -148,6 +153,7 @@ public interface IJAMConst {
     public final static String SYSTEM_UI_FORCEIMAGE = "jam.ui.forceimage"; // tries to force an image to be rendered. If ImageHandler does not deliver one, the default (File system) ImageHandler is triggered.
     public final static String SYSTEM_INSTALLER_RESTART = "jam.installer.restart";
     public final static String SYSTEM_INSTALLER_RUN = "jam.installer.run";
+    public final static String SYSTEM_MULTI_USER = "jam.multiuser";
 
     // CONFIGURATION PARAMETERS
     

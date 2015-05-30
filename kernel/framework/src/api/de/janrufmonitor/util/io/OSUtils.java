@@ -1,7 +1,9 @@
 package de.janrufmonitor.util.io;
 
+import de.janrufmonitor.framework.IJAMConst;
+
 /**
- * This class provides acces to OS specific information.
+ * This class provides access to OS specific information.
  * 
  *@author     Thilo Brandt
  *@created    2005/04/10
@@ -16,7 +18,7 @@ public class OSUtils {
 	private static byte m_64 = -1;
 	
 	/**
-	 * Return true wether the current running mode is console
+	 * Return true whether the current running mode is console
 	 * @return
 	 */
 	public static boolean isConsole() {
@@ -24,7 +26,7 @@ public class OSUtils {
 	}
 	
 	/**
-	 * Return true wether the current running OS is Microsoft Windows
+	 * Return true whether the current running OS is Microsoft Windows
 	 * @return
 	 */
 	public static boolean isWindows() {
@@ -40,7 +42,7 @@ public class OSUtils {
 	}
 	
 	/**
-	 * Return true wether the current running OS is Linux based
+	 * Return true whether the current running OS is Linux based
 	 * @return
 	 */
 	public static boolean isLinux() {
@@ -56,7 +58,7 @@ public class OSUtils {
 	}
 	
 	/**
-	 * Return true wether the current running OS is Mac OSX based
+	 * Return true whether the current running OS is Mac OSX based
 	 * @return
 	 */
 	public static boolean isMacOSX() {
@@ -72,7 +74,7 @@ public class OSUtils {
 	}
 	
 	/**
-	 * Return true wether the current OS is a 32-bit OS
+	 * Return true whether the current OS is a 32-bit OS
 	 * @return
 	 */
 	public static boolean is32Bit() {
@@ -88,7 +90,7 @@ public class OSUtils {
 	}
 	
 	/**
-	 * Return true wether the current OS is a 64-bit OS
+	 * Return true whether the current OS is a 64-bit OS
 	 * @return
 	 */
 	public static boolean is64Bit() {
@@ -101,6 +103,15 @@ public class OSUtils {
 			}
 		}
 		return (m_64>0);
+	}
+	
+	/**
+	 * Return true whether jam.multiuser properties is set to true
+	 * @return
+	 */
+	public static boolean isMultiuserEnabled() {
+		String multiUser = System.getProperty(IJAMConst.SYSTEM_MULTI_USER);
+		return (multiUser!=null && Boolean.parseBoolean(multiUser));
 	}
 	
 
