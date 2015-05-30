@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -13,11 +12,11 @@ import java.util.logging.Logger;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.util.io.PathResolver;
+import de.janrufmonitor.util.io.Stream;
 
 public class FileHandler {
 
 	private Logger m_logger;
-	private int BUFFER = Short.MAX_VALUE;  //32767
 
 	public FileHandler() {
 		this.m_logger = LogManager.getLogManager().getLogger(IJAMConst.DEFAULT_LOGGER);
@@ -33,10 +32,7 @@ public class FileHandler {
 		File file = new File(path);
 		file.getParentFile().mkdirs();
 		try {
-			FileOutputStream fo = new FileOutputStream(file);
-			this.streamCopy(in,fo);
-			in.close();
-			fo.close();
+			Stream.copy(in, new FileOutputStream(file), true);
 		} catch (FileNotFoundException e) {
 			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 		} catch (IOException e) {
@@ -56,13 +52,5 @@ public class FileHandler {
 				file.deleteOnExit();
 			}
 	}
-	
-	private void streamCopy(InputStream in, OutputStream out) throws IOException {
-		byte[] buffer = new byte[BUFFER];
-		int bytesRead;
-		while ((bytesRead = in.read(buffer)) != -1) {
-			out.write(buffer, 0, bytesRead);
-		}  
-		out.flush();
-	}
+
 }

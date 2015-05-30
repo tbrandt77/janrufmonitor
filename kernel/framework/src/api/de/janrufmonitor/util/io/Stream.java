@@ -49,7 +49,6 @@ public class Stream {
 		int total = 0;
 		while (total<n && (bytesRead = in.read(buffer, 0 , n)) != -1) {
 			total += bytesRead;
-			System.out.println(new String(buffer));
 			out.write(buffer, 0, bytesRead);
 		}  
 		out.flush();
