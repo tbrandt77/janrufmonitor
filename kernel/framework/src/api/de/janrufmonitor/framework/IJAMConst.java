@@ -84,11 +84,6 @@ public interface IJAMConst {
     // FILE AND DIRECTORY PLACEHOLDERS
     
     /**
-     *  Wildcard for base path
-     */
-    public final static String PATHKEY_BASEPATH = "%basepath%";
-    
-    /**
      *  Wildcard for install path
      */
     public final static String PATHKEY_INSTALLPATH = "%installpath%";
@@ -138,6 +133,10 @@ public interface IJAMConst {
      */
     public final static String PATHKEY_CONFIGPATH = "%configpath%";
 
+    /**
+     *  Wildcard for user config path
+     */
+    public final static String PATHKEY_USERCONFIGPATH = "%userconfigpath%";
     
     /**
      *  Wildcard for photo path

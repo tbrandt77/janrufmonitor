@@ -4,6 +4,7 @@ import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.util.io.Base64Decoder;
 import de.janrufmonitor.util.io.Base64Encoder;
 import de.janrufmonitor.util.io.PathResolver;
+import de.janrufmonitor.util.io.Stream;
 import de.janrufmonitor.framework.IJAMConst;
 
 import java.util.*;
@@ -76,7 +77,7 @@ public class TextFileConfigManager implements IConfigManager {
 	private String DEFAULT_INTERNAL_LENGTH = "2"; 
 	
 	private class ConfigSaverTask extends TimerTask {
-		public void run() {
+		public synchronized void run() {
 	        try {
 	        	TextFileConfigManager.this.m_logger.info("Creating new configuration output stream.");
 
@@ -116,6 +117,7 @@ public class TextFileConfigManager implements IConfigManager {
 	        } catch (IOException ex) {
 	        	TextFileConfigManager.this.m_logger.severe("IOException occured on file " + TextFileConfigManager.this.m_pathToSystemConfiguration + ". Please check, if file is existing and valid.");
 	        }
+
 	        try {
 	        	TextFileConfigManager.this.m_logger.info("Creating new configuration output stream.");
 
@@ -756,7 +758,7 @@ public class TextFileConfigManager implements IConfigManager {
 			this.m_logger.info("Changed I18n manager.");
         }
         // 2005/12/27: Always change this property, due to migration from old file strcuture
-        this.setProperty("i18n.DatabaseI18nManager", "database", "value", "%configpath%i18n");
+        this.setProperty("i18n.DatabaseI18nManager", "database", "value", "%userconfigpath%i18n");
         this.setProperty("i18n.DatabaseI18nManager", "database", "access", "system");
 
         if (changed)
@@ -766,51 +768,33 @@ public class TextFileConfigManager implements IConfigManager {
 		this.m_logger.exiting(TextFileConfigManager.class.getName(), "checkConfigConsistency");
     }
 
-//	private void convertConfiguartion() {
-//		if (this.m_userConfiguration.size()==0) {
-//			this.m_logger.info("No conversion needed. User configuration is empty.");
-//			return;
-//		}
-//		Properties tmpOldDate = (Properties) this.m_userConfiguration.clone();
-//		this.m_userConfiguration.clear();
-//		
-//		StringTokenizer st = null;
-//		Iterator iter = tmpOldDate.keySet().iterator();
-//		String key = null;
-//		String namespace = null;
-//		String name = null;
-//		String metadata = null;
-//		while (iter.hasNext()) {
-//			key = (String)iter.next();
-//			if (key!=null && key.length()>0) {
-//				st = new StringTokenizer(key, NAMESPACE_SEPARATOR);
-//				if (st.countTokens()==3) {
-//					namespace = st.nextToken();
-//					name = st.nextToken();
-//					metadata = st.nextToken();
-//					
-//					if (tmpOldDate.getProperty(namespace + NAMESPACE_SEPARATOR + name + NAMESPACE_SEPARATOR + DEFAULT_ACCESS_IDENTIFIER).equalsIgnoreCase(DEFAULT_ACCESS_IDENTIFIER_VALUE)	
-//						) {
-//						this.setProperty(
-//							namespace,
-//							name,
-//							metadata,
-//							tmpOldDate.getProperty(key, "")
-//						);
-//					} else {
-//						this.m_logger.info("System entry was dropped: "+key);
-//					}
-//				} else {
-//					this.m_logger.warning("Error in converting entry: "+key+". Tokencount is "+st.countTokens()+". Valid count is 3");
-//				}
-//			}
-//		}
-//		this.m_logger.info("Converted "+tmpOldDate.size()+" old configuration entries.");
-//	}
-
 	public void startup() {
-		this.m_pathToSystemConfiguration = PathResolver.getInstance(PIMRuntime.getInstance()).getConfigDirectory() + this.SYSTEM_CONFIGURATION_FILE;
-		this.m_pathToUserConfiguration = PathResolver.getInstance(PIMRuntime.getInstance()).getConfigDirectory() + this.USER_CONFIGURATION_FILE;
+		this.m_pathToSystemConfiguration = PathResolver.getInstance(PIMRuntime.getInstance()).getUserConfigDirectory() + this.SYSTEM_CONFIGURATION_FILE;
+		this.m_pathToUserConfiguration = PathResolver.getInstance(PIMRuntime.getInstance()).getUserConfigDirectory() + this.USER_CONFIGURATION_FILE;
+		File usrConfigFile = new File(this.m_pathToUserConfiguration);
+		if (!usrConfigFile.exists()) {
+			usrConfigFile.getParentFile().mkdirs();
+			InputStream zerofile = new ByteArrayInputStream(new String("").getBytes());
+			try {
+				Stream.copy(zerofile, new FileOutputStream(usrConfigFile), true);
+			} catch (FileNotFoundException e) {
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			} catch (IOException e) {
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			}
+		}
+		File sysConfigFile = new File(this.m_pathToSystemConfiguration);
+		if (!sysConfigFile.exists()) {
+			sysConfigFile.getParentFile().mkdirs();
+			InputStream zerofile = new ByteArrayInputStream(new String("").getBytes());
+			try {
+				Stream.copy(zerofile, new FileOutputStream(sysConfigFile), true);
+			} catch (FileNotFoundException e) {
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			} catch (IOException e) {
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			}
+		}
 		this.loadConfiguration();
 		this.checkConfigConsistency();
 	}

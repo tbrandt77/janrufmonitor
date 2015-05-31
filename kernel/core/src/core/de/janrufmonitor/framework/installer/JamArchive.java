@@ -83,6 +83,8 @@ public class JamArchive implements InstallerConst {
 			directory.mkdirs();
 		}
 		
+		if (entries==null || entries.size()==0) return;
+		
 		String entry = null;
 		byte[] content = null;
 		File targetFile = null;
@@ -208,6 +210,15 @@ public class JamArchive implements InstallerConst {
 		}
 	}	
 	
+	public List getFiles(FilenameFilter fnf) throws JamArchiveException {
+		try {
+			return
+				this.m_zip.list(fnf);
+			} catch (ZipArchiveException e) {
+			throw new JamArchiveException(e);
+		}
+	}
+	
 	public byte[] getContent(String entry) throws JamArchiveException {
 		try {
 			return this.m_zip.getContent(entry);
@@ -224,6 +235,10 @@ public class JamArchive implements InstallerConst {
 			throw new JamArchiveException(e);
 		}
 		return (in==null ? null : new BufferedInputStream(in));
+	}
+	
+	public String getFilename() {
+		return (this.m_zip!=null ? this.m_zip.toFile().getName() : null);
 	}
 
 }

@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import de.janrufmonitor.util.io.OSUtils;
 import de.janrufmonitor.util.io.PathResolver;
 import de.janrufmonitor.util.io.Stream;
 
@@ -168,7 +169,15 @@ public class JamArchiveInstaller extends AbstractInstaller {
 			this.m_logger.info("Created new failed installation module.");
 			throw new InstallerException("Installation failed for file: "+this.getFile()+", "+e.getMessage());
 		}
-
+		
+		if (OSUtils.isMultiuserEnabled() && this.isPropagateable(p)) {
+			try {
+				this.propagateToDefaultUser(p);
+			} catch (JamArchiveException e) {
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			}
+		}
+		
 		renamedArchive.getParentFile().mkdirs();
 		try {
 			FileOutputStream out = new FileOutputStream(renamedArchive);
@@ -224,6 +233,30 @@ public class JamArchiveInstaller extends AbstractInstaller {
 			return true;
 		}
 		return false;
+	}
+	
+	private boolean isPropagateable(JamArchive p) {
+		if (p.getFilename().endsWith("init.jam.zip")) return true;
+		return Boolean.parseBoolean(System.getProperty("jam.propagate"));
+	}
+	
+	private void propagateToDefaultUser(JamArchive p) throws JamArchiveException{
+		p.open();
+		File defaultUserDir = new File(PathResolver.getInstance(this.getRuntime()).getInstallDirectory(), "users"+File.separator+"default");
+		p.extractTo(p.getI18nFiles(), defaultUserDir);
+		p.extractTo(p.getInfFiles(), defaultUserDir);
+		p.extractTo(p.getInitInfFiles(), defaultUserDir);
+		
+		// 2015/05/31: dirty hack: force countrycodes.db to be propagated to logged in user directory
+		if (p.getFilename().endsWith("init.jam.zip")) {
+			File loggedinUserDir = new File(PathResolver.getInstance(this.getRuntime()).getInstallDirectory(), "users"+File.separator+OSUtils.getLoggedInUser());
+			p.extractTo(p.getFiles(new FilenameFilter () {
+				public boolean accept(File dir, String name) {
+					if (name.startsWith("data")) return true;
+					return false;
+				}}), loggedinUserDir);
+		}
+		p.close();
 	}
 	
 	private void handleAddFiles(JamArchive p, List l) {
@@ -332,28 +365,6 @@ public class JamArchiveInstaller extends AbstractInstaller {
 			}
 		}	
 	}
-	
-	/**
-	private void handleRemoveI18n(JamArchive p, List l) {
-		String entry = null;
-		InputStream content = null;
-		I18nHandler ih = new I18nHandler();
-		for (int i=0,j=l.size();i<j;i++) {
-			entry = (String) l.get(i);
-			try {
-				content = p.getStream(entry);
-				Properties data = new Properties();
-				data.load(content);
-				content.close();
-				ih.removeI18nData(data);
-			} catch (JamArchiveException e) {
-				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-			} catch (IOException e) {
-				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-			}
-		}	
-	}
-	*/	
 	
 	private void handleAddInf(JamArchive p, List l, boolean overwrite) {
 		String entry = null;

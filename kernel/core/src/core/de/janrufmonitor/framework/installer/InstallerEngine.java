@@ -88,6 +88,7 @@ public class InstallerEngine {
 	private List m_installers;
 	private IRuntime m_runtime;
 	private File m_installDir;
+	private File m_userInstallDir;
 	private Properties m_installedModules;
 		
 	private static InstallerEngine m_instance = null;
@@ -148,7 +149,8 @@ public class InstallerEngine {
     	try {
 			FileOutputStream fos = new FileOutputStream(tmpFile);
 			Stream.copy(new BufferedInputStream(in), fos, true);
-			return this.internal_install(tmpFile, restart, false);
+			System.setProperty("jam.propagate", "true");
+			return this.internal_install(tmpFile, restart, false, false);
 		} catch (FileNotFoundException e) {
 			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 			return false;
@@ -165,7 +167,8 @@ public class InstallerEngine {
     public boolean install(File f, boolean isRestart, boolean keepFiles) {
     	boolean restart = false;
     	try {
-    		restart = this.internal_install(f, isRestart, keepFiles);
+    		System.setProperty("jam.propagate", "true");
+    		restart = this.internal_install(f, isRestart, keepFiles, false);
 		} catch (InstallerException e) {
 			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 			return false;
@@ -205,7 +208,7 @@ public class InstallerEngine {
     		// set system property for check of installer
     		System.setProperty(IJAMConst.SYSTEM_INSTALLER_RUN, "true");
     		
-            File directory = this.getInstallDirectory();
+            File directory = this.getDefaultInstallationDirectory();
             if (directory.isDirectory()) {
             	IPropagator pg = this.addPropagator();
             	
@@ -215,7 +218,7 @@ public class InstallerEngine {
     			if (files.length>0) {
     				for (int k = files.length - 1; k >= 0; k--) {
     					try {
-							restart |= this.internal_install(files[k], true, false);
+							restart |= this.internal_install(files[k], true, false, false);
 						} catch (InstallerException e) {
 							this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 						}
@@ -226,10 +229,26 @@ public class InstallerEngine {
     			if (files.length>0) {
     				for (int k = files.length - 1; k >= 0; k--) {
     					try {
-							restart |= this.internal_install(files[k], true, false);
+							restart |= this.internal_install(files[k], true, false, false);
 						} catch (InstallerException e) {
 							this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 						}
+    				}
+    			}
+    			
+    			if (OSUtils.isMultiuserEnabled()) {
+    				directory = this.getUserInstallationDirectory();
+    				if (directory.isDirectory()) {
+    					files = directory.listFiles(new GenericFileFilter("", false));
+    	    			if (files.length>0) {
+    	    				for (int k = files.length - 1; k >= 0; k--) {
+    	    					try {
+    								restart |= this.internal_install(files[k], true, false, true);
+    							} catch (InstallerException e) {
+    								this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+    							}
+    	    				}
+    	    			}
     				}
     			}
     			
@@ -246,7 +265,7 @@ public class InstallerEngine {
     	}    
     }
     
-    private boolean internal_install(File f, boolean acceptRestart, boolean keepFiles) throws InstallerException {
+    private boolean internal_install(File f, boolean acceptRestart, boolean keepFiles, boolean isMultiuser) throws InstallerException {
     	if (f==null) {
     		this.m_logger.severe("File to install is null.");
     		return false;
@@ -263,7 +282,7 @@ public class InstallerEngine {
     			boolean result = this.installWithDescriptor(installer, f, descriptor);
     			if (acceptRestart) restart = result;
     		} else {
-    			this.installWithoutDescriptor(installer, f);
+    			this.installWithoutDescriptor(installer, f, isMultiuser);
     		}
     		if(!keepFiles) {
     			this.m_logger.info("Deleting installed module file "+f.getName()+", if not moved.");
@@ -375,11 +394,13 @@ public class InstallerEngine {
     	return restart;
     }
     
-    private void installWithoutDescriptor(IInstaller installer, File f) throws InstallerException {
-    	this.m_logger.warning("No module descriptor available. This module is not intended to be installed in this version: "+f.getName());
-    	PropagationFactory.getInstance().fire(
-    		new Message(Message.INFO, NAMESPACE, "null", new Exception("Component with no module descriptor installed."))
-		);
+    private void installWithoutDescriptor(IInstaller installer, File f, boolean suppressPopup) throws InstallerException {
+    	if (!suppressPopup) {
+	    	this.m_logger.warning("No module descriptor available. This module is not intended to be installed in this version: "+f.getName());
+	    	PropagationFactory.getInstance().fire(
+	    		new Message(Message.INFO, NAMESPACE, "null", new Exception("Component with no module descriptor installed."))
+			);
+    	}
 		try {
 			installer.install(true);
 		} catch (InstallerException e) {
@@ -530,12 +551,20 @@ public class InstallerEngine {
     }
 	
 	private boolean check() {
-		File directory = this.getInstallDirectory();
+		File directory = this.getDefaultInstallationDirectory();
         if (directory.exists() && directory.isDirectory()) {
             File[] files = directory.listFiles();
             if (files.length>0) {
 				this.m_logger.info("New modules for installation found.");
 				return true;
+            }
+            directory = this.getUserInstallationDirectory();
+            if (directory.exists() && directory.isDirectory()) {
+                files = directory.listFiles();
+                if (files.length>0) {
+    				this.m_logger.info("New modules for installation found in user install directory.");
+    				return true;
+                }
             }
         } else {
             this.m_logger.warning(directory.getAbsolutePath()+" directory for new modules not found in install path. Please check the configuration file.");
@@ -545,7 +574,7 @@ public class InstallerEngine {
         return false;
 	}
 	
-	private File getInstallDirectory() {
+	private File getDefaultInstallationDirectory() {
 		if (this.m_installDir==null) {
 			this.m_installDir = new File(PathResolver.getInstance(this.getRuntime()).getInstallDirectory() + "install" + File.separator);
 			if (!this.m_installDir.exists()) {
@@ -554,6 +583,17 @@ public class InstallerEngine {
 			}
 		}
 		return this.m_installDir;
+	}
+	
+	private File getUserInstallationDirectory() {
+		if (this.m_userInstallDir==null) {
+			this.m_userInstallDir = new File(PathResolver.getInstance(this.getRuntime()).getInstallDirectory() + "users" + File.separator + OSUtils.getLoggedInUser()+File.separator+"install");
+			if (!this.m_userInstallDir.exists()) {
+				this.m_logger.warning("User installation directory "+this.m_userInstallDir.getAbsolutePath()+" does not exist. Please create directory structure manually.");
+				this.m_userInstallDir.mkdirs();
+			}
+		}
+		return this.m_userInstallDir;
 	}
 	
     private IRuntime getRuntime() {

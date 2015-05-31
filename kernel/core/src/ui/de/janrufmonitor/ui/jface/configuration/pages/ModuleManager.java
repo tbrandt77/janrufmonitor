@@ -38,6 +38,7 @@ import de.janrufmonitor.ui.jface.application.dnd.IDropTargetHandler;
 import de.janrufmonitor.ui.jface.configuration.AbstractConfigPage;
 import de.janrufmonitor.ui.jface.configuration.IConfigPage;
 import de.janrufmonitor.ui.swt.DisplayManager;
+import de.janrufmonitor.util.io.OSUtils;
 import de.janrufmonitor.util.io.PathResolver;
 import de.janrufmonitor.util.string.StringUtils;
 
@@ -242,7 +243,7 @@ public class ModuleManager extends AbstractConfigPage {
 		
 		l = new Label(c, SWT.LEFT);
 		
-		if (module.getItemCount()>0) {
+		if (module.getItemCount()>0 && !OSUtils.isMultiuserEnabled()) {
 			final Group info = new Group(c, SWT.SHADOW_ETCHED_IN);
 			info.setLayout(new GridLayout(2, false));
 			
@@ -338,7 +339,7 @@ public class ModuleManager extends AbstractConfigPage {
 		final Button uninstall = new Button(c, SWT.PUSH | SWT.LEFT);
 		uninstall.setText(this.m_i18n.getString(this.getNamespace(), "uninstall", "label", this.m_language));
 	
-		if (module.getItemCount()==0) {
+		if (module.getItemCount()==0 || OSUtils.isMultiuserEnabled()) {
 			uninstall.setEnabled(false);
 		}
 		uninstall.addSelectionListener(

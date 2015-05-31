@@ -114,5 +114,14 @@ public class OSUtils {
 		return (multiUser!=null && Boolean.parseBoolean(multiUser));
 	}
 	
+	/**
+	 * Returns the current logged in user or "default" if not set.
+	 * @return
+	 */
+	public static String getLoggedInUser() {
+		String usr = System.getProperty("user.name");
+		return (usr!=null && usr.length()>0 ? usr.trim() : "default");
+	}
+	
 
 }

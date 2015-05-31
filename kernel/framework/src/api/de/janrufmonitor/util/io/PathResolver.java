@@ -1,10 +1,14 @@
 package de.janrufmonitor.util.io;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
@@ -35,6 +39,7 @@ public class PathResolver {
 	private File dataPath;
 	private File userDataPath;
 	private File configPath;
+	private File userConfigPath;
 	private File logPath;
 	private File userhomePath;
 	private File tempPath;
@@ -78,6 +83,7 @@ public class PathResolver {
 		this.imagePath = null;
 		this.dataPath = null;
 		this.configPath = null;
+		this.userConfigPath = null;
 		this.logPath = null;
 		this.userhomePath = null;
 		this.tempPath = null;
@@ -95,6 +101,7 @@ public class PathResolver {
 		path = StringUtils.replaceString(path, IJAMConst.PATHKEY_DATAPATH, this.getDataDirectory());
 		path = StringUtils.replaceString(path, IJAMConst.PATHKEY_USERDATAPATH, this.getUserDataDirectory());
 		path = StringUtils.replaceString(path, IJAMConst.PATHKEY_CONFIGPATH, this.getConfigDirectory());
+		path = StringUtils.replaceString(path, IJAMConst.PATHKEY_USERCONFIGPATH, this.getUserConfigDirectory());
 		path = StringUtils.replaceString(path, IJAMConst.PATHKEY_LOGPATH, this.getLogDirectory());
 		path = StringUtils.replaceString(path, IJAMConst.PATHKEY_PHOTOPATH, this.getPhotoDirectory());
 		return path;
@@ -114,6 +121,7 @@ public class PathResolver {
 		path = StringUtils.replaceString(path, this.getTempDirectory(), IJAMConst.PATHKEY_TEMP);
 		path = StringUtils.replaceString(path, this.getDataDirectory(), IJAMConst.PATHKEY_DATAPATH);
 		path = StringUtils.replaceString(path, this.getConfigDirectory(), IJAMConst.PATHKEY_CONFIGPATH);
+		path = StringUtils.replaceString(path, this.getUserConfigDirectory(), IJAMConst.PATHKEY_USERCONFIGPATH);
 		path = StringUtils.replaceString(path, this.getLogDirectory(), IJAMConst.PATHKEY_LOGPATH);		
 		path = StringUtils.replaceString(path, this.getInstallDirectory(), IJAMConst.PATHKEY_INSTALLPATH);
 		return path;
@@ -130,6 +138,41 @@ public class PathResolver {
 				this.installPath = new File(this.getWorkingDirectory(this.m_runtime.getClass()));
 			else 
 				this.installPath = new File(this.getWorkingDirectory(PathResolver.class));
+			
+			if (OSUtils.isMultiuserEnabled()) {
+				// check for default user
+				File default_user_dir = new File(this.installPath, "users"+File.separator+"default"+File.separator+"install");
+				if (!default_user_dir.exists()) {
+					default_user_dir.mkdirs();
+					try {
+						this.copy(new File(this.installPath, "install"), default_user_dir, null);
+					} catch (FileNotFoundException e) {
+						PathResolver.m_logger.log(Level.SEVERE, e.getMessage(), e);
+					} catch (IOException e) {
+						PathResolver.m_logger.log(Level.SEVERE, e.getMessage(), e);
+					}
+				}
+				File loggedin_user_dir = new File(this.installPath, "users"+File.separator+OSUtils.getLoggedInUser()+File.separator+"install");
+				//System.setProperty("jam.propagate", "true"); // signal installer to propagate new installed module to all users
+				if (!loggedin_user_dir.exists()) {
+					loggedin_user_dir.mkdirs();
+					System.setProperty("jam.propagate", "false");
+				}
+				try {
+					final long lastCopyTS = this.getLastCopyTimestamp(loggedin_user_dir.getParentFile());
+					this.copy(default_user_dir, loggedin_user_dir, new FileFilter() {
+						public boolean accept(File f) {
+							if (f.lastModified()>lastCopyTS) return true;
+							return false;
+						}});
+					this.setLastCopyTimestamp(loggedin_user_dir.getParentFile());
+				} catch (FileNotFoundException e) {
+					PathResolver.m_logger.log(Level.SEVERE, e.getMessage(), e);
+				} catch (IOException e) {
+					PathResolver.m_logger.log(Level.SEVERE, e.getMessage(), e);
+				}
+			}
+			
 		}
 		return this.installPath.getAbsolutePath() + File.separator;
 	}
@@ -243,7 +286,7 @@ public class PathResolver {
 	public String getDataDirectory() {	
 		if (this.dataPath==null) {
 			File pathFile = new File(getInstallDirectory(), ".paths");
-			if (pathFile.exists() && pathFile.isFile()) {
+			if (pathFile.exists() && pathFile.isFile() && !OSUtils.isMultiuserEnabled()) {
 				try {
 					FileInputStream in = new FileInputStream(pathFile);
 					Properties paths = new Properties();
@@ -263,6 +306,50 @@ public class PathResolver {
 			} 
 			if (this.dataPath==null){
 				this.dataPath = new File(this.getInstallDirectory(), "data");
+				
+				if (OSUtils.isMultiuserEnabled()) {
+					// check for default user
+					File default_user_dir = new File(this.getInstallDirectory(), "users"+File.separator+"default"+File.separator+"data");
+					if (!default_user_dir.exists()) {
+						default_user_dir.mkdirs();
+					}
+					
+					try {
+						final long lastCopyTS = this.getLastCopyTimestamp(default_user_dir);
+						this.copy(this.dataPath, default_user_dir, new FileFilter() {
+							public boolean accept(File f) {
+								if (f.lastModified()>lastCopyTS) return true;
+								return false;
+							}});
+						this.setLastCopyTimestamp(default_user_dir);
+						//this.copy(this.dataPath, default_user_dir, null);
+					} catch (FileNotFoundException e) {
+						PathResolver.m_logger.log(Level.SEVERE, e.getMessage(), e);
+					} catch (IOException e) {
+						PathResolver.m_logger.log(Level.SEVERE, e.getMessage(), e);
+					}
+					
+					File loggedin_user_dir = new File(this.getInstallDirectory(), "users"+File.separator+OSUtils.getLoggedInUser()+File.separator+"data");
+					if (!loggedin_user_dir.exists()) {
+						loggedin_user_dir.mkdirs();
+					}
+					try {
+						final long lastCopyTS = this.getLastCopyTimestamp(loggedin_user_dir);
+						this.copy(default_user_dir, loggedin_user_dir, new FileFilter() {
+							public boolean accept(File f) {
+								if (f.lastModified()>lastCopyTS) return true;
+								return false;
+							}});
+						this.setLastCopyTimestamp(loggedin_user_dir);
+					} catch (FileNotFoundException e) {
+						PathResolver.m_logger.log(Level.SEVERE, e.getMessage(), e);
+					} catch (IOException e) {
+						PathResolver.m_logger.log(Level.SEVERE, e.getMessage(), e);
+					}
+					
+					this.dataPath = loggedin_user_dir;
+				}
+				
 				Properties paths = new Properties();
 				if (pathFile.exists() && pathFile.isFile()) {
 					try {
@@ -351,6 +438,55 @@ public class PathResolver {
 		return this.userDataPath.getAbsolutePath() + File.separator;
 	}
 
+	/**
+	 * Gets the user config directory of the application.
+	 *
+	 * @return user config directory
+	 */
+	public String getUserConfigDirectory() {
+		if (this.userConfigPath==null) {
+			this.userConfigPath = new File(this.getConfigDirectory());
+			
+			if (OSUtils.isMultiuserEnabled()) {
+				// check for default user
+				File default_user_dir = new File(this.getInstallDirectory(), "users"+File.separator+"default"+File.separator+"config");
+				if (!default_user_dir.exists()) {
+					default_user_dir.mkdirs();
+					try {
+						this.copy(this.userConfigPath, default_user_dir, new FileFilter() {
+							public boolean accept(File f) {
+								if (f.getName().startsWith("janrufmonitor")) return true;
+								if (f.getName().startsWith("i18n.")) return true;
+								return false;
+							}});
+					} catch (FileNotFoundException e) {
+						PathResolver.m_logger.log(Level.SEVERE, e.getMessage(), e);
+					} catch (IOException e) {
+						PathResolver.m_logger.log(Level.SEVERE, e.getMessage(), e);
+					}
+				}
+				File loggedin_user_dir = new File(this.getInstallDirectory(), "users"+File.separator+OSUtils.getLoggedInUser()+File.separator+"config");
+				if (!loggedin_user_dir.exists()) {
+					loggedin_user_dir.mkdirs();
+					try {
+						this.copy(default_user_dir, loggedin_user_dir, new FileFilter() {
+							public boolean accept(File f) {
+								if (f.getName().startsWith("janrufmonitor")) return true;
+								if (f.getName().startsWith("i18n.")) return true;
+								return false;
+							}});
+					} catch (FileNotFoundException e) {
+						PathResolver.m_logger.log(Level.SEVERE, e.getMessage(), e);
+					} catch (IOException e) {
+						PathResolver.m_logger.log(Level.SEVERE, e.getMessage(), e);
+					}
+				}
+				this.userConfigPath = loggedin_user_dir;
+			}
+			
+		}
+		return this.userConfigPath.getAbsolutePath() + File.separator;
+	}
 
 	/**
 	 * Gets the config directory of the application.
@@ -478,6 +614,10 @@ public class PathResolver {
 	public String getLogDirectory() {
 		if (this.logPath==null) {
 			this.logPath = new File(this.getInstallDirectory(), "logs");
+			
+			if (OSUtils.isMultiuserEnabled()) {
+				this.logPath = new File(this.getInstallDirectory(), "users"+File.separator+OSUtils.getLoggedInUser()+File.separator+"logs");
+			}
 		}
 		return this.logPath.getAbsolutePath() + File.separator;
 	}
@@ -598,6 +738,51 @@ public class PathResolver {
 			PathResolver.m_logger.log(Level.SEVERE, e.getMessage(), e);
 		}
 		return "";
+	}
+	
+	public void setLastCopyTimestamp(File f) {
+		long now = new Date().getTime();
+		ByteArrayInputStream in = new ByteArrayInputStream(Long.toString(now).getBytes());
+		try {
+			Stream.copy(in, new FileOutputStream(new File(f, ".ts")), true);
+		} catch (FileNotFoundException e) {
+			PathResolver.m_logger.log(Level.SEVERE, e.getMessage(), e);
+		} catch (IOException e) {
+			PathResolver.m_logger.log(Level.SEVERE, e.getMessage(), e);
+		}
+	}
+	
+	public long getLastCopyTimestamp(File f) {
+		if (new File(f, ".ts").exists()) {
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			try {
+				Stream.copy(new FileInputStream(new File(f, ".ts")), out,true);
+				return Long.parseLong(out.toString());
+			} catch (FileNotFoundException e) {
+				PathResolver.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			} catch (IOException e) {
+				PathResolver.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			}
+		}
+		return -1L;
+	}
+	
+	private void copy(File source_dir, File target_dir, FileFilter ff) throws FileNotFoundException, IOException {
+		if (source_dir.isDirectory()) {
+			if (ff==null) ff = new FileFilter() {
+				public boolean accept(File pathname) {
+					return true;
+				}};
+			File[] allFiles = source_dir.listFiles(ff);
+			for (int i=0;i<allFiles.length;i++) {
+				if (allFiles[i].isDirectory()) {
+					this.copy(allFiles[i], new File(target_dir, allFiles[i].getName()), ff);
+				} else if (allFiles[i].isFile()) {
+					if (!target_dir.exists()) target_dir.mkdirs();
+					Stream.copy(new FileInputStream(new File(source_dir, allFiles[i].getName())), new FileOutputStream(new File(target_dir, allFiles[i].getName())), true);
+				}
+			}
+		}
 	}
 
 	
