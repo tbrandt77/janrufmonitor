@@ -14,6 +14,7 @@ ui.jface.configuration.pages.FritzBoxVoip\:activemonitor\:label\:en=Monitor enab
 ui.jface.configuration.pages.FritzBoxVoip\:activemonitor2\:label\:en=Monitor enabled
 ui.jface.configuration.pages.FritzBoxVoip\:outgoing\:label\:en=Monitor outgoing calls
 ui.jface.configuration.pages.FritzBoxVoip\:retrymax\:label\:en=Connection retry #: 
+ui.jface.configuration.pages.FritzBoxVoip\:retrytimeout\:label\:en=Waiting time between connection retry: 
 ui.jface.configuration.pages.FritzBoxVoip\:festnetzalias\:label\:en=MSN for "Festnetz" calls:
 ui.jface.configuration.pages.FritzBoxVoip\:syncdelete\:label\:en=Delete call list on FRITZ!Box Fon after synchronisation
 ui.jface.configuration.pages.FritzBoxVoip\:fbinfo\:label\:en=FRITZ!Box Fon info:

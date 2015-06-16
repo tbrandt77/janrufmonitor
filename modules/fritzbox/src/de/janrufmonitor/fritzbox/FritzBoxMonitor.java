@@ -80,7 +80,7 @@ public class FritzBoxMonitor implements IMonitor, IConfigurable, FritzBoxConst {
 									e));
 							isRunning = true;
 							try {
-								Thread.sleep(15000);
+								Thread.sleep((this.getRetryTimeoutValue()*1010));
 							} catch (InterruptedException e1) {
 								m_logger.log(Level.SEVERE, e1.getMessage(), e1);
 							}							
@@ -237,6 +237,12 @@ public class FritzBoxMonitor implements IMonitor, IConfigurable, FritzBoxConst {
 			if (m_configuration!=null)
 				return Integer.parseInt(m_configuration.getProperty(CFG_RETRYMAX, "5"));
 			return 5;
+		}
+		
+		private int getRetryTimeoutValue() {
+			if (m_configuration!=null)
+				return 60 * Integer.parseInt(m_configuration.getProperty(CFG_RETRYTIMEOUT, "1"));
+			return 60;
 		}
 		
 		public String toString() {

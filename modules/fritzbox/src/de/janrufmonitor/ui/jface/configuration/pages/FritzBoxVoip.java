@@ -156,6 +156,14 @@ public class FritzBoxVoip extends AbstractFieldEditorConfigPage {
 				this.getFieldEditorParent()
 			);
 			ife.setTextLimit(2);
+			addField(ife);
+			
+			ife = new IntegerFieldEditor(
+				getConfigNamespace()+SEPARATOR+"retrytimeout",
+				this.m_i18n.getString(this.getNamespace(), "retrytimeout", "label", this.m_language),
+				this.getFieldEditorParent()
+			);
+			ife.setTextLimit(2);
 			addField(ife);	
 			
 			ComboFieldEditor cfe = new ComboFieldEditor(

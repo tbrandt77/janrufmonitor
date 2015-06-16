@@ -14,6 +14,7 @@ ui.jface.configuration.pages.FritzBoxVoip\:activemonitor\:label\:de=\u00DCberwac
 ui.jface.configuration.pages.FritzBoxVoip\:activemonitor2\:label\:de=\u00DCberwachung aktivieren
 ui.jface.configuration.pages.FritzBoxVoip\:outgoing\:label\:de=Ausgehende Anrufe \u00FCberwachen
 ui.jface.configuration.pages.FritzBoxVoip\:retrymax\:label\:de=Anzahl der autom. Verbindungsversuche: 
+ui.jface.configuration.pages.FritzBoxVoip\:retrytimeout\:label\:de=Wartezeit [min.] zwischen Verbindungsversuche: 
 ui.jface.configuration.pages.FritzBoxVoip\:festnetzalias\:label\:de=MSN f\u00FCr "Festnetz" Anrufe:
 ui.jface.configuration.pages.FritzBoxVoip\:syncdelete\:label\:de=Anrufliste auf FRITZ!Box Fon nach Synchronisation l\u00F6schen
 ui.jface.configuration.pages.FritzBoxVoip\:fbinfo\:label\:de=FRITZ!Box Fon-Infos:

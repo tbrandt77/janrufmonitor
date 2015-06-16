@@ -21,6 +21,7 @@ monitor.FritzBoxMonitor\:outgoing\:type=boolean
 monitor.FritzBoxMonitor\:syncclean\:value=true
 monitor.FritzBoxMonitor\:syncclean\:type=boolean
 monitor.FritzBoxMonitor\:retrymax\:value=3
+monitor.FritzBoxMonitor\:retrytimeout\:value=1
 monitor.FritzBoxMonitor\:autoreconnect\:value=true
 monitor.FritzBoxMonitor\:autoreconnect\:type=boolean
 

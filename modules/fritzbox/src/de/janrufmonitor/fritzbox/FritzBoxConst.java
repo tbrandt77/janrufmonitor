@@ -11,6 +11,7 @@ public interface FritzBoxConst {
 	public String CFG_OUTGOING = "outgoing";
 	public String CFG_CLICKDIAL = "boxclickdial";
 	public String CFG_RETRYMAX = "retrymax";
+	public String CFG_RETRYTIMEOUT = "retrytimeout";
 	public String CFG_FESTNETZALIAS = "festnetzalias";
 	public String CFG_SYNCDELETE = "syncdelete";
 	public String CFG_SYNCCLEAN = "syncclean";
