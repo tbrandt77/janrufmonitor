@@ -68,3 +68,7 @@ ui.jface.application.ActionRegistry\:action_fritzbox_stats\:access=system
 # added 5.0.44
 ui.jface.wizards.pages.InitVariantPage\:class\:value=de.janrufmonitor.ui.jface.wizards.pages.InitFritzBoxVariantPage
 ui.jface.wizards.pages.InitVariantPage\:class\:access=system
+
+# added 5.0.58
+ui.jface.application.RendererRegistry\:renderer_fritzboxspoofingnumber\:value=de.janrufmonitor.ui.jface.application.fritzbox.rendering.SpoofingNumber
+ui.jface.application.RendererRegistry\:renderer_fritzboxspoofingnumber\:access=system

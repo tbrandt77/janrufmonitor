@@ -62,6 +62,21 @@ public abstract class AbstractFritzBoxCall implements IFritzBoxCall, FritzBoxCon
 		return value;
 	}
 	
+	protected boolean isSpoofingnumber(String s) {
+		int start = s.indexOf("(0");
+		int end = s.lastIndexOf(")");
+		return (start>0 && end > start);
+	}
+	
+	protected String getSpoofingnumber(String s) {
+		int start = s.indexOf("(0");
+		int end = s.lastIndexOf(")");
+		if (start>0 && end > start) {
+			return s.substring(start+1, end);
+		}
+		return null;
+	}
+	
 	protected int getOutgoingState() {
 		if (this.m_outgoingState == -1) {
 			this.m_outgoingState = 4;

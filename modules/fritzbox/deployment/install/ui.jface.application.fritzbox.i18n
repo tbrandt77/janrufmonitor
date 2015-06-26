@@ -75,9 +75,12 @@ ui.jface.application.fritzbox.action.statistic.LineStatsAction\:dialogtitle\:lab
 ui.jface.application.fritzbox.action.statistic.LineStatsAction\:dialogtitle\:description\:de=Zeigt eine Statistik \u00FCber die genutzten Fritz!box Fon Nebenstellen.
 ui.jface.application.fritzbox.action.statistic.LineStatsAction\:current\:label\:de=Statistik f\u00FCr die Ansicht "{%1}":
 
-#added 5.0.17
+# added 5.0.17
 ui.jface.application.fritzbox.action.Block\:title\:label\:de=Rufnummer mit FRITZ!Box Fon sperren
 ui.jface.application.fritzbox.action.Block\:block\:label\:de=Rufnummer mit FRITZ!Box Fon sperren...
 ui.jface.application.fritzbox.action.Block\:block\:description\:de=Soll die Rufnummer {%1} wirklich mit der FRITZ!Box Fon gesperrt werden? Alle Anrufe mit dieser Rufnummer werden zuk\u00FCnftig abgewiesen.
 ui.jface.application.fritzbox.action.Block\:failedblock\:label\:de=Die Rufnummer konnte nicht auf die FRITZ!Box Fon Sperrliste gesetzt werden. Die FRITZ!Box Fon ist derzeit nicht erreichbar oder die Anmeldedaten sind falsch.
 
+# added 5.0.58
+ui.jface.application.fritzbox.rendering.SpoofingNumber\:name\:label\:de=Spoofingrufnummer
+ui.jface.application.fritzbox.rendering.SpoofingNumber\:label\:label\:de=Spoofingrufnummer (FRITZ!Box Fon)

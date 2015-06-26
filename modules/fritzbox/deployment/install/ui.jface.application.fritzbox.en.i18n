@@ -79,3 +79,6 @@ ui.jface.application.fritzbox.action.Block\:title\:label\:en=Add caller to FRITZ
 ui.jface.application.fritzbox.action.Block\:block\:label\:en=Add caller to FRITZ!Box Fon block list...
 ui.jface.application.fritzbox.action.Block\:block\:description\:en=Are you sure to add the number {%1} to the FRITZ!Box Fon block list?
 ui.jface.application.fritzbox.action.Block\:failedblock\:label\:en=Could not add caller to the FRITZ!Box Fon block list. The FRITZ!Box Fon is currently not reachable.
+
+ui.jface.application.fritzbox.rendering.SpoofingNumber\:name\:label\:en=Spoofing number
+ui.jface.application.fritzbox.rendering.SpoofingNumber\:label\:label\:en=Spoofing number (FRITZ!Box Fon)

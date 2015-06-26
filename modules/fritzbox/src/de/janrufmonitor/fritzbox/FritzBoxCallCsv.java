@@ -153,6 +153,15 @@ public class FritzBoxCallCsv extends AbstractFritzBoxCall {
 					if (callByCall!=null)
 						am.add(r.getCallFactory().createAttribute("fritzbox.callbycall", callByCall));
 					
+					if (isSpoofingnumber(call[2])) {
+						String sn = getSpoofingnumber(call[2]);
+						IPhonenumber pnx = PhonenumberAnalyzer.getInstance().createPhonenumberFromRaw(sn.trim(), null);
+						ICaller cx = Identifier.identify(r, pnx);
+						if (cx!=null) {
+							am.add(r.getCallFactory().createAttribute("fritzbox.spoofing", cx.getPhoneNumber().getIntAreaCode()+";"+cx.getPhoneNumber().getAreaCode()+";"+cx.getPhoneNumber().getCallNumber()));
+						}
+					}
+					
 					// create UUID
 					StringBuffer uuid = new StringBuffer();
 					uuid.append(date.getTime());
