@@ -25,7 +25,7 @@ import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IMultiPhoneCaller;
 import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.framework.configuration.IConfigManager;
-import de.janrufmonitor.framework.monitor.PhonenumberInfo;
+import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
 import de.janrufmonitor.repository.identify.Identifier;
 import de.janrufmonitor.repository.mapping.BussinessOutlookMapping;
 import de.janrufmonitor.repository.mapping.DefaultOutlookMapping;
@@ -62,13 +62,13 @@ public class OutlookContactProxy implements OutlookContactConst {
 	public synchronized ICaller findContact(IPhonenumber pn) throws OutlookContactProxyException {
 		ICaller c = Identifier.identifyDefault(getRuntime(), pn);
 
-		if (c==null && PhonenumberInfo.isInternalNumber(pn.getTelephoneNumber())) {
+		if (c==null && PhonenumberAnalyzer.getInstance().isInternal(pn.getTelephoneNumber())) {
 			pn = getRuntime().getCallerFactory().createInternalPhonenumber(pn.getTelephoneNumber());
 			c = getRuntime().getCallerFactory().createCaller(pn);
 		}
 		
 		if (c!=null) {
-			if (PhonenumberInfo.isInternalNumber(pn)) {
+			if (PhonenumberAnalyzer.getInstance().isInternal(pn)) {
 				IPhonenumber p = getRuntime().getCallerFactory().createInternalPhonenumber(pn.getTelephoneNumber());
 				c.setPhoneNumber(p);
 			} 
