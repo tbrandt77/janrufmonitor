@@ -66,16 +66,16 @@ public class ConsoleSimulate extends AbstractConsoleCommand implements IEventSen
 		
 		IEventBroker evtBroker = PIMRuntime.getInstance().getEventBroker();
 
-		IPhonenumber phone = PhonenumberAnalyzer.getInstance().createClirPhonenumberFromRaw(number);
+		IPhonenumber phone = PhonenumberAnalyzer.getInstance().toClirPhonenumber(number);
 		if (phone!=null) System.out.println("Call detected as CLIR: " + phone.isClired()); 
 		
 		if (phone==null) {
-			phone = PhonenumberAnalyzer.getInstance().createInternalPhonenumberFromRaw(number, msn);
+			phone = PhonenumberAnalyzer.getInstance().toInternalPhonenumber(number, msn);
 			if (phone!=null) System.out.println("Call detected as internal: " + number.trim());
 		}
 				
 		if (phone==null) {
-			phone = PhonenumberAnalyzer.getInstance().createPhonenumberFromRaw(number, msn);
+			phone = PhonenumberAnalyzer.getInstance().toPhonenumber(number, msn);
 			if (phone!=null) System.out.println("Call detected as external: " + number.trim());
 		}
 

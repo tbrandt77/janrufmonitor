@@ -606,6 +606,7 @@ public class Formatter {
 	 * 
 	 * @param phone
 	 * @return
+	 * @deprecated
 	 */
 	private String normalizePhonenumber(String phone, boolean trimZeros) {
 		phone = phone.trim();
@@ -630,6 +631,12 @@ public class Formatter {
 		return phone;
 	}
 	
+	/**
+	 * 
+	 * @deprecated
+	 * @param phone
+	 * @return
+	 */
 	public String normalizePhonenumber(String phone) {
 		return this.normalizePhonenumber(phone, true);
 	}
@@ -642,6 +649,7 @@ public class Formatter {
 	 *  
 	 * @param phone
 	 * @return
+	 * @deprecated
 	 */
 	public String toCallablePhonenumber(String phone) {
 		phone = phone.trim();

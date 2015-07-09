@@ -25,12 +25,12 @@ import de.janrufmonitor.framework.ICallerList;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.framework.i18n.II18nManager;
+import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
 import de.janrufmonitor.repository.identify.Identifier;
 import de.janrufmonitor.repository.imexport.ICallerImporter;
 import de.janrufmonitor.repository.imexport.IImExporter;
 import de.janrufmonitor.repository.imexport.ITracker;
 import de.janrufmonitor.runtime.PIMRuntime;
-import de.janrufmonitor.util.formatter.Formatter;
 import de.janrufmonitor.util.io.PathResolver;
 import de.janrufmonitor.util.io.Stream;
 
@@ -134,7 +134,7 @@ public class CsvCallerImporter implements ICallerImporter, ITracker {
 					for (int j=0;j<tokens.length;j++) {
 						attributename = (String) attributes.get(j);
 						if (attributename.trim().toLowerCase().startsWith("pn:")) {
-							IPhonenumber pn = PIMRuntime.getInstance().getCallerFactory().createPhonenumber(Formatter.getInstance(PIMRuntime.getInstance()).normalizePhonenumber(tokens[j]));
+							IPhonenumber pn = PIMRuntime.getInstance().getCallerFactory().createPhonenumber(PhonenumberAnalyzer.getInstance().normalize(tokens[j]));
 							ICaller c = Identifier.identifyDefault(PIMRuntime.getInstance(), pn);
 							if (c!=null) {
 								phones.add(c.getPhoneNumber());

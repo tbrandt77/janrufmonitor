@@ -7,6 +7,11 @@ import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.runtime.PIMRuntime;
 
+/**
+ * 
+ * @author Thilo Brandt
+ * @deprecated
+ */
 public class PhonenumberInfo {
 
 	public static int maxInternalNumberLength() {

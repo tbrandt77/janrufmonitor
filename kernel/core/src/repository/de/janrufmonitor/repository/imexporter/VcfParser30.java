@@ -26,10 +26,8 @@ import de.janrufmonitor.framework.ICallerList;
 import de.janrufmonitor.framework.IName;
 import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
-import de.janrufmonitor.framework.monitor.PhonenumberInfo;
 import de.janrufmonitor.repository.identify.Identifier;
 import de.janrufmonitor.runtime.PIMRuntime;
-import de.janrufmonitor.util.formatter.Formatter;
 import de.janrufmonitor.util.io.Base64Decoder;
 import de.janrufmonitor.util.io.PathResolver;
 import de.janrufmonitor.util.io.Stream;
@@ -414,26 +412,12 @@ public class VcfParser30 {
 	}
 
 	protected IPhonenumber parsePhonenumber(String n) {
-		if (PhonenumberInfo.isClired(n)) return null;
+		if (PhonenumberAnalyzer.getInstance().isClired(n)) return null;
 
-		Formatter f = Formatter.getInstance(PIMRuntime.getInstance());
-		IPhonenumber pn = PhonenumberAnalyzer.getInstance().createInternalPhonenumberFromRaw(f.normalizePhonenumber(n.trim()), null);
+		IPhonenumber pn = PhonenumberAnalyzer.getInstance().toInternalPhonenumber(PhonenumberAnalyzer.getInstance().normalize(n.trim()), null);
 		if (pn!=null) return pn;
 			
-		pn = PIMRuntime.getInstance().getCallerFactory().createPhonenumber(f.normalizePhonenumber(n.trim()));
-		
-		/** removed 2013/01/03: +49 (1234) 56789 numbers got detected wrong
-		IPhonenumber pn = PhonenumberAnalyzer.getInstance().createClirPhonenumberFromRaw(f.normalizePhonenumber(n.trim()));
-		if (pn!=null) return pn;
-		
-		// if no CLIR call, check internal
-		pn =  PhonenumberAnalyzer.getInstance().createInternalPhonenumberFromRaw(f.normalizePhonenumber(n.trim()), null);
-		if (pn!=null) return pn;
-		
-		// if no internal call, check regular
-		pn = PhonenumberAnalyzer.getInstance().createPhonenumberFromRaw(f.normalizePhonenumber(n.trim()), null);
-
-		**/
+		pn = PIMRuntime.getInstance().getCallerFactory().createPhonenumber(PhonenumberAnalyzer.getInstance().normalize(n.trim()));
 		
 		if (pn != null) {
 			ICaller c = Identifier.identifyDefault(PIMRuntime.getInstance(), pn);

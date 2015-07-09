@@ -46,7 +46,6 @@ import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IMultiPhoneCaller;
 import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
-import de.janrufmonitor.framework.monitor.PhonenumberInfo;
 import de.janrufmonitor.repository.CallerNotFoundException;
 import de.janrufmonitor.repository.ICallerManager;
 import de.janrufmonitor.repository.types.IIdentifyCallerRepository;
@@ -193,7 +192,7 @@ public class MultiPhoneCallerPage extends AbstractPage {
 			typeCombo.select(select);
 			typeCombo.setEnabled(!m_numberReadonly);
 
-			if (PhonenumberInfo.isInternalNumber(this.getPhoneNumber())) {
+			if (PhonenumberAnalyzer.getInstance().isInternal(this.getPhoneNumber())) {
 				number.setText(this.getPhoneNumber().getCallNumber());
 //				number.setText(this.getPhoneNumber().getCallNumber().substring(
 //						0,
@@ -207,8 +206,7 @@ public class MultiPhoneCallerPage extends AbstractPage {
 			}
 
 			typeCombo.setEnabled(!m_numberReadonly
-					&& number.getText().length() > PhonenumberInfo
-							.maxInternalNumberLength());
+					&& number.getText().length() > PhonenumberAnalyzer.getInstance().getInternalNumberMaxLength());
 
 			// Add the handler to update the name based on input
 			typeCombo.addModifyListener(new ModifyListener() {
@@ -231,10 +229,9 @@ public class MultiPhoneCallerPage extends AbstractPage {
 
 			number.addModifyListener(new ModifyListener() {
 				public void modifyText(ModifyEvent event) {
-					Formatter f = Formatter.getInstance(getRuntime());
-					IPhonenumber pn = PhonenumberAnalyzer.getInstance().createInternalPhonenumberFromRaw(f.normalizePhonenumber(number.getText().trim()), null);
-					if (pn==null) pn = PhonenumberAnalyzer.getInstance().createPhonenumberFromRaw(f.normalizePhonenumber(number.getText().trim()), null);
-					if (!PhonenumberInfo.isInternalNumber(pn) /*&& !PhonenumberInfo.containsSpecialChars(number.getText().trim())*/)
+					IPhonenumber pn = PhonenumberAnalyzer.getInstance().toInternalPhonenumber(PhonenumberAnalyzer.getInstance().normalize(number.getText().trim()), null);
+					if (pn==null) pn = PhonenumberAnalyzer.getInstance().toPhonenumber(PhonenumberAnalyzer.getInstance().normalize(number.getText().trim()), null);
+					if (!PhonenumberAnalyzer.getInstance().isInternal(pn))
 						typeCombo.setEnabled(!m_numberReadonly && true);
 					else {
 						typeCombo.setEnabled(!m_numberReadonly && false);
@@ -260,11 +257,10 @@ public class MultiPhoneCallerPage extends AbstractPage {
 						setPageComplete(isComplete());
 						return;
 					}
-					Formatter f = Formatter.getInstance(getRuntime());
 
-					IPhonenumber pn = PhonenumberAnalyzer.getInstance().createInternalPhonenumberFromRaw(f.normalizePhonenumber(number.getText().trim()), null);
-					if (pn==null) pn = PhonenumberAnalyzer.getInstance().createPhonenumberFromRaw(f.normalizePhonenumber(number.getText().trim()), null);
-					if (PhonenumberInfo.isInternalNumber(pn)) {
+					IPhonenumber pn = PhonenumberAnalyzer.getInstance().toInternalPhonenumber(PhonenumberAnalyzer.getInstance().normalize(number.getText().trim()), null);
+					if (pn==null) pn = PhonenumberAnalyzer.getInstance().toPhonenumber(PhonenumberAnalyzer.getInstance().normalize(number.getText().trim()), null);
+					if (PhonenumberAnalyzer.getInstance().isInternal(pn)) {
 						m_n = getRuntime().getCallerFactory()
 								.createInternalPhonenumber(number.getText().trim());
 
@@ -273,7 +269,7 @@ public class MultiPhoneCallerPage extends AbstractPage {
 					}
 
 					
-					String normalizedNumber = f.normalizePhonenumber(number
+					String normalizedNumber = PhonenumberAnalyzer.getInstance().normalize(number
 							.getText().trim());
 					ICallerManager mgr = getRuntime().getCallerManagerFactory()
 							.getCallerManager("CountryDirectory");
@@ -298,8 +294,7 @@ public class MultiPhoneCallerPage extends AbstractPage {
 													IJAMConst.GLOBAL_VARIABLE_CALLERNUMBER,
 													getPhoneNumber()));
 						} else {
-							if (normalizedNumber.length() <= PhonenumberInfo
-									.maxInternalNumberLength()) {
+							if (normalizedNumber.length() <= PhonenumberAnalyzer.getInstance().getInternalNumberMaxLength()) {
 								m_n.setIntAreaCode(IJAMConst.INTERNAL_CALL);
 								m_n.setAreaCode("");
 								m_n.setCallNumber(normalizedNumber);
@@ -920,7 +915,7 @@ public class MultiPhoneCallerPage extends AbstractPage {
 		for (int i = 0, j = tabFolder.getItemCount(); i < j; i++) {
 			pn = (IPhonenumber) ((NumberView) tabFolder.getItem(i).getData())
 					.getPhoneNumber();
-			if (!PhonenumberInfo.isInternalNumber(pn)) {
+			if (!PhonenumberAnalyzer.getInstance().isInternal(pn)) {
 				if (!m_allowClirEdit && pn.getCallNumber().length() < 1) {
 					setErrorMessage(this.m_i18n.getString(this.getNamespace(),
 							"numbererror", "label", this.m_language));

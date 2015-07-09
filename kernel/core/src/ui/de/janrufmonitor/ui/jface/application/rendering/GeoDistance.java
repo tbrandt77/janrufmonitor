@@ -56,7 +56,7 @@ public class GeoDistance extends AbstractTableCellRenderer implements IJournalCe
 			} else {
 				String areacode = PIMRuntime.getInstance().getConfigManagerFactory().getConfigManager().getProperty(IJAMConst.GLOBAL_NAMESPACE, IJAMConst.GLOBAL_AREACODE);
 				if (areacode!=null && areacode.length()>0) {
-					IPhonenumber pn = PhonenumberAnalyzer.getInstance().createPhonenumberFromRaw(areacode + "1234567890", null);
+					IPhonenumber pn = PhonenumberAnalyzer.getInstance().toPhonenumber(areacode + "1234567890", null);
 					ICaller caller = Identifier.identifyDefault(PIMRuntime.getInstance(), pn);
 					if (caller!=null) {
 						local = GeoCoder.getInstance().getCoordinates(caller.getAttributes());

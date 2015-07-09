@@ -18,7 +18,7 @@ import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.ICallerList;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
-import de.janrufmonitor.framework.monitor.PhonenumberInfo;
+import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
 import de.janrufmonitor.repository.db.ICallerDatabaseHandler;
 import de.janrufmonitor.repository.db.hsqldb.HsqldbCallerDatabaseHandler;
 import de.janrufmonitor.repository.zip.ZipArchive;
@@ -687,7 +687,7 @@ public class CountryDirectory extends AbstractReadOnlyDatabaseCallerManager {
 			throw new CallerNotFoundException(
 					"Phone number is CLIR. Identification impossible.");
 
-		if (PhonenumberInfo.isInternalNumber(number))
+		if (PhonenumberAnalyzer.getInstance().isInternal(number))
 			throw new CallerNotFoundException(
 					"Phone number is internal number.");
 
