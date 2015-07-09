@@ -19,6 +19,7 @@ import de.janrufmonitor.framework.ICallerList;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.framework.i18n.II18nManager;
+import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
 import de.janrufmonitor.repository.CallerNotFoundException;
 import de.janrufmonitor.repository.ICallerManager;
 import de.janrufmonitor.repository.imexport.ICallerImporter;
@@ -26,7 +27,6 @@ import de.janrufmonitor.repository.imexport.IImExporter;
 import de.janrufmonitor.repository.types.IIdentifyCallerRepository;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
-import de.janrufmonitor.util.formatter.Formatter;
 import de.janrufmonitor.util.string.StringUtils;
 
 public class JFritzCallerImporter implements ICallerImporter {
@@ -218,8 +218,7 @@ public class JFritzCallerImporter implements ICallerImporter {
 			
 			if (!p.trim().startsWith("+")) return null;
 			
-			Formatter f = Formatter.getInstance(getRuntime());
-			String normalizedNumber = f.normalizePhonenumber(p);
+			String normalizedNumber = PhonenumberAnalyzer.getInstance().normalize(p);
 			ICallerManager mgr = getRuntime().getCallerManagerFactory()
 					.getCallerManager("CountryDirectory");
 			if (mgr != null && mgr instanceof IIdentifyCallerRepository) {
@@ -437,8 +436,7 @@ public class JFritzCallerImporter implements ICallerImporter {
 			
 			if (!p.trim().startsWith("+")) return null;
 			
-			Formatter f = Formatter.getInstance(getRuntime());
-			String normalizedNumber = f.normalizePhonenumber(p);
+			String normalizedNumber = PhonenumberAnalyzer.getInstance().normalize(p);
 			ICallerManager mgr = getRuntime().getCallerManagerFactory()
 					.getCallerManager("CountryDirectory");
 			if (mgr != null && mgr instanceof IIdentifyCallerRepository) {

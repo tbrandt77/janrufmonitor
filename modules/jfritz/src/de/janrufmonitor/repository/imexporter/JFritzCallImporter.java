@@ -21,6 +21,7 @@ import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IMsn;
 import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.framework.i18n.II18nManager;
+import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
 import de.janrufmonitor.repository.CallerNotFoundException;
 import de.janrufmonitor.repository.ICallerManager;
 import de.janrufmonitor.repository.imexport.ICallImporter;
@@ -28,7 +29,6 @@ import de.janrufmonitor.repository.imexport.IImExporter;
 import de.janrufmonitor.repository.types.IIdentifyCallerRepository;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
-import de.janrufmonitor.util.formatter.Formatter;
 import de.janrufmonitor.util.string.StringUtils;
 
 public class JFritzCallImporter implements ICallImporter {
@@ -81,8 +81,7 @@ public class JFritzCallImporter implements ICallImporter {
 				n.setClired(false);
 				n.setTelephoneNumber(splittedCall[3].trim());
 				
-				Formatter f = Formatter.getInstance(getRuntime());
-				String normalizedNumber = f.normalizePhonenumber(n.getTelephoneNumber());
+				String normalizedNumber = PhonenumberAnalyzer.getInstance().normalize(n.getTelephoneNumber());
 				ICallerManager mgr = getRuntime().getCallerManagerFactory()
 						.getCallerManager("CountryDirectory");
 				if (mgr != null && mgr instanceof IIdentifyCallerRepository) {
