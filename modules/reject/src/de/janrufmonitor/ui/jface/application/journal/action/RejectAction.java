@@ -12,7 +12,7 @@ import de.janrufmonitor.framework.ICall;
 import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
-import de.janrufmonitor.framework.monitor.PhonenumberInfo;
+import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.ui.jface.application.AbstractAction;
@@ -77,7 +77,7 @@ public class RejectAction extends AbstractAction implements JournalConfigConst {
 		while (st.hasMoreTokens()) {
 			list.add(st.nextToken().trim());	
 		}
-		list.add(Formatter.getInstance(getRuntime()).normalizePhonenumber(
+		list.add(PhonenumberAnalyzer.getInstance().normalize(
 				Formatter.getInstance(getRuntime()).parse(IJAMConst.GLOBAL_VARIABLE_CALLERNUMBER, pn)
 		));
 		StringBuffer slist = new StringBuffer();
@@ -93,7 +93,7 @@ public class RejectAction extends AbstractAction implements JournalConfigConst {
 	}
 
 	private boolean isRejectable(ICaller c) {
-		return !(c.getPhoneNumber().isClired() || PhonenumberInfo.isInternalNumber(c.getPhoneNumber()));
+		return !(c.getPhoneNumber().isClired() || PhonenumberAnalyzer.getInstance().isInternal(c.getPhoneNumber()));
 	}
 
 	public String getID() {

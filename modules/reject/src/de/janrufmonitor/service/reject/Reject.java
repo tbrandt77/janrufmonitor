@@ -12,6 +12,7 @@ import de.janrufmonitor.framework.event.IEvent;
 import de.janrufmonitor.framework.event.IEventBroker;
 import de.janrufmonitor.framework.event.IEventConst;
 import de.janrufmonitor.framework.event.IEventSender;
+import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.service.AbstractReceiverConfigurableService;
@@ -175,7 +176,7 @@ public class Reject extends AbstractReceiverConfigurableService implements IEven
 			StringTokenizer st = new StringTokenizer(this.m_configuration.getProperty(CONFIG_REJECT_AREACODES, ""), SEPARATOR);
 			this.m_rejectNumbers = new ArrayList(st.countTokens());
 			while (st.hasMoreTokens()) {
-				this.m_rejectNumbers.add(Formatter.getInstance(getRuntime()).normalizePhonenumber(st.nextToken().trim()));	
+				this.m_rejectNumbers.add(PhonenumberAnalyzer.getInstance().normalize(st.nextToken().trim()));	
 			}
 		}
 		if (this.m_rejectNumbers.contains(number)) return true;
