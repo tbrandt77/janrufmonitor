@@ -23,7 +23,7 @@ import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.event.IEventBroker;
 import de.janrufmonitor.framework.event.IEventConst;
 import de.janrufmonitor.framework.event.IEventSender;
-import de.janrufmonitor.framework.monitor.PhonenumberInfo;
+import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.service.AbstractReceiverConfigurableService;
@@ -170,7 +170,7 @@ public class Tellows extends AbstractReceiverConfigurableService implements
 	
 	public void receivedValidRule(ICall aCall) {
 		// call is identified already
-		if (!PhonenumberInfo.isInternalNumber(aCall.getCaller().getPhoneNumber()) && 
+		if (!PhonenumberAnalyzer.getInstance().isInternal(aCall.getCaller().getPhoneNumber()) && 
 			!aCall.getCaller().getPhoneNumber().isClired()) {
 			
 			if (!aCall.getCaller().getPhoneNumber().getIntAreaCode().equalsIgnoreCase("49") && !aCall.getCaller().getPhoneNumber().getIntAreaCode().equalsIgnoreCase("43") && !aCall.getCaller().getPhoneNumber().getIntAreaCode().equalsIgnoreCase("41")) {
@@ -244,7 +244,7 @@ public class Tellows extends AbstractReceiverConfigurableService implements
 		}
 		if (o instanceof ICaller) { 
 			ICaller caller = (ICaller)o;
-			if (!PhonenumberInfo.isInternalNumber(caller.getPhoneNumber()) && 
+			if (!PhonenumberAnalyzer.getInstance().isInternal(caller.getPhoneNumber()) && 
 				!caller.getPhoneNumber().isClired()) {
 					
 				if (!caller.getPhoneNumber().getIntAreaCode().equalsIgnoreCase("49") && !caller.getPhoneNumber().getIntAreaCode().equalsIgnoreCase("43") && !caller.getPhoneNumber().getIntAreaCode().equalsIgnoreCase("41")) {

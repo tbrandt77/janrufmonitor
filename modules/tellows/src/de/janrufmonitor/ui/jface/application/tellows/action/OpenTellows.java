@@ -8,7 +8,7 @@ import org.eclipse.swt.program.Program;
 
 import de.janrufmonitor.framework.ICall;
 import de.janrufmonitor.framework.ICaller;
-import de.janrufmonitor.framework.monitor.PhonenumberInfo;
+import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.service.IService;
@@ -64,7 +64,7 @@ public class OpenTellows extends AbstractAction {
 				}
 				if (o instanceof ICaller) {
 					if (!((ICaller) o).getPhoneNumber().isClired() && 
-						!PhonenumberInfo.isInternalNumber(((ICaller) o).getPhoneNumber()) &&
+						!PhonenumberAnalyzer.getInstance().isInternal(((ICaller) o).getPhoneNumber()) &&
 						(((ICaller) o).getPhoneNumber().getIntAreaCode().equalsIgnoreCase("49") ||
 								((ICaller) o).getPhoneNumber().getIntAreaCode().equalsIgnoreCase("41")||
 								((ICaller) o).getPhoneNumber().getIntAreaCode().equalsIgnoreCase("43"))
