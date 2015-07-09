@@ -8,13 +8,12 @@ import java.net.URLEncoder;
 
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
+import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.service.commons.http.IHttpRequest;
 import de.janrufmonitor.service.commons.http.IMutableHttpResponse;
 import de.janrufmonitor.service.commons.http.handler.HandlerException;
 import de.janrufmonitor.service.commons.http.simple.handler.AbstractHandler;
-import de.janrufmonitor.util.formatter.Formatter;
-
 
 public class Callto extends AbstractHandler{
 
@@ -103,7 +102,7 @@ public class Callto extends AbstractHandler{
 		xml.append("<status>");
 		
 		if (dial!=null && dial.length()>1) {
-			dial = Formatter.getInstance(getRuntime()).toCallablePhonenumber(dial);
+			dial = PhonenumberAnalyzer.getInstance().toCallable(dial);
 			IPhonenumber pn = getRuntime().getCallerFactory().createPhonenumber(dial);
 			try {
 				Method m = o.getClass().getMethod("dial", new Class[] {IPhonenumber.class, String.class});
@@ -156,7 +155,7 @@ public class Callto extends AbstractHandler{
 		
 
 		if (dial!=null && dial.length()>1) {
-			dial = Formatter.getInstance(getRuntime()).toCallablePhonenumber(dial);
+			dial = PhonenumberAnalyzer.getInstance().toCallable(dial);
 			IPhonenumber pn = getRuntime().getCallerFactory().createPhonenumber(dial);
 				try {
 					Method m = o.getClass().getMethod("dial", new Class[] {IPhonenumber.class, String.class});

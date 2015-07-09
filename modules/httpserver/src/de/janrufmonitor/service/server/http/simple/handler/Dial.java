@@ -4,12 +4,12 @@ import java.lang.reflect.Method;
 import java.net.URLDecoder;
 
 import de.janrufmonitor.framework.IPhonenumber;
+import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.service.commons.http.IHttpRequest;
 import de.janrufmonitor.service.commons.http.IMutableHttpResponse;
 import de.janrufmonitor.service.commons.http.handler.HandlerException;
 import de.janrufmonitor.service.commons.http.simple.handler.AbstractHandler;
-import de.janrufmonitor.util.formatter.Formatter;
 
 public class Dial extends AbstractHandler {
 
@@ -33,7 +33,7 @@ public class Dial extends AbstractHandler {
 			m_logger.info("Dial comamnd parameter dial="+dial+", ext="+ext);
 			
 			if (dial!=null && dial.length()>1) {
-				dial = Formatter.getInstance(getRuntime()).toCallablePhonenumber(dial);
+				dial = PhonenumberAnalyzer.getInstance().toCallable(dial);
 				IPhonenumber pn = getRuntime().getCallerFactory().createPhonenumber(dial);
 				try {
 					Method m = o.getClass().getMethod("dial", new Class[] {IPhonenumber.class, String.class});
