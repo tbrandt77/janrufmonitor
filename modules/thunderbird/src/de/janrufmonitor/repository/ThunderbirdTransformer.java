@@ -25,9 +25,9 @@ import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.ICallerList;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
+import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
 import de.janrufmonitor.repository.types.IIdentifyCallerRepository;
 import de.janrufmonitor.runtime.PIMRuntime;
-import de.janrufmonitor.util.formatter.Formatter;
 import de.janrufmonitor.util.string.StringUtils;
 
 public class ThunderbirdTransformer {
@@ -358,8 +358,7 @@ public class ThunderbirdTransformer {
 	}
 
 	private IPhonenumber parsePhonenumber(String n) {
-		Formatter f = Formatter.getInstance(PIMRuntime.getInstance());
-		String normalizedNumber = f.normalizePhonenumber(n.trim());
+		String normalizedNumber = PhonenumberAnalyzer.getInstance().normalize(n.trim());
 		ICallerManager mgr = PIMRuntime.getInstance().getCallerManagerFactory()
 				.getCallerManager("CountryDirectory");
 		if (mgr != null && mgr instanceof IIdentifyCallerRepository) {
