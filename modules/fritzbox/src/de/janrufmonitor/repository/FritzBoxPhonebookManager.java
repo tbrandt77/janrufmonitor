@@ -18,7 +18,7 @@ import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.ICallerList;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
-import de.janrufmonitor.framework.monitor.PhonenumberInfo;
+import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
 import de.janrufmonitor.fritzbox.firmware.AbstractFritzBoxFirmware;
 import de.janrufmonitor.fritzbox.firmware.FirmwareManager;
 import de.janrufmonitor.fritzbox.firmware.AbstractFritzBoxFirmware.PhonebookEntry;
@@ -35,7 +35,6 @@ import de.janrufmonitor.repository.zip.ZipArchive;
 import de.janrufmonitor.repository.zip.ZipArchiveException;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
-import de.janrufmonitor.util.formatter.Formatter;
 import de.janrufmonitor.util.io.PathResolver;
 import de.janrufmonitor.util.string.StringEscapeUtils;
 import de.janrufmonitor.util.string.StringUtils;
@@ -246,15 +245,15 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 						ICaller identified = null;
 						while (entries.hasNext()) {
 							key = (String) entries.next();
-							String number = Formatter.getInstance(getRuntime()).normalizePhonenumber(key);
-							if (PhonenumberInfo.isInternalNumber((number.trim()))) {
+							String number = PhonenumberAnalyzer.getInstance().normalize(key);
+							if (PhonenumberAnalyzer.getInstance().isInternal((number.trim()))) {
 								identified = Identifier.identifyDefault(getRuntime(), getRuntime().getCallerFactory().createInternalPhonenumber(number.trim()));
 								if (identified!=null) {
 									phones.add(identified.getPhoneNumber());
 									attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_NUMBER_TYPE+identified.getPhoneNumber().getTelephoneNumber(), (String) phs.get(key)));
 								}
 							}
-							if (!PhonenumberInfo.containsSpecialChars(number.trim())) {
+							if (!PhonenumberAnalyzer.getInstance().containsSpecialChars(number.trim())) {
 								identified = Identifier.identifyDefault(getRuntime(), getRuntime().getCallerFactory().createPhonenumber(number.trim()));
 								if (identified!=null) {
 									phones.add(identified.getPhoneNumber());

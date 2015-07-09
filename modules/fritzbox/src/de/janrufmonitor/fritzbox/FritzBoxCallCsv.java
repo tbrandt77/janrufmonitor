@@ -15,7 +15,6 @@ import de.janrufmonitor.framework.IMsn;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
-import de.janrufmonitor.framework.monitor.PhonenumberInfo;
 import de.janrufmonitor.repository.identify.Identifier;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
@@ -78,17 +77,17 @@ public class FritzBoxCallCsv extends AbstractFritzBoxCall {
 					String callByCall = null;
 					ICaller caller = null;
 
-					IPhonenumber pn = PhonenumberAnalyzer.getInstance().createClirPhonenumberFromRaw(call[3].trim());
+					IPhonenumber pn = PhonenumberAnalyzer.getInstance().toClirPhonenumber(call[3].trim());
 					// if no CLIR call, check internal
-					if (pn==null && state != this.getOutgoingState()) pn = PhonenumberAnalyzer.getInstance().createInternalPhonenumberFromRaw(call[3].trim(), msn.getMSN());
+					if (pn==null && state != this.getOutgoingState()) pn = PhonenumberAnalyzer.getInstance().toInternalPhonenumber(call[3].trim(), msn.getMSN());
 					// if no internal call, check regular
 					if (pn==null && state != this.getOutgoingState())  {
 						// if incoming call does not start with 0, the Provider number seems to have the wrong format
 						// assume it is an international format 4971657110
-						if (!call[3].startsWith("0") && !PhonenumberInfo.containsSpecialChars(call[3])) {
+						if (!call[3].startsWith("0") && !PhonenumberAnalyzer.getInstance().containsSpecialChars(call[3])) {
 							call[3] = "00"+call[3];
 						}
-						pn = PhonenumberAnalyzer.getInstance().createPhonenumberFromRaw(call[3].trim(), msn.getMSN());
+						pn = PhonenumberAnalyzer.getInstance().toPhonenumber(call[3].trim(), msn.getMSN());
 					}
 					if (pn==null && state ==  this.getOutgoingState())  {
 						// added 2006/08/10: trim call-by-call information
@@ -97,7 +96,7 @@ public class FritzBoxCallCsv extends AbstractFritzBoxCall {
 						if (callByCall!=null) {
 							call[3] = call[3].substring(callByCall.length());
 						}
-						pn = PhonenumberAnalyzer.getInstance().createInternalPhonenumberFromRaw(call[3].trim(), msn.getMSN());
+						pn = PhonenumberAnalyzer.getInstance().toInternalPhonenumber(call[3].trim(), msn.getMSN());
 						if (pn==null) {
 							// added 2011/01/13: added areacode additional on special FritzBox mode. Having no leading 0, 
 							// requires addition of areacode
@@ -106,7 +105,7 @@ public class FritzBoxCallCsv extends AbstractFritzBoxCall {
 								call[3] = this.getGeneralAreaCode() + call[3];
 								Logger.getLogger(IJAMConst.DEFAULT_LOGGER).info("Added areacode to number "+call[3]);
 							}
-							pn = PhonenumberAnalyzer.getInstance().createPhonenumberFromRaw(call[3].trim(), msn.getMSN());
+							pn = PhonenumberAnalyzer.getInstance().toPhonenumber(call[3].trim(), msn.getMSN());
 						}
 					}
 					caller = Identifier.identify(r, pn);
@@ -155,7 +154,7 @@ public class FritzBoxCallCsv extends AbstractFritzBoxCall {
 					
 					if (isSpoofingnumber(call[2])) {
 						String sn = getSpoofingnumber(call[2]);
-						IPhonenumber pnx = PhonenumberAnalyzer.getInstance().createPhonenumberFromRaw(sn.trim(), null);
+						IPhonenumber pnx = PhonenumberAnalyzer.getInstance().toPhonenumber(sn.trim(), null);
 						ICaller cx = Identifier.identify(r, pnx);
 						if (cx!=null) {
 							am.add(r.getCallFactory().createAttribute("fritzbox.spoofing", cx.getPhoneNumber().getIntAreaCode()+";"+cx.getPhoneNumber().getAreaCode()+";"+cx.getPhoneNumber().getCallNumber()));
