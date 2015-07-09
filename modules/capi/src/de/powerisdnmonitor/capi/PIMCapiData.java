@@ -100,11 +100,11 @@ public class PIMCapiData implements ICallHandle {
 	}
 	
 	private ICall createCallObject(String number, String msn, int cip) {
-		IPhonenumber phone = PhonenumberAnalyzer.getInstance().createClirPhonenumberFromRaw(number);
+		IPhonenumber phone = PhonenumberAnalyzer.getInstance().toClirPhonenumber(number);
 		
-		if (phone==null) phone = PhonenumberAnalyzer.getInstance().createInternalPhonenumberFromRaw(number, msn);
+		if (phone==null) phone = PhonenumberAnalyzer.getInstance().toInternalPhonenumber(number, msn);
 		
-		if (phone==null) phone = PhonenumberAnalyzer.getInstance().createPhonenumberFromRaw("0" + number, msn);
+		if (phone==null) phone = PhonenumberAnalyzer.getInstance().toPhonenumber("0" + number, msn);
         
 		IName name = this.getRuntime().getCallerFactory().createName("","");
 		ICaller aCaller = this.getRuntime().getCallerFactory().createCaller(name, phone);
