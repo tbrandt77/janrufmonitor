@@ -49,11 +49,11 @@ public class XTapiCall {
 			IRuntime r = PIMRuntime.getInstance();
 			
 			
-			IPhonenumber phone = PhonenumberAnalyzer.getInstance().createClirPhonenumberFromRaw(this.m_number);
+			IPhonenumber phone = PhonenumberAnalyzer.getInstance().toClirPhonenumber(this.m_number);
 			
-			if (phone==null) phone = PhonenumberAnalyzer.getInstance().createInternalPhonenumberFromRaw(this.m_number, this.m_msn);
+			if (phone==null) phone = PhonenumberAnalyzer.getInstance().toInternalPhonenumber(this.m_number, this.m_msn);
 			
-			if (phone==null) phone = PhonenumberAnalyzer.getInstance().createPhonenumberFromRaw(this.m_number, this.m_msn);
+			if (phone==null) phone = PhonenumberAnalyzer.getInstance().toPhonenumber(this.m_number, this.m_msn);
 						
 			ICaller c = r.getCallerFactory().createCaller(phone);
 			IMsn msn = null;

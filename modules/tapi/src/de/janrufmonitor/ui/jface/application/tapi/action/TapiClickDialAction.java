@@ -1,7 +1,5 @@
 package de.janrufmonitor.ui.jface.application.tapi.action;
 
-//import java.util.logging.Level;
-
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.widgets.Shell;
@@ -10,7 +8,7 @@ import de.janrufmonitor.framework.ICall;
 import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
-import de.janrufmonitor.framework.monitor.PhonenumberInfo;
+import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.ui.jface.application.AbstractAction;
@@ -76,7 +74,7 @@ public class TapiClickDialAction extends AbstractAction implements XTapiConst {
 					if (((IPhonenumber)o).isClired()) return;
 					
 					String dial = ((IPhonenumber)o).getTelephoneNumber();
-					if (PhonenumberInfo.isInternalNumber(dial)) {
+					if (PhonenumberAnalyzer.getInstance().isInternal(dial)) {
 						dial = ((IPhonenumber)o).getCallNumber();
 					} else {
 						if (!((IPhonenumber)o).getIntAreaCode().equalsIgnoreCase(this.getRuntime().getConfigManagerFactory().getConfigManager().getProperty(IJAMConst.GLOBAL_NAMESPACE, IJAMConst.GLOBAL_INTAREA))) {
