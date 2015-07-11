@@ -21,12 +21,9 @@ import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IMsn;
 import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.framework.i18n.II18nManager;
-import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
-import de.janrufmonitor.repository.CallerNotFoundException;
-import de.janrufmonitor.repository.ICallerManager;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.repository.imexport.ICallImporter;
 import de.janrufmonitor.repository.imexport.IImExporter;
-import de.janrufmonitor.repository.types.IIdentifyCallerRepository;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.util.string.StringUtils;
@@ -81,21 +78,9 @@ public class JFritzCallImporter implements ICallImporter {
 				n.setClired(false);
 				n.setTelephoneNumber(splittedCall[3].trim());
 				
-				String normalizedNumber = PhonenumberAnalyzer.getInstance().normalize(n.getTelephoneNumber());
-				ICallerManager mgr = getRuntime().getCallerManagerFactory()
-						.getCallerManager("CountryDirectory");
-				if (mgr != null && mgr instanceof IIdentifyCallerRepository) {
-					
-					try {
-						c = ((IIdentifyCallerRepository) mgr)
-								.getCaller(getRuntime()
-										.getCallerFactory()
-										.createPhonenumber(normalizedNumber));
-					} catch (CallerNotFoundException ex) {
-						m_logger.warning("Normalized number "
-								+ normalizedNumber + " not identified.");
-						return;
-					}
+				IPhonenumber pn = PhonenumberAnalyzer.getInstance(getRuntime()).toIdentifiedPhonenumber(n.getTelephoneNumber());
+				if (pn!=null) {
+					c.setPhoneNumber(pn);
 				}	
 				
 				IAttributeMap m = this.m_clf.createAttributeMap();

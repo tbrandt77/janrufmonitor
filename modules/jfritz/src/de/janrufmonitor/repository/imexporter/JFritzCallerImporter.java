@@ -19,9 +19,9 @@ import de.janrufmonitor.framework.ICallerList;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.framework.i18n.II18nManager;
-import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
 import de.janrufmonitor.repository.CallerNotFoundException;
 import de.janrufmonitor.repository.ICallerManager;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.repository.imexport.ICallerImporter;
 import de.janrufmonitor.repository.imexport.IImExporter;
 import de.janrufmonitor.repository.types.IIdentifyCallerRepository;
@@ -218,24 +218,8 @@ public class JFritzCallerImporter implements ICallerImporter {
 			
 			if (!p.trim().startsWith("+")) return null;
 			
-			String normalizedNumber = PhonenumberAnalyzer.getInstance().normalize(p);
-			ICallerManager mgr = getRuntime().getCallerManagerFactory()
-					.getCallerManager("CountryDirectory");
-			if (mgr != null && mgr instanceof IIdentifyCallerRepository) {
-				
-				try {
-					ICaller c = ((IIdentifyCallerRepository) mgr)
-							.getCaller(getRuntime()
-									.getCallerFactory()
-									.createPhonenumber(normalizedNumber));
-					
-				return c.getPhoneNumber();
-				} catch (CallerNotFoundException ex) {
-					m_logger.warning("Normalized number "
-							+ normalizedNumber + " not identified.");
-					return null;
-				}
-			}	
+			IPhonenumber pn = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toIdentifiedPhonenumber(p);
+			if (pn != null) return pn;	
 			return null;
 		}
 		
@@ -436,24 +420,8 @@ public class JFritzCallerImporter implements ICallerImporter {
 			
 			if (!p.trim().startsWith("+")) return null;
 			
-			String normalizedNumber = PhonenumberAnalyzer.getInstance().normalize(p);
-			ICallerManager mgr = getRuntime().getCallerManagerFactory()
-					.getCallerManager("CountryDirectory");
-			if (mgr != null && mgr instanceof IIdentifyCallerRepository) {
-				
-				try {
-					ICaller c = ((IIdentifyCallerRepository) mgr)
-							.getCaller(getRuntime()
-									.getCallerFactory()
-									.createPhonenumber(normalizedNumber));
-					
-				return c.getPhoneNumber();
-				} catch (CallerNotFoundException ex) {
-					m_logger.warning("Normalized number "
-							+ normalizedNumber + " not identified.");
-					return null;
-				}
-			}	
+			IPhonenumber pn = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toIdentifiedPhonenumber(p);
+			if (pn != null) return pn;	
 			return null;
 		}
 		
