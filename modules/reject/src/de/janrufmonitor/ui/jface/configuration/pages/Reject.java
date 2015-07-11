@@ -27,8 +27,8 @@ import org.eclipse.swt.widgets.Text;
 
 import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.IJAMConst;
-import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
 import de.janrufmonitor.repository.identify.Identifier;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.ui.jface.configuration.AbstractConfigPage;
@@ -214,7 +214,7 @@ public class Reject extends AbstractConfigPage {
 			new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e) {
 					if (ip.getText().length()>0 && !dataList.contains(ip.getText())){
-						ICaller c = Identifier.identifyDefault(getRuntime(), getRuntime().getCallerFactory().createPhonenumber(PhonenumberAnalyzer.getInstance().normalize(ip.getText())));
+						ICaller c = Identifier.identifyDefault(getRuntime(), getRuntime().getCallerFactory().createPhonenumber(PhonenumberAnalyzer.getInstance(getRuntime()).normalize(ip.getText())));
 						if (c!=null) {
 							dataList.add(Formatter.getInstance(getRuntime()).parse(IJAMConst.GLOBAL_VARIABLE_CALLERNUMBER, c.getPhoneNumber()));	
 						}
@@ -265,7 +265,7 @@ public class Reject extends AbstractConfigPage {
 		String m = null;
 		for (int i=0;i<this.dataList.size();i++) {
 			m = (String)this.dataList.get(i);
-			list.append(PhonenumberAnalyzer.getInstance().normalize(m));
+			list.append(PhonenumberAnalyzer.getInstance(getRuntime()).normalize(m));
 			list.append(",");
 		}
 		this.getPreferenceStore().setValue(this.getConfigNamespace() + SEPARATOR + "rejectareacodes", list.toString());
