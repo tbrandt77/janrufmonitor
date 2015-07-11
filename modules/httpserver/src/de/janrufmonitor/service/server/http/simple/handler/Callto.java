@@ -8,7 +8,7 @@ import java.net.URLEncoder;
 
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
-import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.service.commons.http.IHttpRequest;
 import de.janrufmonitor.service.commons.http.IMutableHttpResponse;
@@ -102,7 +102,7 @@ public class Callto extends AbstractHandler{
 		xml.append("<status>");
 		
 		if (dial!=null && dial.length()>1) {
-			dial = PhonenumberAnalyzer.getInstance().toCallable(dial);
+			dial = PhonenumberAnalyzer.getInstance(getRuntime()).toCallable(dial);
 			IPhonenumber pn = getRuntime().getCallerFactory().createPhonenumber(dial);
 			try {
 				Method m = o.getClass().getMethod("dial", new Class[] {IPhonenumber.class, String.class});
@@ -155,7 +155,7 @@ public class Callto extends AbstractHandler{
 		
 
 		if (dial!=null && dial.length()>1) {
-			dial = PhonenumberAnalyzer.getInstance().toCallable(dial);
+			dial = PhonenumberAnalyzer.getInstance(getRuntime()).toCallable(dial);
 			IPhonenumber pn = getRuntime().getCallerFactory().createPhonenumber(dial);
 				try {
 					Method m = o.getClass().getMethod("dial", new Class[] {IPhonenumber.class, String.class});
