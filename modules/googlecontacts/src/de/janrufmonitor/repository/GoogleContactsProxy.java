@@ -52,6 +52,7 @@ import de.janrufmonitor.framework.IMultiPhoneCaller;
 import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.framework.configuration.IConfigManager;
 import de.janrufmonitor.repository.identify.Identifier;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.repository.zip.ZipArchive;
 import de.janrufmonitor.repository.zip.ZipArchiveException;
 import de.janrufmonitor.runtime.IRuntime;
@@ -920,13 +921,11 @@ public class GoogleContactsProxy implements IGoogleContactsConst {
 		IPhonenumber pn = null;
 		for (int i = 0, j = gphones.size(); i < j; i++) {
 			p = (PhoneNumber) gphones.get(i);
-			pn = getRuntime().getCallerFactory().createPhonenumber(
-					Formatter.getInstance(getRuntime()).normalizePhonenumber(
-							p.getPhoneNumber()));
-			ICaller cc = Identifier.identifyDefault(getRuntime(), pn);
-			if (cc != null) {
-				pl.add(cc.getPhoneNumber());
-				m.add(parseNumberType(cc.getPhoneNumber(), p));
+			pn = PhonenumberAnalyzer.getInstance(getRuntime()).toIdentifiedPhonenumber(
+							p.getPhoneNumber());
+			if (pn != null) {
+				pl.add(pn);
+				m.add(parseNumberType(pn, p));
 			}
 		}
 		if (pl.size() == 0)
