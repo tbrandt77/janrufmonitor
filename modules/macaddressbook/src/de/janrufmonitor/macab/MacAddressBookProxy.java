@@ -20,12 +20,12 @@ import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IMultiPhoneCaller;
 import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.framework.configuration.IConfigManager;
-import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
 import de.janrufmonitor.macab.listener.AddressBookChangeListener;
 import de.janrufmonitor.repository.IMacAddressBookConst;
 import de.janrufmonitor.repository.MacAddressBookProxyDatabaseHandler;
 import de.janrufmonitor.repository.MacAddressBookProxyException;
 import de.janrufmonitor.repository.identify.Identifier;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.repository.mapping.BusinessMacAddressBookMapping;
 import de.janrufmonitor.repository.mapping.IMacAddressBookNumberMapping;
 import de.janrufmonitor.repository.mapping.MacAddressBookMappingManager;
@@ -185,13 +185,13 @@ public class MacAddressBookProxy implements AddressBookChangeListener {
 	public synchronized ICaller findContact(IPhonenumber pn) throws MacAddressBookProxyException {
 		ICaller c = Identifier.identifyDefault(getRuntime(), pn);
 
-		if (c==null && PhonenumberAnalyzer.getInstance().isInternal(pn)) {
+		if (c==null && PhonenumberAnalyzer.getInstance(getRuntime()).isInternal(pn)) {
 			IPhonenumber p = getRuntime().getCallerFactory().createInternalPhonenumber(pn.getTelephoneNumber());
 			c = getRuntime().getCallerFactory().createCaller(p);
 		}
 		
 		if (c!=null) {
-			if (PhonenumberAnalyzer.getInstance().isInternal(pn)) {
+			if (PhonenumberAnalyzer.getInstance(getRuntime()).isInternal(pn)) {
 				IPhonenumber p = getRuntime().getCallerFactory().createInternalPhonenumber(pn.getTelephoneNumber());
 				c.setPhoneNumber(p);
 			} 
