@@ -10,7 +10,7 @@ import de.janrufmonitor.framework.event.IEvent;
 import de.janrufmonitor.framework.event.IEventBroker;
 import de.janrufmonitor.framework.event.IEventConst;
 import de.janrufmonitor.framework.event.IEventSender;
-import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.framework.command.AbstractConsoleCommand;
@@ -66,16 +66,16 @@ public class ConsoleSimulate extends AbstractConsoleCommand implements IEventSen
 		
 		IEventBroker evtBroker = PIMRuntime.getInstance().getEventBroker();
 
-		IPhonenumber phone = PhonenumberAnalyzer.getInstance().toClirPhonenumber(number);
+		IPhonenumber phone = PhonenumberAnalyzer.getInstance(getRuntime()).toClirPhonenumber(number);
 		if (phone!=null) System.out.println("Call detected as CLIR: " + phone.isClired()); 
 		
 		if (phone==null) {
-			phone = PhonenumberAnalyzer.getInstance().toInternalPhonenumber(number, msn);
+			phone = PhonenumberAnalyzer.getInstance(getRuntime()).toInternalPhonenumber(number, msn);
 			if (phone!=null) System.out.println("Call detected as internal: " + number.trim());
 		}
 				
 		if (phone==null) {
-			phone = PhonenumberAnalyzer.getInstance().toPhonenumber(number, msn);
+			phone = PhonenumberAnalyzer.getInstance(getRuntime()).toPhonenumber(number, msn);
 			if (phone!=null) System.out.println("Call detected as external: " + number.trim());
 		}
 

@@ -7,9 +7,9 @@ import de.janrufmonitor.framework.ICall;
 import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
-import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
 
 import de.janrufmonitor.repository.identify.Identifier;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.service.geo.GeoCoder;
 import de.janrufmonitor.util.math.Distance;
@@ -56,7 +56,7 @@ public class GeoDistance extends AbstractTableCellRenderer implements IJournalCe
 			} else {
 				String areacode = PIMRuntime.getInstance().getConfigManagerFactory().getConfigManager().getProperty(IJAMConst.GLOBAL_NAMESPACE, IJAMConst.GLOBAL_AREACODE);
 				if (areacode!=null && areacode.length()>0) {
-					IPhonenumber pn = PhonenumberAnalyzer.getInstance().toPhonenumber(areacode + "1234567890", null);
+					IPhonenumber pn = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toPhonenumber(areacode + "1234567890");
 					ICaller caller = Identifier.identifyDefault(PIMRuntime.getInstance(), pn);
 					if (caller!=null) {
 						local = GeoCoder.getInstance().getCoordinates(caller.getAttributes());

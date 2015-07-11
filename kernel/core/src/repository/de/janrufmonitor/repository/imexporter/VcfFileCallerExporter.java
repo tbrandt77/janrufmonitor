@@ -21,7 +21,7 @@ import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IMultiPhoneCaller;
 import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.framework.i18n.II18nManager;
-import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.repository.imexport.ICallerExporter;
 import de.janrufmonitor.repository.imexport.IImExporter;
 import de.janrufmonitor.runtime.PIMRuntime;
@@ -92,7 +92,7 @@ public class VcfFileCallerExporter implements ICallerExporter {
 						p = (IPhonenumber) pns.get(k);
 						if (p.isClired()) continue;
 						String numbertype = this.getPhoneType(p, c);
-						if (PhonenumberAnalyzer.getInstance().isInternal(p)) {
+						if (PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).isInternal(p)) {
 							if (numbertype.equalsIgnoreCase(IJAMConst.ATTRIBUTE_VALUE_LANDLINE_TYPE)) {
 								vcf.append("TEL;TYPE=home:");vcf.append(p.getCallNumber());vcf.append(CRLF);
 							}	

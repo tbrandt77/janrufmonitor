@@ -1,4 +1,4 @@
-package de.janrufmonitor.framework.monitor;
+package de.janrufmonitor.repository.identify;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,11 +8,12 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IMsn;
 import de.janrufmonitor.framework.IPhonenumber;
+import de.janrufmonitor.repository.identify.Identifier;
 import de.janrufmonitor.runtime.IRuntime;
-import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.util.io.PathResolver;
 import de.janrufmonitor.util.string.StringUtils;
 
@@ -23,13 +24,14 @@ public class PhonenumberAnalyzer {
 	private IRuntime m_runtime;
 	private Logger m_logger;
 	
-	private PhonenumberAnalyzer() {
+	private PhonenumberAnalyzer(IRuntime r) {
 		this.m_logger = LogManager.getLogManager().getLogger(IJAMConst.DEFAULT_LOGGER);
+		this.m_runtime = r;
 	}
 	
-    public static synchronized PhonenumberAnalyzer getInstance() {
+    public static synchronized PhonenumberAnalyzer getInstance(IRuntime r) {
         if (PhonenumberAnalyzer.m_instance == null) {
-        	PhonenumberAnalyzer.m_instance = new PhonenumberAnalyzer();
+        	PhonenumberAnalyzer.m_instance = new PhonenumberAnalyzer(r);
         }
         return PhonenumberAnalyzer.m_instance;
     }
@@ -68,6 +70,16 @@ public class PhonenumberAnalyzer {
 			this.m_logger.info("PhonenumberAnalyzer NOT detected as CLIR number: ["+number+"]");
 		}
     	return null;
+    }
+    
+    /**
+     * Creates an internal number object out of a String representation. No MSN specific truncate options are considered.
+     * 
+     * @param number a String representation of a phone number
+     * @return a IPhonenumber object as internal number representation
+     */
+    public IPhonenumber toInternalPhonenumber(String number) {
+    	return toInternalPhonenumber(number, null);
     }
     
     /**
@@ -137,7 +149,7 @@ public class PhonenumberAnalyzer {
      * Creates a valid IPhonenumber object out of a number string. 
      * MSN is used for truncate option and is optional. MSN could be null for default truncate.
      * 
-     * @param number a raw phonenumber starting with leading 0
+     * @param number a raw phone number starting with leading 0
      * @param msn a MSN String
      * @return a valid IPhonenumber object
      */
@@ -234,6 +246,42 @@ public class PhonenumberAnalyzer {
 		}
     	return this.getRuntime().getCallerFactory().createInternalPhonenumber(number);
     }
+    
+    /**
+     * Creates a valid IPhonenumber object out of a number string. This methods ignores MSN specific settings.
+     * 
+     * @param number a raw phone number starting with leading 0
+     * @return a valid IPhonenumber object
+     */
+    public IPhonenumber toPhonenumber(String number) {
+    	return this.toPhonenumber(number, null);
+    }
+    
+    /**
+     * Creates a valid IPhonenumber object out of a number string. This methods ignores MSN specific settings. The IPhonenumber object 
+     * is also being identified and phone number is split up into 3 parts: international are code e.g. 49, area code 7261 and phone number 123456789
+     * 
+     * @param number a raw phone number starting with leading 0
+     * @return a valid IPhonenumber object which is split up into international area code, area code and number
+     */
+    public IPhonenumber toIdentifiedPhonenumber(String number) {
+    	long start = System.currentTimeMillis();
+    	if (this.m_logger.isLoggable(Level.INFO)) 
+    		this.m_logger.info("<---- Begin number identification ---->");		
+    	ICaller c = Identifier.identifyDefault(getRuntime(), this.toPhonenumber(this.normalize(number, false), null));
+    	if (c!=null) {
+    		if (this.m_logger.isLoggable(Level.INFO)) {
+				this.m_logger.info("PhonenumberAnalyzer split number to: ["+c.getPhoneNumber().toString()+"]");
+				this.m_logger.info("<---- Finished number identification ("+(System.currentTimeMillis()-start)+" msec.) ---->");	
+    		}
+    		return c.getPhoneNumber();
+    	}
+    	if (this.m_logger.isLoggable(Level.INFO)) {
+    		this.m_logger.info("PhonenumberAnalyzer did NOT identify number: ["+number+"], normalized: ["+this.normalize(number)+"]");
+    		this.m_logger.info("<---- Finished number identification ("+(System.currentTimeMillis()-start)+" msec.) ---->");	
+    	}
+    	return null;
+    }
 
 
 	/**
@@ -270,7 +318,7 @@ public class PhonenumberAnalyzer {
 	 * 
 	 * @param phone a String representation of a phone number
 	 * @param trimLeadingZero one leading zero could be remove if set to true
-	 * @return a normalized String representation of a phoen number
+	 * @return a normalized String representation of a phone number
 	 */
 	public String normalize(String phone, boolean trimLeadingZero) {
 		phone = phone.trim();
@@ -282,8 +330,8 @@ public class PhonenumberAnalyzer {
 		}
 
 		// added 2009/07/02
-		phone = StringUtils.replaceString(phone, "*31#", ""); // remove CLIR symbol an callernumber
-		phone = StringUtils.replaceString(phone, "#31#", ""); // remove CLIR symbol an callernumber
+		phone = StringUtils.replaceString(phone, "*31#", ""); // remove CLIR symbol in caller number
+		phone = StringUtils.replaceString(phone, "#31#", ""); // remove CLIR symbol in caller number
 		phone = StringUtils.replaceString(phone, " ", "");
 		phone = StringUtils.replaceString(phone, "/", "");
 		phone = StringUtils.replaceString(phone, "(0", "");
@@ -379,6 +427,16 @@ public class PhonenumberAnalyzer {
 		return false;
 	}
 
+	/**
+	 * Checks if a number IPhonenumber object is a CLIR call
+	 * 
+	 * @param ph a IPhonenumber object of a phone number to be checked
+	 * @return true if number is a CLIR call
+	 */
+	public boolean isClired(IPhonenumber pn) {
+		return pn.isClired();
+	}
+	
 	/**
 	 * Checks if a number String representation is a CLIR call
 	 * 
@@ -609,8 +667,6 @@ public class PhonenumberAnalyzer {
 	}
 
 	private IRuntime getRuntime() {
-		if (this.m_runtime==null)
-			this.m_runtime = PIMRuntime.getInstance();
 		return this.m_runtime;
 	}
 

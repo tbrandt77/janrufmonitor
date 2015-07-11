@@ -20,13 +20,11 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import de.janrufmonitor.framework.IAttributeMap;
-import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.ICallerList;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.framework.i18n.II18nManager;
-import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
-import de.janrufmonitor.repository.identify.Identifier;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.repository.imexport.ICallerImporter;
 import de.janrufmonitor.repository.imexport.IImExporter;
 import de.janrufmonitor.repository.imexport.ITracker;
@@ -134,16 +132,15 @@ public class CsvCallerImporter implements ICallerImporter, ITracker {
 					for (int j=0;j<tokens.length;j++) {
 						attributename = (String) attributes.get(j);
 						if (attributename.trim().toLowerCase().startsWith("pn:")) {
-							IPhonenumber pn = PIMRuntime.getInstance().getCallerFactory().createPhonenumber(PhonenumberAnalyzer.getInstance().normalize(tokens[j]));
-							ICaller c = Identifier.identifyDefault(PIMRuntime.getInstance(), pn);
-							if (c!=null) {
-								phones.add(c.getPhoneNumber());
+							IPhonenumber pn = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toIdentifiedPhonenumber(tokens[j]);
+							if (pn!=null) {
+								phones.add(pn);
 								if (attributename.endsWith(IJAMConst.ATTRIBUTE_VALUE_MOBILE_TYPE))
-									m.add(PIMRuntime.getInstance().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_NUMBER_TYPE+c.getPhoneNumber().getTelephoneNumber(), IJAMConst.ATTRIBUTE_VALUE_MOBILE_TYPE));
+									m.add(PIMRuntime.getInstance().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_NUMBER_TYPE+pn.getTelephoneNumber(), IJAMConst.ATTRIBUTE_VALUE_MOBILE_TYPE));
 								if (attributename.endsWith(IJAMConst.ATTRIBUTE_VALUE_LANDLINE_TYPE))
-									m.add(PIMRuntime.getInstance().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_NUMBER_TYPE+c.getPhoneNumber().getTelephoneNumber(), IJAMConst.ATTRIBUTE_VALUE_LANDLINE_TYPE));
+									m.add(PIMRuntime.getInstance().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_NUMBER_TYPE+pn.getTelephoneNumber(), IJAMConst.ATTRIBUTE_VALUE_LANDLINE_TYPE));
 								if (attributename.endsWith(IJAMConst.ATTRIBUTE_VALUE_FAX_TYPE))
-									m.add(PIMRuntime.getInstance().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_NUMBER_TYPE+c.getPhoneNumber().getTelephoneNumber(), IJAMConst.ATTRIBUTE_VALUE_FAX_TYPE));
+									m.add(PIMRuntime.getInstance().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_NUMBER_TYPE+pn.getTelephoneNumber(), IJAMConst.ATTRIBUTE_VALUE_FAX_TYPE));
 
 							}
 						} else {

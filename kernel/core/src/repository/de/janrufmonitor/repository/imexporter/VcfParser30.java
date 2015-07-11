@@ -25,8 +25,7 @@ import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.ICallerList;
 import de.janrufmonitor.framework.IName;
 import de.janrufmonitor.framework.IPhonenumber;
-import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
-import de.janrufmonitor.repository.identify.Identifier;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.util.io.Base64Decoder;
 import de.janrufmonitor.util.io.PathResolver;
@@ -412,19 +411,14 @@ public class VcfParser30 {
 	}
 
 	protected IPhonenumber parsePhonenumber(String n) {
-		if (PhonenumberAnalyzer.getInstance().isClired(n)) return null;
+		if (PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).isClired(n)) return null;
 
-		IPhonenumber pn = PhonenumberAnalyzer.getInstance().toInternalPhonenumber(PhonenumberAnalyzer.getInstance().normalize(n.trim()), null);
+		IPhonenumber pn = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toInternalPhonenumber(PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).normalize(n.trim()));
 		if (pn!=null) return pn;
 			
-		pn = PIMRuntime.getInstance().getCallerFactory().createPhonenumber(PhonenumberAnalyzer.getInstance().normalize(n.trim()));
+		pn = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toIdentifiedPhonenumber(n.trim());
+		if (pn != null) return pn;
 		
-		if (pn != null) {
-			ICaller c = Identifier.identifyDefault(PIMRuntime.getInstance(), pn);
-			if (c!=null) {
-				return c.getPhoneNumber();
-			}
-		}
 		return null;
 	}
 	

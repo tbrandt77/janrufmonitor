@@ -45,10 +45,7 @@ import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IMultiPhoneCaller;
 import de.janrufmonitor.framework.IPhonenumber;
-import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
-import de.janrufmonitor.repository.CallerNotFoundException;
-import de.janrufmonitor.repository.ICallerManager;
-import de.janrufmonitor.repository.types.IIdentifyCallerRepository;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.ui.jface.application.editor.Editor;
@@ -192,7 +189,7 @@ public class MultiPhoneCallerPage extends AbstractPage {
 			typeCombo.select(select);
 			typeCombo.setEnabled(!m_numberReadonly);
 
-			if (PhonenumberAnalyzer.getInstance().isInternal(this.getPhoneNumber())) {
+			if (PhonenumberAnalyzer.getInstance(getRuntime()).isInternal(this.getPhoneNumber())) {
 				number.setText(this.getPhoneNumber().getCallNumber());
 //				number.setText(this.getPhoneNumber().getCallNumber().substring(
 //						0,
@@ -206,7 +203,7 @@ public class MultiPhoneCallerPage extends AbstractPage {
 			}
 
 			typeCombo.setEnabled(!m_numberReadonly
-					&& number.getText().length() > PhonenumberAnalyzer.getInstance().getInternalNumberMaxLength());
+					&& number.getText().length() > PhonenumberAnalyzer.getInstance(getRuntime()).getInternalNumberMaxLength());
 
 			// Add the handler to update the name based on input
 			typeCombo.addModifyListener(new ModifyListener() {
@@ -229,9 +226,9 @@ public class MultiPhoneCallerPage extends AbstractPage {
 
 			number.addModifyListener(new ModifyListener() {
 				public void modifyText(ModifyEvent event) {
-					IPhonenumber pn = PhonenumberAnalyzer.getInstance().toInternalPhonenumber(PhonenumberAnalyzer.getInstance().normalize(number.getText().trim()), null);
-					if (pn==null) pn = PhonenumberAnalyzer.getInstance().toPhonenumber(PhonenumberAnalyzer.getInstance().normalize(number.getText().trim()), null);
-					if (!PhonenumberAnalyzer.getInstance().isInternal(pn))
+					IPhonenumber pn = PhonenumberAnalyzer.getInstance(getRuntime()).toInternalPhonenumber(PhonenumberAnalyzer.getInstance(getRuntime()).normalize(number.getText().trim()), null);
+					if (pn==null) pn = PhonenumberAnalyzer.getInstance(getRuntime()).toPhonenumber(PhonenumberAnalyzer.getInstance(getRuntime()).normalize(number.getText().trim()), null);
+					if (!PhonenumberAnalyzer.getInstance(getRuntime()).isInternal(pn))
 						typeCombo.setEnabled(!m_numberReadonly && true);
 					else {
 						typeCombo.setEnabled(!m_numberReadonly && false);
@@ -258,9 +255,9 @@ public class MultiPhoneCallerPage extends AbstractPage {
 						return;
 					}
 
-					IPhonenumber pn = PhonenumberAnalyzer.getInstance().toInternalPhonenumber(PhonenumberAnalyzer.getInstance().normalize(number.getText().trim()), null);
-					if (pn==null) pn = PhonenumberAnalyzer.getInstance().toPhonenumber(PhonenumberAnalyzer.getInstance().normalize(number.getText().trim()), null);
-					if (PhonenumberAnalyzer.getInstance().isInternal(pn)) {
+					IPhonenumber pn = PhonenumberAnalyzer.getInstance(getRuntime()).toInternalPhonenumber(PhonenumberAnalyzer.getInstance(getRuntime()).normalize(number.getText().trim()), null);
+					if (pn==null) pn = PhonenumberAnalyzer.getInstance(getRuntime()).toPhonenumber(PhonenumberAnalyzer.getInstance(getRuntime()).normalize(number.getText().trim()), null);
+					if (PhonenumberAnalyzer.getInstance(getRuntime()).isInternal(pn)) {
 						m_n = getRuntime().getCallerFactory()
 								.createInternalPhonenumber(number.getText().trim());
 
@@ -268,44 +265,24 @@ public class MultiPhoneCallerPage extends AbstractPage {
 						return;
 					}
 
-					
-					String normalizedNumber = PhonenumberAnalyzer.getInstance().normalize(number
-							.getText().trim());
-					ICallerManager mgr = getRuntime().getCallerManagerFactory()
-							.getCallerManager("CountryDirectory");
-					if (mgr != null && mgr instanceof IIdentifyCallerRepository) {
-						ICaller c = null;
-						try {
-							c = ((IIdentifyCallerRepository) mgr)
-									.getCaller(getRuntime()
-											.getCallerFactory()
-											.createPhonenumber(normalizedNumber));
-						} catch (CallerNotFoundException ex) {
-							m_logger.warning("Normalized number "
-									+ normalizedNumber + " not identified.");
-						}
-
-						if (c != null) {
-							m_n = c.getPhoneNumber();
-							number
-									.setText(Formatter
-											.getInstance(getRuntime())
-											.parse(
-													IJAMConst.GLOBAL_VARIABLE_CALLERNUMBER,
-													getPhoneNumber()));
-						} else {
-							if (normalizedNumber.length() <= PhonenumberAnalyzer.getInstance().getInternalNumberMaxLength()) {
-								m_n.setIntAreaCode(IJAMConst.INTERNAL_CALL);
-								m_n.setAreaCode("");
-								m_n.setCallNumber(normalizedNumber);
-
-								number.setText(Formatter.getInstance(
-										getRuntime()).parse(
-										IJAMConst.GLOBAL_VARIABLE_CALLERNUMBER,
-										getPhoneNumber()));
-							}
+					m_n = PhonenumberAnalyzer.getInstance(getRuntime()).toIdentifiedPhonenumber(number.getText().trim());
+					if (m_n!=null) {
+						number
+								.setText(Formatter
+										.getInstance(getRuntime())
+										.parse(
+												IJAMConst.GLOBAL_VARIABLE_CALLERNUMBER,
+												getPhoneNumber()));
+					} else {
+						if (PhonenumberAnalyzer.getInstance(getRuntime()).isInternal(PhonenumberAnalyzer.getInstance(getRuntime()).normalize(number.getText().trim()))) {
+							m_n = PhonenumberAnalyzer.getInstance(getRuntime()).toInternalPhonenumber(PhonenumberAnalyzer.getInstance(getRuntime()).normalize(number.getText().trim()));
+							number.setText(Formatter.getInstance(
+									getRuntime()).parse(
+									IJAMConst.GLOBAL_VARIABLE_CALLERNUMBER,
+									getPhoneNumber()));
 						}
 					}
+					
 					setPageComplete(isComplete());
 				}
 			});
@@ -915,7 +892,7 @@ public class MultiPhoneCallerPage extends AbstractPage {
 		for (int i = 0, j = tabFolder.getItemCount(); i < j; i++) {
 			pn = (IPhonenumber) ((NumberView) tabFolder.getItem(i).getData())
 					.getPhoneNumber();
-			if (!PhonenumberAnalyzer.getInstance().isInternal(pn)) {
+			if (!PhonenumberAnalyzer.getInstance(getRuntime()).isInternal(pn)) {
 				if (!m_allowClirEdit && pn.getCallNumber().length() < 1) {
 					setErrorMessage(this.m_i18n.getString(this.getNamespace(),
 							"numbererror", "label", this.m_language));
