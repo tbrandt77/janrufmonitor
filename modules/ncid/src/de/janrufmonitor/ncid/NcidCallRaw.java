@@ -14,7 +14,7 @@ import de.janrufmonitor.framework.ICip;
 import de.janrufmonitor.framework.IMsn;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
-import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 
@@ -63,18 +63,18 @@ public class NcidCallRaw extends AbstractNcidCall {
 				IMsn msn = r.getCallFactory().createMsn(getFestnetzAlias(call[6]), "");
 				msn.setAdditional(r.getMsnManager().getMsnLabel(msn));
 				
-				IPhonenumber pn = PhonenumberAnalyzer.getInstance().toClirPhonenumber(call[8].trim());
+				IPhonenumber pn = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toClirPhonenumber(call[8].trim());
 				
 				// if no CLIR call, check internal
-				if (pn==null) pn = PhonenumberAnalyzer.getInstance().toInternalPhonenumber(call[8].trim(), msn.getMSN());
+				if (pn==null) pn = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toInternalPhonenumber(call[8].trim(), msn.getMSN());
 				// if no internal call, check regular
 				if (pn==null)  {
 					// if incoming call does not start with 0, the Provider number seems to have the wrong format
 					// assume it is an international format 4971657110
-					if (!call[8].startsWith("0") && !PhonenumberAnalyzer.getInstance().containsSpecialChars(call[8])) {
+					if (!call[8].startsWith("0") && !PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).containsSpecialChars(call[8])) {
 						call[8] = "00"+call[8];
 					}
-					pn = PhonenumberAnalyzer.getInstance().toPhonenumber(call[8].trim(), msn.getMSN());
+					pn = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toPhonenumber(call[8].trim(), msn.getMSN());
 				}
 				ICaller caller = r.getCallerFactory().createCaller(pn);
 				
@@ -127,10 +127,10 @@ public class NcidCallRaw extends AbstractNcidCall {
 				// create caller data
 				String callByCall = null;
 				
-				IPhonenumber pn = PhonenumberAnalyzer.getInstance().toClirPhonenumber(call[8].trim());
+				IPhonenumber pn = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toClirPhonenumber(call[8].trim());
 				
 				// if no CLIR call, check internal
-				if (pn==null) pn = PhonenumberAnalyzer.getInstance().toInternalPhonenumber(call[8].trim(), msn.getMSN());
+				if (pn==null) pn = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toInternalPhonenumber(call[8].trim(), msn.getMSN());
 				// if no internal call, check regular
 				if (pn==null)  {
 					// added 2006/08/10: trim call-by-call information
@@ -147,7 +147,7 @@ public class NcidCallRaw extends AbstractNcidCall {
 						Logger.getLogger(IJAMConst.DEFAULT_LOGGER).info("Added areacode to number "+call[8]);
 					}
 					
-					pn = PhonenumberAnalyzer.getInstance().toPhonenumber(call[8].trim(), msn.getMSN());
+					pn = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toPhonenumber(call[8].trim(), msn.getMSN());
 				}
 
 
