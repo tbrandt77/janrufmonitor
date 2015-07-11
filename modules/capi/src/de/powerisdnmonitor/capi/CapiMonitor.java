@@ -39,8 +39,8 @@ import de.janrufmonitor.framework.event.IEventReceiver;
 import de.janrufmonitor.framework.monitor.IMonitor;
 import de.janrufmonitor.framework.monitor.IMonitorListener;
 import de.janrufmonitor.framework.monitor.MonitorException;
-import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
 import de.janrufmonitor.logging.TraceFormatter;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.util.io.PathResolver;
@@ -604,8 +604,8 @@ public class CapiMonitor implements IMonitor, IConfigurable {
 					this.m_logger.warning("recognized calling party number as unknown.");
 				}	
 				if (typeOfCall==0x10) {
-					if (!calling.startsWith(PhonenumberAnalyzer.getInstance().getIntAreaPrefix()))
-						calling = PhonenumberAnalyzer.getInstance().getIntAreaPrefix() + calling;
+					if (!calling.startsWith(PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).getIntAreaPrefix()))
+						calling = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).getIntAreaPrefix() + calling;
 					// 2009/08/03: removed				
 //					if (PhonenumberInfo.isAutoDetectInternational())
 //						PhonenumberInfo.setDetectedNumberAttributes(calling, true);
