@@ -15,7 +15,7 @@ import de.janrufmonitor.framework.ICip;
 import de.janrufmonitor.framework.IMsn;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
-import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 
@@ -43,18 +43,18 @@ public class FritzBoxCallRaw extends AbstractFritzBoxCall {
 				IMsn msn = r.getCallFactory().createMsn(getFestnetzAlias(call[4]), "");
 				msn.setAdditional(r.getMsnManager().getMsnLabel(msn));
 				
-				IPhonenumber pn = PhonenumberAnalyzer.getInstance().toClirPhonenumber(call[3].trim());
+				IPhonenumber pn = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toClirPhonenumber(call[3].trim());
 				
 				// if no CLIR call, check internal
-				if (pn==null) pn = PhonenumberAnalyzer.getInstance().toInternalPhonenumber(call[3].trim(), msn.getMSN());
+				if (pn==null) pn = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toInternalPhonenumber(call[3].trim(), msn.getMSN());
 				// if no internal call, check regular
 				if (pn==null)  {
 					// if incoming call does not start with 0, the Provider number seems to have the wrong format
 					// assume it is an international format 4971657110
-					if (!call[3].startsWith("0")&& !PhonenumberAnalyzer.getInstance().containsSpecialChars(call[3])) {
+					if (!call[3].startsWith("0")&& !PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).containsSpecialChars(call[3])) {
 						call[3] = "00"+call[3];
 					}
-					pn = PhonenumberAnalyzer.getInstance().toPhonenumber(call[3].trim(), msn.getMSN());
+					pn = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toPhonenumber(call[3].trim(), msn.getMSN());
 				}
 				ICaller caller = r.getCallerFactory().createCaller(pn);
 				
@@ -112,10 +112,10 @@ public class FritzBoxCallRaw extends AbstractFritzBoxCall {
 				// create caller data
 				String callByCall = null;
 				
-				IPhonenumber pn = PhonenumberAnalyzer.getInstance().toClirPhonenumber(call[5].trim());
+				IPhonenumber pn = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toClirPhonenumber(call[5].trim());
 				
 				// if no CLIR call, check internal
-				if (pn==null) pn = PhonenumberAnalyzer.getInstance().toInternalPhonenumber(call[5].trim(), msn.getMSN());
+				if (pn==null) pn = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toInternalPhonenumber(call[5].trim(), msn.getMSN());
 				// if no internal call, check regular
 				if (pn==null)  {
 					// added 2006/08/10: trim call-by-call information
@@ -132,7 +132,7 @@ public class FritzBoxCallRaw extends AbstractFritzBoxCall {
 						Logger.getLogger(IJAMConst.DEFAULT_LOGGER).info("Added areacode to number "+call[5]);
 					}
 					
-					pn = PhonenumberAnalyzer.getInstance().toPhonenumber(call[5].trim(), msn.getMSN());
+					pn = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toPhonenumber(call[5].trim(), msn.getMSN());
 				}
 
 

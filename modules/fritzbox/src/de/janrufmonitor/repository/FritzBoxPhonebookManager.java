@@ -18,7 +18,6 @@ import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.ICallerList;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
-import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
 import de.janrufmonitor.fritzbox.firmware.AbstractFritzBoxFirmware;
 import de.janrufmonitor.fritzbox.firmware.FirmwareManager;
 import de.janrufmonitor.fritzbox.firmware.AbstractFritzBoxFirmware.PhonebookEntry;
@@ -29,6 +28,7 @@ import de.janrufmonitor.repository.db.ICallerDatabaseHandler;
 import de.janrufmonitor.repository.db.hsqldb.HsqldbMultiPhoneCallerDatabaseHandler;
 import de.janrufmonitor.repository.filter.IFilter;
 import de.janrufmonitor.repository.identify.Identifier;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.repository.types.IReadCallerRepository;
 import de.janrufmonitor.repository.types.IRemoteRepository;
 import de.janrufmonitor.repository.zip.ZipArchive;
@@ -245,15 +245,15 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 						ICaller identified = null;
 						while (entries.hasNext()) {
 							key = (String) entries.next();
-							String number = PhonenumberAnalyzer.getInstance().normalize(key);
-							if (PhonenumberAnalyzer.getInstance().isInternal((number.trim()))) {
+							String number = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).normalize(key);
+							if (PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).isInternal((number.trim()))) {
 								identified = Identifier.identifyDefault(getRuntime(), getRuntime().getCallerFactory().createInternalPhonenumber(number.trim()));
 								if (identified!=null) {
 									phones.add(identified.getPhoneNumber());
 									attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_NUMBER_TYPE+identified.getPhoneNumber().getTelephoneNumber(), (String) phs.get(key)));
 								}
 							}
-							if (!PhonenumberAnalyzer.getInstance().containsSpecialChars(number.trim())) {
+							if (!PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).containsSpecialChars(number.trim())) {
 								identified = Identifier.identifyDefault(getRuntime(), getRuntime().getCallerFactory().createPhonenumber(number.trim()));
 								if (identified!=null) {
 									phones.add(identified.getPhoneNumber());

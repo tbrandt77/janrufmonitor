@@ -28,12 +28,12 @@ import de.janrufmonitor.exception.Message;
 import de.janrufmonitor.exception.PropagationFactory;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.i18n.II18nManager;
-import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
 import de.janrufmonitor.fritzbox.FritzBoxConst;
 import de.janrufmonitor.fritzbox.FritzBoxMonitor;
 import de.janrufmonitor.fritzbox.firmware.FirmwareManager;
 import de.janrufmonitor.fritzbox.firmware.exception.DoCallException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxLoginException;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.ui.swt.SWTImageManager;
@@ -169,7 +169,7 @@ public class DialerDialog extends TitleAreaDialog implements FritzBoxConst {
 	
 	protected void okPressed() {
 		if (dialBox!=null) {
-			String dial = PhonenumberAnalyzer.getInstance().toCallable(dialBox.getText());
+			String dial = PhonenumberAnalyzer.getInstance(getRuntime()).toCallable(dialBox.getText());
 			
 			if (dials!=null) {
 				int maxnums = Integer.parseInt(this.getRuntime().getConfigManagerFactory().getConfigManager().getProperty(FritzBoxMonitor.NAMESPACE, FritzBoxConst.CFG_LAST_DIALED_NUMBERS));

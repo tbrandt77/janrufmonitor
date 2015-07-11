@@ -19,7 +19,7 @@ import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IMultiPhoneCaller;
 import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.framework.i18n.II18nManager;
-import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.repository.imexport.ICallerExporter;
 import de.janrufmonitor.repository.imexport.IImExporter;
 import de.janrufmonitor.runtime.PIMRuntime;
@@ -99,7 +99,7 @@ public class FritzBoxCallerExporter implements ICallerExporter {
 			String type = null;
 			for (int i = 0; i< numbers.size(); i++){
 				pn = (IPhonenumber) numbers.get(i);
-				if (!PhonenumberAnalyzer.getInstance().isInternal(pn) && !pn.isClired()) {
+				if (!PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).isInternal(pn) && !pn.isClired()) {
 					type = "home";
 					if (c.getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_NUMBER_TYPE+pn.getTelephoneNumber())) {
 						type = c.getAttribute(IJAMConst.ATTRIBUTE_NAME_NUMBER_TYPE+pn.getTelephoneNumber()).getValue();
