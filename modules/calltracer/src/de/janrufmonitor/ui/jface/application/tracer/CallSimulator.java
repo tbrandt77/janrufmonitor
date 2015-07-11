@@ -35,7 +35,7 @@ import de.janrufmonitor.framework.event.IEventBroker;
 import de.janrufmonitor.framework.event.IEventConst;
 import de.janrufmonitor.framework.event.IEventReceiver;
 import de.janrufmonitor.framework.event.IEventSender;
-import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.ui.jface.application.AbstractApplication;
@@ -264,7 +264,7 @@ public class CallSimulator extends AbstractApplication implements IEventSender, 
 
 	protected void sendEvent(String number, String msn, String cip) {
 		if (number!=null && number.length()>0)
-			number = PhonenumberAnalyzer.getInstance().toCallable(number);
+			number = PhonenumberAnalyzer.getInstance(this.getRuntime()).toCallable(number);
 		
 		if (!number.startsWith("0") && isRaw){ 
 			number = "0" + number;
@@ -274,11 +274,11 @@ public class CallSimulator extends AbstractApplication implements IEventSender, 
 		evtBroker.register(this);
 		evtBroker.register(this, evtBroker.createEvent(IEventConst.EVENT_TYPE_IDENTIFIED_CALL));
 		
-		IPhonenumber phone = PhonenumberAnalyzer.getInstance().toClirPhonenumber(number);
+		IPhonenumber phone = PhonenumberAnalyzer.getInstance(this.getRuntime()).toClirPhonenumber(number);
 		
-		if (phone==null) phone = PhonenumberAnalyzer.getInstance().toInternalPhonenumber(number, msn);
+		if (phone==null) phone = PhonenumberAnalyzer.getInstance(this.getRuntime()).toInternalPhonenumber(number, msn);
 		
-		if (phone==null) phone = PhonenumberAnalyzer.getInstance().toPhonenumber(number, msn);
+		if (phone==null) phone = PhonenumberAnalyzer.getInstance(this.getRuntime()).toPhonenumber(number, msn);
 
 		IName name = PIMRuntime.getInstance().getCallerFactory().createName("","");
 		ICaller aCaller = PIMRuntime.getInstance().getCallerFactory().createCaller(name, phone);
