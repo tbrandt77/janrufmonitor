@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Text;
 
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.i18n.II18nManager;
-import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.ui.swt.DisplayManager;
@@ -200,7 +200,7 @@ public class TapiDialerDialog extends TitleAreaDialog implements XTapiConst, IXT
 	
 	protected void okPressed() {
 		if (dialBox!=null) {
-			String dial = PhonenumberAnalyzer.getInstance().toCallable(dialBox.getText());
+			String dial = PhonenumberAnalyzer.getInstance(this.getRuntime()).toCallable(dialBox.getText());
 			// added 2010/03/06: check for dial prefix for outgoing calls
 			if (this.getRuntime().getConfigManagerFactory().getConfigManager().getProperty(IJAMConst.GLOBAL_NAMESPACE, IJAMConst.GLOBAL_DIAL_PREFIX).length()>0) {
 				if (this.m_logger.isLoggable(Level.INFO))
