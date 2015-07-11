@@ -15,9 +15,9 @@ import de.janrufmonitor.exception.PropagationFactory;
 import de.janrufmonitor.framework.IAttributeMap;
 import de.janrufmonitor.framework.ICall;
 import de.janrufmonitor.framework.ICaller;
-import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
 import de.janrufmonitor.repository.ICallManager;
 import de.janrufmonitor.repository.ICallerManager;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.repository.types.IWriteCallRepository;
 import de.janrufmonitor.repository.types.IWriteCallerRepository;
 import de.janrufmonitor.runtime.IRuntime;
@@ -84,7 +84,7 @@ public class ScoreNumberTellows extends AbstractAction {
 					}
 					if (o!=null) { 
 						if (!((ICaller) o).getPhoneNumber().isClired() && 
-							!PhonenumberAnalyzer.getInstance().isInternal(((ICaller) o).getPhoneNumber()) &&
+							!PhonenumberAnalyzer.getInstance(getRuntime()).isInternal(((ICaller) o).getPhoneNumber()) &&
 							(((ICaller) o).getPhoneNumber().getIntAreaCode().equalsIgnoreCase("49") ||
 									((ICaller) o).getPhoneNumber().getIntAreaCode().equalsIgnoreCase("41")||
 									((ICaller) o).getPhoneNumber().getIntAreaCode().equalsIgnoreCase("43"))
