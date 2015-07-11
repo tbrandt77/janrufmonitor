@@ -18,10 +18,10 @@ import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IMultiPhoneCaller;
 import de.janrufmonitor.framework.IPhonenumber;
-import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
 import de.janrufmonitor.repository.OutlookContactConst;
 import de.janrufmonitor.repository.OutlookDate;
 import de.janrufmonitor.repository.identify.Identifier;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.util.formatter.Formatter;
@@ -99,10 +99,10 @@ public class OutlookMappingManager {
 			numbertype = (String) outlookNumberMappings.get(i);
 			number = Dispatch.get(oCaller, numbertype).toString().trim();
 			if (number !=null && number.length()> maxInternalNumberLength()) {
-				String nnumber = PhonenumberAnalyzer.getInstance().normalize(number);
+				String nnumber = PhonenumberAnalyzer.getInstance(getRuntime()).normalize(number);
 				
 				// added 2010/03/03 still contains special chars, so it must be internal
-				if (PhonenumberAnalyzer.getInstance().containsSpecialChars(nnumber.trim())) {
+				if (PhonenumberAnalyzer.getInstance(getRuntime()).containsSpecialChars(nnumber.trim())) {
 					phone = getRuntime().getCallerFactory().createInternalPhonenumber(number);
 					if (phone.getTelephoneNumber().trim().length()>0 && !phone.isClired()) {
 						m.add(getNumberTypeAttribute(numbertype, phone, om));

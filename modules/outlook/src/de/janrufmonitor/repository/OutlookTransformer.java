@@ -23,8 +23,7 @@ import de.janrufmonitor.framework.ICallerList;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IMultiPhoneCaller;
 import de.janrufmonitor.framework.IPhonenumber;
-import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
-import de.janrufmonitor.repository.types.IIdentifyCallerRepository;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.util.io.PathResolver;
@@ -179,21 +178,12 @@ public class OutlookTransformer {
 			for (int i = 0; i < privatePhones.length; i++) {
 				number = Dispatch.get(contact, privatePhones[i]).toString().trim();
 				if (number !=null && number.length()>0) {
-					number = PhonenumberAnalyzer.getInstance().normalize(number);
-					phone = getRuntime().getCallerFactory().createPhonenumber(number);
-					ICallerManager mgr = getRuntime().getCallerManagerFactory().getCallerManager("CountryDirectory");
-					if (mgr!=null && mgr instanceof IIdentifyCallerRepository) {
-						try {
-							ICaller c = ((IIdentifyCallerRepository)mgr).getCaller(phone);
-							if (c!=null) {
-								phone = c.getPhoneNumber();
-								if (phone.getTelephoneNumber().trim().length()>0 && !phone.isClired()) {
-									m.add(getNumberTypeAttribute(privatePhones[i], phone.getTelephoneNumber()));
-									phones.add(phone);
-								}
-							}
-						} catch (CallerNotFoundException e) {
-							this.m_logger.warning("Number "+number+" is not identified.");
+					number = PhonenumberAnalyzer.getInstance(getRuntime()).normalize(number);
+					phone = PhonenumberAnalyzer.getInstance(getRuntime()).toIdentifiedPhonenumber(number);
+					if (phone!=null) {
+						if (phone.getTelephoneNumber().trim().length()>0 && !phone.isClired()) {
+							m.add(getNumberTypeAttribute(privatePhones[i], phone.getTelephoneNumber()));
+							phones.add(phone);
 						}
 					}
 				}
@@ -302,21 +292,12 @@ public class OutlookTransformer {
 			for (int i = 0; i < businessPhones.length; i++) {
 				number = Dispatch.get(contact, businessPhones[i]).toString().trim();
 				if (number !=null && number.length()>0) {
-					number = PhonenumberAnalyzer.getInstance().normalize(number);
-					phone = getRuntime().getCallerFactory().createPhonenumber(number);
-					ICallerManager mgr = getRuntime().getCallerManagerFactory().getCallerManager("CountryDirectory");
-					if (mgr!=null && mgr instanceof IIdentifyCallerRepository) {
-						try {
-							ICaller c = ((IIdentifyCallerRepository)mgr).getCaller(phone);
-							if (c!=null) {
-								phone = c.getPhoneNumber();
-								if (phone.getTelephoneNumber().trim().length()>0 && !phone.isClired()) {
-									m.add(getNumberTypeAttribute(businessPhones[i], phone.getTelephoneNumber()));
-									phones.add(phone);
-								}
-							}
-						} catch (CallerNotFoundException e) {
-							this.m_logger.warning("Number "+number+" is not identified.");
+					number = PhonenumberAnalyzer.getInstance(getRuntime()).normalize(number);
+					phone = PhonenumberAnalyzer.getInstance(getRuntime()).toIdentifiedPhonenumber(number);
+					if (phone!=null) {
+						if (phone.getTelephoneNumber().trim().length()>0 && !phone.isClired()) {
+							m.add(getNumberTypeAttribute(businessPhones[i], phone.getTelephoneNumber()));
+							phones.add(phone);
 						}
 					}
 				}
