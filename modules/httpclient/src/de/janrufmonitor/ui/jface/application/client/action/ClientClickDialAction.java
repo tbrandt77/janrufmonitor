@@ -8,7 +8,7 @@ import de.janrufmonitor.framework.ICall;
 import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
-import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.service.IService;
@@ -80,7 +80,7 @@ public class ClientClickDialAction extends AbstractAction  {
 					if (((IPhonenumber)o).isClired()) return;
 					
 					String dial = ((IPhonenumber)o).getTelephoneNumber();
-					if (PhonenumberAnalyzer.getInstance().isInternal((IPhonenumber)o)) {
+					if (PhonenumberAnalyzer.getInstance(getRuntime()).isInternal((IPhonenumber)o)) {
 						dial = ((IPhonenumber)o).getCallNumber();
 					} else {
 						if (!((IPhonenumber)o).getIntAreaCode().equalsIgnoreCase(this.getRuntime().getConfigManagerFactory().getConfigManager().getProperty(IJAMConst.GLOBAL_NAMESPACE, IJAMConst.GLOBAL_INTAREA))) {
