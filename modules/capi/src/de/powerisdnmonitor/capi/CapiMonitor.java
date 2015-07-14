@@ -606,16 +606,10 @@ public class CapiMonitor implements IMonitor, IConfigurable {
 				if (typeOfCall==0x10) {
 					if (!calling.startsWith(PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).getIntAreaPrefix()))
 						calling = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).getIntAreaPrefix() + calling;
-					// 2009/08/03: removed				
-//					if (PhonenumberInfo.isAutoDetectInternational())
-//						PhonenumberInfo.setDetectedNumberAttributes(calling, true);
 					if (this.m_logger.isLoggable(Level.INFO))
 						if (this.m_logger.isLoggable(Level.INFO))this.m_logger.info("recognized calling party number as international call.");
 				}
 				if (typeOfCall==0x20) {
-					// 2009/08/03: removed
-//					if (PhonenumberInfo.isAutoDetectNational())
-//						PhonenumberInfo.setDetectedNumberAttributes(calling, false);
 					if (this.m_logger.isLoggable(Level.INFO))
 						this.m_logger.info("recognized calling party number as national call.");
 				}
