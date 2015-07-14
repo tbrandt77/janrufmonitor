@@ -20,6 +20,7 @@ import de.janrufmonitor.exception.PropagationFactory;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.command.ICommand;
 import de.janrufmonitor.logging.LoggingInitializer;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.runtime.PIMRuntime;
 
 public class RunUI {
@@ -116,8 +117,12 @@ public class RunUI {
 			// set Jam classloader
 			if (JamCacheMasterClassLoader.getInstance().isValid()) {
 				Thread.currentThread().setContextClassLoader(JamCacheMasterClassLoader.getInstance());
-				RunUI.m_logger.info("Set new context classloader...");
+				if (RunUI.m_logger.isLoggable(Level.INFO))
+					RunUI.m_logger.info("Set new context classloader...");
 				PIMRuntime.getInstance().startup();
+			
+				if (RunUI.m_logger.isLoggable(Level.INFO))
+					PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).analyze();
 			
 				RunUI.registerShutdownHook();
 				

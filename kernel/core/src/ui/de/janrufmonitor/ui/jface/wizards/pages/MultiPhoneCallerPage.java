@@ -203,8 +203,12 @@ public class MultiPhoneCallerPage extends AbstractPage {
 			}
 
 			typeCombo.setEnabled(!m_numberReadonly
-					&& number.getText().length() > PhonenumberAnalyzer.getInstance(getRuntime()).getInternalNumberMaxLength());
+					&& !PhonenumberAnalyzer.getInstance(getRuntime()).isInternal(number.getText())
+					&& !PhonenumberAnalyzer.getInstance(getRuntime()).isClired(number.getText()));
 
+			// changed 2015/07/12: 
+			// number.getText().length() > PhonenumberAnalyzer.getInstance(getRuntime()).getInternalNumberMaxLength());
+			
 			// Add the handler to update the name based on input
 			typeCombo.addModifyListener(new ModifyListener() {
 				public void modifyText(ModifyEvent event) {
@@ -228,7 +232,7 @@ public class MultiPhoneCallerPage extends AbstractPage {
 				public void modifyText(ModifyEvent event) {
 					IPhonenumber pn = PhonenumberAnalyzer.getInstance(getRuntime()).toInternalPhonenumber(PhonenumberAnalyzer.getInstance(getRuntime()).normalize(number.getText().trim()), null);
 					if (pn==null) pn = PhonenumberAnalyzer.getInstance(getRuntime()).toPhonenumber(PhonenumberAnalyzer.getInstance(getRuntime()).normalize(number.getText().trim()), null);
-					if (!PhonenumberAnalyzer.getInstance(getRuntime()).isInternal(pn))
+					if (!PhonenumberAnalyzer.getInstance(getRuntime()).isInternal(pn) && !PhonenumberAnalyzer.getInstance(getRuntime()).isClired(pn))
 						typeCombo.setEnabled(!m_numberReadonly && true);
 					else {
 						typeCombo.setEnabled(!m_numberReadonly && false);

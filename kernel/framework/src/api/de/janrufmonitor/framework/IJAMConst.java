@@ -212,11 +212,6 @@ public interface IJAMConst {
     public final static String GLOBAL_INTAREA_PREFIX = "intareaprefix";
 
     /**
-     *  Wildcard for global national areacode prefix
-     */
-    public final static String GLOBAL_AREA_PREFIX = "areaprefix";
-    
-    /**
      *  Wildcard for global telephonesystem prefix
      */
     public final static String GLOBAL_TELEPHONESYSTEM_PREFIX = "telephonesystemprefix";
