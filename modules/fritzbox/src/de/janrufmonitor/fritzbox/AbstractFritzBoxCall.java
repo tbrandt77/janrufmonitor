@@ -3,12 +3,10 @@ package de.janrufmonitor.fritzbox;
 import java.util.Properties;
 
 import de.janrufmonitor.framework.ICall;
-import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.fritzbox.firmware.FirmwareManager;
 import de.janrufmonitor.fritzbox.firmware.PasswordFritzBoxFirmware;
 import de.janrufmonitor.fritzbox.firmware.SessionIDFritzBoxFirmware;
 import de.janrufmonitor.fritzbox.firmware.UnitymediaFirmware;
-import de.janrufmonitor.runtime.PIMRuntime;
 
 public abstract class AbstractFritzBoxCall implements IFritzBoxCall, FritzBoxConst {
 
@@ -54,12 +52,6 @@ public abstract class AbstractFritzBoxCall implements IFritzBoxCall, FritzBoxCon
 			return ((alias==null || alias.trim().length()==0)? call : alias);
 		}
 		return call;
-	}
-	
-	protected String getGeneralAreaCode() {
-		String value = PIMRuntime.getInstance().getConfigManagerFactory().getConfigManager().getProperty(IJAMConst.GLOBAL_NAMESPACE, IJAMConst.GLOBAL_AREACODE);
-		if (value==null || value.length()==0) value = "0";
-		return value;
 	}
 	
 	protected boolean isSpoofingnumber(String s) {

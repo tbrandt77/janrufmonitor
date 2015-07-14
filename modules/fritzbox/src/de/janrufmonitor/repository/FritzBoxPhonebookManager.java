@@ -253,7 +253,7 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 									attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_NUMBER_TYPE+identified.getPhoneNumber().getTelephoneNumber(), (String) phs.get(key)));
 								}
 							}
-							if (!PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).containsSpecialChars(number.trim())) {
+							if (!PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).isInternal((number.trim())) && !PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).isClired((number.trim()))) {
 								identified = Identifier.identifyDefault(getRuntime(), getRuntime().getCallerFactory().createPhonenumber(number.trim()));
 								if (identified!=null) {
 									phones.add(identified.getPhoneNumber());

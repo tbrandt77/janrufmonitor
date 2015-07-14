@@ -51,7 +51,8 @@ public class FritzBoxCallRaw extends AbstractFritzBoxCall {
 				if (pn==null)  {
 					// if incoming call does not start with 0, the Provider number seems to have the wrong format
 					// assume it is an international format 4971657110
-					if (!call[3].startsWith("0")&& !PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).containsSpecialChars(call[3])) {
+					boolean onlyNumbers = call[3].matches("[+-]?[0-9]+");
+					if (!call[3].startsWith("0")&& onlyNumbers) {
 						call[3] = "00"+call[3];
 					}
 					pn = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toPhonenumber(call[3].trim(), msn.getMSN());
@@ -128,7 +129,7 @@ public class FritzBoxCallRaw extends AbstractFritzBoxCall {
 					// requires addition of areacode
 					if (!call[5].startsWith("0")) {
 						Logger.getLogger(IJAMConst.DEFAULT_LOGGER).info("Assuming number "+call[5]+" has missing areacode.");
-						call[5] = this.getGeneralAreaCode() + call[5];
+						call[5] = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).getAreaCode() + call[5];
 						Logger.getLogger(IJAMConst.DEFAULT_LOGGER).info("Added areacode to number "+call[5]);
 					}
 					
