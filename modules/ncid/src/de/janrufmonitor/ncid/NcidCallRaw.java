@@ -71,7 +71,8 @@ public class NcidCallRaw extends AbstractNcidCall {
 				if (pn==null)  {
 					// if incoming call does not start with 0, the Provider number seems to have the wrong format
 					// assume it is an international format 4971657110
-					if (!call[8].startsWith("0") && !PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).containsSpecialChars(call[8])) {
+				    boolean onlyNumbers = call[8].matches("[+-]?[0-9]+");
+					if (!call[8].startsWith("0") && onlyNumbers) {
 						call[8] = "00"+call[8];
 					}
 					pn = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toPhonenumber(call[8].trim(), msn.getMSN());
