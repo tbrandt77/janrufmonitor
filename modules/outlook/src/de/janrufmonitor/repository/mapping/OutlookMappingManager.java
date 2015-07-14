@@ -98,37 +98,23 @@ public class OutlookMappingManager {
 		for (int i=0,j=outlookNumberMappings.size();i<j;i++) {
 			numbertype = (String) outlookNumberMappings.get(i);
 			number = Dispatch.get(oCaller, numbertype).toString().trim();
-			if (number !=null && number.length()> maxInternalNumberLength()) {
-				String nnumber = PhonenumberAnalyzer.getInstance(getRuntime()).normalize(number);
-				
-				// added 2010/03/03 still contains special chars, so it must be internal
-				if (PhonenumberAnalyzer.getInstance(getRuntime()).containsSpecialChars(nnumber.trim())) {
-					phone = getRuntime().getCallerFactory().createInternalPhonenumber(number);
+			if (number !=null && !PhonenumberAnalyzer.getInstance(getRuntime()).isInternal(number) && !PhonenumberAnalyzer.getInstance(getRuntime()).isClired(number)) {
+				String nnumber = PhonenumberAnalyzer.getInstance(getRuntime()).normalize(number);				
+				phone = getRuntime().getCallerFactory().createPhonenumber(nnumber);
+				ICaller c = Identifier.identifyDefault(getRuntime(), phone);
+				if (c!=null) {
+					phone = c.getPhoneNumber();
 					if (phone.getTelephoneNumber().trim().length()>0 && !phone.isClired()) {
 						m.add(getNumberTypeAttribute(numbertype, phone, om));
 						m.add(om.createOutlookNumberTypeAttribute(phone, numbertype));
 						phones.add(phone);
 						if (this.m_logger.isLoggable(Level.INFO)) {
-							this.m_logger.info("Added long internal phone "+phone.toString());
+							this.m_logger.info("Added phone "+phone.toString());
 						}
 					}
-				} else {				
-					phone = getRuntime().getCallerFactory().createPhonenumber(nnumber);
-					ICaller c = Identifier.identifyDefault(getRuntime(), phone);
-					if (c!=null) {
-						phone = c.getPhoneNumber();
-						if (phone.getTelephoneNumber().trim().length()>0 && !phone.isClired()) {
-							m.add(getNumberTypeAttribute(numbertype, phone, om));
-							m.add(om.createOutlookNumberTypeAttribute(phone, numbertype));
-							phones.add(phone);
-							if (this.m_logger.isLoggable(Level.INFO)) {
-								this.m_logger.info("Added phone "+phone.toString());
-							}
-						}
-					} 
-				}
+				} 
 			}
-			else if (number !=null && (number.length()> 0 && number.length()<=maxInternalNumberLength())) {
+			else if (number !=null && (number.length()> 0 && PhonenumberAnalyzer.getInstance(getRuntime()).isInternal(number))) {
 				// found internal number
 				phone = getRuntime().getCallerFactory().createInternalPhonenumber(number);
 				if (phone.getTelephoneNumber().trim().length()>0 && !phone.isClired()) {
@@ -433,21 +419,6 @@ public class OutlookMappingManager {
 		}
 		return false;
 	}
-	
-	private int maxInternalNumberLength() {
-		String value = this.getRuntime().getConfigManagerFactory()
-				.getConfigManager().getProperty(IJAMConst.GLOBAL_NAMESPACE,
-						IJAMConst.GLOBAL_INTERNAL_LENGTH);
-		if (value != null && value.length() > 0) {
-			try {
-				return Integer.parseInt(value);
-			} catch (Exception ex) {
-				this.m_logger.warning(ex.getMessage());
-			}
-		}
-		return 0;
-	}
-
 	
 	private void setContactPhone(Dispatch oCaller, IPhonenumber pn, IAttributeMap m, IOutlookMapping om) {
 		if (pn==null || pn.isClired()) return;
