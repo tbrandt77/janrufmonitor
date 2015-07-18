@@ -479,21 +479,40 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 		if (number.endsWith("#"))
 			number = number.substring(0, number.length()-1);
 		
+		String urlstr = "http://" + this.m_address +":" + this.m_port;
+		
+		if (this.m_firmware!=null && this.m_firmware.getMajor()>=6 && this.m_firmware.getMinor()>=30) {
+			urlstr += "/fon_num/dial_foncalls.lua?sid="+this.m_sid+"&dial="+number+"&xhr=1";
+			try {
+				data.append(this.executeURL(
+						urlstr,
+						null, true).trim());
+			} catch (UnsupportedEncodingException e) {
+				this.m_logger.log(Level.WARNING, e.getMessage(), e);
+			} catch (IOException e) {
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+				throw new DoCallException("Could not dial numer on FritzBox: "+e.getMessage());
+			} 
+		} else {
+			urlstr += "/cgi-bin/webcm";
+			
+			try {
+				data.append(this.executeURL(
+						urlstr,
+						"&sid="+this.m_sid+"telcfg:settings/UseClickToDial=1&telcfg:settings/DialPort="+extension+"&telcfg:command/Dial="+number, true).trim());
+			} catch (UnsupportedEncodingException e) {
+				this.m_logger.log(Level.WARNING, e.getMessage(), e);
+			} catch (IOException e) {
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+				throw new DoCallException("Could not dial numer on FritzBox: "+e.getMessage());
+			} 
+		}
+		
 		// 2013/02/05: removed dial via wahlhilfe only
 		//String urlstr = "http://" + this.m_address +":" + this.m_port + "/fon_num/fonbook_list.lua?sid="+this.m_sid+"&dial="+number+"&xhr=1";
 
-		String urlstr = "http://" + this.m_address +":" + this.m_port + "/cgi-bin/webcm";
-		
-		try {
-			data.append(this.executeURL(
-					urlstr,
-					"&sid="+this.m_sid+"telcfg:settings/UseClickToDial=1&telcfg:settings/DialPort="+extension+"&telcfg:command/Dial="+number, true).trim());
-		} catch (UnsupportedEncodingException e) {
-			this.m_logger.log(Level.WARNING, e.getMessage(), e);
-		} catch (IOException e) {
-			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-			throw new DoCallException("Could not dial numer on FritzBox: "+e.getMessage());
-		} 
+		// http://fritz.box/fon_num/dial_foncalls.lua?sid=357e997aa098e245&dial=**2&xhr=1&t1437109942317=nocache
+
 		
 		if (this.m_logger.isLoggable(Level.INFO))
 			this.m_logger.info("Data after call initialization: "+data.toString());
