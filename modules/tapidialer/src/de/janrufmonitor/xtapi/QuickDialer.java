@@ -8,8 +8,8 @@ import net.xtapi.serviceProvider.IXTapiCallBack;
 import net.xtapi.serviceProvider.MSTAPI;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.runtime.PIMRuntime;
-import de.janrufmonitor.util.formatter.Formatter;
 
 public class QuickDialer implements IXTapiCallBack {
 	
@@ -54,7 +54,7 @@ public class QuickDialer implements IXTapiCallBack {
 		
 		if (ext==null || ext.trim().length()==0) throw new Exception ("no extension provided");
 		
-		String dial = Formatter.getInstance(PIMRuntime.getInstance()).toCallablePhonenumber(number.getTelephoneNumber());
+		String dial = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toCallable(number.getTelephoneNumber());
 		// added 2010/03/06: check for dial prefix for outgoing calls
 		if (PIMRuntime.getInstance().getConfigManagerFactory().getConfigManager().getProperty(IJAMConst.GLOBAL_NAMESPACE, IJAMConst.GLOBAL_DIAL_PREFIX).length()>0) {
 			dial = PIMRuntime.getInstance().getConfigManagerFactory().getConfigManager().getProperty(IJAMConst.GLOBAL_NAMESPACE, IJAMConst.GLOBAL_DIAL_PREFIX).trim() + dial;

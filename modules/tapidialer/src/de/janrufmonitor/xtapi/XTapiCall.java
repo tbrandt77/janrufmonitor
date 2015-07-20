@@ -11,7 +11,7 @@ import de.janrufmonitor.framework.ICip;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IMsn;
 import de.janrufmonitor.framework.IPhonenumber;
-import de.janrufmonitor.framework.monitor.PhonenumberAnalyzer;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 
@@ -49,11 +49,11 @@ public class XTapiCall {
 			IRuntime r = PIMRuntime.getInstance();
 			
 			
-			IPhonenumber phone = PhonenumberAnalyzer.getInstance().createClirPhonenumberFromRaw(this.m_number);
+			IPhonenumber phone = PhonenumberAnalyzer.getInstance(r).toClirPhonenumber(this.m_number);
 			
-			if (phone==null) phone = PhonenumberAnalyzer.getInstance().createInternalPhonenumberFromRaw(this.m_number, this.m_msn);
+			if (phone==null) phone = PhonenumberAnalyzer.getInstance(r).toInternalPhonenumber(this.m_number, this.m_msn);
 			
-			if (phone==null) phone = PhonenumberAnalyzer.getInstance().createPhonenumberFromRaw(this.m_number, this.m_msn);
+			if (phone==null) phone = PhonenumberAnalyzer.getInstance(r).toPhonenumber(this.m_number, this.m_msn);
 						
 			ICaller c = r.getCallerFactory().createCaller(phone);
 			IMsn msn = null;
