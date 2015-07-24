@@ -558,13 +558,15 @@ public class InstallerEngine {
 				this.m_logger.info("New modules for installation found.");
 				return true;
             }
-            directory = this.getUserInstallationDirectory();
-            if (directory.exists() && directory.isDirectory()) {
-                files = directory.listFiles();
-                if (files.length>0) {
-    				this.m_logger.info("New modules for installation found in user install directory.");
-    				return true;
-                }
+            if (OSUtils.isMultiuserEnabled()) {
+	            directory = this.getUserInstallationDirectory();
+	            if (directory.exists() && directory.isDirectory()) {
+	                files = directory.listFiles();
+	                if (files.length>0) {
+	    				this.m_logger.info("New modules for installation found in user install directory.");
+	    				return true;
+	                }
+	            }
             }
         } else {
             this.m_logger.warning(directory.getAbsolutePath()+" directory for new modules not found in install path. Please check the configuration file.");
