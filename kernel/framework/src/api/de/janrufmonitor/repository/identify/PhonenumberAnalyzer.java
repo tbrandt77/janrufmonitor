@@ -693,10 +693,10 @@ public class PhonenumberAnalyzer {
 									.getInstance(this.getRuntime())
 									.getTruncate(null) + "], ").getBytes());
 				}
-				fos.write(("internal telephone system number prefix: ["
+				fos.write(("internal internal prefix: ["
 						+ PhonenumberAnalyzer.getInstance(this.getRuntime())
-								.getTelephoneSystemPrefix() + "], ").getBytes());
-				fos.write(("max length internal telephone system numbers: ["
+								.getInternalPrefix() + "], ").getBytes());
+				fos.write(("max length internal numbers: ["
 						+ PhonenumberAnalyzer.getInstance(this.getRuntime())
 								.getInternalNumberMaxLength() + "]").getBytes());
 				fos.write(IJAMConst.CRLF.getBytes());
@@ -815,7 +815,7 @@ public class PhonenumberAnalyzer {
 	 */
 	private boolean hasInternalPrefix(String num) {
 		if (num != null && !isClired(num)) {
-			String ts_prefix = getTelephoneSystemPrefix();
+			String ts_prefix = getInternalPrefix();
 			if (ts_prefix.length() > 0) {
 				if (this.m_logger.isLoggable(Level.INFO))
 					this.m_logger
@@ -858,7 +858,7 @@ public class PhonenumberAnalyzer {
 		return false;
 	}
 
-	private String getTelephoneSystemPrefix() {
+	private String getInternalPrefix() {
 		String ts_prefix = this
 				.getRuntime()
 				.getConfigManagerFactory()
