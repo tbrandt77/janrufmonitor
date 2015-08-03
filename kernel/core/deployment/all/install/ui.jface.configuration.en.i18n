@@ -194,7 +194,8 @@ ui.jface.configuration.pages.Services\:description\:label\:en=Services enhance t
 
 ui.jface.configuration.pages.NumberSettings\:title\:label\:en=Number settings
 ui.jface.configuration.pages.NumberSettings\:internallength\:label\:en=max. length of internal telephone system numbers
-ui.jface.configuration.pages.NumberSettings\:telephonesystemprefix\:label\:en=Prefix of telephone system numbers
+ui.jface.configuration.pages.NumberSettings\:internalprefix\:label\:en=Prefix of telephone system numbers
+ui.jface.configuration.pages.NumberSettings\:internaltruncate\:label\:en=Removable leading digits:
 ui.jface.configuration.pages.NumberSettings\:description\:label\:en=Adjust these options if numbers are not detected properly.
 ui.jface.configuration.pages.NumberSettings\:areacodeaddlength\:label\:en=max. length of caller number for auto area code prefix:
 ui.jface.configuration.pages.NumberSettings\:truncate\:label\:en=Removable leading digits:

@@ -75,6 +75,7 @@ public class TextFileConfigManager implements IConfigManager {
 		toString();
 	private String DEFAULT_MSN_FORMAT = "%msn% (%msnalias%)";
 	private String DEFAULT_INTERNAL_LENGTH = "2"; 
+	private String DEFAULT_INTERNAL_TRUNCATE = "0"; 
 	
 	private class ConfigSaverTask extends TimerTask {
 		public synchronized void run() {
@@ -702,6 +703,13 @@ public class TextFileConfigManager implements IConfigManager {
 			changed = true;
 			this.m_logger.info("Changed internal number length.");
 		}
+		
+		truncate = this.getProperty(IJAMConst.GLOBAL_NAMESPACE, IJAMConst.GLOBAL_INTERNAL_TRUNCATE, "value");
+        if (truncate == null || truncate.length()==0) {
+            this.setProperty(IJAMConst.GLOBAL_NAMESPACE, IJAMConst.GLOBAL_INTERNAL_TRUNCATE, "value", this.DEFAULT_INTERNAL_TRUNCATE);
+			changed = true;
+			this.m_logger.info("Changed internal truncate.");
+        }
 		
 		String var_callername = this.getProperty(IJAMConst.GLOBAL_NAMESPACE, IJAMConst.GLOBAL_VARIABLE_CALLERNAME, "value");
 		if (var_callername == null || var_callername.length()==0) {

@@ -142,7 +142,7 @@ public class PhonenumberInfo {
 	
 	public static boolean isTelephoneSystemPrefix(String num) {
 		if (num!=null && !isClired(num)) {
-			String ts_prefix = PIMRuntime.getInstance().getConfigManagerFactory().getConfigManager().getProperty(IJAMConst.GLOBAL_NAMESPACE,IJAMConst.GLOBAL_TELEPHONESYSTEM_PREFIX);
+			String ts_prefix = PIMRuntime.getInstance().getConfigManagerFactory().getConfigManager().getProperty(IJAMConst.GLOBAL_NAMESPACE,IJAMConst.GLOBAL_INTERNAL_PREFIX);
 			if (ts_prefix!=null && ts_prefix.length()>0) {
 				return num.startsWith(ts_prefix);
 			}
@@ -152,7 +152,7 @@ public class PhonenumberInfo {
 	
 	public static String truncateTelephoneSystemPrefix(String num) {
 		if (num!=null && !isClired(num)) {
-			String ts_prefix = PIMRuntime.getInstance().getConfigManagerFactory().getConfigManager().getProperty(IJAMConst.GLOBAL_NAMESPACE,IJAMConst.GLOBAL_TELEPHONESYSTEM_PREFIX);
+			String ts_prefix = PIMRuntime.getInstance().getConfigManagerFactory().getConfigManager().getProperty(IJAMConst.GLOBAL_NAMESPACE,IJAMConst.GLOBAL_INTERNAL_PREFIX);
 			if (ts_prefix!=null && ts_prefix.length()>0) {
 				if (num.startsWith(ts_prefix))
 					return num.substring(ts_prefix.length());

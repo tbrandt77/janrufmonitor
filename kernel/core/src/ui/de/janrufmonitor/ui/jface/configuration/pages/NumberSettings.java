@@ -129,11 +129,20 @@ public class NumberSettings extends AbstractFieldEditorConfigPage {
 			addField(sfe);
 			
 			sfe = new StringFieldEditor(
-				IJAMConst.GLOBAL_NAMESPACE+SEPARATOR+IJAMConst.GLOBAL_TELEPHONESYSTEM_PREFIX,
-				this.m_i18n.getString(this.getNamespace(), IJAMConst.GLOBAL_TELEPHONESYSTEM_PREFIX, "label", this.m_language),
+				IJAMConst.GLOBAL_NAMESPACE+SEPARATOR+IJAMConst.GLOBAL_INTERNAL_TRUNCATE,
+				this.m_i18n.getString(this.getNamespace(), IJAMConst.GLOBAL_INTERNAL_TRUNCATE, "label", this.m_language),
 				5,
 				this.getFieldEditorParent()
 			);
+			addField(sfe);
+			
+			sfe = new StringFieldEditor(
+					IJAMConst.GLOBAL_NAMESPACE+SEPARATOR+IJAMConst.GLOBAL_INTERNAL_PREFIX,
+					this.m_i18n.getString(this.getNamespace(), IJAMConst.GLOBAL_INTERNAL_PREFIX, "label", this.m_language),
+					5,
+					this.getFieldEditorParent()
+				);
+			
 			addField(sfe);
 			sfe = new StringFieldEditor(
 				IJAMConst.GLOBAL_NAMESPACE+SEPARATOR+IJAMConst.GLOBAL_DIAL_PREFIX,

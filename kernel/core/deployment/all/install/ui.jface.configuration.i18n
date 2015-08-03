@@ -193,8 +193,9 @@ ui.jface.configuration.pages.Services\:title\:label\:de=Dienste
 ui.jface.configuration.pages.Services\:description\:label\:de=Dienste erweitern den jAnrufmonitor mit zus\u00E4tzlicher anwendungsbezogener Funktionalit\u00E4t.
 
 ui.jface.configuration.pages.NumberSettings\:title\:label\:de=Rufnummerneinstellungen
-ui.jface.configuration.pages.NumberSettings\:internallength\:label\:de=max. L\u00E4nge von internen Telefonanlagennummern\n(Nebenstellen oder Durchwahlen)
-ui.jface.configuration.pages.NumberSettings\:telephonesystemprefix\:label\:de=Telefonanlagenpr\u00E4fix
+ui.jface.configuration.pages.NumberSettings\:internallength\:label\:de=max. L\u00E4nge von internen Telefonanlagennummern:\n(Nebenstellen oder Durchwahlen)
+ui.jface.configuration.pages.NumberSettings\:internalprefix\:label\:de=Telefonanlagenpr\u00E4fix:
+ui.jface.configuration.pages.NumberSettings\:internaltruncate\:label\:de=Anzahl der zu entfernenden f\u00FChrenden Ziffern:\n(interne Telefonanlagenrufnummern)
 ui.jface.configuration.pages.NumberSettings\:description\:label\:de=Bei einiger Telefonie-Hardware oder deren Treibern werden Rufnummern nicht im Standard-Format \u00FCbermittelt. Sollten Anrufe nicht korrekt identifiziert werden, k\u00F6nnen diese Optionen die \u00FCbermittelten Rufnummern anpassen.
 ui.jface.configuration.pages.NumberSettings\:areacodeaddlength\:label\:de=max. Rufnummernl\u00E4nge f\u00FCr automatische\nVorwahlerg\u00E4nzung:
 ui.jface.configuration.pages.NumberSettings\:truncate\:label\:de=Anzahl der zu entfernenden f\u00FChrenden Ziffern:
