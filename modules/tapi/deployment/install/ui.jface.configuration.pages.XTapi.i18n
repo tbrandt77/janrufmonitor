@@ -4,3 +4,4 @@ ui.jface.configuration.pages.XTapi\:activemonitor\:label\:de=\u00DCberwachung ak
 ui.jface.configuration.pages.XTapi\:festnetzalias\:label\:de=MSN f\u00FCr TAPI-Anrufe:
 ui.jface.configuration.pages.XTapi\:fbinfo\:label\:de=TAPI-Infos:
 ui.jface.configuration.pages.XTapi\:outgoing\:label\:de=Ausgehende Anrufe \u00FCberwachen
+ui.jface.configuration.pages.XTapi\:deviceid\:label\:de=Ger\u00E4te-ID als MSN verwenden

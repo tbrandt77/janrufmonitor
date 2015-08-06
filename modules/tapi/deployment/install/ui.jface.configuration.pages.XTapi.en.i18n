@@ -4,3 +4,4 @@ ui.jface.configuration.pages.XTapi\:activemonitor\:label\:en=Monitor enabled (re
 ui.jface.configuration.pages.XTapi\:festnetzalias\:label\:en=MSN for TAPI calls:
 ui.jface.configuration.pages.XTapi\:fbinfo\:label\:en=TAPI details:
 ui.jface.configuration.pages.XTapi\:outgoing\:label\:en=Monitor outgoing calls
+ui.jface.configuration.pages.XTapi\:deviceid\:label\:en=Use device ID as MSN

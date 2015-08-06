@@ -97,6 +97,8 @@ public class XTapiMonitor implements IMonitor, IConfigurable, XTapiConst {
 		private List m_proceededCalls;
 
 		private int m_lineHandle;
+		
+		private int[] m_deviceIDMapping;
 
 		public void run() {
 			try {
@@ -106,6 +108,8 @@ public class XTapiMonitor implements IMonitor, IConfigurable, XTapiConst {
 				
 				m_tapi = new MSTAPI();
 				int n = m_tapi.init(this);
+				
+				m_deviceIDMapping = new int[n];
 
 				IEventBroker broker = this.getRuntime().getEventBroker();
 				broker.register(this, broker
@@ -118,6 +122,7 @@ public class XTapiMonitor implements IMonitor, IConfigurable, XTapiConst {
 				for (int i = 0; i < n; i++) {
 					nameOfLine = new StringBuffer();
 					m_lineHandle = m_tapi.openLineTapi(i, nameOfLine);
+					m_deviceIDMapping[i] = -1;
 					if (m_lineHandle > 0) {
 						m_logger.info("Opening line #" + m_lineHandle);
 						m_logger.info("Opening line name "
@@ -125,6 +130,10 @@ public class XTapiMonitor implements IMonitor, IConfigurable, XTapiConst {
 						m_tapiHandles.put(new Integer(m_lineHandle),
 								new TapiHandle(m_lineHandle, nameOfLine
 										.toString()));
+						
+						m_deviceIDMapping[i] = Integer.valueOf("0"+nameOfLine.toString().replaceAll("[^0-9]+", ""));
+						
+						m_logger.info("Device mapping ID["+i+"]: " + m_deviceIDMapping[i]);
 					}
 				}
 
@@ -281,7 +290,7 @@ public class XTapiMonitor implements IMonitor, IConfigurable, XTapiConst {
 			}
 		}
 
-		private void signalDoOutgoingCallConnect(int dwDevice, int dwInstance) {
+		private synchronized void signalDoOutgoingCallConnect(int dwDevice, int dwInstance) {
 			String[] callerInfo = this.getCallerInfoFromTapi(dwDevice);
 			if (callerInfo == null) {
 				return;
@@ -293,16 +302,13 @@ public class XTapiMonitor implements IMonitor, IConfigurable, XTapiConst {
 			}
 
 			ICall c = null;
-			if (callerInfo.length>2) {
-				m_logger.info("Called extension from TAPI: "+callerInfo[1]);
+			if (callerInfo.length>3) {
+				m_logger.info("Called extension from TAPI: "+(this.useDeviceIDasMSN() ? getDeviceIDNumber(dwInstance): callerInfo[1]));
 				c = new XTapiCall(dwDevice, dwInstance,
-						removeSpecialChars(callerInfo[3]), callerInfo[1], this.m_configuration).toCall();
-			} else {
-				c = new XTapiCall(dwDevice, dwInstance,
-						removeSpecialChars(callerInfo[3]), this.m_configuration).toCall();
-			}
-			c.setAttribute(getRuntime().getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CALLSTATUS, IJAMConst.ATTRIBUTE_VALUE_OUTGOING));
-			
+						removeSpecialChars(callerInfo[3]), (this.useDeviceIDasMSN() ? getDeviceIDNumber(dwInstance): callerInfo[1]), this.m_configuration).toCall();
+				
+				c.setAttribute(getRuntime().getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CALLSTATUS, IJAMConst.ATTRIBUTE_VALUE_OUTGOING));
+			} 
 			
 			IMsn called = c.getMSN();
 			if (called != null
@@ -313,19 +319,27 @@ public class XTapiMonitor implements IMonitor, IConfigurable, XTapiConst {
 			}
 		}
 		
-		private void signalDoCallConnect(int dwDevice, int dwInstance) {
+		private synchronized void signalDoCallConnect(int dwDevice, int dwInstance) {
 			String[] callerInfo = this.getCallerInfoFromTapi(dwDevice);
 			if (callerInfo == null) {
 				return;
 			}
-			
-			m_logger.info("Caller information from TAPI: "+callerInfo[0]+", "+callerInfo[1]);
+			if (m_logger.isLoggable(Level.INFO)) {
+				m_logger.info("Device ID: "+dwDevice);
+				m_logger.info("Instance ID: "+dwInstance);
+				m_logger.info("Caller information length: "+callerInfo.length);
+				for (int i=0;i<callerInfo.length;i++) {
+					m_logger.info("Caller information ["+i+"]: "+callerInfo[i]);
+				}
+				
+			}
 			
 			ICall c = null;
-			if (callerInfo.length>2) {
-				m_logger.info("Called extension from TAPI: "+callerInfo[3]);
+			if (callerInfo.length>3) {
+				if (m_logger.isLoggable(Level.INFO))
+					m_logger.info("Called extension from TAPI: "+(this.useDeviceIDasMSN() ? getDeviceIDNumber(dwInstance): callerInfo[3]));
 				c = new XTapiCall(dwDevice, dwInstance,
-						removeSpecialChars(callerInfo[1]), callerInfo[3], this.m_configuration).toCall();
+						removeSpecialChars(callerInfo[1]), (this.useDeviceIDasMSN() ? getDeviceIDNumber(dwInstance): callerInfo[3]), this.m_configuration).toCall();
 			} else {
 				c = new XTapiCall(dwDevice, dwInstance,
 						removeSpecialChars(callerInfo[1]), this.m_configuration).toCall();
@@ -344,6 +358,27 @@ public class XTapiMonitor implements IMonitor, IConfigurable, XTapiConst {
 			if (n.startsWith("+")) 
 				StringUtils.replaceString(n, "+", "00");
 			return n;
+		}
+		
+		private String getDeviceIDNumber(int instance) {
+			if (m_logger.isLoggable(Level.INFO))
+				m_logger.info("try to determine DeviceIDNumber from instance #"+instance);
+			
+			if (this.m_deviceIDMapping.length > instance && this.m_deviceIDMapping[instance]>=0) {
+				if (m_logger.isLoggable(Level.INFO))
+					m_logger.info("DeviceIDNumber found for instance #"+instance+" = "+this.m_deviceIDMapping[instance]);
+				return Integer.toString(this.m_deviceIDMapping[instance]);
+			}
+			if (m_logger.isLoggable(Level.INFO))
+				m_logger.info("No DeviceIDNumber found for instance #"+instance);
+			return Integer.toString(instance);
+		}
+		
+		private boolean useDeviceIDasMSN(){
+			if (this.m_configuration!=null) {
+				return Boolean.parseBoolean(this.m_configuration.getProperty(CFG_DEVICEID, "false"));
+			}
+			return false;
 		}
 		
 		private void signalDoCallDisconnect(int dwDevice, int dwInstance) {

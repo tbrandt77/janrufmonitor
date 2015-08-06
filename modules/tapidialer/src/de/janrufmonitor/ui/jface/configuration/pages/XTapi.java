@@ -63,6 +63,13 @@ public class XTapi extends AbstractFieldEditorConfigPage {
 			);
 			addField(bfe);	
 			
+			bfe = new BooleanFieldEditor(
+					getConfigNamespace()+SEPARATOR+"deviceid",
+				this.m_i18n.getString(this.getNamespace(), "deviceid", "label", this.m_language),
+				this.getFieldEditorParent()
+			);
+			addField(bfe);	
+			
 			sfe = new StringFieldEditor(
 					getConfigNamespace()+SEPARATOR+"festnetzalias",
 				this.m_i18n.getString(this.getNamespace(), "festnetzalias", "label", this.m_language),
