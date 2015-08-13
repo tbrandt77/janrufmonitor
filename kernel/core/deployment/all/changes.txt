@@ -1,5 +1,17 @@
 ﻿===
 
+jAnrufmonitor 5.0.59 (15.08.2015)
+---------------------------------
+Neu:
+- Überprüfung des Multiuser-Installationsverzeichnis beim Starten
+- Option für Präfixentfernung bei internen Anlagenrufnummern hinzugefügt
+
+Module:
+- FRITZ!Box-Überwachung: URL zum Wählen von Rufnummern bei FRITZ!OS 6.30+ angepasst
+- TAPI-Überwachung: DeviceID als MSN Nutzung möglich (z.B. bei Auerswald TK-Anlagen)
+
+===
+
 jAnrufmonitor 5.0.58 (01.08.2015)
 ---------------------------------
 Neu:
