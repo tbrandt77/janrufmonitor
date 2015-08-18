@@ -693,7 +693,7 @@ public class PhonenumberAnalyzer {
 									.getInstance(this.getRuntime())
 									.getTruncate(null) + "], ").getBytes());
 				}
-				fos.write(("internal internal prefix: ["
+				fos.write(("internal prefix: ["
 						+ PhonenumberAnalyzer.getInstance(this.getRuntime())
 								.getInternalPrefix() + "], ").getBytes());
 				fos.write(("max length internal numbers: ["

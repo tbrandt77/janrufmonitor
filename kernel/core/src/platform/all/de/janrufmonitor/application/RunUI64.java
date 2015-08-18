@@ -122,7 +122,7 @@ public class RunUI64 {
 					RunUI64.m_logger.info("Set new context classloader...");
 				PIMRuntime.getInstance().startup();
 			
-				if (RunUI64.m_logger.isLoggable(Level.INFO))
+				if (RunUI64.m_logger.isLoggable(Level.FINE))
 					PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).analyze();
 				
 				RunUI64.registerShutdownHook();

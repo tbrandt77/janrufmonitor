@@ -121,7 +121,7 @@ public class RunUI {
 					RunUI.m_logger.info("Set new context classloader...");
 				PIMRuntime.getInstance().startup();
 			
-				if (RunUI.m_logger.isLoggable(Level.INFO))
+				if (RunUI.m_logger.isLoggable(Level.FINE))
 					PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).analyze();
 			
 				RunUI.registerShutdownHook();
