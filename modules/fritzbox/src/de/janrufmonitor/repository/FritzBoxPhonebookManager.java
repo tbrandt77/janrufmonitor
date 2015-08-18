@@ -27,7 +27,6 @@ import de.janrufmonitor.fritzbox.firmware.exception.GetCallerListException;
 import de.janrufmonitor.repository.db.ICallerDatabaseHandler;
 import de.janrufmonitor.repository.db.hsqldb.HsqldbMultiPhoneCallerDatabaseHandler;
 import de.janrufmonitor.repository.filter.IFilter;
-import de.janrufmonitor.repository.identify.Identifier;
 import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.repository.types.IReadCallerRepository;
 import de.janrufmonitor.repository.types.IRemoteRepository;
@@ -242,25 +241,31 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 						Map phs = pe.getPhones();
 						Iterator entries = phs.keySet().iterator();
 						String key = null;
-						ICaller identified = null;
+						IPhonenumber phone = null;
 						while (entries.hasNext()) {
 							key = (String) entries.next();
-							String number = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).normalize(key);
-							if (PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).isInternal((number.trim()))) {
-								identified = Identifier.identifyDefault(getRuntime(), getRuntime().getCallerFactory().createInternalPhonenumber(number.trim()));
-								if (identified!=null) {
-									phones.add(identified.getPhoneNumber());
-									attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_NUMBER_TYPE+identified.getPhoneNumber().getTelephoneNumber(), (String) phs.get(key)));
-								}
-							}
-							if (!PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).isInternal((number.trim())) && !PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).isClired((number.trim()))) {
-								identified = Identifier.identifyDefault(getRuntime(), getRuntime().getCallerFactory().createPhonenumber(number.trim()));
-								if (identified!=null) {
-									phones.add(identified.getPhoneNumber());
-									attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_NUMBER_TYPE+identified.getPhoneNumber().getTelephoneNumber(), (String) phs.get(key)));
-								}
-							}
 							
+							if (key !=null && !PhonenumberAnalyzer.getInstance(getRuntime()).isInternal(key) && !PhonenumberAnalyzer.getInstance(getRuntime()).isClired(key)) {
+							
+								if (this.m_logger.isLoggable(Level.INFO)) {
+									this.m_logger.info("MacAddressbook raw number: "+key);
+								}
+								phone = PhonenumberAnalyzer.getInstance(getRuntime()).toIdentifiedPhonenumber(key);
+								if (this.m_logger.isLoggable(Level.INFO)) {
+									this.m_logger.info("MacAddressbook identified number: "+phone);
+								}
+								if (phone!=null) {
+									phones.add(phone);
+									attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_NUMBER_TYPE+phone.getTelephoneNumber(), (String) phs.get(key)));
+								}
+							}
+							if (PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).isInternal((key.trim()))) {
+								phone = PhonenumberAnalyzer.getInstance(getRuntime()).toInternalPhonenumber(key);
+								if (phone!=null) {
+									phones.add(phone);
+									attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_NUMBER_TYPE+phone.getTelephoneNumber(), (String) phs.get(key)));
+								}
+							}
 						}
 						if (phones.size()==0) continue;
 						
