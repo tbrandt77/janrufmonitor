@@ -25,7 +25,6 @@ import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.macab.MacAddressBookProxy;
 import de.janrufmonitor.repository.IMacAddressBookConst;
-import de.janrufmonitor.repository.identify.Identifier;
 import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
@@ -124,25 +123,26 @@ public class MacAddressBookMappingManager {
 			numbertype = (String) macNumberMappings.get(i);
 			while ((number = getRawNumber(((List)oCaller.get(IMacAddressBookConst.PHONE)), numbertype))!=null){
 				if (number !=null && !PhonenumberAnalyzer.getInstance(getRuntime()).isInternal(number) && !PhonenumberAnalyzer.getInstance(getRuntime()).isClired(number)) {
-					String nnumber = PhonenumberAnalyzer.getInstance(getRuntime()).normalize(number);	
-					phone = getRuntime().getCallerFactory().createPhonenumber(nnumber);
-					ICaller c = Identifier.identifyDefault(getRuntime(), phone);
-					if (c!=null) {
-						phone = c.getPhoneNumber();
-						if (phone.getTelephoneNumber().trim().length()>0 && !phone.isClired()) {
-							m.add(getNumberTypeAttribute(numbertype, phone, om));
-							m.add(om.createMacAddressBookNumberTypeAttribute(phone, numbertype));
-							phones.add(phone);
-							if (this.m_logger.isLoggable(Level.INFO)) {
-								this.m_logger.info("Added phone "+phone.toString());
-							}
+					if (this.m_logger.isLoggable(Level.INFO)) {
+						this.m_logger.info("MacAddressbook raw number: "+number);
+					}
+					phone = PhonenumberAnalyzer.getInstance(getRuntime()).toIdentifiedPhonenumber(number);
+					if (this.m_logger.isLoggable(Level.INFO)) {
+						this.m_logger.info("MacAddressbook identified number: "+phone);
+					}
+					if (phone != null && phone.getTelephoneNumber().trim().length()>0 && !phone.isClired()) {
+						m.add(getNumberTypeAttribute(numbertype, phone, om));
+						m.add(om.createMacAddressBookNumberTypeAttribute(phone, numbertype));
+						phones.add(phone);
+						if (this.m_logger.isLoggable(Level.INFO)) {
+							this.m_logger.info("Added phone "+phone.toString());
 						}
-					} 
+					}
 				}
 				else if (number !=null && PhonenumberAnalyzer.getInstance(getRuntime()).isInternal(number)) {
 					// found internal number
 					phone = getRuntime().getCallerFactory().createInternalPhonenumber(number);
-					if (phone.getTelephoneNumber().trim().length()>0 && !phone.isClired()) {
+					if (phone != null && phone.getTelephoneNumber().trim().length()>0 && !phone.isClired()) {
 						m.add(getNumberTypeAttribute(numbertype, phone, om));
 						m.add(om.createMacAddressBookNumberTypeAttribute(phone, numbertype));
 						phones.add(phone);
