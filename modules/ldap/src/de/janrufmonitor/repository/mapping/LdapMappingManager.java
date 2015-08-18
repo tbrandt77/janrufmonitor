@@ -25,7 +25,6 @@ import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.repository.LdapRepository;
-import de.janrufmonitor.repository.identify.Identifier;
 import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
@@ -202,23 +201,17 @@ public class LdapMappingManager {
                         if (m_logger.isLoggable(Level.INFO)) {
                         	m_logger.info("Adding LDAP attribute: "+attribute.getName()+", value: "+value);
                         }
-                        value = PhonenumberAnalyzer.getInstance(getRuntime()).normalize(value.trim());
-                        IPhonenumber pn = PhonenumberAnalyzer.getInstance(getRuntime()).toClirPhonenumber(value);
-                        if (pn==null) {
-                        	pn = PhonenumberAnalyzer.getInstance(getRuntime()).toInternalPhonenumber(value);
-                        	if (pn!=null) {
-                        		phones.add(pn);
-                            	attributes.add(getNumberTypeAttribute(attribute.getName(), pn));
-                        	}
-                        }
-                        if (pn==null) {
-                        	pn = PhonenumberAnalyzer.getInstance(getRuntime()).toPhonenumber(value);
-                        	 ICaller c = Identifier.identifyDefault(getRuntime(), pn);
-                             if (c!=null) {
-                             	phones.add(c.getPhoneNumber());
-                             	attributes.add(getNumberTypeAttribute(attribute.getName(), c.getPhoneNumber()));
-                             }
-                        }
+                        if (this.m_logger.isLoggable(Level.INFO)) {
+    						this.m_logger.info("LdapMappingManager raw number: "+value);
+    					}
+                        IPhonenumber pn = PhonenumberAnalyzer.getInstance(getRuntime()).toIdentifiedPhonenumber(value);
+                        if (this.m_logger.isLoggable(Level.INFO)) {
+    						this.m_logger.info("LdapMappingManager identified number: "+pn);
+    					}
+                    	if (pn!=null) {
+                    		phones.add(pn);
+                        	attributes.add(getNumberTypeAttribute(attribute.getName(), pn));
+                    	}
                     }
                 }
             }
