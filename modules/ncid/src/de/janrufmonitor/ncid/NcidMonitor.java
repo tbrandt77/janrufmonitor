@@ -112,7 +112,7 @@ public class NcidMonitor implements IMonitor, IConfigurable, NcidConst {
 			String action = NcidCallRaw.getAction(c);
 			if (action==null) return;
 						
-			if (action.equalsIgnoreCase("CID:")) {
+			if ("CID:".equalsIgnoreCase(action)) {
 				NcidCallRaw rawCall = new NcidCallRaw(c, this.m_configuration);
 				if (rawCall.isValid()) {
 					IMsn called = rawCall.toCall().getMSN();
@@ -124,7 +124,7 @@ public class NcidMonitor implements IMonitor, IConfigurable, NcidConst {
 					m_logger.severe("Call from Ncid is invalid: "+c);
 				}
 			}
-			if (action.equalsIgnoreCase("OUT:") && this.m_configuration.getProperty(CFG_OUTGOING, "false").equalsIgnoreCase("true")) {
+			if ("OUT:".equalsIgnoreCase(action) && this.m_configuration.getProperty(CFG_OUTGOING, "false").equalsIgnoreCase("true")) {
 				NcidCallRaw rawCall = new NcidCallRaw(c, this.m_configuration);
 				if (rawCall.isValid()) {
 					IMsn called = rawCall.toCall().getMSN();
@@ -136,7 +136,7 @@ public class NcidMonitor implements IMonitor, IConfigurable, NcidConst {
 					m_logger.severe("Call from Ncid is invalid: "+c);
 				}
 			}
-			if (action.equalsIgnoreCase("CIDINFO:")) {
+			if ("CIDINFO:".equalsIgnoreCase(action)) {
 				ICall nc = (ICall) m_connections.get(NcidCallRaw.getLine(c));
 				if (nc!=null && NcidCallRaw.getCallState(c).equalsIgnoreCase(IJAMConst.ATTRIBUTE_VALUE_ACCEPTED)) {
 					IAttribute outgoing = nc.getAttribute(IJAMConst.ATTRIBUTE_NAME_CALLSTATUS);
