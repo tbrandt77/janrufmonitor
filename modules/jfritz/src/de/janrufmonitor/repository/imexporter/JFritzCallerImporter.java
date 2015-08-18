@@ -218,9 +218,7 @@ public class JFritzCallerImporter implements ICallerImporter {
 			
 			if (!p.trim().startsWith("+")) return null;
 			
-			IPhonenumber pn = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toIdentifiedPhonenumber(p);
-			if (pn != null) return pn;	
-			return null;
+			return PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toIdentifiedPhonenumber(p);
 		}
 		
 		private String removeQuotes(String s) {

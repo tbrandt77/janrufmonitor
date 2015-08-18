@@ -72,16 +72,13 @@ public class JFritzCallImporter implements ICallImporter {
 			}
 			
 			// create caller object
-			IPhonenumber n = getRuntime().getCallerFactory().createPhonenumber(true);
-			ICaller c = getRuntime().getCallerFactory().createCaller(n);
+			//IPhonenumber n = getRuntime().getCallerFactory().createPhonenumber(true);
+			ICaller c = null;
 			if (splittedCall[3].trim().length()>0) {
-				n.setClired(false);
-				n.setTelephoneNumber(splittedCall[3].trim());
+				IPhonenumber pn = PhonenumberAnalyzer.getInstance(getRuntime()).toIdentifiedPhonenumber(splittedCall[3].trim());
+				if (pn==null) return;
 				
-				IPhonenumber pn = PhonenumberAnalyzer.getInstance(getRuntime()).toIdentifiedPhonenumber(n.getTelephoneNumber());
-				if (pn!=null) {
-					c.setPhoneNumber(pn);
-				}	
+				c = getRuntime().getCallerFactory().createCaller(pn);	
 				
 				IAttributeMap m = this.m_clf.createAttributeMap();
 				
@@ -107,6 +104,8 @@ public class JFritzCallImporter implements ICallImporter {
 				
 				c.setAttributes(m);
 			}
+			
+			if (c==null) return;
 
 			IAttributeMap mc = this.m_clf.createAttributeMap();
 			mc.add(
@@ -161,7 +160,7 @@ public class JFritzCallImporter implements ICallImporter {
 			StringBuffer uuid = new StringBuffer();
 			uuid.append(date.getTime());
 			uuid.append("-");
-			uuid.append(n.getTelephoneNumber());
+			uuid.append(splittedCall[3].trim());
 			uuid.append("-");
 			uuid.append(msn.getMSN());
 			
