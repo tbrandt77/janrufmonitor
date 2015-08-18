@@ -248,11 +248,11 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 							if (key !=null && !PhonenumberAnalyzer.getInstance(getRuntime()).isInternal(key) && !PhonenumberAnalyzer.getInstance(getRuntime()).isClired(key)) {
 							
 								if (this.m_logger.isLoggable(Level.INFO)) {
-									this.m_logger.info("MacAddressbook raw number: "+key);
+									this.m_logger.info("FritzBoxPhonebookManager raw number: "+key);
 								}
 								phone = PhonenumberAnalyzer.getInstance(getRuntime()).toIdentifiedPhonenumber(key);
 								if (this.m_logger.isLoggable(Level.INFO)) {
-									this.m_logger.info("MacAddressbook identified number: "+phone);
+									this.m_logger.info("FritzBoxPhonebookManager identified number: "+phone);
 								}
 								if (phone!=null) {
 									phones.add(phone);
