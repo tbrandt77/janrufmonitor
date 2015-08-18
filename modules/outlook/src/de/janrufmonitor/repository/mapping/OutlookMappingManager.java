@@ -20,7 +20,6 @@ import de.janrufmonitor.framework.IMultiPhoneCaller;
 import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.repository.OutlookContactConst;
 import de.janrufmonitor.repository.OutlookDate;
-import de.janrufmonitor.repository.identify.Identifier;
 import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
@@ -84,7 +83,7 @@ public class OutlookMappingManager {
 		
 	public ICaller mapToJamCaller(Dispatch oCaller, IOutlookMapping om) {
 		if (this.m_logger.isLoggable(Level.INFO)) {
-			this.m_logger.info("Appliing mapping: "+om.toString());
+			this.m_logger.info("Applying mapping: "+om.toString());
 		}
 		
 		IAttributeMap m = getRuntime().getCallerFactory().createAttributeMap();
@@ -99,20 +98,21 @@ public class OutlookMappingManager {
 			numbertype = (String) outlookNumberMappings.get(i);
 			number = Dispatch.get(oCaller, numbertype).toString().trim();
 			if (number !=null && !PhonenumberAnalyzer.getInstance(getRuntime()).isInternal(number) && !PhonenumberAnalyzer.getInstance(getRuntime()).isClired(number)) {
-				String nnumber = PhonenumberAnalyzer.getInstance(getRuntime()).normalize(number);				
-				phone = getRuntime().getCallerFactory().createPhonenumber(nnumber);
-				ICaller c = Identifier.identifyDefault(getRuntime(), phone);
-				if (c!=null) {
-					phone = c.getPhoneNumber();
-					if (phone.getTelephoneNumber().trim().length()>0 && !phone.isClired()) {
-						m.add(getNumberTypeAttribute(numbertype, phone, om));
-						m.add(om.createOutlookNumberTypeAttribute(phone, numbertype));
-						phones.add(phone);
-						if (this.m_logger.isLoggable(Level.INFO)) {
-							this.m_logger.info("Added phone "+phone.toString());
-						}
+				if (this.m_logger.isLoggable(Level.INFO)) {
+					this.m_logger.info("OutlookCallerManager raw number: "+number);
+				}
+				phone = PhonenumberAnalyzer.getInstance(getRuntime()).toIdentifiedPhonenumber(number);
+				if (this.m_logger.isLoggable(Level.INFO)) {
+					this.m_logger.info("OutlookCallerManager identified number: "+phone);
+				}
+				if (phone.getTelephoneNumber().trim().length()>0 && !phone.isClired()) {
+					m.add(getNumberTypeAttribute(numbertype, phone, om));
+					m.add(om.createOutlookNumberTypeAttribute(phone, numbertype));
+					phones.add(phone);
+					if (this.m_logger.isLoggable(Level.INFO)) {
+						this.m_logger.info("Added phone "+phone.toString());
 					}
-				} 
+				}
 			}
 			else if (number !=null && (number.length()> 0 && PhonenumberAnalyzer.getInstance(getRuntime()).isInternal(number))) {
 				// found internal number

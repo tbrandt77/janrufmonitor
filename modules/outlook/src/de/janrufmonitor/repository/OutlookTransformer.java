@@ -23,7 +23,6 @@ import de.janrufmonitor.framework.ICallerList;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IMultiPhoneCaller;
 import de.janrufmonitor.framework.IPhonenumber;
-import de.janrufmonitor.repository.identify.Identifier;
 import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
@@ -179,17 +178,17 @@ public class OutlookTransformer {
 			for (int i = 0; i < privatePhones.length; i++) {
 				number = Dispatch.get(contact, privatePhones[i]).toString().trim();
 				if (number !=null && number.length()>0) {
-					number = PhonenumberAnalyzer.getInstance(getRuntime()).normalize(number);
-					//phone = PhonenumberAnalyzer.getInstance(getRuntime()).toIdentifiedPhonenumber(number);
-					phone = getRuntime().getCallerFactory().createPhonenumber(number);
-					ICaller c = Identifier.identifyDefault(getRuntime(), phone);
-					if (c!=null) {
-						phone = c.getPhoneNumber();
-						if (phone!=null) {
-							if (phone.getTelephoneNumber().trim().length()>0 && !phone.isClired()) {
-								m.add(getNumberTypeAttribute(privatePhones[i], phone.getTelephoneNumber()));
-								phones.add(phone);
-							}
+					if (this.m_logger.isLoggable(Level.INFO)) {
+						this.m_logger.info("OutlookTransformer raw number: "+number);
+					}
+					phone = PhonenumberAnalyzer.getInstance(getRuntime()).toIdentifiedPhonenumber(number);
+					if (this.m_logger.isLoggable(Level.INFO)) {
+						this.m_logger.info("OutlookTransformer identified number: "+phone);
+					}
+					if (phone!=null) {
+						if (phone.getTelephoneNumber().trim().length()>0 && !phone.isClired()) {
+							m.add(getNumberTypeAttribute(privatePhones[i], phone.getTelephoneNumber()));
+							phones.add(phone);
 						}
 					}
 				}
@@ -298,17 +297,17 @@ public class OutlookTransformer {
 			for (int i = 0; i < businessPhones.length; i++) {
 				number = Dispatch.get(contact, businessPhones[i]).toString().trim();
 				if (number !=null && number.length()>0) {
-					number = PhonenumberAnalyzer.getInstance(getRuntime()).normalize(number);
-					//phone = PhonenumberAnalyzer.getInstance(getRuntime()).toIdentifiedPhonenumber(number);
-					phone = getRuntime().getCallerFactory().createPhonenumber(number);
-					ICaller c = Identifier.identifyDefault(getRuntime(), phone);
-					if (c!=null) {
-						phone = c.getPhoneNumber();
-						if (phone!=null) {
-							if (phone.getTelephoneNumber().trim().length()>0 && !phone.isClired()) {
-								m.add(getNumberTypeAttribute(businessPhones[i], phone.getTelephoneNumber()));
-								phones.add(phone);
-							}
+					if (this.m_logger.isLoggable(Level.INFO)) {
+						this.m_logger.info("OutlookTransformer raw number: "+number);
+					}
+					phone = PhonenumberAnalyzer.getInstance(getRuntime()).toIdentifiedPhonenumber(number);
+					if (this.m_logger.isLoggable(Level.INFO)) {
+						this.m_logger.info("OutlookTransformer identified number: "+phone);
+					}
+					if (phone!=null) {
+						if (phone.getTelephoneNumber().trim().length()>0 && !phone.isClired()) {
+							m.add(getNumberTypeAttribute(businessPhones[i], phone.getTelephoneNumber()));
+							phones.add(phone);
 						}
 					}
 				}
