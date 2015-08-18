@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -26,8 +27,11 @@ import de.janrufmonitor.framework.event.IEventConst;
 import de.janrufmonitor.framework.event.IEventReceiver;
 import de.janrufmonitor.framework.monitor.IMonitor;
 import de.janrufmonitor.framework.monitor.IMonitorListener;
+import de.janrufmonitor.repository.ICallManager;
+import de.janrufmonitor.repository.types.IWriteCallRepository;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
+import de.janrufmonitor.ui.jface.application.journal.Journal;
 
 public class NcidMonitor implements IMonitor, IConfigurable, NcidConst {
 
@@ -145,6 +149,27 @@ public class NcidMonitor implements IMonitor, IConfigurable, NcidConst {
 					this.getListener().doCallDisconnect(nc);	
 				}
 			}
+			if ("CIDLOG:".equalsIgnoreCase(action) && this.isSyncCDILog()) {
+				NcidCallRaw rawCall = new NcidCallRaw(c, this.m_configuration);
+				if (rawCall.isValid()) {
+					ICall call = rawCall.toCall();
+					if (call!=null && call.getDate().getTime()>this.getLastSyncTimestamp()) {
+						// 2015/08/18: get current journal repository
+						m_logger.info("Last sync timestamp: "+new Date(this.getLastSyncTimestamp()));
+						m_logger.info("Call timestamp: "+call.getDate());
+						String repository = getRuntime().getConfigManagerFactory().getConfigManager().getProperty(Journal.NAMESPACE, "repository");
+						ICallManager cm = getRuntime().getCallManagerFactory().getCallManager(repository);
+						if (cm!=null && cm.isActive() && cm.isSupported(IWriteCallRepository.class)) {
+							m_logger.info("Syncronizing call from CIDLOG to journal: "+call);
+							((IWriteCallRepository)cm).setCall(call);
+						}
+					} else {
+						m_logger.log(Level.INFO, "Call from CIDLOG not synced (call timestamp before sync timestamp): "+call);
+					}
+				} else {
+					m_logger.severe("Call from Ncid is invalid: "+c);
+				}
+			}
 		}
 		
 		private IMonitorListener getListener() {
@@ -219,6 +244,18 @@ public class NcidMonitor implements IMonitor, IConfigurable, NcidConst {
 			if (m_configuration!=null)
 				return Integer.parseInt(m_configuration.getProperty(CFG_RETRYMAX, "5"));
 			return 5;
+		}
+		
+		private boolean isSyncCDILog() {
+			if (m_configuration!=null)
+				return Boolean.parseBoolean(m_configuration.getProperty(CFG_SYNCCIDLOG, "false"));
+			return false;
+		}
+		
+		private long getLastSyncTimestamp() {
+			if (m_configuration!=null)
+				return Long.parseLong(m_configuration.getProperty(CFG_SYNCTIMESTAMP, "-1"));
+			return -1L;
 		}
 		
 		public String toString() {
@@ -302,6 +339,8 @@ public class NcidMonitor implements IMonitor, IConfigurable, NcidConst {
 	}
 
 	public void stop() {
+		PIMRuntime.getInstance().getConfigManagerFactory().getConfigManager().setProperty(ID, NcidConst.CFG_SYNCTIMESTAMP, Long.toString(new Date().getTime()));
+		PIMRuntime.getInstance().getConfigManagerFactory().getConfigManager().saveConfiguration();
         this.release();
 		this.m_logger.info("NcidMonitor stopped.");
 	}

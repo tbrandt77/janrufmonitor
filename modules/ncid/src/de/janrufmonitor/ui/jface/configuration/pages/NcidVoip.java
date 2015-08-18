@@ -81,9 +81,7 @@ public class NcidVoip extends AbstractFieldEditorConfigPage {
 				);
 			sfe.setEmptyStringAllowed(false);
 			addField(sfe);
-		}
-
-		if (isExpertMode()) {
+		
 			sfe = new StringFieldEditor(
 					getConfigNamespace()+SEPARATOR+"festnetzalias",
 				this.m_i18n.getString(this.getNamespace(), "festnetzalias", "label", this.m_language),
@@ -100,6 +98,13 @@ public class NcidVoip extends AbstractFieldEditorConfigPage {
 			);
 			ife.setTextLimit(2);
 			addField(ife);	
+			
+			bfe = new BooleanFieldEditor(
+					getConfigNamespace()+SEPARATOR+"sync_cidlog",
+				this.m_i18n.getString(this.getNamespace(), "sync_cidlog", "label", this.m_language),
+				this.getFieldEditorParent()
+			);
+			addField(bfe);
 		}
 		
 		IMonitor fbMonitor = this.getRuntime().getMonitorListener().getMonitor("NcidMonitor");

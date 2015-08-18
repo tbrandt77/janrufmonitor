@@ -49,6 +49,8 @@ public class NcidCallRaw extends AbstractNcidCall {
 		// -1 = ringing has stopped, call was not answered
 		// -2 = call hangup after being answered
 		
+		// CIDLOG: *DATE*17082015*TIME*1914*LINE*0366042283*NMBR*03660520535*MESG*NONE*NAME*NO NAME*
+		
 		super(rawline, config);
 	}
 
@@ -58,7 +60,7 @@ public class NcidCallRaw extends AbstractNcidCall {
 		if (this.m_call==null) {
 			IRuntime r = PIMRuntime.getInstance();
 			String[] call = this.m_line.split("\\*");
-			if (call.length>=8 && call[0].trim().equalsIgnoreCase("CID:")) {
+			if (call.length>=8 && (call[0].trim().equalsIgnoreCase("CID:") || call[0].trim().equalsIgnoreCase("CIDLOG:"))) {
 				// create MSN
 				IMsn msn = r.getCallFactory().createMsn(getFestnetzAlias(call[6]), "");
 				msn.setAdditional(r.getMsnManager().getMsnLabel(msn));

@@ -6,6 +6,6 @@ public interface NcidConst {
 	public String CFG_OUTGOING = "outgoing";
 	public String CFG_RETRYMAX = "retrymax";
 	public String CFG_FESTNETZALIAS = "festnetzalias";
-	public String CFG_STARTUP_DELAY = "startupdelay";
-	public String CFG_AUTO_RECONNECT_SESSIONID = "autoreconnect";
+	public String CFG_SYNCCIDLOG = "sync_cidlog";
+	public String CFG_SYNCTIMESTAMP = "sync_ts";
 }
