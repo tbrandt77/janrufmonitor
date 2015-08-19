@@ -478,14 +478,19 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 		StringBuffer data = new StringBuffer();
 		if (number.endsWith("#"))
 			number = number.substring(0, number.length()-1);
-		
+
 		String urlstr = "http://" + this.m_address +":" + this.m_port;
 		
 		if (this.m_firmware!=null && this.m_firmware.getMajor()>=6 && this.m_firmware.getMinor()>=30) {
-			urlstr += "/fon_num/fonbook_list.lua?sid="+this.m_sid+"&dial="+number;
+		    String setupporturl = urlstr + "/fon_num/dial_foncalls.lua";
+		    String setupportpost = "sid="+this.m_sid+"&clicktodial=on&port="+extension+"&btn_apply=";		
+            String dialurl = urlstr + "/fon_num/fonbook_list.lua?sid="+this.m_sid+"&dial="+number;
 			try {
 				data.append(this.executeURL(
-						urlstr,
+						setupporturl,
+						setupportpost, true).trim());
+				data.append(this.executeURL(
+						dialurl,
 						null, true).trim());
 			} catch (UnsupportedEncodingException e) {
 				this.m_logger.log(Level.WARNING, e.getMessage(), e);
