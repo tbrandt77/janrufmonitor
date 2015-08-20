@@ -308,6 +308,9 @@ public class XTapiMonitor implements IMonitor, IConfigurable, XTapiConst {
 						removeSpecialChars(callerInfo[3]), (this.useDeviceIDasMSN() ? getDeviceIDNumber(dwInstance): callerInfo[1]), this.m_configuration).toCall();
 				
 				c.setAttribute(getRuntime().getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CALLSTATUS, IJAMConst.ATTRIBUTE_VALUE_OUTGOING));
+				if (this.useDeviceIDasMSN()) {
+					c.setAttribute(getRuntime().getCallFactory().createAttribute("tapi.callednumber", callerInfo[3]));
+				}
 			} 
 			
 			IMsn called = c.getMSN();
@@ -331,7 +334,6 @@ public class XTapiMonitor implements IMonitor, IConfigurable, XTapiConst {
 				for (int i=0;i<callerInfo.length;i++) {
 					m_logger.info("Caller information ["+i+"]: "+callerInfo[i]);
 				}
-				
 			}
 			
 			ICall c = null;
@@ -340,6 +342,10 @@ public class XTapiMonitor implements IMonitor, IConfigurable, XTapiConst {
 					m_logger.info("Called extension from TAPI: "+(this.useDeviceIDasMSN() ? getDeviceIDNumber(dwInstance): callerInfo[3]));
 				c = new XTapiCall(dwDevice, dwInstance,
 						removeSpecialChars(callerInfo[1]), (this.useDeviceIDasMSN() ? getDeviceIDNumber(dwInstance): callerInfo[3]), this.m_configuration).toCall();
+				if (this.useDeviceIDasMSN()) {
+					c.setAttribute(getRuntime().getCallFactory().createAttribute("tapi.callednumber", callerInfo[3]));
+				}
+				
 			} else {
 				c = new XTapiCall(dwDevice, dwInstance,
 						removeSpecialChars(callerInfo[1]), this.m_configuration).toCall();
