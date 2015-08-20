@@ -159,6 +159,7 @@ public class FritzBoxCallCsv extends AbstractFritzBoxCall {
 						ICaller cx = Identifier.identify(r, pnx);
 						if (cx!=null) {
 							am.add(r.getCallFactory().createAttribute("fritzbox.spoofing", cx.getPhoneNumber().getIntAreaCode()+";"+cx.getPhoneNumber().getAreaCode()+";"+cx.getPhoneNumber().getCallNumber()));
+							am.add(r.getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_SPOOFED, "true"));
 						}
 					}
 					
