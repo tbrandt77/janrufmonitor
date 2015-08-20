@@ -97,10 +97,10 @@ public class NcidCallRaw extends AbstractNcidCall {
 				// create attributes
 				IAttributeMap am = r.getCallFactory().createAttributeMap();
 
-				am.add(r.getCallFactory().createAttribute("Ncid.key", call[6]));
+				am.add(r.getCallFactory().createAttribute("ncid.key", call[6]));
 				if (call.length>=12) {
-					am.add(r.getCallFactory().createAttribute("Ncid.msg", call[10]));
-					am.add(r.getCallFactory().createAttribute("Ncid.callername", call[12]));
+					am.add(r.getCallFactory().createAttribute("ncid.msg", call[10]));
+					am.add(r.getCallFactory().createAttribute("ncid.callername", call[12]));
 				}
 				am.add(r.getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CALLSTATUS
 						, IJAMConst.ATTRIBUTE_VALUE_MISSED));
@@ -172,15 +172,15 @@ public class NcidCallRaw extends AbstractNcidCall {
 				// create attributes
 				IAttributeMap am = r.getCallFactory().createAttributeMap();
 
-				am.add(r.getCallFactory().createAttribute("Ncid.key", call[6]));
+				am.add(r.getCallFactory().createAttribute("ncid.key", call[6]));
 				if (call.length>=12) {
-					am.add(r.getCallFactory().createAttribute("Ncid.msg", call[10]));
-					am.add(r.getCallFactory().createAttribute("Ncid.callername", call[12]));
+					am.add(r.getCallFactory().createAttribute("ncid.msg", call[10]));
+					am.add(r.getCallFactory().createAttribute("ncid.callername", call[12]));
 				}
 				am.add(r.getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CALLSTATUS, IJAMConst.ATTRIBUTE_VALUE_OUTGOING));				
 				
 				if (callByCall!=null)
-					am.add(r.getCallFactory().createAttribute("Ncid.callbycall", callByCall));
+					am.add(r.getCallFactory().createAttribute("ncid.callbycall", callByCall));
 								
 				// create UUID
 				StringBuffer uuid = new StringBuffer();
@@ -232,7 +232,7 @@ public class NcidCallRaw extends AbstractNcidCall {
 	}
 	
 	public static String getKey(ICall call) {
-		IAttribute att = call.getAttribute("Ncid.key");
+		IAttribute att = call.getAttribute("ncid.key");
 		if (att!=null) return att.getValue();
 		return null;
 	}
