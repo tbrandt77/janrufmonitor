@@ -306,11 +306,13 @@ public abstract class HsqldbCallDatabaseHandler extends AbstractCallDatabaseHand
 			} else {
 				sql.append(" content ");
 			}
-			sql.append(" FROM calls");
+			sql.append("FROM calls");
 			if (count>0 && offset>=0 ) {
 				sql.append(" AS rtable");
 			}
 		}
+		
+		// append search terms
 		
 		if (count>0 && offset>=0 ) {
 			sql.append(" LIMIT ");
