@@ -289,6 +289,7 @@ public abstract class HsqldbMultiPhoneCallerDatabaseHandler extends AbstractMult
 	}
 	
 	private boolean hasAttributeFilter(IFilter[] filters) {
+		if (filters==null) return false;
 		IFilter f = null;
 		for (int i=0;i<filters.length;i++) {
 			f = filters[i];

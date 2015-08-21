@@ -337,7 +337,13 @@ public class Editor extends AbstractTreeTableApplication implements EditorConfig
 		List l = new ArrayList();
 
 		try {
-			FileInputStream fstream = new FileInputStream(PathResolver.getInstance(this.getRuntime()).getConfigDirectory()+File.separator+"contacts.history");
+			File history = new File(PathResolver.getInstance(this.getRuntime()).getConfigDirectory()+File.separator+"contacts.history");
+			if (!history.exists()) {
+				history.getParentFile().mkdirs();
+				history.createNewFile();
+			}
+			
+			FileInputStream fstream = new FileInputStream(history);
 			BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 
 			String strLine;

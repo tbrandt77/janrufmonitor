@@ -308,7 +308,10 @@ public abstract class HsqldbCallDatabaseHandler extends AbstractCallDatabaseHand
 				}							
 			}
 			if (searchTerms!=null && searchTerms.length>0){ 
-				sql.append(" AND");	
+				if (filters.length==1 && filters[0]!=null && filters[0].getType() == FilterType.ITEMCOUNT)
+					sql.append(" WHERE");	
+				else
+					sql.append(" AND");
 				sql.append(createSearchTerm(searchTerms));	
 			}
 			if (limit>0 && !isCounter) {

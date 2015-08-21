@@ -465,6 +465,12 @@ public final class Journal extends AbstractTableApplication implements IEventSen
 		List l = new ArrayList();
 
 		try {
+			File history = new File(PathResolver.getInstance(this.getRuntime()).getConfigDirectory()+File.separator+"journal.history");
+			if (!history.exists()) {
+				history.getParentFile().mkdirs();
+				history.createNewFile();
+			}
+			
 			FileInputStream fstream = new FileInputStream(PathResolver.getInstance(this.getRuntime()).getConfigDirectory()+File.separator+"journal.history");
 			BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 

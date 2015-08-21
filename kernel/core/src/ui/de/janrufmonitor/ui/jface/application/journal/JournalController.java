@@ -16,12 +16,14 @@ import de.janrufmonitor.repository.filter.CallerFilter;
 import de.janrufmonitor.repository.filter.IFilter;
 import de.janrufmonitor.repository.search.ISearchTerm;
 import de.janrufmonitor.repository.search.Operator;
+import de.janrufmonitor.repository.search.SearchTermSeriarlizer;
 import de.janrufmonitor.repository.types.IReadCallRepository;
 import de.janrufmonitor.repository.types.ISearchableCallRepository;
 import de.janrufmonitor.repository.types.IWriteCallRepository;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.ui.jface.application.IExtendedApplicationController;
+import de.janrufmonitor.util.string.StringUtils;
 
 public class JournalController implements IExtendedApplicationController, JournalConfigConst {
 	
@@ -132,10 +134,13 @@ public class JournalController implements IExtendedApplicationController, Journa
 		ICallManager cm  = this._getRepository();
 		if (cm!=null && cm.isActive() && cm.isSupported(IReadCallRepository.class)) {
 			if (cm.isSupported(ISearchableCallRepository.class)) {
-				this.m_data = ((ISearchableCallRepository)cm).getCalls(this.getFilters(), countElements(), 0, this.getSearchTerms());
+				this.m_data = ((ISearchableCallRepository)cm).getCalls(this.getFilters(), countElements(), 0, new SearchTermSeriarlizer().getSearchTermsFromString(StringUtils.urlEncode(this.m_configuration.getProperty(CFG_SEARCHTERMS, ""))));
 			} else {
 				this.m_data = ((IReadCallRepository)cm).getCalls(this.getFilters(), countElements(), 0);
 			}
+			if (this.m_data==null) 
+				this.m_data = this.getRuntime().getCallFactory().createCallList();
+			
 			this.doSorting();
 		}
 		if (this.m_data==null) 
