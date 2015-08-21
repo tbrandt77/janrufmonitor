@@ -13,6 +13,7 @@ import de.janrufmonitor.framework.ICallList;
 import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.repository.filter.IFilter;
+import de.janrufmonitor.repository.search.ISearchTerm;
 import de.janrufmonitor.util.io.Serializer;
 import de.janrufmonitor.util.io.SerializerException;
 import de.janrufmonitor.util.uuid.UUID;
@@ -331,15 +332,15 @@ public abstract class AbstractCallDatabaseHandler extends AbstractDatabaseHandle
 		
 		return this.buildCallList(filters, count, offset); 	
 	}
-
+	
 	/**
-	 * Counts the number of calls belonging to the filters obejct.
+	 * Fetches the calls by the applied filters from the database
 	 * 
 	 * @param filters filters applied to the result
 	 * @return
 	 * @throws SQLException
 	 */
-	public int getCallCount(IFilter[] filters) throws SQLException {
+	public ICallList getCallList(IFilter[] filters, int count, int offset, ISearchTerm[] searchTerms) throws SQLException {
 		if (!isConnected())
 			try {
 				this.connect();
@@ -347,17 +348,48 @@ public abstract class AbstractCallDatabaseHandler extends AbstractDatabaseHandle
 				throw new SQLException(e.getMessage());
 			}
 		
-		return this.buildCallCount(filters); 	
+		return this.buildCallList(filters, count, offset, searchTerms); 	
+	}
+
+	/**
+	 * Counts the number of calls belonging to the filters object.
+	 * 
+	 * @param filters filters applied to the result
+	 * @return
+	 * @throws SQLException
+	 */
+	public int getCallCount(IFilter[] filters) throws SQLException {
+		return this.getCallCount(filters, null);
+	}
+	
+	public int getCallCount(IFilter[] filters, ISearchTerm[] searchTerms) throws SQLException {
+		if (!isConnected())
+			try {
+				this.connect();
+			} catch (ClassNotFoundException e) {
+				throw new SQLException(e.getMessage());
+			}
+		
+		return this.buildCallCount(filters, searchTerms); 	
 	}
 	
 	/**
-	 * Counts the calls withe a proper database query.
+	 * Counts the calls with a proper database query.
 	 * 
 	 * @param filters filters applied to the result
 	 * @return number of calls belonging to the filters
 	 * @throws SQLException
 	 */
 	protected abstract int buildCallCount(IFilter[] filters) throws SQLException;
+	
+	/**
+	 * Counts the calls with a proper database query.
+	 * 
+	 * @param filters filters applied to the result
+	 * @return number of calls belonging to the filters
+	 * @throws SQLException
+	 */
+	protected abstract int buildCallCount(IFilter[] filters, ISearchTerm[] searchTerms) throws SQLException;
 	
 	/**
 	 * Create the call list from a query of the database. This abstract method must be
@@ -378,5 +410,15 @@ public abstract class AbstractCallDatabaseHandler extends AbstractDatabaseHandle
 	 * @throws SQLException
 	 */
 	protected abstract ICallList buildCallList(IFilter[] filters, int count, int offset) throws SQLException;
+	
+	/**
+	 * Create the call list from a query of the database. This abstract method must be
+	 * implemented by all CallDatabaseHandler.
+	 * 
+	 * @param filters filters applied to the result
+	 * @return
+	 * @throws SQLException
+	 */
+	protected abstract ICallList buildCallList(IFilter[] filters, int count, int offset, ISearchTerm[] searchTerms) throws SQLException;
 
 }

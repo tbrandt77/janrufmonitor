@@ -20,4 +20,6 @@ public interface IAction {
 	
 	public IAction[] getSubActions();
 	
+	public boolean isEnabled();
+	
 }

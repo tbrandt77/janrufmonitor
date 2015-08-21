@@ -38,8 +38,8 @@ ui.jface.application.editor.Editor\:tracking\:label\:de=Noch {%1} Kontakte werde
 ui.jface.application.editor.Editor\:confirmtimemessage\:label\:de=Diese Meldung nicht mehr anzeigen.
 ui.jface.application.editor.Editor\:timemessage\:label\:de=Zu viele Kontakte in der aktuellen Ansicht
 ui.jface.application.editor.Editor\:timemessage\:description\:de=In der aktuellen Ansicht sind zu viele Kontakte ({%1}). Diese Anzahl beeintr\u00E4chtigt die Arbeitsweise der Software. Um ein performantes Arbeiten der Software gew\u00E4hrleisten zu k\u00F6nnen, w\u00E4ren {%2} Kontakte pro Ansicht optimal. Schr\u00E4nken Sie die Ansicht ein (Men\u00FC Ansicht -> Filtern...), so dass weniger Eintr\u00E4ge sichtbar werden.
-ui.jface.application.editor.Editor\:quicksearch\:label\:de=Schnellsuche:
-ui.jface.application.editor.Editor\:quicksearch\:description\:de=Sucht innerhalb der aktuellen Ansicht
+ui.jface.application.editor.Editor\:quicksearch\:label\:de=Ansicht durchsuchen...
+ui.jface.application.editor.Editor\:quicksearch\:description\:de=Filtert Kontakte auf Basis der Suchkriterien
 ui.jface.application.editor.Editor\:refresherror\:label\:de=Beim Aktualisieren der Ansicht ist ein Fehler aufgetreten. Details zum Fehler wurden in der Logdatei jam-0.log gespeichert.
 
 
@@ -203,8 +203,8 @@ ui.jface.application.journal.Journal\:rejected\:label\:de=abgewiesene Anrufe
 ui.jface.application.journal.Journal\:accepted\:label\:de=angenommene Anrufe
 ui.jface.application.journal.Journal\:outgoing\:label\:de=ausgehende Anrufe
 ui.jface.application.journal.Journal\:missed\:label\:de=verpasste Anrufe
-ui.jface.application.journal.Journal\:quicksearch\:label\:de=Schnellsuche:
-ui.jface.application.journal.Journal\:quicksearch\:description\:de=Sucht innerhalb der aktuellen Ansicht
+ui.jface.application.journal.Journal\:quicksearch\:label\:de=Ansicht durchsuchen...
+ui.jface.application.journal.Journal\:quicksearch\:description\:de=Filtert Anrufe auf Basis der Suchkriterien
 ui.jface.application.journal.Journal\:refresherror\:label\:de=Beim Aktualisieren der Ansicht ist ein Fehler aufgetreten. Details zum Fehler wurden in der Logdatei jam-0.log gespeichert.
 
 ui.jface.application.journal.action.LastOpenJournalAction\:title\:label\:de=Zuletzt ge\u00F6ffnet...

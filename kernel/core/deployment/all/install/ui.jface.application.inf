@@ -48,8 +48,6 @@ ui.jface.application.editor.Editor\:col_size_lastcalled\:value=105
 ui.jface.application.editor.Editor\:renderer\:value=name2,imagepreview,address,numbertype,number,category,lastcalled
 ui.jface.application.editor.Editor\:toolbar\:value=false
 ui.jface.application.editor.Editor\:toolbar\:type=boolean
-ui.jface.application.editor.Editor\:quicksearch\:value=false
-ui.jface.application.editor.Editor\:quicksearch\:type=boolean
 ui.jface.application.editor.Editor\:filter\:value=
 ui.jface.application.editor.Editor\:categories\:value=Standard
 ui.jface.application.editor.Editor\:filter_cat_0\:value=(5,category\=Standard)
@@ -162,8 +160,6 @@ ui.jface.application.journal.Journal\:add_stats\:value=
 # added 4.5.0
 ui.jface.application.journal.Journal\:toolbar\:value=true
 ui.jface.application.journal.Journal\:toolbar\:type=boolean
-ui.jface.application.journal.Journal\:quicksearch\:value=false
-ui.jface.application.journal.Journal\:quicksearch\:type=boolean
 ui.jface.application.journal.Journal\:filter\:value=
 ui.jface.application.journal.Journal\:filter_1\:value=(1,0,0,-100)
 ui.jface.application.journal.Journal\:filter_2\:value=(1,0,0,-101)
@@ -417,3 +413,13 @@ ui.jface.application.RendererRegistry\:renderer_callduration\:access=system
 # added 5.0.57
 ui.jface.application.journal.Journal\:rt_filters_years\:value=3
 ui.jface.application.journal.Journal\:rt_filters_years\:type=integer
+
+# added 5.0.60
+ui.jface.application.ActionRegistry\:action_journal_quicksearchterm\:value=de.janrufmonitor.ui.jface.application.journal.action.QuickSearchTermAction
+ui.jface.application.ActionRegistry\:action_journal_quicksearchterm\:access=system
+ui.jface.application.ActionRegistry\:action_editor_quicksearchterm\:value=de.janrufmonitor.ui.jface.application.editor.action.QuickSearchTermAction
+ui.jface.application.ActionRegistry\:action_editor_quicksearchterm\:access=system
+ui.jface.application.journal.Journal\:quicksearch\:value=true
+ui.jface.application.journal.Journal\:quicksearch\:type=boolean
+ui.jface.application.editor.Editor\:quicksearch\:value=true
+ui.jface.application.editor.Editor\:quicksearch\:type=boolean

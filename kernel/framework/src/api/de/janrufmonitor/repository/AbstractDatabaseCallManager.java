@@ -7,10 +7,12 @@ import de.janrufmonitor.framework.ICall;
 import de.janrufmonitor.framework.ICallList;
 import de.janrufmonitor.repository.db.ICallDatabaseHandler;
 import de.janrufmonitor.repository.filter.IFilter;
+import de.janrufmonitor.repository.search.ISearchTerm;
 import de.janrufmonitor.repository.types.IReadCallRepository;
+import de.janrufmonitor.repository.types.ISearchableCallRepository;
 import de.janrufmonitor.repository.types.IWriteCallRepository;
 
-public abstract class AbstractDatabaseCallManager extends AbstractConfigurableCallManager implements IReadCallRepository, IWriteCallRepository {
+public abstract class AbstractDatabaseCallManager extends AbstractConfigurableCallManager implements IReadCallRepository, IWriteCallRepository, ISearchableCallRepository {
 
 	protected ICallDatabaseHandler m_dbh;
 	
@@ -112,9 +114,14 @@ public abstract class AbstractDatabaseCallManager extends AbstractConfigurableCa
 		return this.getCalls(filters, -1, -1);
 	}
 	
-	public synchronized ICallList getCalls(IFilter[] filters, int count, int offset) {
+	public ICallList getCalls(IFilter[] filters, int count, int offset) {
+		return this.getCalls(filters, count, offset, null);
+	}
+	
+
+	public synchronized ICallList getCalls(IFilter[] filters, int count, int offset, ISearchTerm[] searchTerms) {
 		try {
-			ICallList cl = getDatabaseHandler().getCallList(filters, count, offset);
+			ICallList cl = getDatabaseHandler().getCallList(filters, count, offset, searchTerms);
 			if (!getDatabaseHandler().isKeepAlive())
 				getDatabaseHandler().disconnect();
 			
@@ -132,9 +139,14 @@ public abstract class AbstractDatabaseCallManager extends AbstractConfigurableCa
 	 */
 	protected abstract ICallDatabaseHandler getDatabaseHandler();
 
+	
 	public synchronized int getCallCount(IFilter[] filters) {
+		return this.getCallCount(filters, null);
+	}
+	
+	public synchronized int getCallCount(IFilter[] filters, ISearchTerm[] searchTerms) {
 		try {
-			int ccount = getDatabaseHandler().getCallCount(filters);
+			int ccount = getDatabaseHandler().getCallCount(filters, searchTerms);
 			if (!getDatabaseHandler().isKeepAlive())
 				getDatabaseHandler().disconnect();
 			

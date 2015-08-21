@@ -6,6 +6,7 @@ import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.ICallerList;
 import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.repository.filter.IFilter;
+import de.janrufmonitor.repository.search.ISearchTerm;
 
 public interface ICallerDatabaseHandler extends IDatabaseHandler {
 
@@ -18,4 +19,6 @@ public interface ICallerDatabaseHandler extends IDatabaseHandler {
 	public ICaller getCaller(IPhonenumber pn) throws SQLException;
 	
 	public ICallerList getCallerList(IFilter[] filters) throws SQLException;
+	
+	public ICallerList getCallerList(IFilter[] filters, ISearchTerm[] searchTerms) throws SQLException;
 }

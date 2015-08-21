@@ -1,6 +1,17 @@
 package de.janrufmonitor.ui.jface.application.editor;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -24,6 +35,7 @@ import de.janrufmonitor.ui.jface.application.dnd.IDropTargetHandler;
 import de.janrufmonitor.ui.jface.application.editor.action.ImportAction;
 import de.janrufmonitor.ui.jface.application.rendering.IEditorCellRenderer;
 import de.janrufmonitor.ui.jface.application.rendering.IRenderer;
+import de.janrufmonitor.util.io.PathResolver;
 
 public class Editor extends AbstractTreeTableApplication implements EditorConfigConst {
 	
@@ -260,7 +272,7 @@ public class Editor extends AbstractTreeTableApplication implements EditorConfig
 	}
 	
 	protected IAction getQuickSearchAction() {
-		return ActionRegistry.getInstance().getAction("quicksearch", getApplication());
+		return ActionRegistry.getInstance().getAction("editor_quicksearchterm", getApplication());
 	}
 
 	protected IAction getHightlightAction() {
@@ -319,6 +331,41 @@ public class Editor extends AbstractTreeTableApplication implements EditorConfig
 	
 	public boolean isSupportingRenderer(IRenderer r) {
 		return (r instanceof IEditorCellRenderer);
+	}
+	
+	protected List getSearchHistory() {
+		List l = new ArrayList();
+
+		try {
+			FileInputStream fstream = new FileInputStream(PathResolver.getInstance(this.getRuntime()).getConfigDirectory()+File.separator+"contacts.history");
+			BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+
+			String strLine;
+	
+			while ((strLine = br.readLine()) != null)   {
+				if (!l.contains(strLine))
+					l.add(strLine);
+			}
+			br.close();
+		} catch (FileNotFoundException e) {
+			m_logger.log(Level.SEVERE, "Could not read contacts.history file: "+e.getMessage(), e);
+		} catch (IOException e) {
+			m_logger.log(Level.SEVERE, "Could not read contacts.history file: "+e.getMessage(), e);
+		}
+
+		return l;
+	}
+	
+	protected void setSearchHistory(List searchTerms) {
+		try {
+		    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(PathResolver.getInstance(this.getRuntime()).getConfigDirectory()+File.separator+"contacts.history", false)));
+		    for (int i=0;i<searchTerms.size();i++)
+		    	out.println(searchTerms.get(i));
+		    out.flush();
+		    out.close();
+		} catch (IOException e) {
+		    m_logger.log(Level.SEVERE, "Could not write contacts.history file: "+e.getMessage(), e);
+		}
 	}
 
 }

@@ -1,6 +1,9 @@
 package de.janrufmonitor.ui.jface.application.journal;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
+import java.util.StringTokenizer;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
@@ -11,7 +14,10 @@ import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.repository.ICallManager;
 import de.janrufmonitor.repository.filter.CallerFilter;
 import de.janrufmonitor.repository.filter.IFilter;
+import de.janrufmonitor.repository.search.ISearchTerm;
+import de.janrufmonitor.repository.search.Operator;
 import de.janrufmonitor.repository.types.IReadCallRepository;
+import de.janrufmonitor.repository.types.ISearchableCallRepository;
 import de.janrufmonitor.repository.types.IWriteCallRepository;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
@@ -92,14 +98,6 @@ public class JournalController implements IExtendedApplicationController, Journa
 						aCall.setCaller(caller);
 					}
 					((IWriteCallRepository)cm).updateCalls(cl);
-					
-//					List cpms = this.getRuntime().getCallerManagerFactory().getTypedCallerManagers(IWriteCallerRepository.class);
-//					ICallerManager cmgr = null;
-//					for (int i = 0; i < cpms.size(); i++) {
-//						cmgr = (ICallerManager) cpms.get(i);
-//						if (cmgr.isActive() && cmgr.isSupported(IWriteCallerRepository.class))
-//							((IWriteCallerRepository)cmgr).updateCaller(caller);
-//					}
 				} else {
 					// update a single CLIR call or isUpdateAll == false
 					if (cm.isSupported(IWriteCallRepository.class))
@@ -112,6 +110,9 @@ public class JournalController implements IExtendedApplicationController, Journa
 	public synchronized int countElements() {
 		ICallManager cm  = this._getRepository();
 		if (cm!=null && cm.isActive() && cm.isSupported(IReadCallRepository.class)) {
+			if (cm.isSupported(ISearchableCallRepository.class)) {
+				return ((ISearchableCallRepository)cm).getCallCount(this.getFilters(), this.getSearchTerms());
+			}
 			return ((IReadCallRepository)cm).getCallCount(this.getFilters());
 		}
 		return 0;
@@ -130,7 +131,11 @@ public class JournalController implements IExtendedApplicationController, Journa
 	private void buildControllerData() {
 		ICallManager cm  = this._getRepository();
 		if (cm!=null && cm.isActive() && cm.isSupported(IReadCallRepository.class)) {
-			this.m_data = ((IReadCallRepository)cm).getCalls(this.getFilters(), countElements(), 0);
+			if (cm.isSupported(ISearchableCallRepository.class)) {
+				this.m_data = ((ISearchableCallRepository)cm).getCalls(this.getFilters(), countElements(), 0, this.getSearchTerms());
+			} else {
+				this.m_data = ((IReadCallRepository)cm).getCalls(this.getFilters(), countElements(), 0);
+			}
 			this.doSorting();
 		}
 		if (this.m_data==null) 
@@ -156,6 +161,63 @@ public class JournalController implements IExtendedApplicationController, Journa
 	private IFilter[] getFilters() {
 		String fstring = this.m_configuration.getProperty(CFG_FILTER, "");
 		return new JournalFilterManager().getFiltersFromString(fstring);
+	}
+	
+	private ISearchTerm[] getSearchTerms() {
+		String st = this.m_configuration.getProperty(CFG_SEARCHTERMS, "");
+		if (st!=null && st.trim().length()>0) {
+			List terms = new ArrayList();
+			StringTokenizer and_t = new StringTokenizer(st, Operator.AND.toString());
+			final String[] ands = new String[and_t.countTokens()];
+			int i=0;
+			while (and_t.hasMoreTokens()) {
+				ands[i] = and_t.nextToken().trim();
+				i++;
+			}
+			
+			for (i=0;i<ands.length;i++) {
+				final String term = ands[i];
+				final StringTokenizer or_t = new StringTokenizer(ands[i], Operator.OR.toString());
+				if (or_t.countTokens()==1) {
+					terms.add(new ISearchTerm() {
+						public String getSearchTerm() {
+							return term.trim();
+						}
+
+						public Operator getOperator() {
+							return Operator.AND;
+						}
+						public String toString() {
+							return term + "->"+Operator.AND.toString();
+						}});
+					or_t.nextToken();
+				}
+				while (or_t.hasMoreTokens()) {
+					final String termo = or_t.nextToken().trim();
+					terms.add(new ISearchTerm() {
+						public String toString() {
+							return termo + "->"+Operator.OR.toString();
+						}
+
+						public String getSearchTerm() {
+							return termo;
+						}
+
+						public Operator getOperator() {
+							return Operator.OR;
+						}
+						
+						});
+				}
+			}
+			
+			ISearchTerm[] s = new ISearchTerm[terms.size()];
+			for (int j=terms.size(), k=0;k<j;k++) {
+				s[k] = (ISearchTerm) terms.get(k);
+			}
+			return s;
+		}
+		return null;
 	}
 	
 	private int getSortOrder() {

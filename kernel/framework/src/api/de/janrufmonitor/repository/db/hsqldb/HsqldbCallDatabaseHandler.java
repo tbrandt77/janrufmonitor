@@ -23,11 +23,14 @@ import de.janrufmonitor.repository.filter.IFilter;
 import de.janrufmonitor.repository.filter.ItemCountFilter;
 import de.janrufmonitor.repository.filter.MonthYearFilter;
 import de.janrufmonitor.repository.filter.YearFilter;
+import de.janrufmonitor.repository.search.ISearchTerm;
 import de.janrufmonitor.util.io.Serializer;
 import de.janrufmonitor.util.io.SerializerException;
+import de.janrufmonitor.util.string.StringUtils;
 
 
 public abstract class HsqldbCallDatabaseHandler extends AbstractCallDatabaseHandler {
+
 
 	public HsqldbCallDatabaseHandler(String driver, String connection, String user, String password, boolean initialize) {
 		super(driver, connection, user, password, initialize);
@@ -69,13 +72,17 @@ public abstract class HsqldbCallDatabaseHandler extends AbstractCallDatabaseHand
 	}
 	
 	protected ICallList buildCallList(IFilter[] filters, int count, int offset) throws SQLException {
+		return buildCallList(filters, count, offset, null);
+	}
+	
+	protected ICallList buildCallList(IFilter[] filters, int count, int offset, ISearchTerm[] searchTerms) throws SQLException {
 		ICallList cl = this.getRuntime().getCallFactory().createCallList();
 
 		if (!isConnected()) return cl;
 
 		Statement stmt = m_con.createStatement();
 
-		ResultSet rs = stmt.executeQuery(prepareStatement(filters, count, offset, false));
+		ResultSet rs = stmt.executeQuery(prepareStatement(filters, count, offset, false, searchTerms));
 		while (rs.next()) {
 			try {
 				cl.add(Serializer.toCall(rs.getString("content").getBytes(), this.getRuntime()));
@@ -86,7 +93,7 @@ public abstract class HsqldbCallDatabaseHandler extends AbstractCallDatabaseHand
 		return cl;
 	}
 	
-	private String prepareStatement(IFilter[] filters, int count, int offset, boolean isCounter) {
+	private String prepareStatement(IFilter[] filters, int count, int offset, boolean isCounter, ISearchTerm[] searchTerms) {
 		StringBuffer sql = new StringBuffer();
 		// build SQL statement
 		sql.append("SELECT");
@@ -129,6 +136,10 @@ public abstract class HsqldbCallDatabaseHandler extends AbstractCallDatabaseHand
 						sql.append("))");	
 					}
 				}							
+			}
+			if (searchTerms!=null && searchTerms.length>0){ 
+				sql.append(" AND");	
+				sql.append(createSearchTerm(searchTerms));	
 			}
 		} else if (filters!=null && filters.length>0) {
 			int limit = -1;
@@ -296,6 +307,10 @@ public abstract class HsqldbCallDatabaseHandler extends AbstractCallDatabaseHand
 					}
 				}							
 			}
+			if (searchTerms!=null && searchTerms.length>0){ 
+				sql.append(" AND");	
+				sql.append(createSearchTerm(searchTerms));	
+			}
 			if (limit>0 && !isCounter) {
 				sql.append(" ORDER BY cdate DESC");	
 			}			
@@ -310,9 +325,12 @@ public abstract class HsqldbCallDatabaseHandler extends AbstractCallDatabaseHand
 			if (count>0 && offset>=0 ) {
 				sql.append(" AS rtable");
 			}
+			
+			if (searchTerms!=null && searchTerms.length>0){ 
+				sql.append(" WHERE");	
+				sql.append(createSearchTerm(searchTerms));	
+			}
 		}
-		
-		// append search terms
 		
 		if (count>0 && offset>=0 ) {
 			sql.append(" LIMIT ");
@@ -329,6 +347,29 @@ public abstract class HsqldbCallDatabaseHandler extends AbstractCallDatabaseHand
 		return sql.toString();
 	}
 	
+	private String createSearchTerm(ISearchTerm[] searchTerms) {
+		if (searchTerms==null) return "";
+		if (searchTerms.length==0) return "";
+		
+		StringBuffer sql = new StringBuffer();
+		sql.append(" (");
+		ISearchTerm st = null;
+		for (int i=0, j=searchTerms.length;i<j;i++) {
+			st = searchTerms[i];
+			sql.append("content like '%");
+			sql.append(StringUtils.replaceString(st.getSearchTerm(), "%", "")); // remove % signs in search term
+			sql.append("%'");
+			if (i<(j-1)) {
+				sql.append(" ");
+				sql.append(st.getOperator().toString());
+				sql.append(" ");
+			}
+		}
+		
+		sql.append(")");
+		return sql.toString();
+	}
+
 	private boolean hasOnlyAttributeFilter(IFilter[] filters) {
 		boolean isAttributeFilter = true;
 		IFilter f = null;
@@ -356,8 +397,12 @@ public abstract class HsqldbCallDatabaseHandler extends AbstractCallDatabaseHand
 		}
 		return false;
 	}
-
+	
 	protected int buildCallCount(IFilter[] filters) throws SQLException {
+		return this.buildCallCount(filters, null);
+	}
+
+	protected int buildCallCount(IFilter[] filters, ISearchTerm[] searchTerms) throws SQLException {
 		if (!isConnected()) return 0;
 		
 		int maxresult = -1;
@@ -372,7 +417,7 @@ public abstract class HsqldbCallDatabaseHandler extends AbstractCallDatabaseHand
 
 		Statement stmt = m_con.createStatement();
 
-		ResultSet rs = stmt.executeQuery(prepareStatement(filters, -1, -1, true));
+		ResultSet rs = stmt.executeQuery(prepareStatement(filters, -1, -1, true, searchTerms));
 		while (rs.next()) {
 			if (maxresult==-1) {
 				return Math.max(0, rs.getInt(1)); 

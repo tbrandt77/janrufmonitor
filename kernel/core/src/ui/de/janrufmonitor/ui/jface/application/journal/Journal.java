@@ -1,7 +1,17 @@
 package de.janrufmonitor.ui.jface.application.journal;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -31,6 +41,7 @@ import de.janrufmonitor.ui.jface.application.journal.action.ImportAction;
 import de.janrufmonitor.ui.jface.application.rendering.IJournalCellRenderer;
 import de.janrufmonitor.ui.jface.application.rendering.IRenderer;
 import de.janrufmonitor.ui.swt.DisplayManager;
+import de.janrufmonitor.util.io.PathResolver;
 
 public final class Journal extends AbstractTableApplication implements IEventSender, IEventReceiver, JournalConfigConst {
 
@@ -423,7 +434,7 @@ public final class Journal extends AbstractTableApplication implements IEventSen
 	}
 
 	protected IAction getQuickSearchAction() {
-		return ActionRegistry.getInstance().getAction("quicksearch", getApplication());
+		return ActionRegistry.getInstance().getAction("journal_quicksearchterm", getApplication());
 	}
 	
 	protected String getTitleExtension() {
@@ -448,6 +459,41 @@ public final class Journal extends AbstractTableApplication implements IEventSen
 		}
 		
 		return null;
+	}
+	
+	protected List getSearchHistory() {
+		List l = new ArrayList();
+
+		try {
+			FileInputStream fstream = new FileInputStream(PathResolver.getInstance(this.getRuntime()).getConfigDirectory()+File.separator+"journal.history");
+			BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+
+			String strLine;
+	
+			while ((strLine = br.readLine()) != null)   {
+				if (!l.contains(strLine))
+					l.add(strLine);
+			}
+			br.close();
+		} catch (FileNotFoundException e) {
+			m_logger.log(Level.SEVERE, "Could not read journal.history file: "+e.getMessage(), e);
+		} catch (IOException e) {
+			m_logger.log(Level.SEVERE, "Could not read journal.history file: "+e.getMessage(), e);
+		}
+
+		return l;
+	}
+	
+	protected void setSearchHistory(List searchTerms) {
+		try {
+		    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(PathResolver.getInstance(this.getRuntime()).getConfigDirectory()+File.separator+"journal.history", false)));
+		    for (int i=0;i<searchTerms.size();i++)
+		    	out.println(searchTerms.get(i));
+		    out.flush();
+		    out.close();
+		} catch (IOException e) {
+		    m_logger.log(Level.SEVERE, "Could not write journal.history file: "+e.getMessage(), e);
+		}
 	}
 
 	public boolean isSupportingRenderer(IRenderer r) {

@@ -10,10 +10,13 @@ import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.repository.db.ICallerDatabaseHandler;
 import de.janrufmonitor.repository.filter.IFilter;
+import de.janrufmonitor.repository.search.ISearchTerm;
+import de.janrufmonitor.repository.types.ISearchableCallerRepository;
 
-public abstract class AbstractDatabaseCallerManager extends AbstractReadWriteCallerManager {
+public abstract class AbstractDatabaseCallerManager extends AbstractReadWriteCallerManager implements ISearchableCallerRepository {
 	
 	protected ICallerDatabaseHandler m_dbh;
+
 	private boolean m_keepObserverThread = false;
 	private boolean m_isRunningProcess = false;
 	
@@ -68,12 +71,20 @@ public abstract class AbstractDatabaseCallerManager extends AbstractReadWriteCal
 		super.shutdown();
 	}
 	
+
+	public synchronized ICallerList getCallers(IFilter filter) {
+		return this.getCallers(new IFilter[] {filter});
+	}
+	
+
 	public synchronized ICallerList getCallers(IFilter[] filters) {
+		return this.getCallers(filters, null);
+	}
+	
+	public ICallerList getCallers(IFilter[] filters, ISearchTerm[] searchTerms) {
 		try {
 			m_isRunningProcess = true;
-			ICallerList cl = getDatabaseHandler().getCallerList(filters);
-//			if (!getDatabaseHandler().isKeepAlive())
-//				getDatabaseHandler().disconnect();
+			ICallerList cl = getDatabaseHandler().getCallerList(filters, searchTerms);
 			m_isRunningProcess = false;
 			return cl;			
 		} catch (SQLException e) {
@@ -177,10 +188,6 @@ public abstract class AbstractDatabaseCallerManager extends AbstractReadWriteCal
 			}			
 		}
 		m_isRunningProcess = false;
-	}
-
-	public synchronized ICallerList getCallers(IFilter filter) {
-		return this.getCallers(new IFilter[] {filter});
 	}
 	
 	public synchronized void removeCaller(ICaller caller) {

@@ -16,6 +16,7 @@ import de.janrufmonitor.repository.filter.AttributeFilter;
 import de.janrufmonitor.repository.filter.CharacterFilter;
 import de.janrufmonitor.repository.filter.FilterType;
 import de.janrufmonitor.repository.filter.IFilter;
+import de.janrufmonitor.repository.search.ISearchTerm;
 import de.janrufmonitor.util.io.Serializer;
 import de.janrufmonitor.util.io.SerializerException;
 
@@ -56,6 +57,14 @@ public abstract class HsqldbCallerDatabaseHandler extends AbstractCallerDatabase
 		
 		super.createTables();
 	}
+	
+
+	protected ICallerList buildCallerList(IFilter[] filters,
+			ISearchTerm[] searchTerms) throws SQLException {
+		// searchTerms are NOT considered in this implementation
+		return this.buildCallerList(filters);
+	}
+
 
 	protected ICallerList buildCallerList(IFilter[] filters) throws SQLException {
 		ICallerList cl = this.getRuntime().getCallerFactory().createCallerList();

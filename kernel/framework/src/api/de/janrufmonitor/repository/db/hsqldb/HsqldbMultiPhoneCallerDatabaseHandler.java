@@ -28,6 +28,7 @@ import de.janrufmonitor.repository.filter.AttributeFilter;
 import de.janrufmonitor.repository.filter.CharacterFilter;
 import de.janrufmonitor.repository.filter.FilterType;
 import de.janrufmonitor.repository.filter.IFilter;
+import de.janrufmonitor.repository.search.ISearchTerm;
 import de.janrufmonitor.util.io.Base64Decoder;
 import de.janrufmonitor.util.io.Base64Encoder;
 import de.janrufmonitor.util.io.IImageProvider;
@@ -37,6 +38,7 @@ import de.janrufmonitor.util.io.PathResolver;
 import de.janrufmonitor.util.io.Serializer;
 import de.janrufmonitor.util.io.SerializerException;
 import de.janrufmonitor.util.io.Stream;
+import de.janrufmonitor.util.string.StringUtils;
 
 
 public abstract class HsqldbMultiPhoneCallerDatabaseHandler extends AbstractMultiPhoneCallerDatabaseHandler {
@@ -179,8 +181,13 @@ public abstract class HsqldbMultiPhoneCallerDatabaseHandler extends AbstractMult
 		
 		super.addPreparedStatements();
 	}
-
+	
 	protected ICallerList buildCallerList(IFilter[] filters) throws SQLException {
+		return this.buildCallerList(filters, null);
+	}
+
+
+	protected ICallerList buildCallerList(IFilter[] filters, ISearchTerm[] searchTerms) throws SQLException {
 		ICallerList cl = this.getRuntime().getCallerFactory().createCallerList();
 
 		if (!isConnected()) return cl;
@@ -253,6 +260,15 @@ public abstract class HsqldbMultiPhoneCallerDatabaseHandler extends AbstractMult
 					sql.append("%'");
 					sql.append(")))");	
 				}
+			}
+			if (searchTerms!=null && searchTerms.length>0){ 
+				sql.append(" AND");	
+				sql.append(createSearchTerm(searchTerms));	
+			}
+		} else {
+			if (searchTerms!=null && searchTerms.length>0){ 
+				sql.append(" WHERE");	
+				sql.append(createSearchTerm(searchTerms));	
 			}
 		}
 		
@@ -474,5 +490,28 @@ public abstract class HsqldbMultiPhoneCallerDatabaseHandler extends AbstractMult
 		ps.clearParameters();
 		ps.setString(1, uuid);
 		ps.addBatch();
+	}
+	
+	private String createSearchTerm(ISearchTerm[] searchTerms) {
+		if (searchTerms==null) return "";
+		if (searchTerms.length==0) return "";
+		
+		StringBuffer sql = new StringBuffer();
+		sql.append(" (");
+		ISearchTerm st = null;
+		for (int i=0, j=searchTerms.length;i<j;i++) {
+			st = searchTerms[i];
+			sql.append("content like '%");
+			sql.append(StringUtils.replaceString(st.getSearchTerm(), "%", "")); // remove % signs in search term
+			sql.append("%'");
+			if (i<(j-1)) {
+				sql.append(" ");
+				sql.append(st.getOperator().toString());
+				sql.append(" ");
+			}
+		}
+		
+		sql.append(")");
+		return sql.toString();
 	}
 }

@@ -9,6 +9,7 @@ public interface IConfigConst {
 	public static String CFG_DIRECTION= "direction";
 	public static String CFG_SHOW_ENTRY_WARNING = "entry_warning";
 	public static String CFG_FILTER = "filter";
+	public static String CFG_SEARCHTERMS = "search_terms";
 	public static String CFG_ENABLE_FILTER_VIEW = "enable_filter_view";
 	public static String CFG_MENU_ACTIONS = "menu_actions";
 	public static String CFG_POPUP_ACTIONS = "popup_actions";

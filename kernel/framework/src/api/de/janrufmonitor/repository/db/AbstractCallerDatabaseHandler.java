@@ -16,6 +16,7 @@ import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.repository.CallerNotFoundException;
 import de.janrufmonitor.repository.ICallerManager;
 import de.janrufmonitor.repository.filter.IFilter;
+import de.janrufmonitor.repository.search.ISearchTerm;
 import de.janrufmonitor.repository.types.IIdentifyCallerRepository;
 import de.janrufmonitor.util.io.Serializer;
 import de.janrufmonitor.util.io.SerializerException;
@@ -29,7 +30,7 @@ import de.janrufmonitor.util.uuid.UUID;
  *@created    2006/05/29
  */
 public abstract class AbstractCallerDatabaseHandler extends AbstractDatabaseHandler implements ICallerDatabaseHandler {
-	
+
 	public AbstractCallerDatabaseHandler(String driver, String connection, String user, String password, boolean initialize) {
 		super(driver, connection, user, password, initialize);
 	}
@@ -438,16 +439,40 @@ public abstract class AbstractCallerDatabaseHandler extends AbstractDatabaseHand
 		
 		return this.buildCallerList(filters);			
 	}
+	
+	
+	public ICallerList getCallerList(IFilter[] filters,
+			ISearchTerm[] searchTerms) throws SQLException {
+		if (!isConnected())
+			try {
+				this.connect();
+			} catch (ClassNotFoundException e) {
+				throw new SQLException(e.getMessage());
+			}
+		
+		return this.buildCallerList(filters, searchTerms);		
+	}
+
 
 	
 	/**
 	 * Create the caller list from a query of the database. This abstract method must be
 	 * implemented by all CallerDatabaseHandler.
 	 * 
-	 * @param filters filetrs applied to the result
+	 * @param filters filters applied to the result
 	 * @return
 	 * @throws SQLException
 	 */
 	protected abstract ICallerList buildCallerList(IFilter[] filters) throws SQLException;
 
+	/**
+	 * Create the caller list from a query of the database. This abstract method must be
+	 * implemented by all CallerDatabaseHandler.
+	 * 
+	 * @param filters filters applied to the result
+	 * @param searchTerms search terms considered on filtering
+	 * @return
+	 * @throws SQLException
+	 */
+	protected abstract ICallerList buildCallerList(IFilter[] filters, ISearchTerm[] searchTerms) throws SQLException;
 }

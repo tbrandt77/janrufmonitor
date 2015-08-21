@@ -124,7 +124,7 @@ public abstract class AbstractBaseApplication extends AbstractApplication implem
 	}
 	
 	protected boolean isShowQuickSearch() {
-		return this.getConfiguration().getProperty(CFG_SHOW_QUICKSEARCH, "false").equalsIgnoreCase("true");
+		return (this.getConfiguration().getProperty(CFG_SHOW_QUICKSEARCH, "true").equalsIgnoreCase("true") && this.getQuickSearchAction()!=null && this.getQuickSearchAction().isEnabled());
 	}
 	
 	protected Font getSizedFont(FontData baseFontData, int increment, boolean incremental){

@@ -26,10 +26,9 @@ public abstract class AbstractReadWriteCallerManager extends AbstractConfigurabl
 		return this.getCallers((IFilter)null);
 	}
 
-	
 	/**
 	 * Updates a caller with the new data. The caller to be updated has to
-	 * be detremined through its UUID. In this abstract implementation
+	 * be determined through its UUID. In this abstract implementation
 	 * the updateCaller() method calls the setCaller() method.
 	 * 
 	 * @param caller caller to be updated

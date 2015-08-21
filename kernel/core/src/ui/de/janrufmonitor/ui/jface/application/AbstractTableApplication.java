@@ -426,27 +426,32 @@ public abstract class AbstractTableApplication extends AbstractBaseApplication i
 		final de.janrufmonitor.ui.jface.application.action.IAction action = getQuickSearchAction();
 		if (this.isShowQuickSearch() && action!=null) {
 			Composite view = new Composite(line, SWT.NONE);
-			view.setLayout(new GridLayout(1, false));
+			view.setLayout(new GridLayout(2, false));
 
 			new Label(view, SWT.NONE).setText(this.getI18nManager().getString(
 					this.getNamespace(), "quicksearch", "label",
 					this.getLanguage()));
 			
-			final Combo search = new Combo(view, SWT.BORDER);
-			final String empty = "<...>";
+			new Label(view, SWT.NONE);
+			
+			final Combo search = new Combo(view, SWT.FLAT);
+			final String empty = this.getConfiguration().getProperty(CFG_SEARCHTERMS, "");
 			
 			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-			gd.minimumWidth = 100;
+			gd.minimumWidth = 300;
 			search.setLayoutData(gd);
 			
-		
 			search.add(empty);
+			final List sh = this.getSearchHistory();
+			for (int i=0;i<sh.size();i++) {
+				if (!empty.equalsIgnoreCase((String) sh.get(i)))
+					search.add((String) sh.get(i));
+			}
+			
+			search.select(0);
 			search.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e) {
-					if (search.getText().indexOf(empty)==-1)
-						action.setData(search.getText());
-					else
-						action.setData("");
+					action.setData(search.getText());
 					action.run();
 				}
 			});
@@ -456,11 +461,12 @@ public abstract class AbstractTableApplication extends AbstractBaseApplication i
 			search.addKeyListener(new KeyAdapter() {
 				public void keyPressed(KeyEvent e){
 					if (e.character == 13) {
-						if (search.getText().indexOf(empty)==-1)
-							action.setData(search.getText());
-						else
-							action.setData("");
-						search.add(search.getText());
+						action.setData(search.getText());
+						if (!sh.contains(search.getText())) {
+							sh.add(search.getText());
+							search.add(search.getText());
+						}
+						setSearchHistory(sh);
 						action.run();
 					}
 				}	
@@ -736,6 +742,14 @@ public abstract class AbstractTableApplication extends AbstractBaseApplication i
 	private CellLabelProvider getTextCellLabelProvider(String renderer) {
 		return new TextCellLabelProvider(renderer);
 	}
-
+	
+	protected List getSearchHistory() {
+		return Collections.EMPTY_LIST;
+	}
+	
+	protected void setSearchHistory(List searchTerms) {
+		
+	}
+	
 }
 
