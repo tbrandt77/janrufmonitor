@@ -16,6 +16,7 @@ import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.repository.db.AbstractDatabaseHandler;
 import de.janrufmonitor.repository.db.ICallDatabaseHandler;
 import de.janrufmonitor.repository.filter.IFilter;
+import de.janrufmonitor.repository.search.ISearchTerm;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.util.uuid.UUID;
@@ -204,6 +205,16 @@ public class MySqlLogJournal extends AbstractDatabaseCallManager {
 			// do nothing for mysql, since auto-rollback is active
 			if (this.m_logger.isLoggable(Level.INFO))
 				this.m_logger.info("Ignoring ROLLBACK call, due to auto-commit.");
+		}
+
+		public ICallList getCallList(IFilter[] filters, int count, int offset,
+				ISearchTerm[] searchTerms) throws SQLException {
+			return this.getCallList(filters, count, offset);
+		}
+
+		public int getCallCount(IFilter[] filters, ISearchTerm[] searchTerms)
+				throws SQLException {
+			return 0;
 		}
 	}
 	

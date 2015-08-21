@@ -30,11 +30,13 @@ import de.janrufmonitor.repository.filter.IFilter;
 import de.janrufmonitor.repository.filter.ItemCountFilter;
 import de.janrufmonitor.repository.filter.MonthYearFilter;
 import de.janrufmonitor.repository.filter.YearFilter;
+import de.janrufmonitor.repository.search.ISearchTerm;
 import de.janrufmonitor.repository.types.IRemoteRepository;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.util.io.Serializer;
 import de.janrufmonitor.util.io.SerializerException;
+import de.janrufmonitor.util.string.StringUtils;
 
 public class MySqlJournal extends AbstractDatabaseCallManager implements IRemoteRepository, IEventReceiver {
 
@@ -131,13 +133,18 @@ public class MySqlJournal extends AbstractDatabaseCallManager implements IRemote
 		}
 		
 		protected ICallList buildCallList(IFilter[] filters, int count, int offset) throws SQLException {
+			return this.buildCallList(filters, count, offset, null);
+		}
+
+		@Override
+		protected ICallList buildCallList(IFilter[] filters, int count, int offset, ISearchTerm[] searchTerms) throws SQLException {
 			ICallList cl = this.getRuntime().getCallFactory().createCallList();
 
 			if (!isConnected()) return cl;
 
 			Statement stmt = m_con.createStatement();
 
-			ResultSet rs = stmt.executeQuery(prepareStatement(filters, count, offset, false));
+			ResultSet rs = stmt.executeQuery(prepareStatement(filters, count, offset, false, searchTerms));
 			while (rs.next()) {
 				try {
 					cl.add(Serializer.toCall(rs.getString("content").getBytes(), this.getRuntime()));
@@ -148,7 +155,30 @@ public class MySqlJournal extends AbstractDatabaseCallManager implements IRemote
 			return cl;
 		}
 		
-		private String prepareStatement(IFilter[] filters, int count, int offset, boolean isCounter) {
+		private String createSearchTerm(ISearchTerm[] searchTerms) {
+			if (searchTerms==null) return "";
+			if (searchTerms.length==0) return "";
+			
+			StringBuffer sql = new StringBuffer();
+			sql.append(" (");
+			ISearchTerm st = null;
+			for (int i=0, j=searchTerms.length;i<j;i++) {
+				st = searchTerms[i];
+				sql.append("content like '%");
+				sql.append(StringUtils.replaceString(st.getSearchTerm(), "%", "")); // remove % signs in search term
+				sql.append("%'");
+				if (i<(j-1)) {
+					sql.append(" ");
+					sql.append(st.getOperator().toString());
+					sql.append(" ");
+				}
+			}
+			
+			sql.append(")");
+			return sql.toString();
+		}
+		
+		private String prepareStatement(IFilter[] filters, int count, int offset, boolean isCounter, ISearchTerm[] searchTerms) {
 			StringBuffer sql = new StringBuffer();
 			// build SQL statement
 			sql.append("SELECT");
@@ -312,6 +342,10 @@ public class MySqlJournal extends AbstractDatabaseCallManager implements IRemote
 						}
 					}							
 				}
+				if (searchTerms!=null && searchTerms.length>0){ 
+					sql.append(" AND");	
+					sql.append(createSearchTerm(searchTerms));	
+				}
 				if (limit>0 && !isCounter) {
 					sql.append(" ORDER BY cdate DESC");	
 				}			
@@ -325,6 +359,10 @@ public class MySqlJournal extends AbstractDatabaseCallManager implements IRemote
 				sql.append(" FROM calls");
 				if (count>0 && offset>=0 ) {
 					sql.append(" AS rtable");
+				}
+				if (searchTerms!=null && searchTerms.length>0){ 
+					sql.append(" WHERE");	
+					sql.append(createSearchTerm(searchTerms));	
 				}
 			}
 			
@@ -360,8 +398,13 @@ public class MySqlJournal extends AbstractDatabaseCallManager implements IRemote
 			}
 			return false;
 		}
-
+		
 		protected int buildCallCount(IFilter[] filters) throws SQLException {
+			return this.buildCallCount(filters, null);
+		}
+
+		@Override
+		protected int buildCallCount(IFilter[] filters, ISearchTerm[] searchTerms) throws SQLException {
 			if (!isConnected()) return 0;
 			
 			int maxresult = -1;
@@ -376,7 +419,7 @@ public class MySqlJournal extends AbstractDatabaseCallManager implements IRemote
 
 			Statement stmt = m_con.createStatement();
 
-			ResultSet rs = stmt.executeQuery(prepareStatement(filters, -1, -1, true));
+			ResultSet rs = stmt.executeQuery(prepareStatement(filters, -1, -1, true, searchTerms));
 			while (rs.next()) {
 				if (maxresult==-1) {
 					return Math.max(0, rs.getInt(1)); 
@@ -397,7 +440,6 @@ public class MySqlJournal extends AbstractDatabaseCallManager implements IRemote
 			if (this.m_logger.isLoggable(Level.INFO))
 				this.m_logger.info("Ignoring ROLLBACK call, due to auto-commit.");
 		}
-
 	}
 	
 	private static String ID = "MySqlJournal";
