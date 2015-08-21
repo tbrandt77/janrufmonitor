@@ -6,7 +6,10 @@ import de.janrufmonitor.framework.ICallerList;
 import de.janrufmonitor.repository.ICallerManager;
 import de.janrufmonitor.repository.filter.AbstractFilterSerializer;
 import de.janrufmonitor.repository.filter.IFilter;
+import de.janrufmonitor.repository.search.ISearchTerm;
+import de.janrufmonitor.repository.search.SearchTermSeriarlizer;
 import de.janrufmonitor.repository.types.IReadCallerRepository;
+import de.janrufmonitor.repository.types.ISearchableCallerRepository;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.service.commons.CompressBase64;
@@ -58,12 +61,30 @@ public class GetCallerList extends AbstractHandler {
 			throw new HandlerException(e.getMessage(), 500);
 		}
 		
+		String s = null;
+		ISearchTerm[] searchterms = null;
+		try {
+			s = req.getParameter(GetCallList.PARAMETER_SEARCHTERMS);
+		} catch (Exception e) {
+			throw new HandlerException(e.getMessage(), 500);
+		}
+		
+		if (s!=null && s.length()>0) {
+			searchterms = new SearchTermSeriarlizer().getSearchTermsFromString(s);
+		}
+		
 		if (filter==null || filter.length()==0) {
-			l = ((IReadCallerRepository)mgr).getCallers((IFilter)null);
+			if (mgr.isSupported(ISearchableCallerRepository.class)) {
+				l = ((ISearchableCallerRepository)mgr).getCallers(new IFilter[] {}, searchterms);
+			} else
+				l = ((IReadCallerRepository)mgr).getCallers((IFilter)null);
 			this.m_logger.info("Filter parameter &filter= was not set.");
 		} else {
 			IFilter[] f = new URLFilterManager().getFiltersFromString(filter);
-			l = ((IReadCallerRepository)mgr).getCallers(f);	
+			if (mgr.isSupported(ISearchableCallerRepository.class)) {
+				l = ((ISearchableCallerRepository)mgr).getCallers(f, searchterms);
+			} else
+				l = ((IReadCallerRepository)mgr).getCallers(f);	
 		}
 		
 		try {

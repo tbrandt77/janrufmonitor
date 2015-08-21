@@ -45,6 +45,7 @@ public interface CommonsConst {
 	public final static String PARAMETER_DATE ="date";
 	public final static String PARAMETER_CIP ="cip";
 	public final static String PARAMETER_FILTER ="filter";
+	public final static String PARAMETER_SEARCHTERMS ="searchterms";
 	public final static String PARAMETER_CALLMANAGER ="callmanager";
 	public final static String PARAMETER_UUID ="uuid";
 	public final static String PARAMETER_COMPRESSION = "compression";

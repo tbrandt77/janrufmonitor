@@ -11,7 +11,10 @@ import de.janrufmonitor.repository.filter.AbstractFilterSerializer;
 import de.janrufmonitor.repository.filter.FilterType;
 import de.janrufmonitor.repository.filter.IFilter;
 import de.janrufmonitor.repository.filter.MsnFilter;
+import de.janrufmonitor.repository.search.ISearchTerm;
+import de.janrufmonitor.repository.search.SearchTermSeriarlizer;
 import de.janrufmonitor.repository.types.IReadCallRepository;
+import de.janrufmonitor.repository.types.ISearchableCallRepository;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.service.commons.http.IHttpRequest;
@@ -58,15 +61,34 @@ public class GetCallListCount extends AbstractHandler {
 			throw new HandlerException(e.getMessage(), 500);
 		}
 		
+		String s = null;
+		ISearchTerm[] searchterms = null;
+		try {
+			s = req.getParameter(GetCallList.PARAMETER_SEARCHTERMS);
+		} catch (Exception e) {
+			throw new HandlerException(e.getMessage(), 500);
+		}
+		
+		if (s!=null && s.length()>0) {
+			this.m_logger.info("SearchTerms: "+s);
+			searchterms = new SearchTermSeriarlizer().getSearchTermsFromString(s);
+		}
+		
 		int count = 0;
 		
 		if (filter==null || filter.length()==0) {
 			this.m_logger.info("Filter parameter &filter= was not set.");
-			count = ((IReadCallRepository)mgr).getCallCount(getAllowedMsnFilter(req));			
+			if (mgr.isSupported(ISearchableCallRepository.class)) {
+				count = ((ISearchableCallRepository)mgr).getCallCount(getAllowedMsnFilter(req), searchterms);	
+			} else
+				count = ((IReadCallRepository)mgr).getCallCount(getAllowedMsnFilter(req));			
 		} else {
 			IFilter[] f = new URLFilterManager().getFiltersFromString(filter);
 			f = mergeFilters(f, getAllowedMsnFilter(req));
-			count = ((IReadCallRepository)mgr).getCallCount(f);					
+			if (mgr.isSupported(ISearchableCallRepository.class)) {
+				count = ((ISearchableCallRepository)mgr).getCallCount(f, searchterms);	
+			} else
+				count = ((IReadCallRepository)mgr).getCallCount(f);					
 		}
 			
 		try {
