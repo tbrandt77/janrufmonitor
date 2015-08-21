@@ -4,6 +4,8 @@ import java.net.URI;
 
 import de.janrufmonitor.repository.filter.AbstractFilterSerializer;
 import de.janrufmonitor.repository.filter.IFilter;
+import de.janrufmonitor.repository.search.ISearchTerm;
+import de.janrufmonitor.repository.search.SearchTermSeriarlizer;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.service.commons.http.jakarta.Request;
@@ -23,14 +25,16 @@ public class CallListCountGetHandler extends Request {
 	
 	private String m_filter;
 	private String m_cm;
+	private String m_searchterm;
 
 	public CallListCountGetHandler(String callmanager) {
 		this.m_filter = "";
 		this.m_cm = callmanager;
 	}
 	
-	public CallListCountGetHandler(String callmanager, IFilter[] filters) {
+	public CallListCountGetHandler(String callmanager, IFilter[] filters, ISearchTerm[] st) {
 		this.m_filter = new URLFilterManager().getFiltersToString(filters);
+		this.m_searchterm = new SearchTermSeriarlizer().getSearchTermsToString(st);
 		this.m_cm = callmanager;
 	}
 	
@@ -46,6 +50,12 @@ public class CallListCountGetHandler extends Request {
 			uri.append(CallListCountGetHandler.PARAMETER_FILTER);
 			uri.append("=");
 			uri.append(this.m_filter);
+		}
+		if (this.m_searchterm!=null && this.m_searchterm.length()>0) {
+			uri.append("&");
+			uri.append(CallerListGetHandler.PARAMETER_SEARCHTERMS);
+			uri.append("=");
+			uri.append(this.m_searchterm);
 		}
 		
 		if (this.m_cm!=null && this.m_cm.length()>0) {

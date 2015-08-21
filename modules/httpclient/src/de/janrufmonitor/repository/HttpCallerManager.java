@@ -10,7 +10,9 @@ import de.janrufmonitor.framework.ICallerList;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.repository.filter.IFilter;
+import de.janrufmonitor.repository.search.ISearchTerm;
 import de.janrufmonitor.repository.types.IRemoteRepository;
+import de.janrufmonitor.repository.types.ISearchableCallerRepository;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.service.IService;
@@ -33,7 +35,7 @@ import de.janrufmonitor.service.commons.http.RequesterFactory;
 import de.janrufmonitor.util.io.ImageHandler;
 import de.janrufmonitor.xml.transformation.XMLSerializer;
 
-public class HttpCallerManager extends AbstractReadWriteCallerManager implements IRemoteRepository {
+public class HttpCallerManager extends AbstractReadWriteCallerManager implements IRemoteRepository, ISearchableCallerRepository {
 
 	private String ID = "HttpCallerManager";
 	private String NAMESPACE = "repository.HttpCallerManager";
@@ -110,13 +112,13 @@ public class HttpCallerManager extends AbstractReadWriteCallerManager implements
 		throw new CallerNotFoundException("no caller found.");
 	}
 	
-	public ICallerList getCallers(IFilter[] filters) {
+	public ICallerList getCallers(IFilter[] filters, ISearchTerm[] searchTerms) {
 		if (!this.isConnected()) {
 			this.m_logger.warning("Client is not yet connected with the server.");
 			return this.getRuntime().getCallerFactory().createCallerList();
 		}
 		
-		IRequester r = this.getRequester(new CallerListGetHandler(this.getCallerManager(), filters));
+		IRequester r = this.getRequester(new CallerListGetHandler(this.getCallerManager(), filters, searchTerms));
 		IHttpResponse resp = r.request();
 
 		String xml = this.getXmlContent(resp);
@@ -130,6 +132,10 @@ public class HttpCallerManager extends AbstractReadWriteCallerManager implements
 	
 		this.m_logger.warning("Callerlist from remote host was empty.");
 		return this.getRuntime().getCallerFactory().createCallerList();
+	}
+	
+	public ICallerList getCallers(IFilter[] filters) {
+		return this.getCallers(filters, null);
 	}
 	
 	public ICallerList getCallers(IFilter filter) {
@@ -271,5 +277,7 @@ public class HttpCallerManager extends AbstractReadWriteCallerManager implements
 		ImageHandler.getInstance().addProvider(new HttpImageProvider());
 		ImageHandler.getInstance().addProvider(new HttpImageProvider(getID()));
 	}
+
+
 
 }

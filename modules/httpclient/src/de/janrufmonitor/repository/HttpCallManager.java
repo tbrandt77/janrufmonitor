@@ -9,7 +9,9 @@ import de.janrufmonitor.exception.PropagationFactory;
 import de.janrufmonitor.framework.ICall;
 import de.janrufmonitor.framework.ICallList;
 import de.janrufmonitor.repository.filter.IFilter;
+import de.janrufmonitor.repository.search.ISearchTerm;
 import de.janrufmonitor.repository.types.IRemoteRepository;
+import de.janrufmonitor.repository.types.ISearchableCallRepository;
 import de.janrufmonitor.repository.types.IWriteCallRepository;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
@@ -29,7 +31,7 @@ import de.janrufmonitor.service.commons.http.IRequester;
 import de.janrufmonitor.service.commons.http.RequesterFactory;
 import de.janrufmonitor.xml.transformation.XMLSerializer;
 
-public class HttpCallManager extends AbstractFilterCallManager implements IRemoteRepository, IWriteCallRepository {
+public class HttpCallManager extends AbstractFilterCallManager implements IRemoteRepository, IWriteCallRepository, ISearchableCallRepository {
 
 	private String ID = "HttpCallManager";
 	private String NAMESPACE = "repository.HttpCallManager";
@@ -137,12 +139,17 @@ public class HttpCallManager extends AbstractFilterCallManager implements IRemot
 	}
 
 	protected synchronized ICallList getInitialCallList(IFilter f) {
+		return this.getCalls(new IFilter[] {f}, -1, -1, null);
+	}
+	
+	public synchronized ICallList getCalls(IFilter[] filters, int count, int offset,
+			ISearchTerm[] searchTerms) {
 		if (!this.isConnected()) {
 			this.m_logger.warning("Client is not yet connected with the server.");
 			return this.getRuntime().getCallFactory().createCallList();
 		}
 		
-		IRequester r = this.getRequester(new CallListGetHandler(this.getCallManager(), new IFilter[] {f} ));
+		IRequester r = this.getRequester(new CallListGetHandler(this.getCallManager(), filters, searchTerms));
 		IHttpResponse resp = r.request();
 		
 		String xml = this.getXmlContent(resp);
@@ -160,15 +167,14 @@ public class HttpCallManager extends AbstractFilterCallManager implements IRemot
 		
 		return this.getRuntime().getCallFactory().createCallList();
 	}
-	
 
-	public int getCallCount(IFilter[] filters) {
+	public int getCallCount(IFilter[] filters, ISearchTerm[] searchTerms) {
 		if (!this.isConnected()) {
 			this.m_logger.warning("Client is not yet connected with the server.");
 			return 0;
 		}
 		
-		IRequester r = this.getRequester(new CallListCountGetHandler(this.getCallManager(), filters ));
+		IRequester r = this.getRequester(new CallListCountGetHandler(this.getCallManager(), filters, searchTerms));
 		IHttpResponse resp = r.request();
 		
 		String xml = this.getXmlContent(resp);
@@ -179,6 +185,10 @@ public class HttpCallManager extends AbstractFilterCallManager implements IRemot
 		}
 	
 		return super.getCallCount(filters);
+	}
+	
+	public int getCallCount(IFilter[] filters) {
+		return this.getCallCount(filters, null);
 	}
 
 
@@ -201,6 +211,8 @@ public class HttpCallManager extends AbstractFilterCallManager implements IRemot
 		this.m_cm = null;
 		super.shutdown();
 	}
+
+
 }
 
 	
