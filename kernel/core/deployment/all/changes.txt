@@ -1,5 +1,35 @@
 ﻿===
 
+jAnrufmonitor 5.0.60 (01.10.2015)
+---------------------------------
+Neu:
+- Loglevel für Rufnummeranalyse auf FINE gesetzt
+- jAnrufmonitor Journal: Ansicht-Filter per Query-Sprache möglich
+- jAnrufmonitor Adressbuch: Ansicht-Filter per Query-Sprache möglich
+
+Bugfix:
+- jAnrufmonitor Journal: SQL Optimierung für Journal Abfragen
+
+Module:
+- NCID-Überwachung: Unterstützung für CIDLOG Einträge asl Historie
+- NCID-Überwachung: Schreibfehler bei NCID Attributen behoben
+- JFritz Journal und Telefonbuch Import: Bug in Rufnummernerkennung behoben
+- Microsoft Outlook Kontaktverzeichnis: Führende Nullen beim Import von Rufnummern werden entfernt
+- Microsoft Outlook Kontaktverzeichnis: Verbesserte Rufnummeranalyse
+- Apple Mac Adressbuch: Verbesserte Rufnummeranalyse
+- LDAP-basiertes Adressbuch: Verbesserte Rufnummeranalyse
+- FRITZ!Box-Überwachung: Unterstützung für HTTPS bei neuen FRITZ!OS Versionen
+- FRITZ!Box-Überwachung: Unterstützung für FRITZ!Box 7430
+- FRITZ!Box-Überwachung: Verbesserte Rufnummeranalyse
+- FRITZ!Box-Überwachung: Unterstützung für Nebenstellenauswahl beim Wählen (Danke an e-tobi)
+- FRITZ!Box-Überwachung: Spoofing-Rufnummern werden mit spoofed-Kennzeichen versehen
+- TAPI-Überwachung: Angerufere TAPI Nebenstellennummer als Attribut am Anruf hinzugefügt
+- MySQL Adressbuch / Journal: Ansicht-Filter per Query-Sprache möglich
+- Client Erweiterung: Ansicht-Filter im Journal und Adressbuch per Query-Sprache möglich
+- Server Erweiterung: Ansicht-Filter im Journal und Adressbuc per Query-Sprache möglich
+
+===
+
 jAnrufmonitor 5.0.59 (15.08.2015)
 ---------------------------------
 Neu:
