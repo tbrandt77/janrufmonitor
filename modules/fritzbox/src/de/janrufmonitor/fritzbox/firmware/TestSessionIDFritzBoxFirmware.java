@@ -19,7 +19,7 @@ public class TestSessionIDFritzBoxFirmware {
 	public static void main(String[] args) {
 		LoggingInitializer.run();
 		
-		IFritzBoxFirmware fw = new SessionIDFritzBoxFirmware("fritz.box", "80", "diplom2001");
+		IFritzBoxFirmware fw = new SessionIDFritzBoxFirmware("fritz.box", "80", "pwd1", false);
 		
 		try {
 			fw.init();

@@ -23,8 +23,8 @@ public class SessionIDFritzBoxFirmware extends AbstractFritzBoxFirmware {
 	private String m_response;
 	
 	public SessionIDFritzBoxFirmware(String box_address, String box_port,
-			String box_password) {
-		super(box_address, box_port, box_password);
+			String box_password, boolean useHttps) {
+		super(box_address, box_port, box_password, null, useHttps);
 	}
 
 	public void init() throws FritzBoxInitializationException, FritzBoxNotFoundException, InvalidSessionIDException {
@@ -39,7 +39,7 @@ public class SessionIDFritzBoxFirmware extends AbstractFritzBoxFirmware {
 
 	
 	public void destroy() {
-		final String urlstr = "http://" + this.m_address +":" + this.m_port + "/cgi-bin/webcm";
+		final String urlstr = getProtocol() + this.m_address +":" + this.m_port + "/cgi-bin/webcm";
 
 		try {
 			this.executeURL(urlstr, "&security%3Acommand%2Flogout=0&sid="+this.m_sid, false);
@@ -79,7 +79,7 @@ public class SessionIDFritzBoxFirmware extends AbstractFritzBoxFirmware {
 	}
 
 	private void createSessionID() throws CreateSessionIDException, FritzBoxNotFoundException, InvalidSessionIDException {
-		final String urlstr = "http://" + this.m_address +":" + this.m_port + "/cgi-bin/webcm";
+		final String urlstr = getProtocol() + this.m_address +":" + this.m_port + "/cgi-bin/webcm";
 
 		StringBuffer data = new StringBuffer(); 
 		try {

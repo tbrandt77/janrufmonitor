@@ -338,7 +338,7 @@ public class FirmwareManager {
     
     private synchronized void createFirmwareInstance() throws FritzBoxInitializationException, FritzBoxNotFoundException, InvalidSessionIDException {
     	if (this.m_fw==null) {
-    		this.m_fw = new FritzOS559Firmware(getFritzBoxAddress(), getFritzBoxPort(), getFritzBoxPassword(), getFritzBoxUser());
+    		this.m_fw = new FritzOS559Firmware(getFritzBoxAddress(), getFritzBoxPort(), getFritzBoxPassword(), getFritzBoxUser(), getFritzBoxUseHttps());
     		try {
 				this.m_fw.init();
 				if (this.m_logger.isLoggable(Level.INFO))
@@ -348,7 +348,7 @@ public class FirmwareManager {
 				
 				if (this.m_logger.isLoggable(Level.INFO))
 					this.m_logger.info("No Fritz!OS 05.59+ Firmware detected.");
-	    		this.m_fw = new FritzOSFirmware(getFritzBoxAddress(), getFritzBoxPort(), getFritzBoxPassword(), getFritzBoxUser());
+	    		this.m_fw = new FritzOSFirmware(getFritzBoxAddress(), getFritzBoxPort(), getFritzBoxPassword(), getFritzBoxUser(), getFritzBoxUseHttps());
 	    		try {
 					this.m_fw.init();
 					if (this.m_logger.isLoggable(Level.INFO))
@@ -356,7 +356,7 @@ public class FirmwareManager {
 				} catch (FritzBoxInitializationException exp) {
 					if (this.m_logger.isLoggable(Level.INFO))
 						this.m_logger.info("No Fritz!OS 05.50+ Firmware detected.");
-		    		this.m_fw = new SessionIDFritzBoxFirmware(getFritzBoxAddress(), getFritzBoxPort(), getFritzBoxPassword());
+		    		this.m_fw = new SessionIDFritzBoxFirmware(getFritzBoxAddress(), getFritzBoxPort(), getFritzBoxPassword(), getFritzBoxUseHttps());
 		    		try {
 						this.m_fw.init();
 						if (this.m_logger.isLoggable(Level.INFO))
@@ -364,7 +364,7 @@ public class FirmwareManager {
 					} catch (FritzBoxInitializationException ex) {
 						if (this.m_logger.isLoggable(Level.INFO))
 							this.m_logger.info("No Session ID Firmware detected.");
-						this.m_fw = new UnitymediaFirmware(getFritzBoxAddress(), getFritzBoxPort(), getFritzBoxPassword(), getFritzBoxUser());
+						this.m_fw = new UnitymediaFirmware(getFritzBoxAddress(), getFritzBoxPort(), getFritzBoxPassword(), getFritzBoxUser(), getFritzBoxUseHttps());
 						try {
 							this.m_fw.init();
 							if (this.m_logger.isLoggable(Level.INFO))
@@ -453,6 +453,10 @@ public class FirmwareManager {
     
     private boolean getFritzBoxAutoReconnect() {
     	return getRuntime().getConfigManagerFactory().getConfigManager().getProperty(FritzBoxMonitor.NAMESPACE, FritzBoxConst.CFG_AUTO_RECONNECT_SESSIONID).equalsIgnoreCase("true");
+    }
+    
+    private boolean getFritzBoxUseHttps() {
+    	return getRuntime().getConfigManagerFactory().getConfigManager().getProperty(FritzBoxMonitor.NAMESPACE, FritzBoxConst.CFG_USE_HTTPS).equalsIgnoreCase("true");
     }
     
     private IRuntime getRuntime() {

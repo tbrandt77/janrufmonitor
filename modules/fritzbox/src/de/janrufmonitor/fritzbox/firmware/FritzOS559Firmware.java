@@ -135,8 +135,8 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 	private String m_response;
 	private boolean is600  = false;
 	
-	public FritzOS559Firmware(String box_address, String box_port, String box_password, String box_user) {
-		super(box_address, box_port, box_password, box_user);
+	public FritzOS559Firmware(String box_address, String box_port, String box_password, String box_user, boolean useHttps) {
+		super(box_address, box_port, box_password, box_user, useHttps);
 	} 
 
 	public void init() throws FritzBoxInitializationException, FritzBoxNotFoundException, InvalidSessionIDException {
@@ -153,7 +153,7 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 	}
 
 	public void destroy() {
-		final String urlstr = "http://" + this.m_address +":" + this.m_port + "/cgi-bin/webcm";
+		final String urlstr = getProtocol() + this.m_address +":" + this.m_port + "/cgi-bin/webcm";
 
 		try {
 			this.executeURL(urlstr, "&security%3Acommand%2Flogout=0&sid="+this.m_sid, false);
@@ -208,7 +208,7 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 		
 		// The list should be updated now
 		// Get the csv file for processing
-		String urlstr = "http://" + this.m_address + ":" + this.m_port + "/fon_num/foncalls_list.lua?csv=&sid="+this.m_sid;
+		String urlstr = getProtocol() + this.m_address + ":" + this.m_port + "/fon_num/foncalls_list.lua?csv=&sid="+this.m_sid;
 
 		URL url;
 		URLConnection urlConn;
@@ -293,7 +293,7 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 		if (!this.isInitialized()) throw new GetAddressbooksException("Could not get address book list from FritzBox: FritzBox firmware not initialized.");
 
 		StringBuffer data = new StringBuffer();
-		String urlstr = "http://" + this.m_address +":" + this.m_port + "/fon_num/fonbook_select.lua?sid="+this.m_sid;
+		String urlstr = getProtocol() + this.m_address +":" + this.m_port + "/fon_num/fonbook_select.lua?sid="+this.m_sid;
 
 		try {
 			data.append(this.executeURL(
@@ -351,7 +351,7 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 		
 		// The list should be updated now
 		// Get the csv file for processing
-		String urlstr = "http://" + this.m_address + ":" + this.m_port + "/cgi-bin/firmwarecfg";
+		String urlstr = getProtocol() + this.m_address + ":" + this.m_port + "/cgi-bin/firmwarecfg";
 
 		URL url;
 		URLConnection urlConn;
@@ -422,7 +422,7 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 	public void deleteCallList() throws DeleteCallListException, IOException {
 		if (!this.isInitialized()) throw new DeleteCallListException("Could not delete call list from FritzBox: FritzBox firmware not initialized.");
 		
-		String urlstr = "http://" + this.m_address + ":" + this.m_port + "/fon_num/foncalls_list.lua"; 
+		String urlstr = getProtocol() + this.m_address + ":" + this.m_port + "/fon_num/foncalls_list.lua"; 
 		String postdata = "usejournal=on&clear=&callstab=all&sid=" + this.m_sid;
 
 		executeURL(urlstr, postdata, false);
@@ -434,7 +434,7 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 		if (!this.isInitialized()) throw new GetBlockedListException("Could not get blocked list from FritzBox: FritzBox firmware not initialized.");
 
 		StringBuffer data = new StringBuffer();
-		String urlstr = "http://" + this.m_address +":" + this.m_port + "/fon_num/sperre.lua?sid="+this.m_sid;
+		String urlstr = getProtocol() + this.m_address +":" + this.m_port + "/fon_num/sperre.lua?sid="+this.m_sid;
 
 		try {
 			data.append(this.executeURL(
@@ -464,7 +464,7 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 	public void doBlock(String number) throws DoBlockException, IOException {
 		if (!this.isInitialized()) throw new DoBlockException("Could not block number "+number+" on FritzBox: FritzBox firmware not initialized.");
 			
-		String urlstr = "http://" + this.m_address + ":" + this.m_port + "/fon_num/sperre_edit.lua"; 
+		String urlstr = getProtocol() + this.m_address + ":" + this.m_port + "/fon_num/sperre_edit.lua"; 
 		String postdata = ("mode_call=_in&rule_kind=rufnummer&rule_number=$NUMBER&current_rule=&current_mode=_new&backend_validation=false&apply=&sid=".replaceAll("\\$NUMBER", number) + this.m_sid);
 		executeURL(urlstr, postdata, false);
 		if (this.m_logger.isLoggable(Level.INFO))
@@ -479,7 +479,7 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 		if (number.endsWith("#"))
 			number = number.substring(0, number.length()-1);
 
-		String urlstr = "http://" + this.m_address +":" + this.m_port;
+		String urlstr = getProtocol() + this.m_address +":" + this.m_port;
 		
 		if (this.m_firmware!=null && this.m_firmware.getMajor()>=6 && this.m_firmware.getMinor()>=30) {
 		    String setupporturl = urlstr + "/fon_num/dial_foncalls.lua";
@@ -514,7 +514,7 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 		}
 		
 		// 2013/02/05: removed dial via wahlhilfe only
-		//String urlstr = "http://" + this.m_address +":" + this.m_port + "/fon_num/fonbook_list.lua?sid="+this.m_sid+"&dial="+number+"&xhr=1";
+		//String urlstr = getProtocol() + this.m_address +":" + this.m_port + "/fon_num/fonbook_list.lua?sid="+this.m_sid+"&dial="+number+"&xhr=1";
 
 		// http://fritz.box/fon_num/dial_foncalls.lua?sid=357e997aa098e245&dial=**2&xhr=1&t1437109942317=nocache
 
@@ -584,7 +584,7 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 	
 	private FirmwareData detectFritzBoxFirmware() throws FritzBoxDetectFirmwareException {
 		StringBuffer data = new StringBuffer();
-		String urlstr = "http://" + this.m_address +":" + this.m_port + "/home/pp_fbos.lua?sid="+this.m_sid;
+		String urlstr = getProtocol() + this.m_address +":" + this.m_port + "/home/pp_fbos.lua?sid="+this.m_sid;
 		boolean detected = false;
 		
 		try {
@@ -640,7 +640,7 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 			throw new FritzBoxNotFoundException(this.m_address, this.m_port);
 		}
 
-		final String urlstr = "http://" + this.m_address +":" + this.m_port + "/login_sid.lua";
+		final String urlstr = getProtocol() + this.m_address +":" + this.m_port + "/login_sid.lua";
 
 		StringBuffer data = new StringBuffer(); 
 		try {

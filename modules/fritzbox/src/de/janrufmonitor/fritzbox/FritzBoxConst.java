@@ -24,4 +24,6 @@ public interface FritzBoxConst {
 	public String CFG_LAST_DIALED_NUMBERS = "lastdialednumbers";
 	public String CFG_REFRESH_AFTER_CALLEND = "race";
 	public String CFG_AUTO_RECONNECT_SESSIONID = "autoreconnect";
+	public String CFG_USE_HTTPS = "usehttps";
+	
 }

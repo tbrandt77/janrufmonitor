@@ -48,7 +48,7 @@ public class PasswordFritzBoxFirmware extends AbstractFritzBoxFirmware {
 
 			postdata = (this.m_language.equalsIgnoreCase("en") ? getAccessMethodPOSTData()[1] : getAccessMethodPOSTData()[0]) + postdata;
 
-			String urlstr = "http://" + this.m_address + ":" + this.m_port
+			String urlstr = getProtocol() + this.m_address + ":" + this.m_port
 					+ "/cgi-bin/webcm";
 			executeURL(urlstr, postdata, true);
 		} catch (UnsupportedEncodingException e) {
