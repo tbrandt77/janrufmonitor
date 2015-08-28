@@ -139,6 +139,8 @@ public class FirmwareData {
             return "FRITZ!Box 3270 v3";
         case IFritzBoxFirmware.TYPE_FRITZBOX_7412:
             return "FRITZ!Box 7412"; 
+        case IFritzBoxFirmware.TYPE_FRITZBOX_7430:
+            return "FRITZ!Box 7430"; 
 		default:			
 		}
 		return "unknown";

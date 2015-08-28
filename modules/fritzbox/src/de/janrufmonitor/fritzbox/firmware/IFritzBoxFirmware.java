@@ -80,6 +80,7 @@ public interface IFritzBoxFirmware {
     public final static int TYPE_FRITZBOX_7362_SL = 131;
     public final static int TYPE_FRITZBOX_7412 = 137;
     public final static int TYPE_FRITZBOX_6490_CABLE = 141;
+    public final static int TYPE_FRITZBOX_7430 = 146;
 
     public void login() throws FritzBoxLoginException;
     
