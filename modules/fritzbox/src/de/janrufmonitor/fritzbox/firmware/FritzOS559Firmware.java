@@ -617,6 +617,9 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 					m.group(3),
 					""
 			);
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Firnware version detected: "+(fwd!=null ? fwd.toString() : "[-]"));
+			
 			if (fwd.getMajor()==6) is600 = true;
 			if ((fwd.getMajor()==5 && fwd.getMinor()>=59) || fwd.getMajor()==6)
 				return fwd;
