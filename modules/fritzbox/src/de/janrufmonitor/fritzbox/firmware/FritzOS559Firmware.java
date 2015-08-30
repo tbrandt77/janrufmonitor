@@ -125,7 +125,7 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 	
 	private final static String PATTERN_DETECT_CHALLENGE = "<Challenge>([^<]*)</Challenge>";
 	private final static String PATTERN_DETECT_SID = "<SID>([^<]*)</SID>";
-	private final static String PATTERN_DETECT_FIRMWARE = "\"(\\d\\d\\d*).(\\d\\d).(\\d\\d)\""; //[Firmware|Labor][-| ][V|v]ersion[^\\d]*(\\d\\d\\d*).(\\d\\d).(\\d\\d\\d*)([^<]*)"; 
+	private final static String PATTERN_DETECT_FIRMWARE = "\"(\\d\\d\\d*)\\.(\\d\\d)\\.(\\d\\d)\""; //[Firmware|Labor][-| ][V|v]ersion[^\\d]*(\\d\\d\\d*).(\\d\\d).(\\d\\d\\d*)([^<]*)"; 
 	private final static String PATTERN_DETECT_LANGUAGE = "\\[\"language\"\\] = \"de\"";
 	
 	private final static String PATTERN_DETECT_BLOCKED_NUMBER = "] = \"([\\d]*)\",";
