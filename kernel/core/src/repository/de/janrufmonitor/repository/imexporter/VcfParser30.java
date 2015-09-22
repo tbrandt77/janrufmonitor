@@ -53,6 +53,7 @@ public class VcfParser30 {
 	protected static final String GEO = "GEO:".toLowerCase();
 	protected static final String TITLE2 = "TITLE;".toLowerCase();
 	protected static final String PHOTO = "PHOTO;".toLowerCase();
+	protected static final String MS_CARDPICTURE = "X-MS-CARDPICTURE".toLowerCase();
 	protected static final String[] PHOTO_TYPES = {"value=uri", "value=url", "encoding=b", "type="};
 
 	protected String m_file = null;
@@ -275,7 +276,7 @@ public class VcfParser30 {
 						}
 						
 					}
-					if (line.toLowerCase().startsWith(PHOTO)) {
+					if (line.toLowerCase().startsWith(PHOTO) || line.toLowerCase().startsWith(MS_CARDPICTURE)) {
 						value = new String[2];
 						value[0] = line.substring(0, line.indexOf(":"));
 						value[1] = line.substring(line.indexOf(":")+1);
