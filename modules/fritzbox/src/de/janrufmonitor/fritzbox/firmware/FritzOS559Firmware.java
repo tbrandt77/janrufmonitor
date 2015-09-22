@@ -153,8 +153,10 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 	}
 
 	public void destroy() {
-		final String urlstr = getProtocol() + this.m_address +":" + this.m_port + "/cgi-bin/webcm";
-
+	    String urlstr = ((this.m_firmware!=null && this.m_firmware.getMajor()>=6 && this.m_firmware.getMinor()>=30) ?  
+	    	getProtocol() + this.m_address +":" + this.m_port + "/login.lua?page=/home/home.lua&logout=1&sid=" +this.m_sid	:  
+	    	getProtocol() + this.m_address +":" + this.m_port + "/cgi-bin/webcm");
+	    
 		try {
 			this.executeURL(urlstr, "&security%3Acommand%2Flogout=0&sid="+this.m_sid, false);
 		} catch (IOException e) {
