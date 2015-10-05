@@ -1,6 +1,6 @@
 repository.Thunderbird\:title\:label\:en=Mozilla Thunderbird module
 repository.ThunderbirdCallerManager\:title\:label\:en=Mozilla Thunderbird address book
 repository.ThunderbirdCallerManager\:sync\:label\:en=Contacts from Mozilla Thunderbird address book are read. This could take several minutes. During this time not all contacts are shown in the address book.
-repository.ThunderbirdCallerManager\:nofile\:label\:en=The Mozilla Thunderbird address book was activated, but no valid MAB file was selected. Choose a valid MAB file under Address book -> File -> Open... -> Mozilla Thunderbird address book.
+repository.ThunderbirdCallerManager\:nofile\:label\:en=The Mozilla Thunderbird address book was activated, but no valid MAB file was selected. Choose a valid MAB file under Contacts -> File -> Open... -> Mozilla Thunderbird address book.
 
 repository.ThunderbirdCallerImporter\:filtername\:label\:en=Mozilla Thunderbird address book (*.mab)

@@ -1,7 +1,7 @@
 repository.ThunderbirdCallerManager\:title\:label\:de=Mozilla Thunderbird Adressbuch
 repository.Thunderbird\:title\:label\:de=Mozilla Thunderbird Modul
 repository.ThunderbirdCallerManager\:sync\:label\:de=Daten werden vom Mozilla Thunderbird Adressbuch gelesen. Dies kann einige Zeit in Anspruch nehmen. W\u00E4hrend dieser Zeit sind nicht alle Kontakte im Adressbuch zu sehen. Dr\u00FCcken Sie die F5-Taste um die Ansicht zu aktualisieren.
-repository.ThunderbirdCallerManager\:nofile\:label\:de=Das Mozilla Thunderbird Adressbuch wurde aktiviert, jedoch ist noch keine g\u00FCltige MAB-Adressbuch Datei ausgew\u00E4hlt worden. W\u00E4hlen Sie eine g\u00FCltige Datei unter Adressbuch -> Datei -> \u00D6ffnen... -> Mozilla Thunderbird Adressbuch aus.
+repository.ThunderbirdCallerManager\:nofile\:label\:de=Das Mozilla Thunderbird Adressbuch wurde aktiviert, jedoch ist noch keine g\u00FCltige MAB-Adressbuch Datei ausgew\u00E4hlt worden. W\u00E4hlen Sie eine g\u00FCltige Datei unter Kontakte -> Datei -> \u00D6ffnen... -> Mozilla Thunderbird Adressbuch aus.
 
 
 repository.ThunderbirdCallerImporter\:filtername\:label\:de=Mozilla Thunderbird Adressbuch (*.mab)

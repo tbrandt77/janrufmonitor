@@ -90,7 +90,7 @@ public class ThunderbirdTransformer {
 			Row r = null;
 			for (int i=0,j=l.size();i<j;i++) {
 				r = (Row) l.get(i);
-				rawData.add(r.getValues());
+				rawData.add(r.getAliases());
 			}
 			
 			l = md.getTables();
@@ -99,7 +99,7 @@ public class ThunderbirdTransformer {
 				t = (Table) l.get(i);
 				for (int k=0;k<t.getRows().size();k++) {
 					r = (Row) t.getRows().get(k);
-					rawData.add(r.getValues());
+					rawData.add(r.getAliases());
 				}
 			}
 			fis.close();
@@ -176,41 +176,41 @@ public class ThunderbirdTransformer {
 		attributes.add(
 			PIMRuntime.getInstance().getCallerFactory().createAttribute(
 				IJAMConst.ATTRIBUTE_NAME_FIRSTNAME, 
-				removeEscapedChars((String) m.get(FIRSTNAME)))	
+				removeEscapedChars(((mork.Alias) m.get(FIRSTNAME)).getValue()))	
 		);
 		
 		attributes.add(
 			PIMRuntime.getInstance().getCallerFactory().createAttribute(
 				IJAMConst.ATTRIBUTE_NAME_LASTNAME, 
-				removeEscapedChars((String) m.get(LASTNAME)))	
+				removeEscapedChars(((mork.Alias) m.get(LASTNAME)).getValue()))	
 		);
 		
 		attributes.add(
 				PIMRuntime.getInstance().getCallerFactory().createAttribute(
 					IJAMConst.ATTRIBUTE_NAME_STREET, 
-					removeEscapedChars((String) m.get(HOME_STREET)))	
+					removeEscapedChars(((mork.Alias) m.get(HOME_STREET)).getValue()))	
 			);	
 		
 		attributes.add(
 				PIMRuntime.getInstance().getCallerFactory().createAttribute(
 					IJAMConst.ATTRIBUTE_NAME_POSTAL_CODE, 
-					(String) m.get(HOME_ZIP))	
+					((mork.Alias) m.get(HOME_ZIP)).getValue())	
 			);
 		attributes.add(
 				PIMRuntime.getInstance().getCallerFactory().createAttribute(
 					IJAMConst.ATTRIBUTE_NAME_CITY, 
-					removeEscapedChars((String) m.get(HOME_CITY)))	
+					removeEscapedChars(((mork.Alias) m.get(HOME_CITY)).getValue()))	
 			);	
 		attributes.add(
 				PIMRuntime.getInstance().getCallerFactory().createAttribute(
 					IJAMConst.ATTRIBUTE_NAME_COUNTRY, 
-					removeEscapedChars((String) m.get(HOME_COUNTRY)))	
+					removeEscapedChars(((mork.Alias) m.get(HOME_COUNTRY)).getValue()))	
 			);	
 		
 		List phones = new ArrayList();
 		IPhonenumber pn = null;
 		if (m.containsKey(HOME_PHONE)) {
-			pn = this.parsePhonenumber((String) m.get(HOME_PHONE));
+			pn = this.parsePhonenumber(((mork.Alias) m.get(HOME_PHONE)).getValue());
 			if (pn!=null) {
 				phones.add(pn);
 				attributes.add(
@@ -222,7 +222,7 @@ public class ThunderbirdTransformer {
 		}
 		
 		if (m.containsKey(FAX_PHONE)) {
-			pn = this.parsePhonenumber((String) m.get(FAX_PHONE));
+			pn = this.parsePhonenumber(((mork.Alias) m.get(FAX_PHONE)).getValue());
 			if (pn!=null) {
 				phones.add(pn);
 				attributes.add(
@@ -234,7 +234,7 @@ public class ThunderbirdTransformer {
 		}		
 
 		if (m.containsKey(MOBILE_PHONE)) {
-			pn = this.parsePhonenumber((String) m.get(MOBILE_PHONE));
+			pn = this.parsePhonenumber(((mork.Alias) m.get(MOBILE_PHONE)).getValue());
 			if (pn!=null) {
 				phones.add(pn);
 				attributes.add(
@@ -265,47 +265,47 @@ public class ThunderbirdTransformer {
 		attributes.add(
 			PIMRuntime.getInstance().getCallerFactory().createAttribute(
 				IJAMConst.ATTRIBUTE_NAME_FIRSTNAME, 
-				removeEscapedChars((String) m.get(FIRSTNAME)))	
+				removeEscapedChars(((mork.Alias) m.get(FIRSTNAME)).getValue()))	
 		);
 		
 		attributes.add(
 			PIMRuntime.getInstance().getCallerFactory().createAttribute(
 				IJAMConst.ATTRIBUTE_NAME_LASTNAME, 
-				removeEscapedChars((String) m.get(LASTNAME)))	
+				removeEscapedChars(((mork.Alias) m.get(LASTNAME)).getValue()))	
 		);
 		
 		attributes.add(
 			PIMRuntime.getInstance().getCallerFactory().createAttribute(
 				IJAMConst.ATTRIBUTE_NAME_ADDITIONAL, 
-				removeEscapedChars((String) m.get(COMPANY)))	
+				removeEscapedChars(((mork.Alias) m.get(COMPANY)).getValue()))	
 		);
 		
 		attributes.add(
 				PIMRuntime.getInstance().getCallerFactory().createAttribute(
 					IJAMConst.ATTRIBUTE_NAME_STREET, 
-					removeEscapedChars((String) m.get(WORK_STREET)))	
+					removeEscapedChars(((mork.Alias) m.get(WORK_STREET)).getValue()))	
 			);	
 		
 		attributes.add(
 				PIMRuntime.getInstance().getCallerFactory().createAttribute(
 					IJAMConst.ATTRIBUTE_NAME_POSTAL_CODE, 
-					(String) m.get(WORK_ZIP))	
+					((mork.Alias) m.get(WORK_ZIP)).getValue())	
 			);
 		attributes.add(
 				PIMRuntime.getInstance().getCallerFactory().createAttribute(
 					IJAMConst.ATTRIBUTE_NAME_CITY, 
-					removeEscapedChars((String) m.get(WORK_CITY)))	
+					removeEscapedChars(((mork.Alias) m.get(WORK_CITY)).getValue()))
 			);	
 		attributes.add(
 				PIMRuntime.getInstance().getCallerFactory().createAttribute(
 					IJAMConst.ATTRIBUTE_NAME_COUNTRY, 
-					removeEscapedChars((String) m.get(WORK_COUNTRY)))	
+					removeEscapedChars(((mork.Alias) m.get(WORK_COUNTRY)).getValue()))	
 			);	
 		
 		List phones = new ArrayList();
 		IPhonenumber pn = null;
 		if (m.containsKey(WORK_PHONE)) {
-			pn = this.parsePhonenumber((String) m.get(WORK_PHONE));
+			pn = this.parsePhonenumber(((mork.Alias) m.get(WORK_PHONE)).getValue());
 			if (pn!=null) {
 				phones.add(pn);
 				attributes.add(
@@ -318,7 +318,7 @@ public class ThunderbirdTransformer {
 		}
 		
 		if (m.containsKey(FAX_PHONE)) {
-			pn = this.parsePhonenumber((String) m.get(FAX_PHONE));
+			pn = this.parsePhonenumber(((mork.Alias) m.get(FAX_PHONE)).getValue());
 			if (pn!=null) {
 				phones.add(pn);
 				attributes.add(
@@ -331,7 +331,7 @@ public class ThunderbirdTransformer {
 		}		
 
 		if (m.containsKey(MOBILE_PHONE)) {
-			pn = this.parsePhonenumber((String) m.get(MOBILE_PHONE));
+			pn = this.parsePhonenumber(((mork.Alias) m.get(MOBILE_PHONE)).getValue());
 			if (pn!=null) {
 				phones.add(pn);
 				attributes.add(
@@ -361,14 +361,14 @@ public class ThunderbirdTransformer {
 	}
 	
 	private boolean checkWork(Map m) {
-		if (m.containsKey(ThunderbirdTransformer.WORK_PHONE) && ((String)m.get(ThunderbirdTransformer.WORK_PHONE)).length()>0) return true;
+		if (m.containsKey(ThunderbirdTransformer.WORK_PHONE) && ((mork.Alias)m.get(ThunderbirdTransformer.WORK_PHONE)).getValue().length()>0) return true;
 		if (m.containsKey(ThunderbirdTransformer.WORK_CITY)) return true;
 		if (m.containsKey(ThunderbirdTransformer.WORK_COUNTRY)) return true;
 		return false;
 	}
 	
 	private boolean checkHome(Map m) {
-		if (m.containsKey(ThunderbirdTransformer.HOME_PHONE) && ((String)m.get(ThunderbirdTransformer.HOME_PHONE)).length()>0) return true;
+		if (m.containsKey(ThunderbirdTransformer.HOME_PHONE) && ((mork.Alias)m.get(ThunderbirdTransformer.HOME_PHONE)).getValue().length()>0) return true;
 		if (m.containsKey(ThunderbirdTransformer.HOME_CITY)) return true;
 		if (m.containsKey(ThunderbirdTransformer.HOME_COUNTRY)) return true;
 		return false;
