@@ -6,12 +6,13 @@ Neu:
 - Loglevel für Rufnummeranalyse auf FINE gesetzt
 - jAnrufmonitor Journal: Ansicht-Filter per Query-Sprache möglich
 - jAnrufmonitor Adressbuch: Ansicht-Filter per Query-Sprache möglich
+- VCF-Importer: X-MS-CARDPICTURE Unterstützung beim Importieren
 
 Bugfix:
 - jAnrufmonitor Journal: SQL Optimierung für Journal Abfragen
 
 Module:
-- NCID-Überwachung: Unterstützung für CIDLOG Einträge asl Historie
+- NCID-Überwachung: Unterstützung für CIDLOG Einträge als Historie
 - NCID-Überwachung: Schreibfehler bei NCID Attributen behoben
 - JFritz Journal und Telefonbuch Import: Bug in Rufnummernerkennung behoben
 - Microsoft Outlook Kontaktverzeichnis: Führende Nullen beim Import von Rufnummern werden entfernt
@@ -23,6 +24,7 @@ Module:
 - FRITZ!Box-Überwachung: Verbesserte Rufnummeranalyse
 - FRITZ!Box-Überwachung: Unterstützung für Nebenstellenauswahl beim Wählen (Danke an e-tobi)
 - FRITZ!Box-Überwachung: Spoofing-Rufnummern werden mit spoofed-Kennzeichen versehen
+- FRITZ!Box-Überwachung: Verbesserte Firmwareerkennung ab FRITZ!OS 6.30+
 - TAPI-Überwachung: Angerufere TAPI Nebenstellennummer als Attribut am Anruf hinzugefügt
 - MySQL Adressbuch / Journal: Ansicht-Filter per Query-Sprache möglich
 - Client Erweiterung: Ansicht-Filter im Journal und Adressbuch per Query-Sprache möglich
