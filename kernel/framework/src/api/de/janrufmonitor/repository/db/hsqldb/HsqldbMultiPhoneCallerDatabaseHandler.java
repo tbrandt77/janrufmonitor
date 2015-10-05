@@ -502,9 +502,9 @@ public abstract class HsqldbMultiPhoneCallerDatabaseHandler extends AbstractMult
 		ISearchTerm st = null;
 		for (int i=0, j=searchTerms.length;i<j;i++) {
 			st = searchTerms[i];
-			sql.append("content like '%");
+			sql.append("LOWER(content) like LOWER('%");
 			sql.append(StringUtils.replaceString(st.getSearchTerm(), "%", "")); // remove % signs in search term
-			sql.append("%'");
+			sql.append("%')");
 			if (i<(j-1)) {
 				sql.append(" ");
 				sql.append(st.getOperator().toString());
