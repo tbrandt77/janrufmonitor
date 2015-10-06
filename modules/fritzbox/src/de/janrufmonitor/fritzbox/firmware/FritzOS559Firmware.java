@@ -48,6 +48,7 @@ import de.janrufmonitor.fritzbox.firmware.exception.GetCallListException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallerListException;
 import de.janrufmonitor.fritzbox.firmware.exception.InvalidSessionIDException;
 import de.janrufmonitor.util.io.Stream;
+import de.janrufmonitor.util.string.StringUtils;
 
 public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 
@@ -477,6 +478,9 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 			IOException {
 		if (!this.isInitialized()) throw new DoCallException("Could not dial number on FritzBox: FritzBox firmware not initialized.");
 		
+		if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info("dial number: "+number+", extension: "+extension);
+		
 		StringBuffer data = new StringBuffer();
 		if (number.endsWith("#"))
 			number = number.substring(0, number.length()-1);
@@ -486,7 +490,11 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 		if (this.m_firmware!=null && this.m_firmware.getMajor()>=6 && this.m_firmware.getMinor()>=30) {
 		    String setupporturl = urlstr + "/fon_num/dial_foncalls.lua";
 		    String setupportpost = "sid="+this.m_sid+"&clicktodial=on&port="+extension+"&btn_apply=";		
-            String dialurl = urlstr + "/fon_num/fonbook_list.lua?sid="+this.m_sid+"&dial="+number;
+            String dialurl = urlstr + "/fon_num/fonbook_list.lua?sid="+this.m_sid+"&dial="+StringUtils.urlEncode(number);
+            
+            if (this.m_logger.isLoggable(Level.INFO))
+    			this.m_logger.info("dial URL: "+dialurl);
+            
 			try {
 				data.append(this.executeURL(
 						setupporturl,
