@@ -173,34 +173,43 @@ public class ThunderbirdTransformer {
 	private ICaller buildHomeContact(Map m) {
 		IAttributeMap attributes = PIMRuntime.getInstance().getCallerFactory().createAttributeMap();
 		
+		if (m.containsKey(FIRSTNAME))
 		attributes.add(
 			PIMRuntime.getInstance().getCallerFactory().createAttribute(
 				IJAMConst.ATTRIBUTE_NAME_FIRSTNAME, 
 				removeEscapedChars(((mork.Alias) m.get(FIRSTNAME)).getValue()))	
 		);
 		
-		attributes.add(
-			PIMRuntime.getInstance().getCallerFactory().createAttribute(
-				IJAMConst.ATTRIBUTE_NAME_LASTNAME, 
-				removeEscapedChars(((mork.Alias) m.get(LASTNAME)).getValue()))	
-		);
+		if (m.containsKey(LASTNAME))
+			attributes.add(
+				PIMRuntime.getInstance().getCallerFactory().createAttribute(
+					IJAMConst.ATTRIBUTE_NAME_LASTNAME, 
+					removeEscapedChars(((mork.Alias) m.get(LASTNAME)).getValue()))	
+			);
+		else return null;
 		
+		if (m.containsKey(HOME_STREET))
 		attributes.add(
 				PIMRuntime.getInstance().getCallerFactory().createAttribute(
 					IJAMConst.ATTRIBUTE_NAME_STREET, 
 					removeEscapedChars(((mork.Alias) m.get(HOME_STREET)).getValue()))	
 			);	
 		
+		if (m.containsKey(HOME_ZIP))
 		attributes.add(
 				PIMRuntime.getInstance().getCallerFactory().createAttribute(
 					IJAMConst.ATTRIBUTE_NAME_POSTAL_CODE, 
 					((mork.Alias) m.get(HOME_ZIP)).getValue())	
 			);
+		
+		if (m.containsKey(HOME_CITY))
 		attributes.add(
 				PIMRuntime.getInstance().getCallerFactory().createAttribute(
 					IJAMConst.ATTRIBUTE_NAME_CITY, 
 					removeEscapedChars(((mork.Alias) m.get(HOME_CITY)).getValue()))	
 			);	
+		
+		if (m.containsKey(HOME_COUNTRY))
 		attributes.add(
 				PIMRuntime.getInstance().getCallerFactory().createAttribute(
 					IJAMConst.ATTRIBUTE_NAME_COUNTRY, 
@@ -262,40 +271,49 @@ public class ThunderbirdTransformer {
 	private ICaller buildWorkContact(Map m) {
 		IAttributeMap attributes = PIMRuntime.getInstance().getCallerFactory().createAttributeMap();
 		
+		if (m.containsKey(FIRSTNAME))
 		attributes.add(
 			PIMRuntime.getInstance().getCallerFactory().createAttribute(
 				IJAMConst.ATTRIBUTE_NAME_FIRSTNAME, 
 				removeEscapedChars(((mork.Alias) m.get(FIRSTNAME)).getValue()))	
 		);
 		
+		if (m.containsKey(LASTNAME))
 		attributes.add(
 			PIMRuntime.getInstance().getCallerFactory().createAttribute(
 				IJAMConst.ATTRIBUTE_NAME_LASTNAME, 
 				removeEscapedChars(((mork.Alias) m.get(LASTNAME)).getValue()))	
 		);
 		
+		if (m.containsKey(COMPANY))
 		attributes.add(
 			PIMRuntime.getInstance().getCallerFactory().createAttribute(
 				IJAMConst.ATTRIBUTE_NAME_ADDITIONAL, 
 				removeEscapedChars(((mork.Alias) m.get(COMPANY)).getValue()))	
 		);
 		
+		if (m.containsKey(WORK_STREET))
 		attributes.add(
 				PIMRuntime.getInstance().getCallerFactory().createAttribute(
 					IJAMConst.ATTRIBUTE_NAME_STREET, 
 					removeEscapedChars(((mork.Alias) m.get(WORK_STREET)).getValue()))	
 			);	
 		
+		if (m.containsKey(WORK_ZIP))
 		attributes.add(
 				PIMRuntime.getInstance().getCallerFactory().createAttribute(
 					IJAMConst.ATTRIBUTE_NAME_POSTAL_CODE, 
 					((mork.Alias) m.get(WORK_ZIP)).getValue())	
 			);
+		
+		if (m.containsKey(WORK_CITY))
 		attributes.add(
 				PIMRuntime.getInstance().getCallerFactory().createAttribute(
 					IJAMConst.ATTRIBUTE_NAME_CITY, 
 					removeEscapedChars(((mork.Alias) m.get(WORK_CITY)).getValue()))
 			);	
+		
+		if (m.containsKey(WORK_COUNTRY))
 		attributes.add(
 				PIMRuntime.getInstance().getCallerFactory().createAttribute(
 					IJAMConst.ATTRIBUTE_NAME_COUNTRY, 

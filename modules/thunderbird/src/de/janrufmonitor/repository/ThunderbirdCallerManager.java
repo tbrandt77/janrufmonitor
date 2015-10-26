@@ -119,6 +119,10 @@ public class ThunderbirdCallerManager extends AbstractReadOnlyCallerManager
 		Thread t = new Thread(new Runnable() {
 
 			public void run() {
+				try {
+					Thread.sleep(3000);
+				} catch (InterruptedException e2) {
+				}
 				File mso_cache = new File(THB_CACHE_PATH);
 				if (!mso_cache.exists())
 					mso_cache.mkdirs();
@@ -127,6 +131,7 @@ public class ThunderbirdCallerManager extends AbstractReadOnlyCallerManager
 
 				try {
 					getDatabaseHandler().deleteCallerList(cl);
+					getDatabaseHandler().commit();
 					getDatabaseHandler().insertOrUpdateCallerList(cl);
 					getDatabaseHandler().commit();
 				} catch (SQLException e) {
@@ -141,7 +146,6 @@ public class ThunderbirdCallerManager extends AbstractReadOnlyCallerManager
 		});
 		t.setName("JAM-ThunderbirdSync-Thread-(non-deamon)");
 		t.start();
-
 	}
 
 	public String getNamespace() {
