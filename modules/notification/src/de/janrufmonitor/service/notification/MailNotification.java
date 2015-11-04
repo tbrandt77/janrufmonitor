@@ -222,7 +222,7 @@ public class MailNotification extends AbstractReceiverConfigurableService {
 					
 					// obtain a mail session
 					Session session = Session.getDefaultInstance(props);
-					session.setDebug(true);
+					//session.setDebug(true);
 
 					Transport transport = session.getTransport();
 
