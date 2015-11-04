@@ -127,7 +127,8 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 	private final static String PATTERN_DETECT_CHALLENGE = "<Challenge>([^<]*)</Challenge>";
 	private final static String PATTERN_DETECT_SID = "<SID>([^<]*)</SID>";
 	private final static String PATTERN_DETECT_FIRMWARE = "\"(\\d\\d\\d*)\\.(\\d\\d)\\.(\\d\\d)\""; //[Firmware|Labor][-| ][V|v]ersion[^\\d]*(\\d\\d\\d*).(\\d\\d).(\\d\\d\\d*)([^<]*)"; 
-	private final static String PATTERN_DETECT_LANGUAGE = "\\[\"language\"\\] = \"de\"";
+	private final static String PATTERN_DETECT_LANGUAGE_DE = "\\[\"language\"\\] = \"de\"";
+	private final static String PATTERN_DETECT_LANGUAGE_EN = "\\[\"language\"\\] = \"en\"";
 	
 	private final static String PATTERN_DETECT_BLOCKED_NUMBER = "] = \"([\\d]*)\",";
 	private final static String PATTERN_DETECT_AB = ":([\\d]*)\">([^<]*)</label>";
@@ -608,14 +609,23 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 			throw new FritzBoxDetectFirmwareException("I/O exception during detection of FRITZ!Box firmware: "+e.getMessage(), false);
 		} 
 	
-		Pattern p = Pattern.compile(PATTERN_DETECT_LANGUAGE);
+		Pattern p = Pattern.compile(PATTERN_DETECT_LANGUAGE_DE);
 		Matcher m = p.matcher(data);
 		if (m.find()) {
 			this.m_language = "de";
 			detected = true;
 		}
 		
-		if (!detected ) throw new FritzBoxDetectFirmwareException("Pattern did not match FRITZ!Box firmware: "+PATTERN_DETECT_LANGUAGE, false);
+		if (!detected) {
+			p = Pattern.compile(PATTERN_DETECT_LANGUAGE_EN);
+			m = p.matcher(data);
+			if (m.find()) {
+				this.m_language = "en";
+				detected = true;
+			}
+		}
+		
+		if (!detected ) throw new FritzBoxDetectFirmwareException("Pattern did not match FRITZ!Box firmware: "+PATTERN_DETECT_LANGUAGE_EN, false);
 	
 		this.m_logger.info("Using firmware detection pattern: "+PATTERN_DETECT_FIRMWARE);
 		p = Pattern.compile(PATTERN_DETECT_FIRMWARE);
