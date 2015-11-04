@@ -325,12 +325,20 @@ public class PhonenumberAnalyzer {
 							.info("PhonenumberAnalyzer detected truncate option for MSN ["
 									+ msn + "]: " + truncate);
 				}
-				number = number.trim().substring(truncate,
-						number.trim().length());
-				if (this.m_logger.isLoggable(Level.INFO)) {
-					this.m_logger
-							.info("PhonenumberAnalyzer truncated number to ["
-									+ number + "]");
+				if (number.length()>truncate) {
+					number = number.trim().substring(truncate,
+							number.trim().length());
+					if (this.m_logger.isLoggable(Level.INFO)) {
+						this.m_logger
+								.info("PhonenumberAnalyzer truncated number to ["
+										+ number + "]");
+					}
+				} else {
+					if (this.m_logger.isLoggable(Level.WARNING)) {
+						this.m_logger
+								.warning("PhonenumberAnalyzer did not truncate number: ["
+										+ number + "] is shorter then truncate ["+truncate+"]");
+					}
 				}
 			}
 
