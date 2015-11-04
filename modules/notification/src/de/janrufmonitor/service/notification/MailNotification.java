@@ -99,40 +99,11 @@ public class MailNotification extends AbstractReceiverConfigurableService {
 		public void addMail(ICall c) {
 			try {
 				// get System properties
-				Properties props = System.getProperties();
+				Properties props = this.getSMTPProps();
 				String server = this.m_configuration.getProperty(
 						MailNotification.CONFIG_SERVER, "");
-				String port = this.m_configuration.getProperty(
-						MailNotification.CONFIG_PORT, "25");
-				
-				if (server.length() > 0) {
-					props.put("mail.smtp.host", server);
-					props.put("mail.smtp.port", port);
-					
-					boolean auth = Boolean.parseBoolean(this.m_configuration
-							.getProperty(MailNotification.CONFIG_SMTP_AUTH,
-									"false"));
-					
-					boolean usessl = Boolean.parseBoolean(this.m_configuration
-							.getProperty(MailNotification.CONFIG_SMTP_SSL,
-									"false"));
-					
-					if (auth) {						
-						props.put("mail.smtp.auth", "true");
-					} else {
-						props.put("mail.smtp.auth", "false");
-					}	
-					
-					if (usessl) {
-						props.put("mail.smtp.starttls.enable", "true");
-						props.put("mail.smtp.ssl.enable", "true");
-					} else {
-						props.put("mail.smtp.starttls.enable", "false");
-						props.put("mail.smtp.ssl.enable", "false");
-					}	
-					
-				
-				} else {
+
+				if (server.trim().length()==0) {
 					m_logger.severe("No SMTP Host set.");
 					return;
 				}
@@ -169,72 +140,91 @@ public class MailNotification extends AbstractReceiverConfigurableService {
 			}
 
 		}
+		
+		private Properties getSMTPProps() {
+			Properties props = System.getProperties();
+			
+			String server = this.m_configuration.getProperty(
+					MailNotification.CONFIG_SERVER, "");
+			String user = this.m_configuration.getProperty(
+					MailNotification.CONFIG_USER, "");
+			String password = this.m_configuration.getProperty(
+					MailNotification.CONFIG_PASSWORD, "");
+			
+			boolean usessl = Boolean.parseBoolean(this.m_configuration
+					.getProperty(MailNotification.CONFIG_SMTP_SSL,
+							"false"));
+			
+			if (server.length() > 0) {
+				props.put("mail.smtp"+(usessl ? "s" : "")+".host", server);
+				m_logger.info("Set mail.smtp"+(usessl ? "s" : "")+".host="+server);
+				props.put("mail.smtp"+(usessl ? "s" : "")+".port", this.m_configuration.getProperty(
+						MailNotification.CONFIG_PORT, "25"));
+				m_logger.info("Set mail.smtp"+(usessl ? "s" : "")+".port="+this.m_configuration.getProperty(
+						MailNotification.CONFIG_PORT, "25"));
+				
+				boolean auth = Boolean.parseBoolean(this.m_configuration
+						.getProperty(MailNotification.CONFIG_SMTP_AUTH,
+								"false"));
+				if (auth) {
+					if (user!=null && user.length()>0 && password!=null) {
+						props.put("mail.smtp"+(usessl ? "s" : "")+".auth", "true");
+						m_logger.info("Set mail.smtp"+(usessl ? "s" : "")+".auth=true");
+					} else {
+						m_logger.warning("mail.smtp.auth was enabled, but no user and password provided.");
+						props.put("mail.smtp"+(usessl ? "s" : "")+".auth", "false");
+						m_logger.info("Set mail.smtp"+(usessl ? "s" : "")+".auth=false");
+					}							
+				} else {
+					props.put("mail.smtp.auth", "false");
+					m_logger.info("Set mail.smtp"+(usessl ? "s" : "")+".auth=false");
+				}
+				
+				if (usessl) {
+					props.put("mail.smtp"+(usessl ? "s" : "")+".starttls.enable", "true");
+					m_logger.info("Set mail.smtp"+(usessl ? "s" : "")+".starttls.enable=true");
+					props.put("mail.smtp"+(usessl ? "s" : "")+".ssl.enable", "true");
+					m_logger.info("Set mail.smtp"+(usessl ? "s" : "")+".ssl.enable=true");
+					props.put("mail.transport.protocol", "smtps");
+					m_logger.info("Set mail.transport.protocol=smtps");
+				} else {
+					props.put("mail.smtp"+(usessl ? "s" : "")+".starttls.enable", "false");
+					m_logger.info("Set mail.smtp"+(usessl ? "s" : "")+".starttls.enable=false");
+					props.put("mail.smtp"+(usessl ? "s" : "")+".ssl.enable", "false");
+					m_logger.info("Set mail.smtp"+(usessl ? "s" : "")+".ssl.enable=false");
+					props.put("mail.transport.protocol", "smtp");
+					m_logger.info("Set mail.transport.protocol=smtp");
+				}	
+				
+			} else {
+				m_logger.severe("No SMTP Host set.");
+			}
+			return props;
+		}
 
 		public void run() {
 			if (!m_isRunning && this.m_queue.size() > 0) {
 				try {
 					m_isRunning = true;
 					// get System properties
-					Properties props = System.getProperties();
+					Properties props = this.getSMTPProps();
 					String server = this.m_configuration.getProperty(
 							MailNotification.CONFIG_SERVER, "");
 					String user = this.m_configuration.getProperty(
 							MailNotification.CONFIG_USER, "");
 					String password = this.m_configuration.getProperty(
 							MailNotification.CONFIG_PASSWORD, "");
-					
-					boolean usessl = Boolean.parseBoolean(this.m_configuration
-							.getProperty(MailNotification.CONFIG_SMTP_SSL,
-									"false"));
-					
-					if (server.length() > 0) {
-						props.put("mail.smtp.host", server);
-						m_logger.info("Set mail.smtp.host="+server);
-						props.put("mail.smtp.port", this.m_configuration.getProperty(
-								MailNotification.CONFIG_PORT, "25"));
-						m_logger.info("Set mail.smtp.port="+this.m_configuration.getProperty(
-								MailNotification.CONFIG_PORT, "25"));
-						
-						boolean auth = Boolean.parseBoolean(this.m_configuration
-								.getProperty(MailNotification.CONFIG_SMTP_AUTH,
-										"false"));
-						if (auth) {
-							if (user!=null && user.length()>0 && password!=null) {
-								props.put("mail.smtp.auth", "true");
-								m_logger.info("Set mail.smtp.auth=true");
-							} else {
-								m_logger.warning("mail.smtp.auth was enabled, but no user and password provided.");
-								props.put("mail.smtp.auth", "false");
-								m_logger.info("Set mail.smtp.auth=false");
-							}							
-						} else {
-							props.put("mail.smtp.auth", "false");
-							m_logger.info("Set mail.smtp.auth=false");
-						}
-						
-						if (usessl) {
-							props.put("mail.smtp.starttls.enable", "true");
-							m_logger.info("Set mail.smtp.starttls.enable=true");
-							props.put("mail.smtp.ssl.enable", "true");
-							m_logger.info("Set mail.smtp.ssl.enable=true");
-						} else {
-							props.put("mail.smtp.starttls.enable", "false");
-							m_logger.info("Set mail.smtp.starttls.enable=false");
-							props.put("mail.smtp.ssl.enable", "false");
-							m_logger.info("Set mail.smtp.ssl.enable=false");
-						}	
-						
-					} else {
+
+					if (server.trim().length()==0) {
 						m_logger.severe("No SMTP Host set.");
 						return;
 					}
-
+					
 					// obtain a mail session
-					Session session = Session.getInstance(props, null);
+					Session session = Session.getDefaultInstance(props);
+					session.setDebug(true);
 
-					Transport transport = session.getTransport(usessl ? "smtps" : "smtp");
-
-					m_logger.info("Set protocol to SMTP"+(usessl ? "S" : "")+".");
+					Transport transport = session.getTransport();
 
 					// 2008/12/17: changed do to auth requests on open SMTP server 
 					user = (user.length() == 0 ? null : user);
