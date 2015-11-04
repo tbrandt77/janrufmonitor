@@ -99,7 +99,7 @@ public class MailNotification extends AbstractReceiverConfigurableService {
 		public void addMail(ICall c) {
 			try {
 				// get System properties
-				Properties props = this.getSMTPProps();
+				Properties props = this.getMailProperties();
 				String server = this.m_configuration.getProperty(
 						MailNotification.CONFIG_SERVER, "");
 
@@ -109,8 +109,9 @@ public class MailNotification extends AbstractReceiverConfigurableService {
 				}
 
 				// obtain a mail session
-				Session session = Session.getInstance(props, null);
-
+				Session session = Session.getDefaultInstance(props);
+				//session.setDebug(true);
+				
 				MimeMessage message = createMessage(session, c);
 
 				this.m_queue.add(message);
@@ -141,7 +142,7 @@ public class MailNotification extends AbstractReceiverConfigurableService {
 
 		}
 		
-		private Properties getSMTPProps() {
+		private Properties getMailProperties() {
 			Properties props = System.getProperties();
 			
 			String server = this.m_configuration.getProperty(
@@ -155,49 +156,42 @@ public class MailNotification extends AbstractReceiverConfigurableService {
 					.getProperty(MailNotification.CONFIG_SMTP_SSL,
 							"false"));
 			
+			boolean auth = Boolean.parseBoolean(this.m_configuration
+					.getProperty(MailNotification.CONFIG_SMTP_AUTH,
+							"false"));
+			
 			if (server.length() > 0) {
-				props.put("mail.smtp"+(usessl ? "s" : "")+".host", server);
-				m_logger.info("Set mail.smtp"+(usessl ? "s" : "")+".host="+server);
-				props.put("mail.smtp"+(usessl ? "s" : "")+".port", this.m_configuration.getProperty(
-						MailNotification.CONFIG_PORT, "25"));
-				m_logger.info("Set mail.smtp"+(usessl ? "s" : "")+".port="+this.m_configuration.getProperty(
-						MailNotification.CONFIG_PORT, "25"));
-				
-				boolean auth = Boolean.parseBoolean(this.m_configuration
-						.getProperty(MailNotification.CONFIG_SMTP_AUTH,
-								"false"));
+				props.put("mail.smtp.host", server);
+				props.put("mail.smtp.port", getPort());
+
 				if (auth) {
 					if (user!=null && user.length()>0 && password!=null) {
-						props.put("mail.smtp"+(usessl ? "s" : "")+".auth", "true");
-						m_logger.info("Set mail.smtp"+(usessl ? "s" : "")+".auth=true");
+						props.put("mail.smtp.auth", "true");
 					} else {
 						m_logger.warning("mail.smtp.auth was enabled, but no user and password provided.");
-						props.put("mail.smtp"+(usessl ? "s" : "")+".auth", "false");
-						m_logger.info("Set mail.smtp"+(usessl ? "s" : "")+".auth=false");
+						props.put("mail.smtp.auth", "false");
 					}							
 				} else {
 					props.put("mail.smtp.auth", "false");
-					m_logger.info("Set mail.smtp"+(usessl ? "s" : "")+".auth=false");
 				}
 				
 				if (usessl) {
-					props.put("mail.smtp"+(usessl ? "s" : "")+".starttls.enable", "true");
-					m_logger.info("Set mail.smtp"+(usessl ? "s" : "")+".starttls.enable=true");
-					props.put("mail.smtp"+(usessl ? "s" : "")+".ssl.enable", "true");
-					m_logger.info("Set mail.smtp"+(usessl ? "s" : "")+".ssl.enable=true");
+					props.put("mail.smtp.ssl.enable", "true");
+					props.put("mail.smtp.ssl.trust", "true");
+					props.put("mail.smtp.starttls.enable", "true");
 					props.put("mail.transport.protocol", "smtps");
-					m_logger.info("Set mail.transport.protocol=smtps");
 				} else {
-					props.put("mail.smtp"+(usessl ? "s" : "")+".starttls.enable", "false");
-					m_logger.info("Set mail.smtp"+(usessl ? "s" : "")+".starttls.enable=false");
-					props.put("mail.smtp"+(usessl ? "s" : "")+".ssl.enable", "false");
-					m_logger.info("Set mail.smtp"+(usessl ? "s" : "")+".ssl.enable=false");
+					props.put("mail.smtp.ssl.enable", "false");
+					props.put("mail.smtp.starttls.enable", "false");
 					props.put("mail.transport.protocol", "smtp");
-					m_logger.info("Set mail.transport.protocol=smtp");
 				}	
-				
+
 			} else {
 				m_logger.severe("No SMTP Host set.");
+			}
+			
+			if (m_logger.isLoggable(Level.INFO)) {
+				m_logger.info("SMTP properties: "+props.toString());
 			}
 			return props;
 		}
@@ -207,7 +201,7 @@ public class MailNotification extends AbstractReceiverConfigurableService {
 				try {
 					m_isRunning = true;
 					// get System properties
-					Properties props = this.getSMTPProps();
+					Properties props = this.getMailProperties();
 					String server = this.m_configuration.getProperty(
 							MailNotification.CONFIG_SERVER, "");
 					String user = this.m_configuration.getProperty(
@@ -237,6 +231,7 @@ public class MailNotification extends AbstractReceiverConfigurableService {
 					MimeMessage message = null;
 					for (int i = 0; i < this.m_queue.size(); i++) {
 						message = (MimeMessage) this.m_queue.get(i);
+						message.saveChanges();
 						transport.sendMessage(message, message
 								.getAllRecipients());
 					}
