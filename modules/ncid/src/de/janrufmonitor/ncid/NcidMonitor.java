@@ -18,6 +18,7 @@ import de.janrufmonitor.exception.Message;
 import de.janrufmonitor.exception.PropagationFactory;
 import de.janrufmonitor.framework.IAttribute;
 import de.janrufmonitor.framework.ICall;
+import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.IMsn;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.configuration.IConfigurable;
@@ -28,6 +29,7 @@ import de.janrufmonitor.framework.event.IEventReceiver;
 import de.janrufmonitor.framework.monitor.IMonitor;
 import de.janrufmonitor.framework.monitor.IMonitorListener;
 import de.janrufmonitor.repository.ICallManager;
+import de.janrufmonitor.repository.identify.Identifier;
 import de.janrufmonitor.repository.types.IWriteCallRepository;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
@@ -153,7 +155,13 @@ public class NcidMonitor implements IMonitor, IConfigurable, NcidConst {
 				NcidCallRaw rawCall = new NcidCallRaw(c, this.m_configuration);
 				if (rawCall.isValid()) {
 					ICall call = rawCall.toCall();
-					if (call!=null && call.getDate().getTime()>this.getLastSyncTimestamp()) {
+					if (call!=null &&call.getCaller()!=null && call.getDate().getTime()>this.getLastSyncTimestamp()) {
+						// 2015/11/05: Identify call
+						ICaller identifiedCaller = Identifier.identify(this.m_runtime, call.getCaller().getPhoneNumber());
+						if (identifiedCaller!=null) {
+							call.setCaller(identifiedCaller);
+						}
+						
 						// 2015/08/18: get current journal repository
 						m_logger.info("Last sync timestamp: "+new Date(this.getLastSyncTimestamp()));
 						m_logger.info("Call timestamp: "+call.getDate());
