@@ -71,6 +71,8 @@ public class MailNotification extends AbstractReceiverConfigurableService {
 	
 	private static String CONFIG_SMTP_SSL = "smtpssl";
 	
+	private static String CONFIG_SMTP_TLS = "smtptls";
+	
 	private static String CONFIG_TEMPLATE = "mailtemplate";
 
 	private static String CONFIG_SMTP_QUEUETIME = "smtpqueuetime";
@@ -156,6 +158,10 @@ public class MailNotification extends AbstractReceiverConfigurableService {
 					.getProperty(MailNotification.CONFIG_SMTP_SSL,
 							"false"));
 			
+			boolean usetls = Boolean.parseBoolean(this.m_configuration
+					.getProperty(MailNotification.CONFIG_SMTP_TLS,
+							"false"));
+			
 			boolean auth = Boolean.parseBoolean(this.m_configuration
 					.getProperty(MailNotification.CONFIG_SMTP_AUTH,
 							"false"));
@@ -175,14 +181,18 @@ public class MailNotification extends AbstractReceiverConfigurableService {
 					props.put("mail.smtp.auth", "false");
 				}
 				
+				if (usetls) {
+					props.put("mail.smtp.starttls.enable", "true");
+				} else {
+					props.put("mail.smtp.starttls.enable", "false");
+				}	
+				
 				if (usessl) {
 					props.put("mail.smtp.ssl.enable", "true");
 					props.put("mail.smtp.ssl.trust", "true");
-					props.put("mail.smtp.starttls.enable", "true");
 					props.put("mail.transport.protocol", "smtps");
 				} else {
 					props.put("mail.smtp.ssl.enable", "false");
-					props.put("mail.smtp.starttls.enable", "false");
 					props.put("mail.transport.protocol", "smtp");
 				}	
 

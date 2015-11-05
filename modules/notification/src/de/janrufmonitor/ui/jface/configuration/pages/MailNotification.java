@@ -815,6 +815,7 @@ public class MailNotification extends AbstractConfigPage {
 	private Button activeend;
 	private Button smtp_auth;
 	private Button smtp_ssl;
+	private Button smtp_tls;
 	private Text server;
 	private Text port;
 	private Text user;
@@ -994,7 +995,7 @@ public class MailNotification extends AbstractConfigPage {
 		g2.setLayout(new GridLayout(2, true));
 		gd = new GridData();
         gd.widthHint = 430;
-		gd.heightHint = 225;
+		gd.heightHint = 245;
 		g2.setLayoutData(gd);
 		
 		new Label(g2, SWT.NONE).setText(
@@ -1064,7 +1065,20 @@ public class MailNotification extends AbstractConfigPage {
         gd.widthHint = 300;
         gd.horizontalSpan = 2;
         smtp_auth.setLayoutData(gd);
+        
+        this.smtp_tls = new Button(g2, SWT.CHECK);
+		this.smtp_tls.setText(
+			this.m_i18n.getString(this.getNamespace(), "smtptls", "label", this.m_language)
+		);
+		this.smtp_tls.setSelection(
+			this.getPreferenceStore().getBoolean(this.getConfigNamespace()+SEPARATOR+"smtptls")	
+		);
 		
+		gd = new GridData();
+        gd.widthHint = 300;
+        gd.horizontalSpan = 2;
+        smtp_tls.setLayoutData(gd);
+        
         this.smtp_ssl = new Button(g2, SWT.CHECK);
 		this.smtp_ssl.setText(
 			this.m_i18n.getString(this.getNamespace(), "smtpssl", "label", this.m_language)
@@ -1432,6 +1446,7 @@ public class MailNotification extends AbstractConfigPage {
 		this.getPreferenceStore().setValue(this.getConfigNamespace()+SEPARATOR+"end", activeend.getSelection());
 		this.getPreferenceStore().setValue(this.getConfigNamespace()+SEPARATOR+"smtpauth", smtp_auth.getSelection());
 		this.getPreferenceStore().setValue(this.getConfigNamespace()+SEPARATOR+"smtpssl", smtp_ssl.getSelection());
+		this.getPreferenceStore().setValue(this.getConfigNamespace()+SEPARATOR+"smtptls", smtp_tls.getSelection());
 		this.getPreferenceStore().setValue(this.getConfigNamespace()+SEPARATOR+"smtpserver", server.getText());
 		this.getPreferenceStore().setValue(this.getConfigNamespace()+SEPARATOR+"smtpport", port.getText());
 		this.getPreferenceStore().setValue(this.getConfigNamespace()+SEPARATOR+"smtpuser", user.getText());
