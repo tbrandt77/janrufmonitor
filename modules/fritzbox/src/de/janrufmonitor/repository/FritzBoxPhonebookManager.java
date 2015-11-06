@@ -274,6 +274,7 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 						
 						String img = pe.getImageBase64();
 						if (img!=null) {
+							// 2015/11/06: added image support in FB phonebook
 							ByteArrayInputStream in = new ByteArrayInputStream(Base64Decoder.decode(img).getBytes("iso-8859-1"));
 							FileOutputStream out = new FileOutputStream(new File(PathResolver.getInstance().getPhotoDirectory(), ((IPhonenumber)phones.get(0)).getTelephoneNumber()+".jpg"));
 							Stream.copy(in, out, true);
