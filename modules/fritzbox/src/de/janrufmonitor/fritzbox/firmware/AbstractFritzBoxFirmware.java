@@ -24,6 +24,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import de.janrufmonitor.framework.IJAMConst;
+import de.janrufmonitor.fritzbox.IPhonebookEntry;
 import de.janrufmonitor.fritzbox.firmware.exception.DeleteCallListException;
 import de.janrufmonitor.fritzbox.firmware.exception.DoBlockException;
 import de.janrufmonitor.fritzbox.firmware.exception.DoCallException;
@@ -40,14 +41,14 @@ import de.janrufmonitor.util.io.Stream;
 
 public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 
-	public class PhonebookEntry {
+	public class PhonebookEntry implements IPhonebookEntry {
 		
 		String m_name;
 		String m_ab;
 		Map m_phones;
 		String m_email;
 		
-		public PhonebookEntry() {
+		public PhonebookEntry(){
 			m_phones = new HashMap(3);
 		}
 		
@@ -84,6 +85,13 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 		}
 		public String toString() {
 			return this.m_name + ";" + this.m_phones;
+		}
+
+		public void setImageBase64(String b64) {
+		}
+
+		public String getImageBase64() {
+			return null;
 		}
 	}
 	

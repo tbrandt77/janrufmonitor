@@ -1,6 +1,8 @@
 package de.janrufmonitor.repository;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -18,9 +20,8 @@ import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.ICallerList;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
-import de.janrufmonitor.fritzbox.firmware.AbstractFritzBoxFirmware;
+import de.janrufmonitor.fritzbox.IPhonebookEntry;
 import de.janrufmonitor.fritzbox.firmware.FirmwareManager;
-import de.janrufmonitor.fritzbox.firmware.AbstractFritzBoxFirmware.PhonebookEntry;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxLoginException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetAddressbooksException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallerListException;
@@ -34,7 +35,9 @@ import de.janrufmonitor.repository.zip.ZipArchive;
 import de.janrufmonitor.repository.zip.ZipArchiveException;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
+import de.janrufmonitor.util.io.Base64Decoder;
 import de.janrufmonitor.util.io.PathResolver;
+import de.janrufmonitor.util.io.Stream;
 import de.janrufmonitor.util.string.StringEscapeUtils;
 import de.janrufmonitor.util.string.StringUtils;
 
@@ -218,9 +221,9 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 
 					List phones = null;
 					IAttributeMap attributes = null;
-					AbstractFritzBoxFirmware.PhonebookEntry pe = null;
+					IPhonebookEntry  pe = null;
 					for (int i=0,j=callers.size();i<j;i++) {
-						pe = (PhonebookEntry) callers.get(i);
+						pe = (IPhonebookEntry) callers.get(i);
 						if (this.m_logger.isLoggable(Level.INFO))
 							this.m_logger.info("Processing FritzBox phonebook caller: "+pe.toString());
 						attributes = getRuntime().getCallerFactory().createAttributeMap();
@@ -268,6 +271,14 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 							}
 						}
 						if (phones.size()==0) continue;
+						
+						String img = pe.getImageBase64();
+						if (img!=null) {
+							ByteArrayInputStream in = new ByteArrayInputStream(Base64Decoder.decode(img).getBytes("iso-8859-1"));
+							FileOutputStream out = new FileOutputStream(new File(PathResolver.getInstance().getPhotoDirectory(), ((IPhonenumber)phones.get(0)).getTelephoneNumber()+".jpg"));
+							Stream.copy(in, out, true);
+							attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_IMAGEPATH, new File(PathResolver.getInstance().getPhotoDirectory(), ((IPhonenumber)phones.get(0)).getTelephoneNumber()+".jpg").getAbsolutePath()));
+						}
 						
 						cl.add(getRuntime().getCallerFactory().createCaller(null, phones, attributes));						
 					}

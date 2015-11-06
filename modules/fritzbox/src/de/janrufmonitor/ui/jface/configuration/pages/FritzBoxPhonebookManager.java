@@ -11,6 +11,7 @@ import de.janrufmonitor.fritzbox.firmware.FirmwareManager;
 import de.janrufmonitor.fritzbox.firmware.FritzOS559Firmware;
 import de.janrufmonitor.fritzbox.firmware.FritzOSFirmware;
 import de.janrufmonitor.fritzbox.firmware.SessionIDFritzBoxFirmware;
+import de.janrufmonitor.fritzbox.firmware.TR064FritzBoxFirmware;
 import de.janrufmonitor.fritzbox.firmware.UnitymediaFirmware;
 import de.janrufmonitor.fritzbox.firmware.exception.GetAddressbooksException;
 import de.janrufmonitor.runtime.IRuntime;
@@ -64,10 +65,10 @@ public class FritzBoxPhonebookManager extends AbstractServiceFieldEditorConfigPa
 			label,
 			this.getFieldEditorParent()
 		);		
-		bfe.setEnabled((FirmwareManager.getInstance().isInstance(UnitymediaFirmware.class)||FirmwareManager.getInstance().isInstance(SessionIDFritzBoxFirmware.class)||FirmwareManager.getInstance().isInstance(FritzOSFirmware.class)||FirmwareManager.getInstance().isInstance(FritzOS559Firmware.class)), this.getFieldEditorParent());
+		bfe.setEnabled((FirmwareManager.getInstance().isInstance(UnitymediaFirmware.class)||FirmwareManager.getInstance().isInstance(SessionIDFritzBoxFirmware.class)||FirmwareManager.getInstance().isInstance(FritzOSFirmware.class)||FirmwareManager.getInstance().isInstance(FritzOS559Firmware.class)||FirmwareManager.getInstance().isInstance(TR064FritzBoxFirmware.class)), this.getFieldEditorParent());
 		addField(bfe);
 		
-		if (FirmwareManager.getInstance().isInstance(FritzOSFirmware.class)||FirmwareManager.getInstance().isInstance(FritzOS559Firmware.class)) {
+		if (FirmwareManager.getInstance().isInstance(FritzOSFirmware.class)||FirmwareManager.getInstance().isInstance(FritzOS559Firmware.class)||FirmwareManager.getInstance().isInstance(TR064FritzBoxFirmware.class)) {
 			try {
 				Map adb = FirmwareManager.getInstance().getAddressbooks();
 				String[][] list = new String[adb.size()][2];

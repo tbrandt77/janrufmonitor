@@ -19,6 +19,7 @@ import de.janrufmonitor.fritzbox.firmware.FirmwareManager;
 import de.janrufmonitor.fritzbox.firmware.FritzOS559Firmware;
 import de.janrufmonitor.fritzbox.firmware.FritzOSFirmware;
 import de.janrufmonitor.fritzbox.firmware.SessionIDFritzBoxFirmware;
+import de.janrufmonitor.fritzbox.firmware.TR064FritzBoxFirmware;
 import de.janrufmonitor.fritzbox.firmware.exception.DoBlockException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxLoginException;
 import de.janrufmonitor.runtime.IRuntime;
@@ -141,7 +142,7 @@ public class Block extends AbstractAction implements FritzBoxConst {
 
 
 	public boolean isEnabled() {
-		return (FirmwareManager.getInstance().isInstance(SessionIDFritzBoxFirmware.class) || FirmwareManager.getInstance().isInstance(FritzOSFirmware.class) || FirmwareManager.getInstance().isInstance(FritzOS559Firmware.class));
+		return (FirmwareManager.getInstance().isInstance(SessionIDFritzBoxFirmware.class) || FirmwareManager.getInstance().isInstance(FritzOSFirmware.class) || FirmwareManager.getInstance().isInstance(FritzOS559Firmware.class) || FirmwareManager.getInstance().isInstance(TR064FritzBoxFirmware.class));
 	}
 
 }

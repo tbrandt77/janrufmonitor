@@ -6,20 +6,26 @@ import java.security.NoSuchAlgorithmException;
 
 public class FritzBoxMD5Handler {
 
+	public static String getTR064Auth(String user, String password, String realm, String nonce) {
+		StringBuffer response = new StringBuffer();
+		response.append(convertToHex(getMD5(convertToHex(getMD5(user+":"+realm+":"+password, "ISO8859_1")) + ":" + nonce, "ISO8859_1")));
+		return response.toString();		
+	}
+	
 	public static String getResponse(String challenge, String password) {
 		StringBuffer response = new StringBuffer();
 		response.append(challenge);
 		response.append("-");
-		response.append(convertToHex(getMD5(challenge+"-"+password)));
+		response.append(convertToHex(getMD5(challenge+"-"+password, "UnicodeLittleUnmarked")));
 		return response.toString();		
 	}
 	
-	private static byte[] getMD5(String passwd) {
+	private static byte[] getMD5(String passwd, String enc) {
         MessageDigest md = null;
 
         try {
             md = MessageDigest.getInstance("MD5");
-            md.update(passwd.getBytes("UnicodeLittleUnmarked"));
+            md.update(passwd.getBytes(enc));
         } catch (NoSuchAlgorithmException ex) {
         } catch (UnsupportedEncodingException e) {
 		}

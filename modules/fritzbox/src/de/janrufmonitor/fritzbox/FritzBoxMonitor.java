@@ -282,8 +282,13 @@ public class FritzBoxMonitor implements IMonitor, IConfigurable, FritzBoxConst {
 					description[2] = fw[1];
 					if (fw.length>2)
 						description[3] = fw[2];
+					else
+						description[3] = "";
 					
-					description[4] = Long.toString(this.m_connectTime);
+					if (fw.length>3)
+						description[4] = "S/N: "+fw[3];
+					else
+						description[4] = Long.toString(this.m_connectTime);
 				}
 			} catch (FritzBoxLoginException e) {
 				m_logger.log(Level.SEVERE, e.getMessage(), e);

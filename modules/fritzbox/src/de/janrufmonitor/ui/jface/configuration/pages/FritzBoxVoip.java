@@ -117,12 +117,12 @@ public class FritzBoxVoip extends AbstractFieldEditorConfigPage {
 		addField(sfe);
 		
 		if (isExpertMode()) {
-			bfe = new BooleanFieldEditor(
-					getConfigNamespace()+SEPARATOR+"usehttps",
-				this.m_i18n.getString(this.getNamespace(), "usehttps", "label", this.m_language),
-				this.getFieldEditorParent()
-			);
-			addField(bfe);	
+//			bfe = new BooleanFieldEditor(
+//					getConfigNamespace()+SEPARATOR+"usehttps",
+//				this.m_i18n.getString(this.getNamespace(), "usehttps", "label", this.m_language),
+//				this.getFieldEditorParent()
+//			);
+//			addField(bfe);	
 			
 			sfe = new StringFieldEditor(
 					getConfigNamespace()+SEPARATOR+"boxport",

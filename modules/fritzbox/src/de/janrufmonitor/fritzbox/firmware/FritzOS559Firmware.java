@@ -472,7 +472,7 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 		String postdata = ("mode_call=_in&rule_kind=rufnummer&rule_number=$NUMBER&current_rule=&current_mode=_new&backend_validation=false&apply=&sid=".replaceAll("\\$NUMBER", number) + this.m_sid);
 		executeURL(urlstr, postdata, false);
 		if (this.m_logger.isLoggable(Level.INFO))
-			this.m_logger.info("Successfully added numer "+number+" to FritzBox block list.");
+			this.m_logger.info("Successfully added number "+number+" to FritzBox block list.");
 	}
 
 	public void doCall(String number, String extension) throws DoCallException,
@@ -520,7 +520,7 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 				this.m_logger.log(Level.WARNING, e.getMessage(), e);
 			} catch (IOException e) {
 				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-				throw new DoCallException("Could not dial numer on FritzBox: "+e.getMessage());
+				throw new DoCallException("Could not dial number on FritzBox: "+e.getMessage());
 			} 
 		}
 		

@@ -131,6 +131,10 @@ public class FritzBoxCallCsv extends AbstractFritzBoxCall {
 						msn.setMSN(call[5].substring("Internet:".length()).trim());
 						cip.setCIP("100"); // VOIP CIP
 					} 
+					if (call[5].startsWith("SIP:")) {
+						msn.setMSN(call[5].substring("SIP:".length()).trim());
+						cip.setCIP("100"); // VOIP CIP
+					} 
 					msn.setAdditional(r.getMsnManager().getMsnLabel(msn));
 					cip.setAdditional(r.getCipManager().getCipLabel(cip, ""));
 					
