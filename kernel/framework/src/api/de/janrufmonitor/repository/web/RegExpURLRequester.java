@@ -145,7 +145,7 @@ public class RegExpURLRequester extends AbstractURLRequester {
 					//group = StringUtils.replaceString(group, "&amp;", "&");
 					// added 2010/04/01: added HTML decoding routine
 					// added 2012/01/20: URLDecode
-					group = URLDecoder.decode(StringEscapeUtils.unescapeHtml(this.encodeNonUnicode(group)));
+					group = URLDecoder.decode(StringEscapeUtils.unescapeHtml(this.encodeNonUnicode(group)), this.m_config.getProperty(ENCODING,"iso-8859-1"));
 					if (this.containsHTML(group)) {
 						if (this.m_logger.isLoggable(Level.INFO))
 							this.m_logger.info("Still found HTML tags in pattern value: "+group);
@@ -171,7 +171,7 @@ public class RegExpURLRequester extends AbstractURLRequester {
 					//group = StringUtils.replaceString(group, "&amp;", "&");
 					// added 2010/04/01: added HTML decoding routine
 					// added 2012/01/20: URLDecode
-					group = URLDecoder.decode(StringEscapeUtils.unescapeHtml(this.encodeNonUnicode(group)));
+					group = URLDecoder.decode(StringEscapeUtils.unescapeHtml(this.encodeNonUnicode(group)), this.m_config.getProperty(ENCODING,"iso-8859-1"));
 					if (this.containsHTML(group)) {
 						if (this.m_logger.isLoggable(Level.INFO))
 							this.m_logger.info("Still found HTML tags in pattern value: "+group);
@@ -198,7 +198,7 @@ public class RegExpURLRequester extends AbstractURLRequester {
 					//group = StringUtils.replaceString(group, "&amp;", "&");
 					// added 2010/04/01: added HTML decoding routine
 					// added 2012/01/20: URLDecode
-					group = URLDecoder.decode(StringEscapeUtils.unescapeHtml(this.encodeNonUnicode(group)));
+					group = URLDecoder.decode(StringEscapeUtils.unescapeHtml(this.encodeNonUnicode(group)), this.m_config.getProperty(ENCODING,"iso-8859-1"));
 					if (this.containsHTML(group)) {
 						if (this.m_logger.isLoggable(Level.INFO))
 							this.m_logger.info("Still found HTML tags in pattern value: "+group);
@@ -226,7 +226,7 @@ public class RegExpURLRequester extends AbstractURLRequester {
 					//group = StringUtils.replaceString(group, "&amp;", "&");
 					// added 2010/04/01: added HTML decoding routine
 					// added 2012/01/20: URLDecode
-					group = URLDecoder.decode(StringEscapeUtils.unescapeHtml(this.encodeNonUnicode(group)));
+					group = URLDecoder.decode(StringEscapeUtils.unescapeHtml(this.encodeNonUnicode(group)), this.m_config.getProperty(ENCODING,"iso-8859-1"));
 					if (this.containsHTML(group)) {
 						if (this.m_logger.isLoggable(Level.INFO))
 							this.m_logger.info("Still found HTML tags in pattern value: "+group);
@@ -286,7 +286,7 @@ public class RegExpURLRequester extends AbstractURLRequester {
 					//group = StringUtils.replaceString(group, "&amp;", "&");
 					// added 2010/04/01: added HTML decoding routine
 					// added 2012/01/20: URLDecode
-					group = URLDecoder.decode(StringEscapeUtils.unescapeHtml(this.encodeNonUnicode(group)));
+					group = URLDecoder.decode(StringEscapeUtils.unescapeHtml(this.encodeNonUnicode(group)), this.m_config.getProperty(ENCODING,"iso-8859-1"));
 					if (this.containsHTML(group)) {
 						if (this.m_logger.isLoggable(Level.INFO))
 							this.m_logger.info("Still found HTML tags in pattern value: "+group);
