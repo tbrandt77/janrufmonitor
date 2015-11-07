@@ -574,7 +574,7 @@ public class TR064FritzBoxFirmware implements
 			String u = "https://"+this.m_server+":"+FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server)+path+"&sid="+FritzBoxTR064Manager.getInstance().getSID(this.m_user, this.m_password, this.m_server);
 			return doHttpCall(u, "GET", null, new String[][] {  }, true).toString();
 		} catch (IOException e) {
-			e.printStackTrace();
+			this.m_logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
 		return null;
 	}

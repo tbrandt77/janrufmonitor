@@ -31,3 +31,5 @@ repository.FritzBoxPhonebookManager\:enabled\:value=false
 repository.FritzBoxPhonebookManager\:enabled\:type=boolean
 repository.FritzBoxPhonebookManager\:priority\:value=5
 repository.FritzBoxPhonebookManager\:priority\:type=integer
+repository.FritzBoxPhonebookManager\:sync_interval\:value=5
+repository.FritzBoxPhonebookManager\:sync_interval\:type=integer

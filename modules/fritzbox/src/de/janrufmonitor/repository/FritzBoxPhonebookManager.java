@@ -53,6 +53,8 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 	private static String CFG_KEEP_ALIVE = "keepalive";
 	
 	private static String CFG_ADDRESSBOOK = "ab";
+	
+	private static String CFG_SYNC_INTERVAL = "sync_interval";
 
 	private IRuntime m_runtime;
 	
@@ -382,7 +384,7 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 								this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 							}
 							try {
-								Thread.sleep(300000);
+								Thread.sleep(getSyncInterval());
 							} catch (InterruptedException e) {
 							}
 						} while (m_loggedin);
@@ -433,6 +435,14 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 	
 	private Properties getConfiguration() {
 		return this.m_configuration;
+	}
+	
+	private long getSyncInterval() {
+		String iv = this.m_configuration.getProperty(CFG_SYNC_INTERVAL, "1");
+		if (iv!=null && iv.length()>0) {
+			return (Long.parseLong((iv.equalsIgnoreCase("0") ? "1" : iv)) * 60 * 1000);
+		}
+		return 60000;
 	}
 
 	private ICallerDatabaseHandler getDatabaseHandler() {
