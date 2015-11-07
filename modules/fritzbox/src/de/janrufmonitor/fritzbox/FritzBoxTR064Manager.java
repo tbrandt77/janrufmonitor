@@ -10,10 +10,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.KeyManagementException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Collections;
 import java.util.HashMap;
@@ -25,8 +24,10 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
@@ -69,23 +70,42 @@ public class FritzBoxTR064Manager {
 	private String m_cachedSecurePort = null;
 
 	private FritzBoxTR064Manager() {
-		this.m_logger = LogManager.getLogManager().getLogger("");
-		//this.m_logger = LogManager.getLogManager().getLogger(IJAMConst.DEFAULT_LOGGER);
+		//this.m_logger = LogManager.getLogManager().getLogger("");
+		this.m_logger = LogManager.getLogManager().getLogger(IJAMConst.DEFAULT_LOGGER);
 		
-		// Create a trust manager that does not validate certificate chains
-		TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager(){
-		    public X509Certificate[] getAcceptedIssuers(){return null;}
-		    public void checkClientTrusted(X509Certificate[] certs, String authType) throws CertificateException {}
-		    public void checkServerTrusted(X509Certificate[] certs, String authType) throws CertificateException {}
-		}};
+		try
+	    {
+	        // Create a trust manager that does not validate certificate chains
+	        TrustManager[] trustAllCerts = new TrustManager[] {new X509TrustManager() {
+	            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+	                return null;
+	            }
+	            public void checkClientTrusted(X509Certificate[] certs, String authType) {
+	            }
+	            public void checkServerTrusted(X509Certificate[] certs, String authType) {
+	            }
+	        }
+	        };
 
-		// Install the all-trusting trust manager
-		try {
-		    SSLContext sc = SSLContext.getInstance("TLS");
-		    sc.init(null, trustAllCerts, new SecureRandom());
-		    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-		} catch (Exception e) {;
-		}
+	        // Install the all-trusting trust manager
+	        SSLContext sc = SSLContext.getInstance("SSL");
+	        sc.init(null, trustAllCerts, new java.security.SecureRandom());
+	        HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+
+	        // Create all-trusting host name verifier
+	        HostnameVerifier allHostsValid = new HostnameVerifier() {
+	            public boolean verify(String hostname, SSLSession session) {
+	                return true;
+	            }
+	        };
+
+	        // Install the all-trusting host verifier
+	        HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
+	    } catch (NoSuchAlgorithmException e) {
+	        m_logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+	    } catch (KeyManagementException e) {
+	    	 m_logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+	    }
     }
     
     public static synchronized FritzBoxTR064Manager getInstance() {
