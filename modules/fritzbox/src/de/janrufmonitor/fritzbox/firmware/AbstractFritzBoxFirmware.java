@@ -373,6 +373,11 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 		} 
 	}
 
+	public String getAddressbookModificationHash(int addressbookId)
+			throws GetAddressbooksException, IOException {
+		return null;
+	}
+	
 	public String toString() {
 		if (this.m_firmware!=null) {
 			StringBuffer s = new StringBuffer(64);

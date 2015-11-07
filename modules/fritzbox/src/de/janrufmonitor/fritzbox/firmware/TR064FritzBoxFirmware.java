@@ -325,6 +325,15 @@ public class TR064FritzBoxFirmware implements
 		}
 	}
 
+	public String getAddressbookModificationHash(int addressbookId) throws GetAddressbooksException, IOException {
+		if (!this.isInitialized()) throw new GetAddressbooksException("Could not get address book list from FritzBox: FritzBox firmware not initialized.");
+		try {
+			return FritzBoxTR064Manager.getInstance().getPhonebookHash(this.m_user, this.m_password, this.m_server, Integer.toString(addressbookId));
+		} catch (IOException e) {
+			throw new GetAddressbooksException(e.getMessage());
+		}
+	}
+
 	public void deleteCallList() throws DeleteCallListException, IOException {
 		if (!this.isInitialized()) throw new DeleteCallListException("Could not delete call list from FritzBox: FritzBox firmware not initialized.");
 		
@@ -569,5 +578,6 @@ public class TR064FritzBoxFirmware implements
 		}
 		return null;
 	}
+
 
 }

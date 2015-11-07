@@ -98,6 +98,8 @@ public interface IFritzBoxFirmware {
     
     public Map getAddressbooks() throws GetAddressbooksException, IOException;
     
+    public String getAddressbookModificationHash(int addressbookId) throws GetAddressbooksException, IOException;
+    
     public void deleteCallList() throws DeleteCallListException, IOException;
 	
     public List getBlockedList() throws GetBlockedListException, IOException;

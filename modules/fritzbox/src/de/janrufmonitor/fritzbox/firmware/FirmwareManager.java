@@ -216,6 +216,33 @@ public class FirmwareManager {
 		return this.m_fw.getAddressbooks();
     }
     
+    public String getAddressbookModificationHash(int addressbookId) throws GetAddressbooksException, IOException {
+    	if (this.m_fw==null)
+			try {
+				this.createFirmwareInstance();
+			} catch (FritzBoxInitializationException e) {
+				throw new GetAddressbooksException(e.getMessage());
+			} catch (FritzBoxNotFoundException e) {
+				PropagationFactory.getInstance().fire(
+						new Message(Message.ERROR,
+						"fritzbox.firmware.hardware",
+						"notfound",	
+						new String[] {e.getServer(), e.getPort()},
+						e,
+						true));
+				throw new GetAddressbooksException(e.getMessage());
+			} catch (InvalidSessionIDException e) {
+				PropagationFactory.getInstance().fire(
+						new Message(Message.ERROR,
+						"fritzbox.firmware.login",
+						"loginfailed",	
+						e,
+						true));
+				throw new GetAddressbooksException(e.getMessage());
+			}
+		return this.m_fw.getAddressbookModificationHash(addressbookId);
+    }
+    
     public List getBlockedList() throws GetBlockedListException, IOException {
     	if (this.m_fw==null)
 			try {

@@ -56,6 +56,10 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 
 	private IRuntime m_runtime;
 	
+	private boolean m_loggedin;
+	
+	private String m_lastAbHash;
+	
 	private boolean isSyncing = false;
 
 	private ICallerDatabaseHandler m_dbh;
@@ -276,9 +280,12 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 						if (img!=null) {
 							// 2015/11/06: added image support in FB phonebook
 							ByteArrayInputStream in = new ByteArrayInputStream(Base64Decoder.decode(img).getBytes("iso-8859-1"));
-							FileOutputStream out = new FileOutputStream(new File(PathResolver.getInstance().getPhotoDirectory(), ((IPhonenumber)phones.get(0)).getTelephoneNumber()+".jpg"));
+							File photoDir = new File(PathResolver.getInstance().getPhotoDirectory());
+							if (!photoDir.exists())
+								photoDir.mkdirs();
+							FileOutputStream out = new FileOutputStream(new File(photoDir, ((IPhonenumber)phones.get(0)).getTelephoneNumber()+".png"));
 							Stream.copy(in, out, true);
-							attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_IMAGEPATH, new File(PathResolver.getInstance().getPhotoDirectory(), ((IPhonenumber)phones.get(0)).getTelephoneNumber()+".jpg").getAbsolutePath()));
+							attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_IMAGEPATH, new File(PathResolver.getInstance().getPhotoDirectory(), ((IPhonenumber)phones.get(0)).getTelephoneNumber()+".png").getAbsolutePath()));
 						}
 						
 						cl.add(getRuntime().getCallerFactory().createCaller(null, phones, attributes));						
@@ -324,13 +331,12 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 	public void startup() {
 		super.startup();
 		if (this.isActive()) {
-			boolean loggedin = false;
 			int counter = 0;
 			do {
 				try {
 					counter ++;
 					FirmwareManager.getInstance().login();
-					loggedin = true;
+					m_loggedin = true;
 				} catch (FritzBoxLoginException e) {
 					this.m_logger.log(Level.WARNING, "Login to fritzbox trial #"+counter+ "failed. Retrying.", e);
 					try {
@@ -338,13 +344,59 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 					} catch (InterruptedException e1) {
 					}
 				}
-			} while (!loggedin && counter < 5);
+			} while (!m_loggedin && counter < 5);
 			
-			this.createCallerListFromFritzBoxPhonebook();
+			if (m_loggedin) {
+				Thread t = new Thread(new Runnable() {
+					Logger m_logger;
+					
+					public void run() {
+						this.m_logger = LogManager.getLogManager().getLogger(IJAMConst.DEFAULT_LOGGER);
+						if (this.m_logger.isLoggable(Level.FINE))
+							this.m_logger.fine("Starting JAM-FritzBoxPhonebookHashChecker-Thread");
+						do {
+							FirmwareManager fwm = FirmwareManager.getInstance();
+							try {
+								if (this.m_logger.isLoggable(Level.INFO))
+									this.m_logger.info("FritzBox Firmware created.");
+								fwm.login();
+								
+								if (this.m_logger.isLoggable(Level.INFO))
+									this.m_logger.info("Login to FritzBox successfull.");
+								
+								// check if phonebook is configured
+								String abId = getConfiguration().getProperty(CFG_ADDRESSBOOK, "0");
+								if (this.m_logger.isLoggable(Level.INFO))
+									this.m_logger.info("Getting FritzBox phonebook ID: #"+abId);
+								int id = Integer.parseInt(abId);
+								String newAbHash = FirmwareManager.getInstance().getAddressbookModificationHash(id);
+								if (newAbHash!=null && !newAbHash.equals(m_lastAbHash)) {
+									m_lastAbHash = newAbHash;
+									createCallerListFromFritzBoxPhonebook();
+								}
+							} catch (FritzBoxLoginException e2) {
+								this.m_logger.log(Level.SEVERE, e2.getMessage(), e2);
+							} catch (IOException e) {
+								this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+							} catch (Throwable e) {
+								this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+							}
+							try {
+								Thread.sleep(300000);
+							} catch (InterruptedException e) {
+							}
+						} while (m_loggedin);
+					}
+				});
+				t.setDaemon(true);
+				t.setName("JAM-FritzBoxPhonebookHashChecker-Thread-(deamon)");
+				t.start();
+			}
 		}
 	}
 
 	public void shutdown() {
+		this.m_loggedin = false;
 		if (this.m_dbh != null)
 			try {
 				getDatabaseHandler().commit();
