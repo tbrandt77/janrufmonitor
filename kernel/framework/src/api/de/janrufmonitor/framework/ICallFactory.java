@@ -98,14 +98,6 @@ public interface ICallFactory {
     public IAttribute createAttribute(String name, String value);
 
 	/**
-	 *  Create an empty attribute list.
-	 *
-	 *@return       a new instance of an attribute list.
-	 *@deprecated
-	 */
-    public IAttributeMap createAttributeList();
-
-	/**
 	 *  Create an empty attribute map.
 	 *
 	 *@return       a new instance of an attribute map.

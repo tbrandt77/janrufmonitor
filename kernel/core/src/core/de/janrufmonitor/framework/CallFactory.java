@@ -22,13 +22,6 @@ public class CallFactory implements ICallFactory {
         return new de.janrufmonitor.framework.objects.Attribute(name, value);
     }
     
-    /**
-     * @deprecated since Version 4.4
-     */
-    public IAttributeMap createAttributeList() {
-        return this.createAttributeMap();
-    }
-    
     public IAttributeMap createAttributeMap() {
         return new AttributeMap();
     }
