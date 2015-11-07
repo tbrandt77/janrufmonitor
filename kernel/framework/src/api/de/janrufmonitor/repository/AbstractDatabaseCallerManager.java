@@ -10,6 +10,7 @@ import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.repository.db.ICallerDatabaseHandler;
 import de.janrufmonitor.repository.filter.IFilter;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.repository.search.ISearchTerm;
 import de.janrufmonitor.repository.types.ISearchableCallerRepository;
 
@@ -112,7 +113,7 @@ public abstract class AbstractDatabaseCallerManager extends AbstractReadWriteCal
 			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 		}
 		
-		if (this.isInternalNumber(number)) {
+		if (PhonenumberAnalyzer.getInstance(this.getRuntime()).isInternal(number)) {
 			// no caller folder exists, take default value
 			String language = this.getRuntime().getConfigManagerFactory().getConfigManager().getProperty(IJAMConst.GLOBAL_NAMESPACE, IJAMConst.GLOBAL_LANGUAGE);
 					

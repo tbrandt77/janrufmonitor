@@ -9,6 +9,7 @@ import de.janrufmonitor.framework.IAttributeMap;
 import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.repository.types.IIdentifyCallerRepository;
 import de.janrufmonitor.repository.web.AbstractURLRequester;
 import de.janrufmonitor.runtime.IRuntime;
@@ -90,7 +91,7 @@ public abstract class AbstractWebCallerManager extends AbstractReadOnlyCallerMan
 		if (p.isClired())
 			throw new CallerNotFoundException("Phone number is CLIR. Identification impossible.");
 		
-		if (this.isInternalNumber(p))
+		if (PhonenumberAnalyzer.getInstance(this.getRuntime()).isInternal(p))
 			throw new CallerNotFoundException("Phone number is internal number.");
 
 		IPhonenumber number = this.getRuntime().getCallerFactory().createPhonenumber(p.getTelephoneNumber());

@@ -12,7 +12,6 @@ import de.janrufmonitor.framework.IAttributeMap;
 import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.ICallerList;
 import de.janrufmonitor.framework.IJAMConst;
-import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.framework.configuration.IConfigurable;
 import de.janrufmonitor.repository.filter.AttributeFilter;
 import de.janrufmonitor.repository.filter.CharacterFilter;
@@ -85,43 +84,6 @@ public abstract class AbstractConfigurableCallerManager implements ICallerManage
 	public abstract String getID();
 
 	public abstract String getNamespace();
-
-	/**
-	 * Checks wether a IPhonenumber object is an internal number or not.
-	 * 
-	 * @param pn number to be checked
-	 * @return true if number is internal, false if not
-	 */
-	protected boolean isInternalNumber(IPhonenumber pn) {
-		if (pn==null)
-			return false;
-		
-		if (pn.isClired())
-			return false;
-					
-		String number = pn.getTelephoneNumber();
-		
-		if (number.trim().length()==0) {
-			number = pn.getCallNumber();
-		}
-
-		if (number.length()<=this.maxInternalNumberLength() || pn.getIntAreaCode().equalsIgnoreCase(IJAMConst.INTERNAL_CALL)) {
-			return true;
-		}
-		return false;
-	}
-	
-	private int maxInternalNumberLength() {
-		String value = this.getRuntime().getConfigManagerFactory().getConfigManager().getProperty(IJAMConst.GLOBAL_NAMESPACE, IJAMConst.GLOBAL_INTERNAL_LENGTH);
-		if (value!=null && value.length()>0) {
-			try {
-				return Integer.parseInt(value);
-			} catch (Exception ex) {
-				this.m_logger.warning(ex.getMessage());
-			}
-		}
-		return 0;
-	}
 
 	public void setManagerID(String id) { 
 		this.m_externalID = id;
