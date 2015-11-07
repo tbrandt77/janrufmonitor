@@ -13,6 +13,7 @@ import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.repository.filter.AttributeFilter;
 import de.janrufmonitor.repository.filter.FilterType;
 import de.janrufmonitor.repository.filter.IFilter;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.repository.imexport.ITracker;
 import de.janrufmonitor.repository.types.IIdentifyCallerRepository;
 import de.janrufmonitor.repository.types.IReadCallerRepository;
@@ -60,7 +61,7 @@ public class GoogleContactsCallerManager extends AbstractReadWriteCallerManager
 			throw new CallerNotFoundException(
 					"Phone number is CLIR. Identification impossible.");
 		
-		if (this.isInternalNumber(number))
+		if (PhonenumberAnalyzer.getInstance(this.getRuntime()).isInternal(number))
 			throw new CallerNotFoundException(
 				"Phone number is internal phone system number. Identification not possible.");
 

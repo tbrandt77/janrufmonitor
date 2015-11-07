@@ -136,7 +136,7 @@ public class GoogleContactsProxy implements IGoogleContactsConst {
 
 	private ContactsService login(String user, String password) throws GoogleContactsLoginException {
 		ContactsService cs = new ContactsService(
-				"jam-googlecontacts-callermanager");
+				"janrufmonitor-callermanager");
 		try {
 			cs.setUserCredentials(user, password);
 			return cs;
