@@ -544,6 +544,9 @@ public class InstallerEngine {
 
     	// add .lib.deploy installer
     	this.m_installers.add(new LibInstaller());
+    	
+    	// add .delete installer
+    	this.m_installers.add(new DeleteFileInstaller());
 
     	// add default installer
     	

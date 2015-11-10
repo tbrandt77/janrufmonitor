@@ -138,6 +138,19 @@ public class JamArchive implements InstallerConst {
 		}
 	}
 	
+	public List getDeleteFiles() throws JamArchiveException {
+		try {
+			return
+				this.m_zip.list(new FilenameFilter() {
+					public boolean accept(File p, String entry) {
+						return entry.toLowerCase().endsWith(JamArchive.EXTENSION_DELETE);
+					}
+				});
+			} catch (ZipArchiveException e) {
+			throw new JamArchiveException(e);
+		}
+	}
+	
 	public List getInfFiles() throws JamArchiveException {
 		try {
 			return
@@ -199,6 +212,7 @@ public class JamArchive implements InstallerConst {
 							!entry.toLowerCase().endsWith(JamArchive.EXTENSION_INF) &&
 							!entry.toLowerCase().endsWith(JamArchive.EXTENSION_INITINF) &&
 							!entry.toLowerCase().endsWith(JamArchive.EXTENSION_LIB) &&
+							!entry.toLowerCase().endsWith(JamArchive.EXTENSION_DELETE) &&
 							!entry.toLowerCase().startsWith(JamArchive.DESCRIPTOR)
 						) return true;
 						

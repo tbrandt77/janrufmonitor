@@ -14,6 +14,8 @@ public interface InstallerConst {
 	
 	public static String EXTENSION_JAR = ".jar";
 	
+	public static String EXTENSION_DELETE = ".delete";
+	
 	public static String DESCRIPTOR_REQUIRED_MAJOR_VERSION = "jam.version.major.required";
 	
 	public static String DESCRIPTOR_REQUIRED_MINOR_VERSION = "jam.version.minor.required";

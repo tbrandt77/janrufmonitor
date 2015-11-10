@@ -47,8 +47,11 @@ public class FileHandler {
 			path = PathResolver.getInstance(PIMRuntime.getInstance()).getInstallDirectory() + path;
 		}
 		File file = new File(path);
+		if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info("Deleting "+file.getAbsolutePath()+"...");
 		if (file.exists()) 
 			if (!file.delete()) {
+				this.m_logger.info("Deleting "+file.getAbsolutePath()+" during application run failed. Delete on exit is triggered,");
 				file.deleteOnExit();
 			}
 	}

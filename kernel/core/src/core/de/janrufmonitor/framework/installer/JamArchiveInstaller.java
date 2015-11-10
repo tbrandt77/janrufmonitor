@@ -1,5 +1,6 @@
 package de.janrufmonitor.framework.installer;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -7,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -148,9 +150,9 @@ public class JamArchiveInstaller extends AbstractInstaller {
 			if (l.size()>0)
 				this.handleAddI18n(p, l);
 			
-//			l = p.getJarFiles();
-//			if (l.size()>0)
-//				this.handleJarLib(l);
+			l = p.getDeleteFiles();
+			if (l.size()>0)
+				this.handleDeleteFiles(p, l);
 			
 			l = p.getLibFiles();
 			if (l.size()>0)
@@ -275,6 +277,32 @@ public class JamArchiveInstaller extends AbstractInstaller {
 		}	
 	}
 	
+	private void handleDeleteFiles(JamArchive p, List l) {
+		String entry = null;
+		InputStream content = null;
+		FileHandler fh = new FileHandler();
+		for (int i=0,j=l.size();i<j;i++) {
+			entry = (String) l.get(i);
+			try {
+				content = p.getStream(entry);
+				if (content!=null) {
+					BufferedReader reader = new BufferedReader(
+	                          new InputStreamReader(content) );
+					for ( String line; (line = reader.readLine()) != null; ) {
+						if (this.m_logger.isLoggable(Level.INFO))
+							this.m_logger.info("Deleting "+line+"...");
+						fh.removeFile(line);
+					}
+					reader.close();
+				}
+			} catch (JamArchiveException e) {
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			} catch (IOException e) {
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			}
+		}	
+	}
+	
 	private void handleRemoveFiles(JamArchive p, List l) {
 		String entry = null;
 		InputStream content = null;
@@ -283,8 +311,9 @@ public class JamArchiveInstaller extends AbstractInstaller {
 			entry = (String) l.get(i);
 			try {
 				content = p.getStream(entry);
-				if (content!=null)
+				if (content!=null) {
 					fh.removeFile(entry);
+				}
 			} catch (JamArchiveException e) {
 				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 			}
@@ -310,21 +339,6 @@ public class JamArchiveInstaller extends AbstractInstaller {
 			}
 		}	
 	}
-	
-//	private void handleJarLib(List l) {
-//		LibHandler ih = new LibHandler();
-//		Properties p = new Properties();
-//		StringBuffer libs = new StringBuffer();
-//		File f = null;
-//		for (int i=0,j=l.size();i<j;i++) {
-//			f = new File((String) l.get(i));
-//			libs.append(f.getName());
-//			libs.append(";");
-//		}
-//		p.setProperty("lib", libs.toString());
-//		this.m_logger.info("Add jars to classpath: "+p.getProperty("lib"));
-//		ih.addLibData(p);
-//	}
 	
 	private void handleRemoveLib(JamArchive p, List l) {
 		String entry = null;
