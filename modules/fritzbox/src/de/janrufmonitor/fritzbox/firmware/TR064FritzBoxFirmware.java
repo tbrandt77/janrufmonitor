@@ -570,8 +570,28 @@ public class TR064FritzBoxFirmware implements
 	}
 
 	private String createBase64Image(String path) {
+		if (path==null) return null;
+		
+//		// 2015/11/08: Check for inline URLs and URLEncode
+//		if (path!=null && path.indexOf("path=http")>0) {
+//			String url_enc_part = path.substring(path.indexOf("path=")+5, path.length());
+//			if (this.m_logger.isLoggable(Level.INFO)) 
+//				this.m_logger.info("URL to be encoded: "+path);
+//			if (this.m_logger.isLoggable(Level.INFO)) 
+//				this.m_logger.info("Encodeding part: "+url_enc_part);
+//			try {
+//				url_enc_part = URLEncoder.encode(url_enc_part, "utf-8");
+//				path = path.substring(0, path.indexOf("path=")+5) + url_enc_part;
+//				if (this.m_logger.isLoggable(Level.INFO)) 
+//					this.m_logger.info("URL encoded: "+path);
+//			} catch (UnsupportedEncodingException e) {
+//				this.m_logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+//			}
+//		}
 		try {
 			String u = "https://"+this.m_server+":"+FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server)+path+"&sid="+FritzBoxTR064Manager.getInstance().getSID(this.m_user, this.m_password, this.m_server);
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("requesting URL: "+u);
 			return doHttpCall(u, "GET", null, new String[][] {  }, true).toString();
 		} catch (IOException e) {
 			this.m_logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
