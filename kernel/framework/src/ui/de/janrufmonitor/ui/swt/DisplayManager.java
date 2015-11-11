@@ -82,11 +82,11 @@ public class DisplayManager {
 		}
 		
 		if (OSUtils.isMacOSX()) {
-			Display d = Display.getDefault();
+			final Display d = Display.getDefault();
 			isUIThread = true;
 			if (m_logger.isLoggable(Level.INFO))
 				m_logger.info("Display Thread name: "+d.getThread().getName());
-			while (true) {
+			while (!d.isDisposed()) {
 				if (!d.readAndDispatch()) d.sleep();
 			}
 		} else {
@@ -98,7 +98,7 @@ public class DisplayManager {
 						isUIThread = true;
 						if (m_logger.isLoggable(Level.INFO))
 							m_logger.info("Display Thread name: "+d.getThread().getName());
-						while (true) {
+						while (!d.isDisposed()) {
 							if (!d.readAndDispatch()) d.sleep();
 						}
 					} catch (Exception ex) {
