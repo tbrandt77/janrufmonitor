@@ -454,9 +454,9 @@ public class FritzBoxTR064Manager {
 		
 		String xml_url = find(Pattern.compile(PATTERN_PHONEBOOK_URL, Pattern.UNICODE_CASE), response);
 		if (xml_url!=null && xml_url.length()>0) {
-			response = doHttpCall(xml_url, "GET", null, new String[][] {{"Content-Type", "text/plain"}, {"User-Agent", USER_AGENT}});
+			response = doHttpCall(xml_url, "GET", null, "iso-8859-1", new String[][] {{"Content-Type", "text/plain"}, {"User-Agent", USER_AGENT}});
 			this.m_logger.info("Finished retrieving phonebook took "+(System.currentTimeMillis()-start)+"ms");
-			return new ByteArrayInputStream(response.toString().getBytes("utf-8"));
+			return new ByteArrayInputStream(response.toString().getBytes("iso-8859-1"));
 		} 
 		
 		this.m_logger.severe("No valid XML download link provided by fritzbox: "+xml_url);
@@ -606,9 +606,9 @@ public class FritzBoxTR064Manager {
 		String csv_url = find(Pattern.compile(PATTERN_CSV_CALLLIST, Pattern.UNICODE_CASE), response);
 		
 		if (csv_url!=null && csv_url.length()>0) {
-			response = doHttpCall(csv_url+"&type=csv"+(days>0 ? "&days="+days : ""), "GET", null, new String[][] {{"Content-Type", "text/plain"}, {"User-Agent", USER_AGENT}});
+			response = doHttpCall(csv_url+"&type=csv"+(days>0 ? "&days="+days : ""), "GET", null, "iso-8859-1", new String[][] {{"Content-Type", "text/plain"}, {"User-Agent", USER_AGENT}});
 			this.m_logger.info("Finished retrieving call list took "+(System.currentTimeMillis()-start)+"ms");
-			return new ByteArrayInputStream(response.toString().getBytes("utf-8"));
+			return new ByteArrayInputStream(response.toString().getBytes("iso-8859-1"));
 		} 
 		
 		this.m_logger.severe("No valid CSV download link provided by fritzbox: "+csv_url);
@@ -769,6 +769,10 @@ public class FritzBoxTR064Manager {
 	}
 	
 	private StringBuffer doHttpCall(String u, String method, String body, String[][] headers) throws IOException {
+		return this.doHttpCall(u, method, body, "UTF-8", headers);
+	}
+	
+	private StringBuffer doHttpCall(String u, String method, String body, String encoding, String[][] headers) throws IOException {
 		if (this.m_logger.isLoggable(Level.INFO))
 			this.m_logger.info("HTTP call: "+u+", method "+method);
 		
@@ -811,7 +815,7 @@ public class FritzBoxTR064Manager {
 		if (this.m_logger.isLoggable(Level.INFO)) 
 			this.m_logger.info("HTTP response set as text or XML data");
 		BufferedReader reader = new BufferedReader(
-	                          new InputStreamReader(connection.getInputStream()) );
+	                          new InputStreamReader(connection.getInputStream(), encoding) );
 		for ( String line; (line = reader.readLine()) != null; ) {
 			response.append(line);
 			response.append(IJAMConst.CRLF);
