@@ -108,7 +108,7 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 	
 	public void startup() {
 		super.startup();
-		if (isEnabled()) {	
+		if (isEnabled() && this.m_configuration!=null && this.m_configuration.getProperty(CFG_SYNCSTARTUP, "false").equalsIgnoreCase("true")) {	
 			IEventBroker eventBroker = this.getRuntime().getEventBroker();
 			eventBroker.register(this, eventBroker
 					.createEvent(IEventConst.EVENT_TYPE_RETURNED_HIBERNATE));
@@ -253,7 +253,7 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 		}
 		
 		if (this.m_configuration.getProperty(CFG_SYNCDIALOG, "false").equalsIgnoreCase("true") || isSuppressed) {
-			Properties config = getRuntime().getConfigManagerFactory().getConfigManager().getProperties(FritzBoxMonitor.NAMESPACE);
+			//Properties config = getRuntime().getConfigManagerFactory().getConfigManager().getProperties(FritzBoxMonitor.NAMESPACE);
 			
 			FirmwareManager fwm = FirmwareManager.getInstance();
 			
@@ -375,7 +375,7 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 							evtBroker.unregister(this);
 						}
 						
-						boolean syncDelete = (config.getProperty(FritzBoxConst.CFG_SYNCDELETE, "false").equalsIgnoreCase("true") ? true : false);
+						boolean syncDelete = (this.m_configuration.getProperty(FritzBoxConst.CFG_SYNCDELETE, "false").equalsIgnoreCase("true") ? true : false);
 						
 						if (syncDelete) {
 							fwm.deleteCallList();	
@@ -448,7 +448,6 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 			}
 			
 		} else {
-			//ProgressMonitorDialog pmd = new ProgressMonitorDialog(new Shell(DisplayManager.getDefaultDisplay().getActiveShell()));	
 			ProgressMonitorDialog pmd = new ProgressMonitorDialog(new Shell(DisplayManager.getDefaultDisplay()));
 			try {				
 				IRunnableWithProgress r = new IRunnableWithProgress() {
@@ -459,9 +458,7 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 										getLanguage()), IProgressMonitor.UNKNOWN);
 						
 						progressMonitor.worked(1);
-	
-						Properties config = getRuntime().getConfigManagerFactory().getConfigManager().getProperties(FritzBoxMonitor.NAMESPACE);
-	
+
 						progressMonitor.setTaskName(getI18nManager()
 								.getString(getNamespace(),
 										"loginprogress", "label",
@@ -601,7 +598,7 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 										}
 									}
 									
-									boolean syncDelete = (config.getProperty(FritzBoxConst.CFG_SYNCDELETE, "false").equalsIgnoreCase("true") ? true : false);
+									boolean syncDelete = (m_configuration.getProperty(FritzBoxConst.CFG_SYNCDELETE, "false").equalsIgnoreCase("true") ? true : false);
 									
 									if (syncDelete) {
 										progressMonitor.setTaskName(getI18nManager()

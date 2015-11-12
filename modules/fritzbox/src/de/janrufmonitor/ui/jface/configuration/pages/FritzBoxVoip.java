@@ -117,45 +117,22 @@ public class FritzBoxVoip extends AbstractFieldEditorConfigPage {
 		addField(sfe);
 		
 		if (isExpertMode()) {
-//			bfe = new BooleanFieldEditor(
-//					getConfigNamespace()+SEPARATOR+"usehttps",
-//				this.m_i18n.getString(this.getNamespace(), "usehttps", "label", this.m_language),
+//			sfe = new StringFieldEditor(
+//					getConfigNamespace()+SEPARATOR+"boxport",
+//					this.m_i18n.getString(this.getNamespace(), "boxport", "label", this.m_language),
+//					this.getFieldEditorParent()
+//				);
+//			sfe.setEmptyStringAllowed(false);
+//			addField(sfe);
+		
+//			sfe = new StringFieldEditor(
+//					getConfigNamespace()+SEPARATOR+"festnetzalias",
+//				this.m_i18n.getString(this.getNamespace(), "festnetzalias", "label", this.m_language),
 //				this.getFieldEditorParent()
 //			);
-//			addField(bfe);	
-			
-			sfe = new StringFieldEditor(
-					getConfigNamespace()+SEPARATOR+"boxport",
-					this.m_i18n.getString(this.getNamespace(), "boxport", "label", this.m_language),
-					this.getFieldEditorParent()
-				);
-			sfe.setEmptyStringAllowed(false);
-			addField(sfe);
-		
+//			sfe.setEmptyStringAllowed(true);
+//			addField(sfe);	
 
-			sfe = new StringFieldEditor(
-					getConfigNamespace()+SEPARATOR+"festnetzalias",
-				this.m_i18n.getString(this.getNamespace(), "festnetzalias", "label", this.m_language),
-				this.getFieldEditorParent()
-			);
-			sfe.setEmptyStringAllowed(true);
-			addField(sfe);	
-			
-			sfe = new StringFieldEditor(
-					getConfigNamespace()+SEPARATOR+"dialprefixes",
-				this.m_i18n.getString(this.getNamespace(), "dialprefixes", "label", this.m_language),
-				this.getFieldEditorParent()
-			);
-			sfe.setEmptyStringAllowed(true);
-			addField(sfe);	
-			
-			bfe = new BooleanFieldEditor(
-					getConfigNamespace()+SEPARATOR+"syncdelete",
-				this.m_i18n.getString(this.getNamespace(), "syncdelete", "label", this.m_language),
-				this.getFieldEditorParent()
-			);
-			addField(bfe);		
-			
 			IntegerFieldEditor ife = new IntegerFieldEditor(
 				getConfigNamespace()+SEPARATOR+"retrymax",
 				this.m_i18n.getString(this.getNamespace(), "retrymax", "label", this.m_language),
@@ -171,6 +148,9 @@ public class FritzBoxVoip extends AbstractFieldEditorConfigPage {
 			);
 			ife.setTextLimit(2);
 			addField(ife);	
+			
+			new Label(this.getFieldEditorParent(), SWT.NULL);
+			new Label(this.getFieldEditorParent(), SWT.NULL);
 			
 			ComboFieldEditor cfe = new ComboFieldEditor(
 					getConfigNamespace()+SEPARATOR+"boxclickdial",
@@ -200,6 +180,17 @@ public class FritzBoxVoip extends AbstractFieldEditorConfigPage {
 				this.getFieldEditorParent()
 			);
 			addField(cfe);	
+			
+			sfe = new StringFieldEditor(
+					getConfigNamespace()+SEPARATOR+"dialprefixes",
+				this.m_i18n.getString(this.getNamespace(), "dialprefixes", "label", this.m_language),
+				this.getFieldEditorParent()
+			);
+			sfe.setEmptyStringAllowed(true);
+			addField(sfe);
+			
+			new Label(this.getFieldEditorParent(), SWT.NULL);
+			new Label(this.getFieldEditorParent(), SWT.NULL);
 		}
 		
 		IMonitor fbMonitor = this.getRuntime().getMonitorListener().getMonitor("FritzBoxMonitor");

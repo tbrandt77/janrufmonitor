@@ -91,8 +91,6 @@ public class Refresh extends AbstractAction implements FritzBoxConst {
 					
 					progressMonitor.worked(1);
 
-					Properties config = getRuntime().getConfigManagerFactory().getConfigManager().getProperties(FritzBoxMonitor.NAMESPACE);
-
 					progressMonitor.setTaskName(getI18nManager()
 							.getString(getNamespace(),
 									"loginprogress", "label",
@@ -220,7 +218,7 @@ public class Refresh extends AbstractAction implements FritzBoxConst {
 									}
 								}
 								
-								boolean syncDelete = (config.getProperty(FritzBoxConst.CFG_SYNCDELETE, "false").equalsIgnoreCase("true") ? true : false);
+								boolean syncDelete = (getRuntime().getConfigManagerFactory().getConfigManager().getProperty(NAMESPACE, FritzBoxConst.CFG_SYNCDELETE).equalsIgnoreCase("true") ? true : false);
 								
 								if (syncDelete) {
 									progressMonitor.setTaskName(getI18nManager()
@@ -357,6 +355,9 @@ public class Refresh extends AbstractAction implements FritzBoxConst {
 	}
 
 	public boolean isEnabled() {
+		Properties cfg = getRuntime().getConfigManagerFactory().getConfigManager().getProperties(NAMESPACE);
+		boolean isEnabled = Boolean.parseBoolean(cfg.getProperty("enabled", "false"));
+		if (!isEnabled) return false;
 		if (this.m_app!=null && this.m_app.getController()!=null) {
 			Object o = this.m_app.getController().getRepository();
 			return (o instanceof IWriteCallRepository);
