@@ -5,6 +5,7 @@ ui.jface.configuration.pages.Client\:server\:label\:de=Server (IP oder DNS):
 ui.jface.configuration.pages.Client\:port\:label\:de=Server Port: 
 ui.jface.configuration.pages.Client\:cport\:label\:de=Client-Callback-Port: 
 ui.jface.configuration.pages.Client\:autoconnect\:label\:de=Client beim Starten automatisch mit Server verbinden
+ui.jface.configuration.pages.Client\:autoreconnect\:label\:de=Client bei Verbindungsabbruch automatisch mit Server wieder verbinden
 ui.jface.configuration.pages.Client\:events\:label\:de=Client-Modus
 ui.jface.configuration.pages.Client\:fat\:label\:de=Server-Maintained-Modus: Der Server \u00FCbernimmt die komplette Verwaltung der Daten.
 ui.jface.configuration.pages.Client\:thin\:label\:de=Fast-Client-Modus (empfohlen): Anruferinformationen werden komplett auf dem Client verwaltet. 

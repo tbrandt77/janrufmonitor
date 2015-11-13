@@ -5,6 +5,7 @@ ui.jface.configuration.pages.Client\:server\:label\:en=Server (IP oder DNS):
 ui.jface.configuration.pages.Client\:port\:label\:en=Server port: 
 ui.jface.configuration.pages.Client\:cport\:label\:en=Client callback port: 
 ui.jface.configuration.pages.Client\:autoconnect\:label\:en=automatically connect client on startup
+ui.jface.configuration.pages.Client\:autoreconnect\:label\:en=automatically re-connect client on connection loss
 ui.jface.configuration.pages.Client\:events\:label\:en=Client modes
 ui.jface.configuration.pages.Client\:fat\:label\:en=Server maintained mode: Server instance tkaes over the complete control.
 ui.jface.configuration.pages.Client\:thin\:label\:en=Fast lient mode (recommended): Caller information is managed on client side. 

@@ -35,15 +35,30 @@ public class ClientMonitor implements IMonitor, IClientStateMonitor,
 			} catch (InterruptedException e) {
 				m_logger.severe(e.toString());
 			}
-			Display d = DisplayManager.getDefaultDisplay();
-			Shell s = new Shell(d);
-			int style = SWT.APPLICATION_MODAL | SWT.YES | SWT.NO;
-			MessageBox messageBox = new MessageBox (s, style);
-			messageBox.setMessage (getRuntime().getI18nManagerFactory().getI18nManager().getString(NAMESPACE, "reconnect", "label", getRuntime().getConfigManagerFactory().getConfigManager().getProperty(
-					IJAMConst.GLOBAL_NAMESPACE,
-					IJAMConst.GLOBAL_LANGUAGE
-				)));
-			if (messageBox.open () == SWT.YES) {
+			
+			boolean autoReConnect = "true".equalsIgnoreCase(getRuntime().getConfigManagerFactory().getConfigManager().getProperty(
+					"service.Client",
+					"autoreconnect"
+				));
+			
+			if (!autoReConnect) {
+				Display d = DisplayManager.getDefaultDisplay();
+				Shell s = new Shell(d);
+				int style = SWT.APPLICATION_MODAL | SWT.YES | SWT.NO;
+				MessageBox messageBox = new MessageBox (s, style);
+				messageBox.setMessage (getRuntime().getI18nManagerFactory().getI18nManager().getString(NAMESPACE, "reconnect", "label", getRuntime().getConfigManagerFactory().getConfigManager().getProperty(
+						IJAMConst.GLOBAL_NAMESPACE,
+						IJAMConst.GLOBAL_LANGUAGE
+					)));
+				if (messageBox.open () == SWT.YES) {
+					ClientMonitor.this.start();
+				}
+			} else {
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					m_logger.severe(e.toString());
+				}
 				ClientMonitor.this.start();
 			}
 		}

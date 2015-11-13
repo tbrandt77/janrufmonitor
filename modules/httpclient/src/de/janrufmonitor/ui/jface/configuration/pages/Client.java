@@ -87,6 +87,13 @@ public class Client extends AbstractServiceFieldEditorConfigPage {
 			);
 			addField(bfe);
 			
+			bfe = new BooleanFieldEditor(
+				this.getConfigNamespace()+SEPARATOR+"autoreconnect",
+				this.m_i18n.getString(this.getNamespace(), "autoreconnect", "label", this.m_language),
+				this.getFieldEditorParent()
+			);
+			addField(bfe);
+			
 			sfe = new StringFieldEditor(
 				this.CONFIG_NAMESPACE_1+SEPARATOR+"port",
 				this.m_i18n.getString(this.getNamespace(), "cport", "label", this.m_language),
