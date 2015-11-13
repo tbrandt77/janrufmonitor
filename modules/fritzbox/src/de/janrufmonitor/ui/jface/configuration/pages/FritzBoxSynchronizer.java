@@ -53,7 +53,7 @@ public class FritzBoxSynchronizer extends AbstractServiceFieldEditorConfigPage {
 		
 		Label l = new Label(this.getFieldEditorParent(), SWT.NULL);
 		l.setText(this.m_i18n.getString(this.getNamespace(), "times", "label", this.m_language));
-		FontData df = new FontData();df.setStyle(SWT.BOLD);
+		FontData df = new FontData();df.setStyle(SWT.BOLD);df.setHeight(l.getFont().getFontData()[0].getHeight());
 		Font f = new Font(DisplayManager.getDefaultDisplay(), df);
 		l.setFont(f);
 		new Label(this.getFieldEditorParent(), SWT.NULL);
