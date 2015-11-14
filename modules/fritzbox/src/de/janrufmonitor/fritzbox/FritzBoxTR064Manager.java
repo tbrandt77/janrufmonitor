@@ -64,6 +64,9 @@ public class FritzBoxTR064Manager {
 	// getPhonePorts PATTERN
 	private final static String PATTERN_PORT_NAME = "<NewX_AVM-DE_PhoneName>([^<]*)</NewX_AVM-DE_PhoneName>";
 	
+	// getUptime PATTERN
+	private final static String PATTERN_UPTIME = "<NewUpTime>([^<]*)</NewUpTime>";
+	
 	private static FritzBoxTR064Manager m_instance = null;
 	
 	private Logger m_logger;
@@ -657,7 +660,7 @@ public class FritzBoxTR064Manager {
 	public String getFirmwareVersion(String usr, String passwd, String server) throws IOException {
 		return this.getFirmwareVersion(usr, passwd, server, this.getDefaultFritzBoxTR064SecurePort(server), "https");
 	}
-	
+
 	public String getFirmwareVersion(String usr, String passwd, String server, String port, String protocol) throws IOException {
 		String user = new String(usr.getBytes("utf-8"));
 		
@@ -703,6 +706,57 @@ public class FritzBoxTR064Manager {
 		String firmware = find(Pattern.compile(PATTERN_FIMRMWARE_VERSION, Pattern.UNICODE_CASE), response);
 		
 		return (firmware!=null && firmware.length()>0 ? firmware: null);
+	}
+	
+	public long getUptime(String usr, String passwd, String server) throws IOException {
+		return this.getUptime(usr, passwd, server, this.getDefaultFritzBoxTR064SecurePort(server), "https");
+	}
+	
+	public long getUptime(String usr, String passwd, String server, String port, String protocol) throws IOException {
+		String user = new String(usr.getBytes("utf-8"));
+		
+		StringBuffer content = new StringBuffer();
+		
+		content.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+		content.append("<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\"");
+		content.append("s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">");
+		content.append("<s:Header><h:InitChallenge xmlns:h=\"http://soap-authentication.org/digest/2001/10/\" s:mustUnderstand=\"1\">");
+		content.append("<UserID>"+user+"</UserID>");
+		content.append("</h:InitChallenge></s:Header>");
+		content.append("<s:Body><u:GetInfo xmlns:u=\"urn:dslforum-org:service:DeviceInfo:1\"></u:GetInfo>");
+		content.append("</s:Body>");
+		content.append("</s:Envelope>");
+		
+		StringBuffer response = doHttpCall(protocol+"://"+server+":"+port+"/upnp/control/deviceinfo", "POST", content.toString(), new String[][] { 
+			{"Content-Type", "text/xml; charset=\"utf-8\""}, {"Content-Length", Integer.toString(content.length())}, {"SOAPACTION", "\"urn:dslforum-org:service:DeviceInfo:1#GetInfo\""}, {"User-Agent", USER_AGENT}})
+		;
+		
+		String nonce = find(Pattern.compile(PATTERN_DETECT_NONCE, Pattern.UNICODE_CASE), response);
+		String realm = find(Pattern.compile(PATTERN_DETECT_REALM, Pattern.UNICODE_CASE), response);
+		
+		String auth = FritzBoxMD5Handler.getTR064Auth(usr, passwd, realm, nonce);
+		
+		content = new StringBuffer();
+		content.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+		content.append("<s:Envelope s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"");
+		content.append("xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" >");
+		content.append("<s:Header><h:ClientAuth xmlns:h=\"http://soap-authentication.org/digest/2001/10/\" s:mustUnderstand=\"1\">");
+		content.append("<Nonce>"+nonce+"</Nonce>");
+		content.append("<Auth>"+auth+"</Auth>");
+		content.append("<UserID>"+user+"</UserID>");
+		content.append("<Realm>"+realm+"</Realm>");
+		content.append("</h:ClientAuth></s:Header>");
+		content.append("<s:Body><u:GetInfo xmlns:u=\"urn:dslforum-org:service:DeviceInfo:1\"></u:GetInfo>");
+		content.append("</s:Body>");
+		content.append("</s:Envelope>");
+		
+		response = doHttpCall(protocol+"://"+server+":"+port+"/upnp/control/deviceinfo", "POST", content.toString(), new String[][] { 
+			{"Content-Type", "text/xml; charset=\"utf-8\""}, {"Content-Length", Integer.toString(content.length())}, {"SOAPACTION", "\"urn:dslforum-org:service:DeviceInfo:1#GetInfo\""}, {"User-Agent", USER_AGENT}});
+		
+		
+		String uptime = find(Pattern.compile(PATTERN_UPTIME, Pattern.UNICODE_CASE), response);
+		
+		return (uptime!=null && uptime.length()>0 ? Long.parseLong(uptime): -1L);
 	}
 	
 	public String[] getDescription(String usr, String passwd, String server) throws IOException {
@@ -843,10 +897,10 @@ public class FritzBoxTR064Manager {
 			//System.out.print(FritzBoxTR064Manager.getInstance().getCallList("thilo.brandt", "Tb2743507", "fritz.box", "49000"));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getPhonebookList("thilo.brandt", "Tb2743507", "fritz.box", "49000"));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getPhonebook("thilo.brandt", "Tb2743507", "fritz.box", "49443", "https", "0"));
-			System.out.println(FritzBoxTR064Manager.getInstance().getPhonebookHash("admin", "Tb2743507", "fritz.box", "0"));
+			//System.out.println(FritzBoxTR064Manager.getInstance().getPhonebookHash("admin", "Tb2743507", "fritz.box", "0"));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort());
 			//System.out.print(FritzBoxTR064Manager.getInstance().isTR064Supported("fritz.box", "49000"));
-			//System.out.print(FritzBoxTR064Manager.getInstance().getFirmwareVersion("thilo.brandt", "Tb2743507","fritz.box", "49443", "https"));
+			System.out.print(FritzBoxTR064Manager.getInstance().getUptime("admin", "Tb2743507","fritz.box", "49443", "https"));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getDescription("thilo.brandt", "Tb2743507","fritz.box"));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getPhonePorts("thilo.brandt", "Tb2743507","fritz.box", "49443", "https"));
 		} catch (IOException e) {

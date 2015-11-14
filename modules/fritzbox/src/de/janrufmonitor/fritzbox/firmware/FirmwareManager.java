@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import de.janrufmonitor.exception.Message;
 import de.janrufmonitor.exception.PropagationFactory;
 import de.janrufmonitor.framework.IJAMConst;
+import de.janrufmonitor.framework.monitor.IMonitor;
 import de.janrufmonitor.fritzbox.FritzBoxConst;
 import de.janrufmonitor.fritzbox.FritzBoxMonitor;
 import de.janrufmonitor.fritzbox.firmware.exception.DeleteCallListException;
@@ -34,6 +35,7 @@ public class FirmwareManager {
 	
 	private IFritzBoxFirmware m_fw;
 	private Thread m_timeoutThread;
+	private Thread m_restartedThread;
     
     private FirmwareManager() {
         this.m_logger = LogManager.getLogManager().getLogger(IJAMConst.DEFAULT_LOGGER);
@@ -431,7 +433,58 @@ public class FirmwareManager {
 					this.launchTimeoutThread();
 				}
 			}
+			if (this.m_fw!=null) {
+				if (this.m_logger.isLoggable(Level.INFO))
+					this.m_logger.info("FritzBox restarted thread started.");
+				this.launchRestartedThread();
+			}
     	}
+    }
+    
+    private void launchRestartedThread() {
+    	if (m_restartedThread!=null && m_restartedThread.isAlive()) {
+    		m_restartedThread.interrupt();
+    	}
+    	
+    	m_restartedThread = new Thread() {
+			public void run() {
+				try {
+					do {
+						int clct = getFritzBoxConnectionLostCheckTime();
+						Thread.sleep(((clct>0 ? clct : 1) * 60000));
+					} while (m_fw!=null && !m_fw.isRestarted()); 
+					
+					if (m_logger.isLoggable(Level.WARNING))
+						m_logger.warning("FritzBox reset or restart detected.");
+					
+					IMonitor m = PIMRuntime.getInstance().getMonitorListener().getMonitor(FritzBoxMonitor.ID);
+					if (m!=null && m.isStarted()) {
+						if (m_logger.isLoggable(Level.INFO))
+							m_logger.info("Disconnecting FritzBox monitor on port 1012.");
+						m.stop();
+					}
+					
+					if (m_logger.isLoggable(Level.INFO))
+						m_logger.info("Disconnecting FritzBox synchronization on ports 80, 49000 and 49443.");
+					if (m_fw!=null) m_fw.destroy();
+					m_fw = null;
+					
+					PropagationFactory.getInstance().fire(
+							new Message(Message.ERROR,
+							"fritzbox.firmware.hardware",
+							"conlost",
+							new String[] {getFritzBoxAddress(), getFritzBoxPort()},
+							new Exception("Connection to "+getFritzBoxAddress()+":"+getFritzBoxPort()+" lost."),
+							false));
+					
+				} catch (InterruptedException e) {
+					m_logger.log(Level.WARNING,"JAM-FritzBoxFirmwareRestarted-Thread gets interrupted.: "+e.getMessage(), e);
+				}
+			}
+		};
+		m_restartedThread.setName("JAM-FritzBoxFirmwareRestarted-Thread-(deamon)");
+		m_restartedThread.setDaemon(true);
+		m_restartedThread.start();
     }
     
     private void launchTimeoutThread() {
@@ -442,18 +495,20 @@ public class FirmwareManager {
     	m_timeoutThread = new Thread() {
 			public void run() {
 				try {
-					m_logger.info("Session ID timeout set to "+(m_fw.getFirmwareTimeout()/1000)+" sec.");
+					if (m_logger.isLoggable(Level.INFO))
+						m_logger.info("Session ID timeout set to "+(m_fw.getFirmwareTimeout()/1000)+" sec.");
 					Thread.sleep(m_fw.getFirmwareTimeout());
-					//Thread.sleep(60000);
 					
 					if (m_fw!=null) m_fw.destroy();
 					m_fw = null;
-					m_logger.info("Automatic FritzBox timeout for logout reached.");
+					if (m_logger.isLoggable(Level.INFO))
+						m_logger.info("Automatic FritzBox timeout for logout reached.");
 					if (getFritzBoxAutoReconnect()) {
 						m_logger.info("Trying automatic re-connect to FritzBox...");
 						try {
 							createFirmwareInstance();
-							m_logger.info("Automatic re-connect to FritzBox done...");
+							if (m_logger.isLoggable(Level.INFO))
+								m_logger.info("Automatic re-connect to FritzBox done...");
 						} catch (FritzBoxInitializationException e) {
 							m_logger.log(Level.SEVERE, e.getMessage(), e);
 						} catch (FritzBoxNotFoundException e) {
@@ -486,6 +541,11 @@ public class FirmwareManager {
     
     private String getFritzBoxPort() {
     	return getRuntime().getConfigManagerFactory().getConfigManager().getProperty(FritzBoxMonitor.NAMESPACE, FritzBoxConst.CFG_PORT);
+    }
+    
+    private int getFritzBoxConnectionLostCheckTime() {
+    	String n = getRuntime().getConfigManagerFactory().getConfigManager().getProperty(FritzBoxMonitor.NAMESPACE, FritzBoxConst.CFG_CONNECTION_LOST_CHECKTIME);
+    	return Integer.parseInt((n!=null && n.length()>0 ? n : "1"));
     }
     
     private boolean getFritzBoxAutoReconnect() {

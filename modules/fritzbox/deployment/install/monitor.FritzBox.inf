@@ -20,6 +20,7 @@ monitor.FritzBoxMonitor\:outgoing\:value=true
 monitor.FritzBoxMonitor\:outgoing\:type=boolean
 monitor.FritzBoxMonitor\:retrymax\:value=3
 monitor.FritzBoxMonitor\:retrytimeout\:value=1
+monitor.FritzBoxMonitor\:connectionlostchecktime\:value=2
 monitor.FritzBoxMonitor\:autoreconnect\:value=true
 monitor.FritzBoxMonitor\:autoreconnect\:type=boolean
 

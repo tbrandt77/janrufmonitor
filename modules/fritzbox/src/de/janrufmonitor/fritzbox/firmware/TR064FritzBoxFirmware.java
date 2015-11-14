@@ -194,6 +194,8 @@ public class TR064FritzBoxFirmware implements
 	protected String m_password;
 	protected String m_user; // new since Fritz!OS Version 05.50
 	
+	protected long m_loginUptime = -1L;
+	
 	protected FirmwareData m_firmware;
 	
 	public TR064FritzBoxFirmware(String box_address, String box_port, String box_password, String box_user) {
@@ -216,7 +218,7 @@ public class TR064FritzBoxFirmware implements
 			FritzBoxNotFoundException, InvalidSessionIDException {
 		try {
 			if (!FritzBoxTR064Manager.getInstance().isTR064Supported(this.m_server, FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port())) 
-				throw new FritzBoxInitializationException("FritzBox does not support TR064.");
+				throw new FritzBoxInitializationException("FritzBox "+this.m_server+" does not support TR064.");
 		
 			String version = FritzBoxTR064Manager.getInstance().getFirmwareVersion(this.m_user, this.m_password, this.m_server);
 			
@@ -229,10 +231,16 @@ public class TR064FritzBoxFirmware implements
 					this.m_firmware = new FirmwareData(st.nextToken(), st.nextToken(), st.nextToken());
 					if (this.m_logger.isLoggable(Level.INFO))
 						this.m_logger.info("Initializing of FritzBox firmware succuessfully finished: "+this.m_firmware.toString());
+					
+					this.m_loginUptime = FritzBoxTR064Manager.getInstance().getUptime(this.m_user, this.m_password, this.m_server);
+					if (this.m_loginUptime==-1L) {
+						throw new FritzBoxInitializationException("FritzBox did not provide uptime attribute: "+this.m_loginUptime);
+					}
 				} else {
 					throw new FritzBoxInitializationException("FritzBox version string is invalid: "+version);
 				}
-			}
+			} else
+				throw new InvalidSessionIDException("FritzBox could not receive firmware version. Invalid Login data.");
 		} catch (IOException e) {
 			throw new FritzBoxInitializationException("FritzBox initializing failed: "+e.getMessage());
 		}
@@ -240,6 +248,7 @@ public class TR064FritzBoxFirmware implements
 
 	public void destroy() {
 		this.m_firmware = null;
+		this.m_loginUptime = -1L;
 	}
 
 	public boolean isInitialized() {
@@ -448,6 +457,18 @@ public class TR064FritzBoxFirmware implements
 		return 0;
 	}
 	
+	public boolean isRestarted() {
+		if (this.m_loginUptime==-1L) return true;
+		
+		long currentUptime = -1L;
+		try {
+			currentUptime = FritzBoxTR064Manager.getInstance().getUptime(this.m_user, this.m_password, this.m_server);
+		} catch (IOException e) {
+			this.m_logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+		}
+		return (this.m_loginUptime > currentUptime);
+	}
+	
 	public String toString() {
 		if (this.m_firmware!=null) {
 			StringBuffer s = new StringBuffer(64);
@@ -598,6 +619,7 @@ public class TR064FritzBoxFirmware implements
 		}
 		return null;
 	}
+
 
 
 }

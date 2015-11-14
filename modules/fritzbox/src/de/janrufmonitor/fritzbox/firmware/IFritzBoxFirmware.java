@@ -90,6 +90,8 @@ public interface IFritzBoxFirmware {
     
     public boolean isInitialized();
     
+    public boolean isRestarted();
+    
     public List getCallList() throws GetCallListException, IOException;
     
     public List getCallerList() throws GetCallerListException, IOException;

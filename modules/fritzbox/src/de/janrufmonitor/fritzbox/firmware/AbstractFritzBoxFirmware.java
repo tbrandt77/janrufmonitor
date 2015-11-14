@@ -891,5 +891,9 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 	public long getSkipBytes() {
 		return (Short.MAX_VALUE/2);
 	}
+
+	public boolean isRestarted() {
+		return false;
+	}
 	
 }

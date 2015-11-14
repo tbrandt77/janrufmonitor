@@ -51,6 +51,7 @@ public class MonitorListener extends AbstractMonitorListener implements IEventRe
 			} while (!m_finished && atLeastOneRunning);
 			if (m_finished) return;
 			
+			
 			ICommand c = PIMRuntime.getInstance().getCommandFactory().getCommand("Activator");
 			if (c!=null) {
 				try {
