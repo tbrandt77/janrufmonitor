@@ -32,6 +32,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import de.janrufmonitor.framework.IJAMConst;
+import de.janrufmonitor.logging.LoggingInitializer;
 
 public class FritzBoxTR064Manager {
 
@@ -73,7 +74,6 @@ public class FritzBoxTR064Manager {
 	private String m_cachedSecurePort = null;
 
 	private FritzBoxTR064Manager() {
-		//this.m_logger = LogManager.getLogManager().getLogger("");
 		this.m_logger = LogManager.getLogManager().getLogger(IJAMConst.DEFAULT_LOGGER);
 		
 		try
@@ -894,6 +894,7 @@ public class FritzBoxTR064Manager {
 	
 	public static void main(String[] args) {
 		try {
+			LoggingInitializer.run();
 			//System.out.print(FritzBoxTR064Manager.getInstance().getCallList("thilo.brandt", "Tb2743507", "fritz.box", "49000"));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getPhonebookList("thilo.brandt", "Tb2743507", "fritz.box", "49000"));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getPhonebook("thilo.brandt", "Tb2743507", "fritz.box", "49443", "https", "0"));
