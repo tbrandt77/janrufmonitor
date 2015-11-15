@@ -133,17 +133,17 @@ public class MultiPhoneCallerPage extends AbstractPage {
 			phoneGroup.setLayout(new GridLayout(2, true));
 			phoneGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-			final Label ial = new Label(phoneGroup, SWT.LEFT);
-			ial.setText(m_i18n.getString(getNamespace(), "number", "label",
-					m_language));
-			ial.setToolTipText(m_i18n.getString(getNamespace(),
-					"tooltipprefix", "label", m_language)
-					+ IJAMConst.GLOBAL_VARIABLE_CALLERNUMBER);
+//			final Label ial = new Label(phoneGroup, SWT.LEFT);
+//			ial.setText(m_i18n.getString(getNamespace(), "number", "label",
+//					m_language));
+//			ial.setToolTipText(m_i18n.getString(getNamespace(),
+//					"tooltipprefix", "label", m_language)
+//					+ IJAMConst.GLOBAL_VARIABLE_CALLERNUMBER);
 
 			GridData gd = new GridData();
 			gd.widthHint = 300;
 			
-			new Label(phoneGroup, SWT.LEFT);
+			//new Label(phoneGroup, SWT.LEFT);
 
 			final Text number = new Text(phoneGroup, SWT.BORDER);
 			number.setLayoutData(gd);
@@ -420,7 +420,7 @@ public class MultiPhoneCallerPage extends AbstractPage {
 	
 		// ADDRESS AREA
 
-		gd = new GridData(GridData.FILL_HORIZONTAL);
+		gd = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
 		gd.horizontalSpan = 2;
 
 		Group addressGroup = new Group(callerGroup, SWT.SHADOW_ETCHED_IN);
@@ -725,11 +725,19 @@ public class MultiPhoneCallerPage extends AbstractPage {
 
 		// NUMBER DATA
 
-		tabFolder = new TabFolder(c, SWT.BORDER);
+		Composite c1 = new Composite(c, SWT.NONE);
+		c1.setLayout(new GridLayout(1, false));
+		
 		gd = new GridData(GridData.FILL_BOTH);
 		gd.widthHint = 300;
-		gd.heightHint = 75;
 		gd.verticalAlignment = GridData.VERTICAL_ALIGN_BEGINNING;
+		c1.setLayoutData(gd);
+		
+		tabFolder = new TabFolder(c1, SWT.BORDER);
+		gd = new GridData(GridData.FILL_BOTH);
+		gd.widthHint = 300;
+		gd.heightHint = 65;
+		//gd.verticalAlignment = GridData.VERTICAL_ALIGN_BEGINNING;
 		tabFolder.setLayoutData(gd);
 		tabFolder.setFocus();
 
@@ -745,9 +753,9 @@ public class MultiPhoneCallerPage extends AbstractPage {
 
 		if (!this.m_callerReadonly && !m_caller.getPhoneNumber().isClired()) {
 			// selectButton
-			gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
+			gd = new GridData(SWT.LEFT, SWT.TOP, false, false);
 
-			Composite bc = new Composite(c, SWT.NONE);
+			Composite bc = new Composite(c1, SWT.NONE);
 			bc.setLayout(new GridLayout(2, false));
 
 			final Button addPhone = new Button(bc, SWT.PUSH);
@@ -799,7 +807,7 @@ public class MultiPhoneCallerPage extends AbstractPage {
 			if (tabFolder.getItemCount() > 1)
 				removePhone.setEnabled(true);
 
-			new Label(c, SWT.NONE);
+			//new Label(c, SWT.NONE);
 
 			// CATEGORIES
 			Group categoryGroup = new Group(c, SWT.SHADOW_ETCHED_IN);
