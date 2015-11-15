@@ -141,7 +141,7 @@ public class MultiPhoneCallerPage extends AbstractPage {
 //					+ IJAMConst.GLOBAL_VARIABLE_CALLERNUMBER);
 
 			GridData gd = new GridData();
-			gd.widthHint = 300;
+			gd.widthHint = 300 + ("true".equalsIgnoreCase(System.getProperty(IJAMConst.SYSTEM_UI_4K, "false")) ? 40 : 0);
 			
 			//new Label(phoneGroup, SWT.LEFT);
 
@@ -400,7 +400,7 @@ public class MultiPhoneCallerPage extends AbstractPage {
 		c.setLayout(new GridLayout(2, false));
 
 		GridData gd = new GridData(GridData.FILL_BOTH);
-		gd.widthHint = 300;
+		gd.widthHint = 300 + ("true".equalsIgnoreCase(System.getProperty(IJAMConst.SYSTEM_UI_4K, "false")) ? 40 : 0);
 		gd.verticalAlignment = GridData.VERTICAL_ALIGN_BEGINNING;
 		c.setLayoutData(gd);
 
@@ -729,14 +729,14 @@ public class MultiPhoneCallerPage extends AbstractPage {
 		c1.setLayout(new GridLayout(1, false));
 		
 		gd = new GridData(GridData.FILL_BOTH);
-		gd.widthHint = 300;
+		gd.widthHint = 300 + ("true".equalsIgnoreCase(System.getProperty(IJAMConst.SYSTEM_UI_4K, "false")) ? 40 : 0);
 		gd.verticalAlignment = GridData.VERTICAL_ALIGN_BEGINNING;
 		c1.setLayoutData(gd);
 		
 		tabFolder = new TabFolder(c1, SWT.BORDER);
 		gd = new GridData(GridData.FILL_BOTH);
-		gd.widthHint = 300;
-		gd.heightHint = 65;
+		gd.widthHint = 300 + ("true".equalsIgnoreCase(System.getProperty(IJAMConst.SYSTEM_UI_4K, "false")) ? 40 : 0);
+		gd.heightHint = 65 + ("true".equalsIgnoreCase(System.getProperty(IJAMConst.SYSTEM_UI_4K, "false")) ? 20 : 0);
 		//gd.verticalAlignment = GridData.VERTICAL_ALIGN_BEGINNING;
 		tabFolder.setLayoutData(gd);
 		tabFolder.setFocus();

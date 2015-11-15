@@ -149,6 +149,7 @@ public interface IJAMConst {
     public final static String SYSTEM_MONITOR_SECURE = "jam.monitor.secure"; // added 2011/03/10: used for save TAPI handling for some TAPI drivers
     public final static String SYSTEM_UI_TRAYITEM = "jam.ui.trayitem";
     public final static String SYSTEM_UI_TOPLEVEL = "jam.ui.toplevel"; // true if jam runs as toplevel application, esp. journal and address book
+    public final static String SYSTEM_UI_4K = "jam.ui.4k"; // set manually to true, if jam runs on a 4k monitor
     public final static String SYSTEM_UI_FORCEIMAGE = "jam.ui.forceimage"; // tries to force an image to be rendered. If ImageHandler does not deliver one, the default (File system) ImageHandler is triggered.
     public final static String SYSTEM_INSTALLER_RESTART = "jam.installer.restart";
     public final static String SYSTEM_INSTALLER_RUN = "jam.installer.run";

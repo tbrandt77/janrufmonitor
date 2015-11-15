@@ -59,8 +59,8 @@ ui.jface.wizards.pages.CallerPage\:addressgroup\:label\:de=Adresse
 ui.jface.wizards.pages.CallerPage\:reject\:label\:de=Anrufer automatisch Abweisen (kostenpflichtig f\u00FCr den Anrufer)
 ui.jface.wizards.pages.CallerPage\:categorygroup\:label\:de=Kategorie
 ui.jface.wizards.pages.CallerPage\:std_phone\:label\:de=Rufnummer 
-ui.jface.wizards.pages.CallerPage\:add_phone\:label\:de= + 
-ui.jface.wizards.pages.CallerPage\:remove_phone\:label\:de= - 
+ui.jface.wizards.pages.CallerPage\:add_phone\:label\:de=\ + 
+ui.jface.wizards.pages.CallerPage\:remove_phone\:label\:de=\ - 
 ui.jface.wizards.pages.CallerPage\:gravatar\:label\:de=Gravatar verwenden
 
 ui.jface.wizards.pages.CallerPage\:fn\:label\:de=Vorname
