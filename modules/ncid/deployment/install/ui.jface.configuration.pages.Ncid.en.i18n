@@ -7,4 +7,4 @@ ui.jface.configuration.pages.NcidVoip\:retrymax\:label\:en=Connection retry #:
 ui.jface.configuration.pages.NcidVoip\:festnetzalias\:label\:en=MSN for "Festnetz" calls:
 ui.jface.configuration.pages.NcidVoip\:fbinfo\:label\:en=NCID Server info:
 ui.jface.configuration.pages.NcidVoip\:outgoing\:label\:en=Monitor outgoing calls
-ui.jface.configuration.pages.NcidVoip\:sync_cdilog\:label\:en=Syncronize NCID call history
+ui.jface.configuration.pages.NcidVoip\:sync_cidlog\:label\:en=Syncronize NCID call history
