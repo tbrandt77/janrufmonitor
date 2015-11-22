@@ -1,5 +1,36 @@
 ﻿===
 
+jAnrufmonitor 5.0.61 (01.12.2015)
+---------------------------------
+Neu:
+- Journal/Kontakte: Filter ohne Groß-/Kleinschreibung nutzbar
+- Automatisiertes Löschen von alten Bibliotheksdateien nach einem Update
+- Grafikbibliothek auf SWT 4.5 umgestellt
+
+Bugfix:
+- Rufnummernerkennung: Identifizierung von Rufnummern mit führenden Ziffern schlägt fehl
+- Kontakt-Dialog: Darstellungsprobleme bei 200% Schriftartvergrößerung auf 4k Monitore
+
+Module:
+- FRITZ!Box-Überwachung: Unterstützung für TR-064
+- FRITZ!Box-Überwachung: Unterstützung für AVM Labor- und Beta-Firmwares
+- FRITZ!Box-Überwachung: Unterstützung für Fotos im FRITZ!Box Telefonbuch
+- FRITZ!Box-Überwachung: Automatischer Änderungserkennung für Kontakte aus dem FRITZ!Box Telefonbuch
+- FRITZ!Box-Überwachung: Vereinfachter Dialog für die FRITZ!Box Einstellungen
+- FRITZ!Box-Überwachung: Vereinfachter Dialog für die AVM FRITZ!Box Synchronizer Einstellungen
+- FRITZ!Box-Überwachung: Unterstützung für SSL TrustManager bei FRITZ!Box mit HTTP over SSL
+- FRITZ!Box-Überwachung: Erkennung eines FRITZ!Box Neustarts und Verbindungsprüfung
+- FRITZ!Box-Überwachung: Wählen von Präfixen in FRITZ!OS 6.30+ wird unterstützt
+- FRITZ!Box-Überwachung: Unterstützung für englsiche FRITZ!OS Versionen ab 5.59
+- NCID-Überwachung: Bug bei der Rufnummernerkennung nach CIDLOG Synchronisation entfernt
+- NCID-Überwachung: Fehlendes Textlabel in den NCID Server Einstellungen ergänzt
+- Emailbenachrichtigung: Unterstützung für SMTPS ohne TLS
+- Mozilla Thunderbird Adressbuch: Unterstützung für Thunderbird Version 38+ und MAB Format Version 1.4
+- Client Erweiterung: Option für automatisches Wiederverbinden ohne Benutzernachfrage
+
+
+===
+
 jAnrufmonitor 5.0.60 (01.10.2015)
 ---------------------------------
 Neu:
