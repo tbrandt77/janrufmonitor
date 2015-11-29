@@ -738,7 +738,7 @@ public class FritzBoxTR064Manager {
 		String csv_url = find(Pattern.compile(PATTERN_CSV_CALLLIST, Pattern.UNICODE_CASE), response);
 		
 		if (csv_url!=null && csv_url.length()>0) {
-			response = doHttpCall(csv_url+"&type=csv"+(days>0 ? "&days="+days : ""), "GET", null, "iso-8859-1", new String[][] {{"Content-Type", "text/plain"}, {"User-Agent", USER_AGENT}});
+			response = doHttpCall(csv_url+"&type=csv"+(days>0 ? "&days="+days : ""), "GET", null, "utf-8", new String[][] {{"Content-Type", "text/plain"}, {"User-Agent", USER_AGENT}});
 			this.m_logger.info("Finished retrieving call list took "+(System.currentTimeMillis()-start)+"ms");
 			return new ByteArrayInputStream(response.toString().getBytes("iso-8859-1"));
 		} 
@@ -1025,13 +1025,13 @@ public class FritzBoxTR064Manager {
 	public static void main(String[] args) {
 		try {
 			LoggingInitializer.run();
-			//System.out.print(FritzBoxTR064Manager.getInstance().getCallList("thilo.brandt", "Tb2743507", "fritz.box", "49000"));
+			System.out.print(FritzBoxTR064Manager.getInstance().getCallList("thilo.brandt", "Tb2743507", "fritz.box", "49000", "http", -1));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getPhonebookList("thilo.brandt", "Tb2743507", "fritz.box", "49000"));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getPhonebook("thilo.brandt", "Tb2743507", "fritz.box", "49443", "https", "0"));
 			//System.out.println(FritzBoxTR064Manager.getInstance().getPhonebookHash("admin", "Tb2743507", "fritz.box", "0"));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort());
 			//System.out.print(FritzBoxTR064Manager.getInstance().isTR064Supported("fritz.box", "49000"));
-			System.out.print(FritzBoxTR064Manager.getInstance().getTelephoneAnsweringMachineMessageList("thilo.brandt", "xxxx","fritz.box", "49000", "http", "0"));
+			//System.out.print(FritzBoxTR064Manager.getInstance().getTelephoneAnsweringMachineMessageList("thilo.brandt", "xxxx","fritz.box", "49000", "http", "0"));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getDescription("thilo.brandt", "Tb2743507","fritz.box"));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getPhonePorts("thilo.brandt", "Tb2743507","fritz.box", "49443", "https"));
 		} catch (IOException e) {

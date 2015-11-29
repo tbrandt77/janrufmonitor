@@ -108,33 +108,33 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 	
 	public void startup() {
 		super.startup();
-		if (isEnabled() && this.m_configuration!=null && this.m_configuration.getProperty(CFG_SYNCSTARTUP, "false").equalsIgnoreCase("true")) {	
+		if (isEnabled()) {	
 			IEventBroker eventBroker = this.getRuntime().getEventBroker();
 			eventBroker.register(this, eventBroker
 					.createEvent(IEventConst.EVENT_TYPE_RETURNED_HIBERNATE));
 			
-			final long delay = 1000 * Long.parseLong(this.m_configuration.getProperty(CFG_STARTUP_DELAY, "0"));
-			this.m_logger.info("Startup delay on fritzbox sync set to "+ delay +" ms.");
-			
-			Thread t = new Thread(new Runnable() {
-				public void run() {
-					try {
-						Thread.sleep(delay);
-					} catch (InterruptedException e) {
+			if (this.m_configuration!=null && this.m_configuration.getProperty(CFG_SYNCSTARTUP, "false").equalsIgnoreCase("true")) {
+				final long delay = 1000 * Long.parseLong(this.m_configuration.getProperty(CFG_STARTUP_DELAY, "0"));
+				this.m_logger.info("Startup delay on fritzbox sync set to "+ delay +" ms.");
+				
+				Thread t = new Thread(new Runnable() {
+					public void run() {
+						try {
+							Thread.sleep(delay);
+						} catch (InterruptedException e) {
+						}
+						new SWTExecuter() {
+							protected void execute() {	
+								FirmwareManager.getInstance().startup();
+								
+								synchronize(false);
+							}}
+						.start();
 					}
-					new SWTExecuter() {
-						protected void execute() {	
-							FirmwareManager.getInstance().startup();
-							
-							synchronize(false);
-							
-							timebasedSyncing();
-						}}
-					.start();
-				}
-			});
-			t.setName("FritzBox-Startup-Syncthread");
-			t.start();
+				});
+				t.setName("FritzBox-Startup-Syncthread");
+				t.start();
+			}
 			
 			boolean isRefreshAfterCallend = this.m_configuration.getProperty(CFG_REFRESH_AFTER_CALLEND, "false").equalsIgnoreCase("true");
 			if (isRefreshAfterCallend) {
@@ -144,6 +144,8 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 				eventBroker.register(this, eventBroker
 						.createEvent(IEventConst.EVENT_TYPE_CALLACCEPTED));
 			}
+			
+			timebasedSyncing();
 		}
 	}
 	
