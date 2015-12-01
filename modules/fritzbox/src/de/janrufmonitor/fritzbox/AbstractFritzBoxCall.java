@@ -7,6 +7,7 @@ import de.janrufmonitor.fritzbox.firmware.FirmwareManager;
 import de.janrufmonitor.fritzbox.firmware.PasswordFritzBoxFirmware;
 import de.janrufmonitor.fritzbox.firmware.SessionIDFritzBoxFirmware;
 import de.janrufmonitor.fritzbox.firmware.UnitymediaFirmware;
+import de.janrufmonitor.runtime.PIMRuntime;
 
 public abstract class AbstractFritzBoxCall implements IFritzBoxCall, FritzBoxConst {
 
@@ -20,8 +21,8 @@ public abstract class AbstractFritzBoxCall implements IFritzBoxCall, FritzBoxCon
 		this.m_config = config;
 	}
 
-	protected String getCip(String s) {
-		if (s.toLowerCase().indexOf("sip")>-1) {
+	protected String getCip(String field) {
+		if (field.toLowerCase().startsWith("sip:") || field.toLowerCase().startsWith("internet:")) {
 			return "100";
 		}
 		
@@ -46,12 +47,26 @@ public abstract class AbstractFritzBoxCall implements IFritzBoxCall, FritzBoxCon
 		return null;
 	}
 	
-	protected String getFestnetzAlias(String call) {
-		if (call.trim().toLowerCase().startsWith("festnetz")) {
+	protected String getMsn(String field) {
+		if (field.trim().toLowerCase().startsWith("festnetz")) {
 			String alias = this.m_config.getProperty(FritzBoxConst.CFG_FESTNETZALIAS); 
-			return ((alias==null || alias.trim().length()==0)? call : alias);
+			return ((alias==null || alias.trim().length()==0)? field : alias);
 		}
-		return call;
+		if (field.trim().toLowerCase().startsWith("internet:")) {
+			return field.substring("Internet:".length()).trim();
+		}
+		if (field.trim().toLowerCase().startsWith("sip:")) {
+			return field.substring("sip:".length()).trim();
+		}
+		// added 2015/12/01: TR-064 could deliver MSN number or MSN alias in the CSV export file, so check for alias first
+		if (!field.matches("[+-]?[0-9]+")) {
+			// assume text is in field
+			String[] msns = PIMRuntime.getInstance().getMsnManager().getMsnList();
+			for (int i=0;i<msns.length;i++) {
+				if (field.equalsIgnoreCase(PIMRuntime.getInstance().getMsnManager().getMsnLabel(msns[i]))) return msns[i];
+			}
+		}
+		return field;
 	}
 	
 	protected boolean isSpoofingnumber(String s) {

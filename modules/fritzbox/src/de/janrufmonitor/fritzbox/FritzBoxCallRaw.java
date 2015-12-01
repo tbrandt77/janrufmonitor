@@ -40,7 +40,7 @@ public class FritzBoxCallRaw extends AbstractFritzBoxCall {
 			String[] call = this.m_line.split(";");
 			if (call.length>=4 && call[1].equalsIgnoreCase("RING")) {
 				// create MSN
-				IMsn msn = r.getCallFactory().createMsn(getFestnetzAlias(call[4]), "");
+				IMsn msn = r.getCallFactory().createMsn(getMsn(call[4]), "");
 				msn.setAdditional(r.getMsnManager().getMsnLabel(msn));
 				
 				IPhonenumber pn = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toClirPhonenumber(call[3].trim());
@@ -107,7 +107,7 @@ public class FritzBoxCallRaw extends AbstractFritzBoxCall {
 			}
 			if (call.length>=4 && call[1].equalsIgnoreCase("CALL")) {
 				// create msn
-				IMsn msn = r.getCallFactory().createMsn(getFestnetzAlias(call[4]), "");
+				IMsn msn = r.getCallFactory().createMsn(getMsn(call[4]), "");
 				msn.setAdditional(r.getMsnManager().getMsnLabel(msn));
 				
 				// create caller data

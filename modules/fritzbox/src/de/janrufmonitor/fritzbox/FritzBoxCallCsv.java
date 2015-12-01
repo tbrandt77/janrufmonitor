@@ -69,7 +69,8 @@ public class FritzBoxCallCsv extends AbstractFritzBoxCall {
 				String call[] = this.m_line.split(";");
 				if (call.length>=7) {
 					// create msn
-					IMsn msn = r.getCallFactory().createMsn(getFestnetzAlias(call[5]), "");
+					IMsn msn = r.getCallFactory().createMsn(getMsn(call[5]), "");
+					msn.setAdditional(r.getMsnManager().getMsnLabel(msn));
 					
 					// create caller data
 					int state = Integer.parseInt(call[0]);
@@ -124,18 +125,7 @@ public class FritzBoxCallCsv extends AbstractFritzBoxCall {
 						Logger.getLogger(IJAMConst.DEFAULT_LOGGER).severe("Wrong date format detected.");
 					}
 									
-					//IMsn msn = r.getCallFactory().createMsn(getFestnetzAlias(call[5]), "");
 					ICip cip = r.getCallFactory().createCip(getCip(call[4]), "");
-	
-					if (call[5].startsWith("Internet:")) {
-						msn.setMSN(call[5].substring("Internet:".length()).trim());
-						cip.setCIP("100"); // VOIP CIP
-					} 
-					if (call[5].startsWith("SIP:")) {
-						msn.setMSN(call[5].substring("SIP:".length()).trim());
-						cip.setCIP("100"); // VOIP CIP
-					} 
-					msn.setAdditional(r.getMsnManager().getMsnLabel(msn));
 					cip.setAdditional(r.getCipManager().getCipLabel(cip, ""));
 					
 					// create attributes
