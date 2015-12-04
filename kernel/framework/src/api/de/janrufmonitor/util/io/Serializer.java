@@ -336,22 +336,39 @@ public class Serializer {
 		// tokenize the input
 		StringTokenizer st = new StringTokenizer(callerString, m_token);
 		if (st.countTokens()<8) {
-			throw new SerializerException("Caller format is invalid.");
+			throw new SerializerException("Caller format is invalid: "+callerString);
 		}
 		
-		// Check for new mpc format
-		String test = st.nextToken().trim();
-		List phones = null;
-		if (test.equalsIgnoreCase("mpc")) {
-			int phone_count = Integer.parseInt(st.nextToken().trim());
-			phones = new ArrayList(phone_count);
-			for (int i=0; i<phone_count; i++) {
+		try {
+			// Check for new mpc format
+			String test = st.nextToken().trim();
+			List phones = null;
+			if (test.equalsIgnoreCase("mpc")) {
+				int phone_count = Integer.parseInt(st.nextToken().trim());
+				phones = new ArrayList(phone_count);
+				for (int i=0; i<phone_count; i++) {
+					// build number
+					IPhonenumber pn = 
+						runtime.getCallerFactory().createPhonenumber(
+							decode(st.nextToken().trim()), // token 1
+							decode(st.nextToken().trim()),
+							decode(st.nextToken().trim())
+						);
+					if (pn.getCallNumber().length()==0) {
+						pn.setClired(true);
+					}
+					phones.add(pn);
+				}
+				
+				
+			} else {
+				phones = new ArrayList(1);
 				// build number
 				IPhonenumber pn = 
 					runtime.getCallerFactory().createPhonenumber(
-						decode(st.nextToken().trim()), // token 1
-						decode(st.nextToken().trim()),
-						decode(st.nextToken().trim())
+						test, // token 1
+						decode(st.nextToken().trim()), // token 2
+						decode(st.nextToken().trim())  // token 3
 					);
 				if (pn.getCallNumber().length()==0) {
 					pn.setClired(true);
@@ -359,73 +376,60 @@ public class Serializer {
 				phones.add(pn);
 			}
 			
+			// build name
+			IName name = runtime.getCallerFactory().createName(
+				decode(st.nextToken().trim()), // token 4
+				decode(st.nextToken().trim()), // token 5
+				decode(st.nextToken().trim())  // token 6
+			);
 			
-		} else {
-			phones = new ArrayList(1);
-			// build number
-			IPhonenumber pn = 
-				runtime.getCallerFactory().createPhonenumber(
-					test, // token 1
-					decode(st.nextToken().trim()), // token 2
-					decode(st.nextToken().trim())  // token 3
-				);
-			if (pn.getCallNumber().length()==0) {
-				pn.setClired(true);
+			String UUID = decode(st.nextToken().trim()); // token 7
+			
+			// build attributes
+			String attString = decode(st.nextToken().trim());
+			IAttributeMap attList = runtime.getCallerFactory().createAttributeMap();
+			if (attString.length()>0) {
+				StringTokenizer ast = new StringTokenizer(attString, m_atoken);
+				String attrib = null;
+				while (ast.hasMoreTokens()) {
+					attrib = ast.nextToken().trim();
+					if (attrib.indexOf(EQUAL)>-1) {
+						IAttribute att = runtime.getCallerFactory().createAttribute(
+							decode(attrib.substring(0, attrib.indexOf(EQUAL))),
+							decodeAttributeValue(attrib.substring(attrib.indexOf(EQUAL)+EQUAL.length()))
+						);
+						attList.add(att);
+					}
+				}
+				// check for imagebinary
+				if (attList.contains(IJAMConst.ATTRIBUTE_NAME_IMAGEBINARY)) {
+					IAttribute imgbinary = attList.get(IJAMConst.ATTRIBUTE_NAME_IMAGEBINARY);
+					if (imgbinary!=null) {
+						imgbinary.setValue(StringUtils.replaceString(imgbinary.getValue(), IMGLFTOKEN_ESCAPE_SYMBOL, m_imglftoken));
+					}
+				}
 			}
-			phones.add(pn);
-		}
-		
-		// build name
-		IName name = runtime.getCallerFactory().createName(
-			decode(st.nextToken().trim()), // token 4
-			decode(st.nextToken().trim()), // token 5
-			decode(st.nextToken().trim())  // token 6
-		);
-		
-		String UUID = decode(st.nextToken().trim()); // token 7
-		
-		// build attributes
-		String attString = decode(st.nextToken().trim());
-		IAttributeMap attList = runtime.getCallerFactory().createAttributeMap();
-		if (attString.length()>0) {
-			StringTokenizer ast = new StringTokenizer(attString, m_atoken);
-			String attrib = null;
-			while (ast.hasMoreTokens()) {
-				attrib = ast.nextToken().trim();
-				if (attrib.indexOf(EQUAL)>-1) {
-					IAttribute att = runtime.getCallerFactory().createAttribute(
-						decode(attrib.substring(0, attrib.indexOf(EQUAL))),
-						decodeAttributeValue(attrib.substring(attrib.indexOf(EQUAL)+EQUAL.length()))
+			
+			// create an IMultiPhoneCaller object
+			if (test.equalsIgnoreCase("mpc") || phones.size()>1) {
+				return runtime.getCallerFactory().createCaller(
+						UUID,
+						name,
+						phones,
+						attList
 					);
-					attList.add(att);
-				}
 			}
-			// check for imagebinary
-			if (attList.contains(IJAMConst.ATTRIBUTE_NAME_IMAGEBINARY)) {
-				IAttribute imgbinary = attList.get(IJAMConst.ATTRIBUTE_NAME_IMAGEBINARY);
-				if (imgbinary!=null) {
-					imgbinary.setValue(StringUtils.replaceString(imgbinary.getValue(), IMGLFTOKEN_ESCAPE_SYMBOL, m_imglftoken));
-				}
-			}
-		}
-		
-		// create an IMultiPhoneCaller object
-		if (test.equalsIgnoreCase("mpc") || phones.size()>1) {
+			
+			// create an ICaller object
 			return runtime.getCallerFactory().createCaller(
-					UUID,
-					name,
-					phones,
-					attList
-				);
+				UUID,
+				name,
+				(IPhonenumber) phones.get(0),
+				attList
+			);
+		} catch (Exception e) {
+			throw new SerializerException(e.getMessage());
 		}
-		
-		// create an ICaller object
-		return runtime.getCallerFactory().createCaller(
-			UUID,
-			name,
-			(IPhonenumber) phones.get(0),
-			attList
-		);
 	}
 	
 	/**
