@@ -428,7 +428,7 @@ public class Serializer {
 				attList
 			);
 		} catch (Exception e) {
-			throw new SerializerException(e.getMessage());
+			throw new SerializerException(e.toString());
 		}
 	}
 	
