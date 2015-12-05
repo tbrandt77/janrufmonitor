@@ -254,12 +254,24 @@ public class TR064FritzBoxFirmware implements
 	public boolean isInitialized() {
 		return this.m_firmware!=null;
 	}
-
+	
 	public List getCallList() throws GetCallListException, IOException {
+		return this.getCallList(-1L);
+	}
+
+	public List getCallList(long lastSyncTimestamp) throws GetCallListException, IOException {
 		if (!this.isInitialized()) throw new GetCallListException("Could not get call list from FritzBox: FritzBox firmware not initialized.");
 		InputStream in = null;
 		try {
-			in = FritzBoxTR064Manager.getInstance().getCallList(this.m_user, this.m_password, this.m_server);
+			if (lastSyncTimestamp==-1L) {
+				in = FritzBoxTR064Manager.getInstance().getCallList(this.m_user, this.m_password, this.m_server);
+			} else {
+				long now = System.currentTimeMillis();
+				int days = (int) ((now - lastSyncTimestamp) / (1000 * 60 * 60 * 24)) + 1;
+				if (this.m_logger.isLoggable(Level.INFO))
+					this.m_logger.info("Only retrieve call list for the last x days: "+days);
+				in = FritzBoxTR064Manager.getInstance().getCallList(this.m_user, this.m_password, this.m_server, (days > 0 ? days : 1));
+			}
 		} catch (IOException e) {
 			throw new GetCallListException(e.getMessage());
 		}

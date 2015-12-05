@@ -239,6 +239,10 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 		
 		return result;
 	}
+	
+	public List getCallList(long lastSyncTimestamp) throws GetCallListException, IOException {
+		return this.getCallList();
+	}
 
 	public List getCallList() throws GetCallListException, IOException{
 		if (!this.isInitialized()) throw new GetCallListException("Could not get call list from FritzBox: FritzBox firmware not initialized.");

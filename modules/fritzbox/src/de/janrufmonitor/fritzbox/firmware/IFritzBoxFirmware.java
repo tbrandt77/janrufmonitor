@@ -94,6 +94,8 @@ public interface IFritzBoxFirmware {
     
     public List getCallList() throws GetCallListException, IOException;
     
+    public List getCallList(long lastSyncTimestamp) throws GetCallListException, IOException;
+    
     public List getCallerList() throws GetCallerListException, IOException;
     
     public List getCallerList(int addressbookId, String addressbookName) throws GetCallerListException, IOException;

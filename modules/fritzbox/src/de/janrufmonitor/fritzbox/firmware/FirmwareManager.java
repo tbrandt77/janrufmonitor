@@ -110,7 +110,7 @@ public class FirmwareManager {
 		return this.m_fw.toString();
     }
     
-    public List getCallList() throws GetCallListException, IOException {
+    public List getCallList(long lastSyncTimestamp) throws GetCallListException, IOException {
     	if (this.m_fw==null)
 			try {
 				this.createFirmwareInstance();
@@ -134,7 +134,7 @@ public class FirmwareManager {
 						true));
 				throw new GetCallListException(e.getMessage());
 			}
-		return this.m_fw.getCallList();
+		return this.m_fw.getCallList(lastSyncTimestamp);
     }
     
     public List getCallerList() throws GetCallerListException, IOException {

@@ -262,7 +262,9 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 			try {
 				fwm.login();
 
-				List result = fwm.getCallList();
+				long synctime = Long.parseLong(SynchronizerService.this.m_configuration.getProperty(CFG_SYNCTIME, "-1"));
+				
+				List result = fwm.getCallList(synctime);
 			
 				try {
 					Thread.sleep((isSuppressed ? 100 : 250));
@@ -276,7 +278,7 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 					Properties conf = PIMRuntime.getInstance().getConfigManagerFactory().getConfigManager().getProperties(FritzBoxMonitor.NAMESPACE);
 					ICall c = null;
 					FritzBoxUUIDManager.getInstance().init();
-					long synctime = Long.parseLong(SynchronizerService.this.m_configuration.getProperty(CFG_SYNCTIME, "-1"));
+					
 					// added: 2013/02/04: check sync all
 					boolean syncall = SynchronizerService.this.m_configuration.getProperty(CFG_SYNCALL, "false").equalsIgnoreCase("true");
 					if (syncall) {
@@ -474,7 +476,9 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 									.getString(getNamespace(),
 											"getprogress", "label",
 											getLanguage()));
-							List result = fwm.getCallList();	
+							
+							long synctime = Long.parseLong(SynchronizerService.this.m_configuration.getProperty(CFG_SYNCTIME, "-1"));
+							List result = fwm.getCallList(synctime);	
 	
 							progressMonitor.setTaskName(getI18nManager()
 									.getString(getNamespace(),
@@ -492,7 +496,6 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 								FritzBoxCallCsv call = null;
 								Properties conf = PIMRuntime.getInstance().getConfigManagerFactory().getConfigManager().getProperties(FritzBoxMonitor.NAMESPACE);
 								ICall c = null;
-								long synctime = Long.parseLong(SynchronizerService.this.m_configuration.getProperty(CFG_SYNCTIME, "-1"));
 								// added: 2013/02/04: check sync all
 								boolean syncall = SynchronizerService.this.m_configuration.getProperty(CFG_SYNCALL, "false").equalsIgnoreCase("true");
 								if (syncall) {

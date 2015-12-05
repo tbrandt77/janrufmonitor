@@ -104,7 +104,7 @@ public class Refresh extends AbstractAction implements FritzBoxConst {
 								.getString(getNamespace(),
 										"getprogress", "label",
 										getLanguage()));
-						List result = m_fwm.getCallList();
+						List result = m_fwm.getCallList(-1L);
 						
 						progressMonitor.setTaskName(getI18nManager()
 								.getString(getNamespace(),
