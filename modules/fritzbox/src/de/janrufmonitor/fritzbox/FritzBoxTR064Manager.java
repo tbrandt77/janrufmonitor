@@ -2,6 +2,7 @@ package de.janrufmonitor.fritzbox;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -943,9 +944,20 @@ public class FritzBoxTR064Manager {
 	
 	public boolean isTR064Supported(String server, String port) throws IOException {
 		if ("true".equalsIgnoreCase(System.getProperty("jam.fritzbox.tr064off", "false"))) return false;
-		StringBuffer response = doHttpCall("http://"+server+":"+port+"/tr64desc.xml", "GET", null, new String[][] { 
-			{"Connection", "Close"}, {"User-Agent", USER_AGENT}})
-		;
+		StringBuffer response = null;
+		
+		try {
+			response = doHttpCall("http://"+server+":"+port+"/tr64desc.xml", "GET", null, new String[][] { 
+					{"Connection", "Close"}, {"User-Agent", USER_AGENT}})
+			;
+		} catch (FileNotFoundException ex) {
+			if (this.m_logger.isLoggable(Level.WARNING))
+				this.m_logger.warning(ex.getMessage());
+			
+			if (this.m_logger.isLoggable(Level.INFO))
+				this.m_logger.info("Can't access http://"+server+":"+port+"/tr64desc.xml: TR-064 is switched off on FRITZ!Box");
+			return false;
+		}
 
 		String isSupported = find(Pattern.compile(PATTERN_IS_TR064_SUPPORTED, Pattern.UNICODE_CASE), response);
 		
@@ -1025,12 +1037,12 @@ public class FritzBoxTR064Manager {
 	public static void main(String[] args) {
 		try {
 			LoggingInitializer.run();
-			System.out.print(FritzBoxTR064Manager.getInstance().getCallList("thilo.brandt", "Tb2743507", "fritz.box", "49000", "http", -1));
+			//System.out.print(FritzBoxTR064Manager.getInstance().getCallList("thilo.brandt", "Tb2743507", "fritz.box", "49000", "http", -1));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getPhonebookList("thilo.brandt", "Tb2743507", "fritz.box", "49000"));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getPhonebook("thilo.brandt", "Tb2743507", "fritz.box", "49443", "https", "0"));
 			//System.out.println(FritzBoxTR064Manager.getInstance().getPhonebookHash("admin", "Tb2743507", "fritz.box", "0"));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort());
-			//System.out.print(FritzBoxTR064Manager.getInstance().isTR064Supported("fritz.box", "49000"));
+			System.out.print(FritzBoxTR064Manager.getInstance().isTR064Supported("fritz.box", "49000"));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getTelephoneAnsweringMachineMessageList("thilo.brandt", "xxxx","fritz.box", "49000", "http", "0"));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getDescription("thilo.brandt", "Tb2743507","fritz.box"));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getPhonePorts("thilo.brandt", "Tb2743507","fritz.box", "49443", "https"));
