@@ -263,6 +263,12 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 				fwm.login();
 
 				long synctime = Long.parseLong(SynchronizerService.this.m_configuration.getProperty(CFG_SYNCTIME, "-1"));
+				// added: 2013/02/04: check sync all
+				boolean syncall = SynchronizerService.this.m_configuration.getProperty(CFG_SYNCALL, "false").equalsIgnoreCase("true");
+				if (syncall) {
+					synctime = -1;
+					m_logger.info("Syncing all calls from Fritz!Box.");
+				}
 				
 				List result = fwm.getCallList(synctime);
 			
@@ -279,12 +285,6 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 					ICall c = null;
 					FritzBoxUUIDManager.getInstance().init();
 					
-					// added: 2013/02/04: check sync all
-					boolean syncall = SynchronizerService.this.m_configuration.getProperty(CFG_SYNCALL, "false").equalsIgnoreCase("true");
-					if (syncall) {
-						synctime = -1;
-						m_logger.info("Syncing all calls from Fritz!Box.");
-					}
 					for (int i=0,j=result.size();i<j;i++) {
 						call = new FritzBoxCallCsv((String) result.get(i), conf);
 						Date calltime = call.getPrecalculatedDate();

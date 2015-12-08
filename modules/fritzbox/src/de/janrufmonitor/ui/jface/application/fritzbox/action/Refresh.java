@@ -104,7 +104,18 @@ public class Refresh extends AbstractAction implements FritzBoxConst {
 								.getString(getNamespace(),
 										"getprogress", "label",
 										getLanguage()));
-						List result = m_fwm.getCallList(-1L);
+						
+						// added 2008/04/22: check sync point cleanup
+						Properties cfg = getRuntime().getConfigManagerFactory().getConfigManager().getProperties(NAMESPACE);
+						long synctime = Long.parseLong(cfg.getProperty(CFG_SYNCTIME, "-1"));
+						// added: 2013/02/04: check sync all
+						boolean syncall = cfg.getProperty(CFG_SYNCALL, "false").equalsIgnoreCase("true");
+						if (syncall) {
+							synctime = -1;
+							m_logger.info("Syncing all calls from Fritz!Box.");
+						}
+						
+						List result = m_fwm.getCallList(synctime);
 						
 						progressMonitor.setTaskName(getI18nManager()
 								.getString(getNamespace(),
@@ -160,15 +171,7 @@ public class Refresh extends AbstractAction implements FritzBoxConst {
 								ICallManager cm = getRuntime().getCallManagerFactory().getCallManager(repository);
 								if (cm!=null && cm.isActive() && cm.isSupported(IWriteCallRepository.class)) {
 									ICall ca = null;
-									// added 2008/04/22: check sync point cleanup
-									Properties cfg = getRuntime().getConfigManagerFactory().getConfigManager().getProperties(NAMESPACE);
-									long synctime = Long.parseLong(cfg.getProperty(CFG_SYNCTIME, "-1"));
-									// added: 2013/02/04: check sync all
-									boolean syncall = cfg.getProperty(CFG_SYNCALL, "false").equalsIgnoreCase("true");
-									if (syncall) {
-										synctime = -1;
-										m_logger.info("Syncing all calls from Fritz!Box.");
-									}
+
 									boolean syncclean = cfg.getProperty(CFG_SYNCCLEAN, "false").equalsIgnoreCase("true");
 									if (syncclean && synctime>0 && cm.isSupported(IReadCallRepository.class) && cm.isSupported(IWriteCallRepository.class)) {
 										progressMonitor.setTaskName(getI18nManager()
