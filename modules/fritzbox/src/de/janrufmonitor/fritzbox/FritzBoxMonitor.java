@@ -99,7 +99,7 @@ public class FritzBoxMonitor implements IMonitor, IConfigurable, FritzBoxConst {
 //					retryCount=this.getRetryMaxValue();
 					isRunning = true;
 					try {
-						Thread.sleep(15000);
+						Thread.sleep((this.getRetryTimeoutValue()*1010));
 					} catch (InterruptedException e1) {
 						m_logger.log(Level.SEVERE, e1.getMessage(), e1);
 					}	

@@ -1,6 +1,7 @@
 package de.janrufmonitor.fritzbox.firmware;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -10,6 +11,7 @@ import java.util.logging.Logger;
 import de.janrufmonitor.exception.Message;
 import de.janrufmonitor.exception.PropagationFactory;
 import de.janrufmonitor.framework.IJAMConst;
+import de.janrufmonitor.framework.command.ICommand;
 import de.janrufmonitor.framework.monitor.IMonitor;
 import de.janrufmonitor.fritzbox.FritzBoxConst;
 import de.janrufmonitor.fritzbox.FritzBoxMonitor;
@@ -471,11 +473,54 @@ public class FirmwareManager {
 					
 					PropagationFactory.getInstance().fire(
 							new Message(Message.ERROR,
-							"fritzbox.firmware.hardware",
-							"conlost",
-							new String[] {getFritzBoxAddress(), getFritzBoxPort()},
-							new Exception("Connection to "+getFritzBoxAddress()+":"+getFritzBoxPort()+" lost."),
-							false));
+								"fritzbox.firmware.hardware",
+								"conlost",
+								new String[] {getFritzBoxAddress(), getFritzBoxPort()},
+								new Exception("Connection to "+getFritzBoxAddress()+":"+getFritzBoxPort()+" lost."),
+								false),
+							"Tray");
+					
+					if (getFritzBoxAutoReconnect()) {
+						m_logger.info("Trying automatic re-connect to FritzBox...");
+						Thread.sleep(10000);
+						try {
+							ICommand c = PIMRuntime.getInstance().getCommandFactory().getCommand("Activator");
+							if (c!=null) {
+								try {
+									Map ma = new HashMap();
+									ma.put("status", "invert");
+									c.setParameters(ma); 
+									ma.put("status", "revert");
+									c.setParameters(ma); 
+									if (m_logger.isLoggable(Level.INFO))
+										m_logger.info("Starting FritzBox monitor on port 1012.");
+								} catch (Exception e) {
+									m_logger.log(Level.SEVERE, e.toString(), e);
+								}
+							}
+
+							PropagationFactory.getInstance().fire(
+									new Message(Message.INFO,
+										"fritzbox.firmware.hardware",
+										"reconnect",
+										new String[] {getFritzBoxAddress(), getFritzBoxPort()},
+										new Exception("Connection to "+getFritzBoxAddress()+":"+getFritzBoxPort()+" established."),
+										false),
+									"Tray");
+							
+							createFirmwareInstance();
+
+							if (m_logger.isLoggable(Level.INFO))
+								m_logger.info("Automatic re-connect to FritzBox done...");
+							
+						} catch (FritzBoxInitializationException e) {
+							m_logger.log(Level.SEVERE, e.getMessage(), e);
+						} catch (FritzBoxNotFoundException e) {
+							m_logger.log(Level.SEVERE, e.getMessage(), e);
+						} catch (InvalidSessionIDException e) {
+							m_logger.log(Level.SEVERE, e.getMessage(), e);
+						}
+					}
 					
 				} catch (InterruptedException e) {
 					m_logger.log(Level.WARNING,"JAM-FritzBoxFirmwareRestarted-Thread gets interrupted.: "+e.getMessage(), e);

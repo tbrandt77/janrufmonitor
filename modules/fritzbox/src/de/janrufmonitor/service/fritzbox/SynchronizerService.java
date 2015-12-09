@@ -54,12 +54,14 @@ import de.janrufmonitor.util.string.StringUtils;
 
 public class SynchronizerService extends AbstractReceiverConfigurableService implements FritzBoxConst, IEventSender {
 
-	private String ID = "SynchronizerService";
+	public static String ID = "SynchronizerService";
     private String NAMESPACE = "ui.jface.application.fritzbox.action.Refresh";
 	private IRuntime m_runtime;
 	private II18nManager m_i18n;
 	private String m_language;
 	private SyncTimerThread syncTimerThread;
+	
+	private boolean m_activeSync = false;
 	
 	private class SyncTimerThread extends Thread {
 		private boolean isRunning;
@@ -246,6 +248,304 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 		}
 		return this.m_language;
 	}
+	
+	public void synchronize(IProgressMonitor progressMonitor) {
+		if (m_activeSync) return;
+		
+		this.m_activeSync = true;
+		
+		long start = System.currentTimeMillis();
+		if (m_logger.isLoggable(Level.INFO))
+			m_logger.info("--> Start Synchronizing ("+(progressMonitor==null ? "w/o progress monitor" : "with progress monitor")+")");
+		
+		
+		if (progressMonitor!=null) {
+			progressMonitor.beginTask(getI18nManager()
+				.getString(getNamespace(),
+						"refreshprogress", "label",
+						getLanguage()), IProgressMonitor.UNKNOWN);
+		
+			progressMonitor.worked(1);
+
+			progressMonitor.setTaskName(getI18nManager()
+				.getString(getNamespace(),
+						"loginprogress", "label",
+						getLanguage()));
+		
+		}
+		
+		FirmwareManager fwm = FirmwareManager.getInstance();
+		try {
+			fwm.login();
+			
+			if (progressMonitor!=null)
+				progressMonitor.setTaskName(getI18nManager()
+					.getString(getNamespace(),
+							"getprogress", "label",
+							getLanguage()));
+			
+			long synctime = Long.parseLong(SynchronizerService.this.m_configuration.getProperty(CFG_SYNCTIME, "-1"));
+			// added: 2013/02/04: check sync all
+			boolean syncall = SynchronizerService.this.m_configuration.getProperty(CFG_SYNCALL, "false").equalsIgnoreCase("true");
+			if (syncall) {
+				synctime = -1;
+				if (m_logger.isLoggable(Level.INFO))
+					m_logger.info("Sync all option enabled.");
+			}
+			
+			if (m_logger.isLoggable(Level.INFO))
+				m_logger.info("Syncing call list from FRITZ!Box with timestamp: "+synctime);
+			
+			List result = fwm.getCallList(synctime);	
+			
+			if (m_logger.isLoggable(Level.INFO))
+				m_logger.info("Call list size from FRITZ!Box: "+result.size());
+
+			if (progressMonitor!=null)
+				progressMonitor.setTaskName(getI18nManager()
+					.getString(getNamespace(),
+							"identifyprogress", "label",
+							getLanguage()));
+		
+			try {
+				Thread.sleep((progressMonitor!=null ? 250 : 100));
+			} catch (InterruptedException e1) {
+				m_logger.log(Level.SEVERE, e1.getMessage(), e1);
+			}
+			
+			if (result.size()>0) {
+				ICallList m_callList = PIMRuntime.getInstance().getCallFactory().createCallList(result.size());
+				FritzBoxCallCsv call = null;
+				Properties conf = PIMRuntime.getInstance().getConfigManagerFactory().getConfigManager().getProperties(FritzBoxMonitor.NAMESPACE);
+				ICall c = null;
+				FritzBoxUUIDManager.getInstance().init();
+				
+				for (int i=0,j=result.size();i<j;i++) {
+					call = new FritzBoxCallCsv((String) result.get(i), conf);
+					Date calltime = call.getPrecalculatedDate();
+					if (calltime!=null && calltime.getTime()<synctime && synctime>0) {
+						if (m_logger.isLoggable(Level.INFO))
+							m_logger.info("Call import skipped by timestamp (last sync time: "+new Date(synctime).toString()+", call time: "+calltime.toString()+") from FRITZ!Box.");
+						continue;
+					}
+					c = call.toCall();
+					if (c!=null) {
+						if (getRuntime().getMsnManager().isMsnMonitored(
+								c.getMSN())
+							) {										
+							if (!m_callList.contains(c)) {
+								if (m_logger.isLoggable(Level.INFO))
+									m_logger.info("Adding call imported from FRITZ!Box: "+c.toString());
+		
+								m_callList.add(c);
+							} else {
+								if (m_logger.isLoggable(Level.WARNING))
+									m_logger.warning("Adding duplicated call imported from FRITZ!Box: "+c.toString());
+								
+								c.setUUID(c.getUUID()+"-1");
+								ICip cip = c.getCIP();
+								cip.setCIP("4"); // just a dirty hack 
+								c.setCIP(cip);
+								if (!m_callList.contains(c))
+									m_callList.add(c);
+								else {
+									c.setUUID(c.getUUID()+"-1");
+									if (!m_callList.contains(c))
+										m_callList.add(c);
+								}
+							}
+						}
+					}
+				}
+				
+				if (progressMonitor!=null)
+					progressMonitor.setTaskName(getI18nManager()
+						.getString(getNamespace(),
+								"geocodeprogress", "label",
+								getLanguage()));
+				
+				if (m_logger.isLoggable(Level.INFO))
+					m_logger.info("Processing modifier services on call list: "+getRuntime().getServiceFactory().getModifierServices());
+				processModifierServices(m_callList);
+				
+				if (progressMonitor!=null)
+					progressMonitor.setTaskName(getI18nManager()
+						.getString(getNamespace(),
+								"synchprogress", "label",
+								getLanguage()));
+				
+				if (m_callList!=null && m_callList.size()>0) {
+					String repository = getRuntime().getConfigManagerFactory().getConfigManager().getProperty(Journal.NAMESPACE, "repository");
+					ICallManager cm = getRuntime().getCallManagerFactory().getCallManager(repository);
+					if (cm!=null && cm.isActive() && cm.isSupported(IWriteCallRepository.class)) {
+						ICall ca = null;
+
+						boolean syncclean = SynchronizerService.this.m_configuration.getProperty(CFG_SYNCCLEAN, "false").equalsIgnoreCase("true");
+						if (syncclean && synctime>0 && cm.isSupported(IReadCallRepository.class) && cm.isSupported(IWriteCallRepository.class)) {
+							if (m_logger.isLoggable(Level.INFO))
+								m_logger.info("Remove duplicated entries (sync clean) option enabled.");
+							
+							if (progressMonitor!=null)
+								progressMonitor.setTaskName(getI18nManager()
+									.getString(getNamespace(),
+											"syncclean", "label",
+											getLanguage()));
+							
+							IFilter syncFilter = new DateFilter(new Date(System.currentTimeMillis()), new Date(synctime));
+							ICallList cl = ((IReadCallRepository)cm).getCalls(syncFilter);
+							if (cl.size()>0) {
+								// 2009/03/18: added backup of cleaned calls
+								IImExporter exp = ImExportFactory.getInstance().getExporter("DatFileCallExporter");
+								if (exp!=null & exp instanceof ICallExporter) {
+									if (m_logger.isLoggable(Level.INFO))
+										m_logger.info("Creating backup of cleaned call list...");
+									File backupdir = new File(PathResolver.getInstance(getRuntime()).getDataDirectory(), "fritzbox-sync-clean-backup");
+									if (!backupdir.exists()) {
+										backupdir.mkdirs();
+									}
+									File backupfile = new File(backupdir, Long.toString(synctime)+".dat");
+									((ICallExporter) exp).setFilename(backupfile.getAbsolutePath());
+									((ICallExporter) exp).setCallList(cl);
+									if (((ICallExporter) exp).doExport()) {
+										if (m_logger.isLoggable(Level.INFO)) 
+											m_logger.info("Backup of cleaned call list successfully finished: "+backupfile.getAbsolutePath());
+									} else {
+										if (m_logger.isLoggable(Level.WARNING))
+											m_logger.warning("Backup of cleaned call list failed: "+backupdir.getAbsolutePath());
+									}
+								}
+								((IWriteCallRepository)cm).removeCalls(createRedundancyList(m_callList, synctime));
+								try {
+									Thread.sleep(500);
+								} catch (InterruptedException e) {
+								}
+							}
+						}
+						for (int i=0,j=m_callList.size();i<j;i++) {
+							ca = m_callList.get(i);
+							try {
+								((IWriteCallRepository)cm).setCall(ca);
+								if (m_logger.isLoggable(Level.INFO))
+									m_logger.info("Call imported to repository: "+ca.toString());
+							} catch (Exception e) {
+								if (m_logger.isLoggable(Level.WARNING))
+									m_logger.warning("Call already in repository (skipped): "+ca.toString());
+							}
+						}
+						
+						// added 2009/01/08: force refresh of journal, if opened
+						IEventBroker evtBroker = getRuntime().getEventBroker();
+						evtBroker.register(this);
+						evtBroker.send(this, evtBroker.createEvent(IEventConst.EVENT_TYPE_CALL_MANAGER_UPDATED));
+						evtBroker.unregister(this);
+						if (m_logger.isLoggable(Level.INFO))
+							m_logger.info("EventBroker notification sent: EVENT_TYPE_CALL_MANAGER_UPDATED");
+					}
+					
+					boolean syncDelete = (m_configuration.getProperty(FritzBoxConst.CFG_SYNCDELETE, "false").equalsIgnoreCase("true") ? true : false);
+					
+					if (syncDelete) {
+						if (m_logger.isLoggable(Level.INFO))
+							m_logger.info("Delete after sync (sync delete) option enabled.");
+						if (progressMonitor!=null)
+							progressMonitor.setTaskName(getI18nManager()
+								.getString(getNamespace(),
+										"deleteprogress", "label",
+										getLanguage()));
+						
+						fwm.deleteCallList();	
+					}
+					
+					// added 2009/01/07: send mail notification after sync with fritzbox
+					boolean syncNotify = (SynchronizerService.this.m_configuration.getProperty(FritzBoxConst.CFG_SYNC_NOTIFICATION, "false").equalsIgnoreCase("true") ? true : false);
+					if (syncNotify) {
+						if (m_logger.isLoggable(Level.INFO))
+							m_logger.info("Send notification after sync (sync notification) option enabled.");
+						ICall ca = null;
+						if (progressMonitor!=null)
+							progressMonitor.setTaskName(getI18nManager()
+								.getString(getNamespace(),
+										"sendnotificationprogress", "label",
+										getLanguage()));
+						for (int i=0,j=m_callList.size();i<j;i++) {
+							ca = m_callList.get(i);											
+							sendMailNotification(ca);
+						}
+					}
+				}
+				
+				String text = getI18nManager().getString(getNamespace(),
+						"finished", "label",
+						getLanguage());
+				
+				if (m_callList.size()==0)
+					text = getI18nManager().getString(getNamespace(),
+							"finished0", "label",
+							getLanguage());
+				
+				if (m_callList.size()==1)
+					text = getI18nManager().getString(getNamespace(),
+							"finished1", "label",
+							getLanguage());
+				
+				if (progressMonitor!=null)
+					progressMonitor.setTaskName(StringUtils.replaceString(text, "{%1}", Integer.toString(m_callList.size())));
+				
+				if (m_callList.size()>0)
+					PropagationFactory.getInstance().fire(
+						new Message(Message.INFO, 
+								getI18nManager().getString("monitor.FritzBoxMonitor",
+								"title", "label",
+								getLanguage()), 
+								new Exception(StringUtils.replaceString(text, "{%1}", Integer.toString(m_callList.size())))),
+						"Tray");	
+					
+				SynchronizerService.this.m_configuration.setProperty(CFG_SYNCTIME, Long.toString(System.currentTimeMillis()));
+				getRuntime().getConfigManagerFactory().getConfigManager().setProperties(NAMESPACE, SynchronizerService.this.m_configuration);
+				getRuntime().getConfigManagerFactory().getConfigManager().saveConfiguration();
+
+				if (progressMonitor!=null)
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e1) {
+						m_logger.log(Level.SEVERE, e1.getMessage(), e1);
+					}
+			}
+		} catch (IOException e) {
+			m_logger.warning(e.toString());
+			PropagationFactory.getInstance().fire(
+					new Message(Message.ERROR,
+					getNamespace(),
+					"failedrefresh",	
+					e));
+		} catch (FritzBoxLoginException e) {
+			m_logger.warning(e.toString());
+		} catch (GetCallListException e) {
+			m_logger.warning(e.toString());
+			PropagationFactory.getInstance().fire(
+					new Message(Message.ERROR,
+					getNamespace(),
+					"failedrefresh",	
+					e));
+		} catch (DeleteCallListException e) {
+			m_logger.warning(e.toString());
+			PropagationFactory.getInstance().fire(
+					new Message(Message.ERROR,
+					getNamespace(),
+					"failedrefresh",	
+					e));
+		} catch (CloneNotSupportedException e) {
+			m_logger.warning(e.toString());
+		}
+		
+		if (progressMonitor!=null)
+			progressMonitor.done();
+		
+		if (m_logger.isLoggable(Level.INFO))
+			m_logger.info("--> Finished Synchronizing ("+(progressMonitor==null ? "w/o progress monitor" : "with progress monitor")+") in "+((System.currentTimeMillis() - start)/ 1000)+" sec.");
+		
+		this.m_activeSync = false;
+	}
 
 	private synchronized void synchronize(boolean isSuppressed) {
 		try {
@@ -255,449 +555,17 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 		}
 		
 		if (this.m_configuration.getProperty(CFG_SYNCDIALOG, "false").equalsIgnoreCase("true") || isSuppressed) {
-			//Properties config = getRuntime().getConfigManagerFactory().getConfigManager().getProperties(FritzBoxMonitor.NAMESPACE);
-			
-			FirmwareManager fwm = FirmwareManager.getInstance();
-			
-			try {
-				fwm.login();
-
-				long synctime = Long.parseLong(SynchronizerService.this.m_configuration.getProperty(CFG_SYNCTIME, "-1"));
-				// added: 2013/02/04: check sync all
-				boolean syncall = SynchronizerService.this.m_configuration.getProperty(CFG_SYNCALL, "false").equalsIgnoreCase("true");
-				if (syncall) {
-					synctime = -1;
-					m_logger.info("Syncing all calls from Fritz!Box.");
-				}
-				
-				List result = fwm.getCallList(synctime);
-			
-				try {
-					Thread.sleep((isSuppressed ? 100 : 250));
-				} catch (InterruptedException e1) {
-					m_logger.log(Level.SEVERE, e1.getMessage(), e1);
-				}
-				
-				if (result.size()>0) {
-					ICallList m_callList = PIMRuntime.getInstance().getCallFactory().createCallList(result.size());
-					FritzBoxCallCsv call = null;
-					Properties conf = PIMRuntime.getInstance().getConfigManagerFactory().getConfigManager().getProperties(FritzBoxMonitor.NAMESPACE);
-					ICall c = null;
-					FritzBoxUUIDManager.getInstance().init();
-					
-					for (int i=0,j=result.size();i<j;i++) {
-						call = new FritzBoxCallCsv((String) result.get(i), conf);
-						Date calltime = call.getPrecalculatedDate();
-						if (calltime!=null && calltime.getTime()<synctime && synctime>0) {
-							if (m_logger.isLoggable(Level.INFO))
-								m_logger.info("Call import skipped by timestamp (last sync time: "+new Date(synctime).toString()+", call time: "+calltime.toString()+") from FritzBox.");
-							continue;
-						}
-						c = call.toCall();
-						if (c!=null) {
-							if (getRuntime().getMsnManager().isMsnMonitored(
-									c.getMSN())
-								) {										
-								if (!m_callList.contains(c))
-									m_callList.add(c);
-								else {
-									m_logger.warning("Duplicated call imported from FritzBox: "+c.toString());
-									c.setUUID(c.getUUID()+"-1");
-									ICip cip = c.getCIP();
-									cip.setCIP("4"); // just a dirty hack 
-									c.setCIP(cip);
-									if (!m_callList.contains(c))
-										m_callList.add(c);
-									else {
-										c.setUUID(c.getUUID()+"-1");
-										if (!m_callList.contains(c))
-											m_callList.add(c);
-									}
-								}
-							}
-						}
-					}
-					this.processModifierServices(m_callList);
-					if (m_callList!=null && m_callList.size()>0) {
-						String repository = getRuntime().getConfigManagerFactory().getConfigManager().getProperty(Journal.NAMESPACE, "repository");
-						ICallManager cm = getRuntime().getCallManagerFactory().getCallManager(repository);
-						if (cm!=null && cm.isActive() && cm.isSupported(IWriteCallRepository.class)) {
-							ICall ca = null;
-
-							// added 2008/04/22: check sync point cleanup
-							synctime = Long.parseLong(SynchronizerService.this.m_configuration.getProperty(CFG_SYNCTIME, "-1"));
-							// added: 2013/02/04: check sync all
-							syncall = SynchronizerService.this.m_configuration.getProperty(CFG_SYNCALL, "false").equalsIgnoreCase("true");
-							if (syncall) {
-								synctime = -1;
-								m_logger.info("Syncing all calls from Fritz!Box.");
-							}
-							
-							boolean syncclean = SynchronizerService.this.m_configuration.getProperty(CFG_SYNCCLEAN, "false").equalsIgnoreCase("true");
-							if (syncclean && synctime>0 && cm.isSupported(IReadCallRepository.class) && cm.isSupported(IWriteCallRepository.class)) {
-								
-								IFilter syncFilter = new DateFilter(new Date(System.currentTimeMillis()), new Date(synctime));
-								ICallList cl = ((IReadCallRepository)cm).getCalls(syncFilter);
-								if (cl.size()>0) {
-									// 2009/03/18: added backup of cleaned calls
-									IImExporter exp = ImExportFactory.getInstance().getExporter("DatFileCallExporter");
-									if (exp!=null & exp instanceof ICallExporter) {
-										m_logger.info("Creating backup of cleaned call list...");
-										File backupdir = new File(PathResolver.getInstance(getRuntime()).getDataDirectory(), "fritzbox-sync-clean-backup");
-										if (!backupdir.exists()) {
-											backupdir.mkdirs();
-										}
-										File backupfile = new File(backupdir, Long.toString(synctime)+".dat");
-										((ICallExporter) exp).setFilename(backupfile.getAbsolutePath());
-										((ICallExporter) exp).setCallList(cl);
-										if (((ICallExporter) exp).doExport()) {
-											m_logger.info("Backup of cleaned call list successfully finished.");
-										} else {
-											m_logger.warning("Backup of cleaned call list failed: "+backupdir.getAbsolutePath());
-										}
-									}
-									((IWriteCallRepository)cm).removeCalls(createRedundancyList(m_callList, synctime));
-									try {
-										Thread.sleep(500);
-									} catch (InterruptedException e) {
-									}
-								}
-							}
-							for (int i=0,j=m_callList.size();i<j;i++) {
-								ca = m_callList.get(i);
-								try {
-									((IWriteCallRepository)cm).setCall(ca);
-								} catch (Exception e) {
-									m_logger.info("Call already in DB: "+ca.toString());
-								}
-							}
-							
-							// added 2009/01/08: force refresh of journal, if opened
-							IEventBroker evtBroker = getRuntime().getEventBroker();
-							evtBroker.register(this);
-							evtBroker.send(this, evtBroker.createEvent(IEventConst.EVENT_TYPE_CALL_MANAGER_UPDATED));
-							evtBroker.unregister(this);
-						}
-						
-						boolean syncDelete = (this.m_configuration.getProperty(FritzBoxConst.CFG_SYNCDELETE, "false").equalsIgnoreCase("true") ? true : false);
-						
-						if (syncDelete) {
-							fwm.deleteCallList();	
-						}
-						
-						// added 2009/01/07: send mail notification after sync with fritzbox
-						boolean syncNotify = (SynchronizerService.this.m_configuration.getProperty(FritzBoxConst.CFG_SYNC_NOTIFICATION, "false").equalsIgnoreCase("true") ? true : false);
-						if (syncNotify) {
-							ICall ca = null;
-							for (int i=0,j=m_callList.size();i<j;i++) {
-								ca = m_callList.get(i);
-								sendMailNotification(ca);
-							}
-						}
-					}
-					
-					String text = getI18nManager().getString(getNamespace(),
-							"finished", "label",
-							getLanguage());
-					
-//					if (m_callList.size()==0)
-//						text = getI18nManager().getString(getNamespace(),
-//								"finished0", "label",
-//								getLanguage());
-					
-					if (m_callList.size()==1)
-						text = getI18nManager().getString(getNamespace(),
-								"finished1", "label",
-								getLanguage());
-										
-					if (m_callList.size()>0)
-						PropagationFactory.getInstance().fire(
-							new Message(Message.INFO, 
-									getI18nManager().getString("monitor.FritzBoxMonitor",
-									"title", "label",
-									getLanguage()), 
-									new Exception(StringUtils.replaceString(text, "{%1}", Integer.toString(m_callList.size())))),
-							"Tray");	
-					
-					SynchronizerService.this.m_configuration.setProperty(CFG_SYNCTIME, Long.toString(System.currentTimeMillis()));
-					getRuntime().getConfigManagerFactory().getConfigManager().setProperties(NAMESPACE, SynchronizerService.this.m_configuration);
-					getRuntime().getConfigManagerFactory().getConfigManager().saveConfiguration();
-					
-				}
-			} catch (IOException e) {
-				m_logger.warning(e.toString());
-				PropagationFactory.getInstance().fire(
-						new Message(Message.ERROR,
-						getNamespace(),
-						"failedrefresh",	
-						e));
-			} catch (FritzBoxLoginException e) {
-				m_logger.warning(e.toString());
-			} catch (GetCallListException e) {
-				m_logger.warning(e.toString());
-				PropagationFactory.getInstance().fire(
-						new Message(Message.ERROR,
-						getNamespace(),
-						"failedrefresh",	
-						e));
-			} catch (DeleteCallListException e) {
-				m_logger.warning(e.toString());
-				PropagationFactory.getInstance().fire(
-						new Message(Message.ERROR,
-						getNamespace(),
-						"failedrefresh",	
-						e));
-			} catch (CloneNotSupportedException e) {
-				m_logger.warning(e.toString());
-			}
-			
+			synchronize(null);
 		} else {
 			ProgressMonitorDialog pmd = new ProgressMonitorDialog(new Shell(DisplayManager.getDefaultDisplay()));
 			try {				
 				IRunnableWithProgress r = new IRunnableWithProgress() {
 					public void run(IProgressMonitor progressMonitor) {
-						progressMonitor.beginTask(getI18nManager()
-								.getString(getNamespace(),
-										"refreshprogress", "label",
-										getLanguage()), IProgressMonitor.UNKNOWN);
-						
-						progressMonitor.worked(1);
-
-						progressMonitor.setTaskName(getI18nManager()
-								.getString(getNamespace(),
-										"loginprogress", "label",
-										getLanguage()));
-						
-						FirmwareManager fwm = FirmwareManager.getInstance();
-						try {
-							fwm.login();
-							
-							progressMonitor.setTaskName(getI18nManager()
-									.getString(getNamespace(),
-											"getprogress", "label",
-											getLanguage()));
-							
-							long synctime = Long.parseLong(SynchronizerService.this.m_configuration.getProperty(CFG_SYNCTIME, "-1"));
-							List result = fwm.getCallList(synctime);	
-	
-							progressMonitor.setTaskName(getI18nManager()
-									.getString(getNamespace(),
-											"identifyprogress", "label",
-											getLanguage()));
-						
-							try {
-								Thread.sleep(250);
-							} catch (InterruptedException e1) {
-								m_logger.log(Level.SEVERE, e1.getMessage(), e1);
-							}
-							
-							if (result.size()>0) {
-								ICallList m_callList = PIMRuntime.getInstance().getCallFactory().createCallList(result.size());
-								FritzBoxCallCsv call = null;
-								Properties conf = PIMRuntime.getInstance().getConfigManagerFactory().getConfigManager().getProperties(FritzBoxMonitor.NAMESPACE);
-								ICall c = null;
-								// added: 2013/02/04: check sync all
-								boolean syncall = SynchronizerService.this.m_configuration.getProperty(CFG_SYNCALL, "false").equalsIgnoreCase("true");
-								if (syncall) {
-									synctime = -1;
-									m_logger.info("Syncing all calls from Fritz!Box.");
-								}
-								for (int i=0,j=result.size();i<j;i++) {
-									call = new FritzBoxCallCsv((String) result.get(i), conf);
-									Date calltime = call.getPrecalculatedDate();
-									if (calltime!=null && calltime.getTime()<synctime && synctime>0) {
-										if (m_logger.isLoggable(Level.INFO))
-											m_logger.info("Call import skipped by timestamp (last sync time: "+new Date(synctime).toString()+", call time: "+calltime.toString()+") from FritzBox.");
-										continue;
-									}
-									c = call.toCall();
-									if (c!=null) {
-										if (getRuntime().getMsnManager().isMsnMonitored(
-												c.getMSN())
-											) {										
-											if (!m_callList.contains(c))
-												m_callList.add(c);
-											else {
-												m_logger.warning("Duplicated call imported from FritzBox: "+c.toString());
-												c.setUUID(c.getUUID()+"-1");
-												ICip cip = c.getCIP();
-												cip.setCIP("4"); // just a dirty hack 
-												c.setCIP(cip);
-												if (!m_callList.contains(c))
-													m_callList.add(c);
-												else {
-													c.setUUID(c.getUUID()+"-1");
-													if (!m_callList.contains(c))
-														m_callList.add(c);
-												}
-											}
-										}
-									}
-								}
-								
-								progressMonitor.setTaskName(getI18nManager()
-										.getString(getNamespace(),
-												"geocodeprogress", "label",
-												getLanguage()));
-								
-								processModifierServices(m_callList);
-								
-								progressMonitor.setTaskName(getI18nManager()
-										.getString(getNamespace(),
-												"synchprogress", "label",
-												getLanguage()));
-								if (m_callList!=null && m_callList.size()>0) {
-									String repository = getRuntime().getConfigManagerFactory().getConfigManager().getProperty(Journal.NAMESPACE, "repository");
-									ICallManager cm = getRuntime().getCallManagerFactory().getCallManager(repository);
-									if (cm!=null && cm.isActive() && cm.isSupported(IWriteCallRepository.class)) {
-										ICall ca = null;
-										// added 2008/04/22: check sync point cleanup
-										synctime = Long.parseLong(SynchronizerService.this.m_configuration.getProperty(CFG_SYNCTIME, "-1"));
-										// added: 2013/02/04: check sync all
-										syncall = SynchronizerService.this.m_configuration.getProperty(CFG_SYNCALL, "false").equalsIgnoreCase("true");
-										if (syncall) {
-											synctime = -1;
-											m_logger.info("Syncing all calls from Fritz!Box.");
-										}
-										boolean syncclean = SynchronizerService.this.m_configuration.getProperty(CFG_SYNCCLEAN, "false").equalsIgnoreCase("true");
-										if (syncclean && synctime>0 && cm.isSupported(IReadCallRepository.class)) {
-											progressMonitor.setTaskName(getI18nManager()
-													.getString(getNamespace(),
-															"syncclean", "label",
-															getLanguage()));
-											
-											IFilter syncFilter = new DateFilter(new Date(System.currentTimeMillis()), new Date(synctime));
-											ICallList cl = ((IReadCallRepository)cm).getCalls(syncFilter);
-											if (cl.size()>0) {
-												// 2009/03/18: added backup of cleaned calls
-												IImExporter exp = ImExportFactory.getInstance().getExporter("DatFileCallExporter");
-												if (exp!=null & exp instanceof ICallExporter) {
-													m_logger.info("Creating backup of cleaned call list...");
-													File backupdir = new File(PathResolver.getInstance(getRuntime()).getDataDirectory(), "fritzbox-sync-clean-backup");
-													if (!backupdir.exists()) {
-														backupdir.mkdirs();
-													}
-													File backupfile = new File(backupdir, Long.toString(synctime)+".dat");
-													((ICallExporter) exp).setFilename(backupfile.getAbsolutePath());
-													((ICallExporter) exp).setCallList(cl);
-													if (((ICallExporter) exp).doExport()) {
-														m_logger.info("Backup of cleaned call list successfully finished.");
-													} else {
-														m_logger.warning("Backup of cleaned call list failed: "+backupdir.getAbsolutePath());
-													}
-												}
-												((IWriteCallRepository)cm).removeCalls(createRedundancyList(m_callList, synctime));
-												try {
-													Thread.sleep(500);
-												} catch (InterruptedException e) {
-												}
-											}
-										}
-										for (int i=0,j=m_callList.size();i<j;i++) {
-											ca = m_callList.get(i);
-											try {
-												((IWriteCallRepository)cm).setCall(ca);
-											} catch (Exception e) {
-												m_logger.info("Call already in DB: "+ca.toString());
-											}
-										}
-									}
-									
-									boolean syncDelete = (m_configuration.getProperty(FritzBoxConst.CFG_SYNCDELETE, "false").equalsIgnoreCase("true") ? true : false);
-									
-									if (syncDelete) {
-										progressMonitor.setTaskName(getI18nManager()
-												.getString(getNamespace(),
-														"deleteprogress", "label",
-														getLanguage()));
-										
-										fwm.deleteCallList();	
-									}
-									
-									// added 2009/01/07: send mail notification after sync with fritzbox
-									boolean syncNotify = (SynchronizerService.this.m_configuration.getProperty(FritzBoxConst.CFG_SYNC_NOTIFICATION, "false").equalsIgnoreCase("true") ? true : false);
-									if (syncNotify) {
-										ICall ca = null;
-										progressMonitor.setTaskName(getI18nManager()
-												.getString(getNamespace(),
-														"sendnotificationprogress", "label",
-														getLanguage()));
-										for (int i=0,j=m_callList.size();i<j;i++) {
-											ca = m_callList.get(i);											
-											sendMailNotification(ca);
-										}
-									}
-								}
-								
-								String text = getI18nManager().getString(getNamespace(),
-										"finished", "label",
-										getLanguage());
-								
-								if (m_callList.size()==0)
-									text = getI18nManager().getString(getNamespace(),
-											"finished0", "label",
-											getLanguage());
-								
-								if (m_callList.size()==1)
-									text = getI18nManager().getString(getNamespace(),
-											"finished1", "label",
-											getLanguage());
-								
-								progressMonitor.setTaskName(StringUtils.replaceString(text, "{%1}", Integer.toString(m_callList.size())));
-								
-								if (m_callList.size()>0)
-									PropagationFactory.getInstance().fire(
-										new Message(Message.INFO, 
-												getI18nManager().getString("monitor.FritzBoxMonitor",
-												"title", "label",
-												getLanguage()), 
-												new Exception(StringUtils.replaceString(text, "{%1}", Integer.toString(m_callList.size())))),
-										"Tray");	
-									
-								SynchronizerService.this.m_configuration.setProperty(CFG_SYNCTIME, Long.toString(System.currentTimeMillis()));
-								getRuntime().getConfigManagerFactory().getConfigManager().setProperties(NAMESPACE, SynchronizerService.this.m_configuration);
-								getRuntime().getConfigManagerFactory().getConfigManager().saveConfiguration();
-
-								try {
-									Thread.sleep(1000);
-								} catch (InterruptedException e1) {
-									m_logger.log(Level.SEVERE, e1.getMessage(), e1);
-								}
-							}
-						} catch (IOException e) {
-							m_logger.warning(e.toString());
-							PropagationFactory.getInstance().fire(
-									new Message(Message.ERROR,
-									getNamespace(),
-									"failedrefresh",	
-									e));
-						} catch (FritzBoxLoginException e) {
-							m_logger.warning(e.toString());
-						} catch (GetCallListException e) {
-							m_logger.warning(e.toString());
-							PropagationFactory.getInstance().fire(
-									new Message(Message.ERROR,
-									getNamespace(),
-									"failedrefresh",	
-									e));
-						} catch (DeleteCallListException e) {
-							m_logger.warning(e.toString());
-							PropagationFactory.getInstance().fire(
-									new Message(Message.ERROR,
-									getNamespace(),
-									"failedrefresh",	
-									e));
-						} catch (CloneNotSupportedException e) {
-							m_logger.warning(e.toString());
-						}
-						
-						progressMonitor.done();
+						synchronize(progressMonitor);
 					}
 				};
 				pmd.setBlockOnOpen(false);
 				pmd.run(true, false, r);
-	
-				//ModalContext.run(r, true, pmd.getProgressMonitor(), DisplayManager.getDefaultDisplay());
 			} catch (InterruptedException e) {
 				m_logger.log(Level.SEVERE, e.getMessage(), e);
 			} catch (InvocationTargetException e) {
@@ -799,7 +667,7 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 	}
 
 	public String getSenderID() {
-		return this.ID;
+		return SynchronizerService.ID;
 	}
 
 
