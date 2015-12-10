@@ -2,6 +2,7 @@ monitor.FritzBoxMonitor\:title\:label\:en=AVM FRITZ!Box Fon monitor
 monitor.FritzBoxMonitor\:error\:label\:en=Login to FRITZ!Box Fon failed. Either the FRITZ!Box Fon is not reachable or the login data is wrong. No data could be fetched from the FRITZ!Box Fon. Please check the configuration.
 monitor.FritzBoxMonitor\:connectlost\:label\:en=Connection lost\n\nThe connection to FRITZ!Box Fon is lost. No identification will be done. A connection retry is started to login again. If the error perists please check the configuration and the network availability.
 monitor.FritzBoxMonitor\:connect\:label\:en=No Connection\n\nConnection could not be established to FRITZ!Box Fon due to network problems. Please check your network settings and make sure that the FRITZ!Box Fon is reachable and activated for monitoring.\n\nConnection retries left: {%1}
+monitor.FritzBoxMonitor\:nextconnect\:label\:en=Next connection try in {%1} min.
 
 repository.FritzBoxCallListImporter\:filtername\:label\:en=AVM FRITZ!Box Fon call list (*.csv)
 repository.FritzBoxCallerExporter\:filtername\:label\:en=AVM FRITZ!Box Fon phonebook (*.xml)

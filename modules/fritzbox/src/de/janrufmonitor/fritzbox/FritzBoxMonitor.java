@@ -98,8 +98,16 @@ public class FritzBoxMonitor implements IMonitor, IConfigurable, FritzBoxConst {
 					m_logger.warning("Connect to FritzBox failed.");
 					isRunning = true;
 					
-					if (retryCount<this.getRetryMaxValue()-1)
+					if (retryCount<this.getRetryMaxValue())
 						try {
+							PropagationFactory.getInstance().fire(
+									new Message(Message.WARNING,
+									getNamespace(),
+									"nextconnect",	
+									new String[] {Integer.toString(this.getRetryTimeoutValue() / 60)},
+									new Exception(), 
+									false),
+								"Tray");
 							Thread.sleep((this.getRetryTimeoutValue()*1010));
 						} catch (InterruptedException e1) {
 							m_logger.log(Level.SEVERE, e1.getMessage(), e1);
