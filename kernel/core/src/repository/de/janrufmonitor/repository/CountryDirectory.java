@@ -17,6 +17,7 @@ import de.janrufmonitor.framework.IAttributeMap;
 import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.ICallerList;
 import de.janrufmonitor.framework.IJAMConst;
+import de.janrufmonitor.framework.IName;
 import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.repository.db.ICallerDatabaseHandler;
 import de.janrufmonitor.repository.db.hsqldb.HsqldbCallerDatabaseHandler;
@@ -687,10 +688,23 @@ public class CountryDirectory extends AbstractReadOnlyDatabaseCallerManager {
 			throw new CallerNotFoundException(
 					"Phone number is CLIR. Identification impossible.");
 
-		if (PhonenumberAnalyzer.getInstance(this.getRuntime()).isInternal(number))
-			throw new CallerNotFoundException(
-					"Phone number is internal number.");
+		if (PhonenumberAnalyzer.getInstance(this.getRuntime()).isInternal(number)) {
+			String language = this.getRuntime().getConfigManagerFactory().getConfigManager().getProperty(IJAMConst.GLOBAL_NAMESPACE, IJAMConst.GLOBAL_LANGUAGE);
+					
+			IName name = this.getRuntime().getCallerFactory().createName(
+				"",
+				this.getRuntime().getI18nManagerFactory().getI18nManager().getString(getNamespace(), IJAMConst.INTERNAL_CALL, "label", language),
+				""
+			);				
 
+			String n = number.getTelephoneNumber();
+			if (n.trim().length()==0)
+				n = number.getCallNumber();			
+					
+			return this.getRuntime().getCallerFactory().createCaller(name, 
+					this.getRuntime().getCallerFactory().createInternalPhonenumber(n));
+		}
+		
 		ICaller c = null;
 		try {
 			c = getDatabaseHandler().getCaller(number);

@@ -9,6 +9,7 @@ repository.DefaultJournal\:migrate\:label\:en=Hint\n\nAn old journal format was 
 repository.DefaultJournal\:notidentified\:label\:en=jAnrufmonitor journal error\n\nAn unidentified caller was detected, which was not stored in the current journal.
 
 repository.CountryDirectory\:title\:label\:en=Country and area code directory
+repository.CountryDirectory\:internal\:label\:en=internal telephone system number
 
 # Import/Export-Filter
 repository.DatFileCallerExporter\:filtername\:label\:en=jAnrufmonitor Address book (*.dat)

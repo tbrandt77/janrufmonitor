@@ -102,7 +102,7 @@ public abstract class AbstractDatabaseCallerManager extends AbstractReadWriteCal
 		
 		if (number.isClired())
 			throw new CallerNotFoundException("Phone number is CLIR. Identification impossible.");
-			
+		
 		ICaller c = null;
 		try {
 			m_isRunningProcess = true;

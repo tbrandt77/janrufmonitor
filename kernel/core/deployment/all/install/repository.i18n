@@ -9,6 +9,7 @@ repository.DefaultJournal\:migrate\:label\:de=Konvertierungshinweis\n\nEs wurde 
 repository.DefaultJournal\:notidentified\:label\:de=jAnrufmonitor Journal-Fehler\n\nEs wurde ein nicht identifizierter Anruf entdeckt. M\u00F6glicherweise wurde die Rufnummer nicht erkannt, da sie in einem falschen Format vorlag oder da keine entsprechende Vorwahl gefunden wurde. Dieser Anruf kann nicht ins Journal \u00FCbernommen werden und wird verworfen.
 
 repository.CountryDirectory\:title\:label\:de=L\u00E4ndercode und Vorwahlverzeichnis
+repository.CountryDirectory\:internal\:label\:de=interne Anlagenrufnummer
 
 # Import/Export-Filter
 repository.DatFileCallerExporter\:filtername\:label\:de=jAnrufmonitor Adressbuch (*.dat)
