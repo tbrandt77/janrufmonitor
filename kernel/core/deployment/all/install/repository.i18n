@@ -10,6 +10,7 @@ repository.DefaultJournal\:notidentified\:label\:de=jAnrufmonitor Journal-Fehler
 
 repository.CountryDirectory\:title\:label\:de=L\u00E4ndercode und Vorwahlverzeichnis
 repository.CountryDirectory\:internal\:label\:de=interne Anlagenrufnummer
+repository.CountryDirectory\:error_number\:label\:de=Fehlerhafte oder ung\u00FCltige Rufnummer erkannt: {%1} 
 
 # Import/Export-Filter
 repository.DatFileCallerExporter\:filtername\:label\:de=jAnrufmonitor Adressbuch (*.dat)

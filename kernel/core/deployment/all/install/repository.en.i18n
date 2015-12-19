@@ -10,6 +10,8 @@ repository.DefaultJournal\:notidentified\:label\:en=jAnrufmonitor journal error\
 
 repository.CountryDirectory\:title\:label\:en=Country and area code directory
 repository.CountryDirectory\:internal\:label\:en=internal telephone system number
+repository.CountryDirectory\:error_number\:label\:en=Invalid number detected: {%1} 
+
 
 # Import/Export-Filter
 repository.DatFileCallerExporter\:filtername\:label\:en=jAnrufmonitor Address book (*.dat)

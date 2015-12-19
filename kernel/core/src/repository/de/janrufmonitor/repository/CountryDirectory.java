@@ -13,6 +13,8 @@ import java.util.Enumeration;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import de.janrufmonitor.exception.Message;
+import de.janrufmonitor.exception.PropagationFactory;
 import de.janrufmonitor.framework.IAttributeMap;
 import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.ICallerList;
@@ -161,15 +163,21 @@ public class CountryDirectory extends AbstractReadOnlyDatabaseCallerManager {
 						this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 					}
 				}
-				if (p.getIntAreaCode().length()>0 && p.getAreaCode().length()>0 && p.getCallNumber().length()>0) {
-					if (this.m_logger.isLoggable(Level.INFO))
-						this.m_logger.info("Normalized phone number, but could not detect a country: "+p);
-					
-					return getRuntime().getCallerFactory().createCaller(getRuntime().getCallerFactory().createName("", "unknown country 00"+p.getIntAreaCode()), p);
-				}
 			} catch (Exception ex) {
 				this.m_logger.log(Level.SEVERE, (pnp!=null ? "Error while analyzing number ["+pnp.getTelephoneNumber() + "]: " : "") +ex.getMessage(), ex);
 			}
+			if (this.m_logger.isLoggable(Level.SEVERE))
+				this.m_logger.severe("Number has invalid data or structure, no country or city found: "+pnp);
+			
+			PropagationFactory.getInstance().fire(
+					new Message(Message.ERROR,
+						NAMESPACE,
+						"error_number",
+						new String[] {pnp.getTelephoneNumber()},
+						new Exception("Number has invalid data or structure, no country or city found: "+pnp),
+						false),
+					"Tray");
+			
 			return null;
 		}
 
