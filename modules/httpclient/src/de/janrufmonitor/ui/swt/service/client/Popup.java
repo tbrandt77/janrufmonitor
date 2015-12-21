@@ -5,6 +5,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
+import de.janrufmonitor.exception.Message;
+import de.janrufmonitor.exception.PropagationFactory;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.i18n.II18nManager;
 import de.janrufmonitor.runtime.PIMRuntime;
@@ -83,12 +85,14 @@ public class Popup implements IClientStateMonitor {
 					)); 
 				break;			
 			case IClientStateMonitor.SERVER_SHUTDOWN: 
-				DisplayManager.getDefaultDisplay().asyncExec(
-					new DefaultPopupThread(
-						SWT.ICON_WARNING, 
-						this.m_i18n.getString(NAMESPACE, "warning", "label", this.m_language),
-						this.m_i18n.getString(NAMESPACE, "servershutdown", "label", this.m_language) + message
-					)); 
+				PropagationFactory.getInstance().fire(
+						new Message(Message.WARNING,
+							NAMESPACE,
+							"servershutdown",
+							new String[] {},
+							new Exception("Server was shutdown."),
+							false),
+						"Tray");
 				break;
 		}
 	}
