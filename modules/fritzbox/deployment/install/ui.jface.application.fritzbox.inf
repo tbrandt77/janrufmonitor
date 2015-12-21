@@ -47,7 +47,7 @@ ui.jface.application.fritzbox.action.Refresh\:synctime\:type=integer
 ui.jface.application.fritzbox.action.Refresh\:synctime\:value=0
 ui.jface.application.fritzbox.action.Refresh\:startupdelay\:type=integer
 ui.jface.application.fritzbox.action.Refresh\:startupdelay\:value=0
-rules.RuleEngine\:fbsync_rule\:value=SynchronizerService%*%*%false%*%*
+rules.RuleEngine\:fbsync_rule\:value=SynchronizerService%*%*%true%*%*
 rules.RuleEngine\:usestandard\:value=false
 rules.RuleEngine\:usestandard\:type=boolean
 
