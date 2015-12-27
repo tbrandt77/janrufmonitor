@@ -371,11 +371,12 @@ public class FirmwareManager {
     	if (this.m_fw==null) {
     		this.m_fw = new TR064FritzBoxFirmware(getFritzBoxAddress(), getFritzBoxPort(), getFritzBoxPassword(), getFritzBoxUser());
     		try {
+    			if (this.m_fw==null) throw new FritzBoxInitializationException("Invalid TR064 firmware instance.");
 				this.m_fw.init();
 				if (this.m_logger.isLoggable(Level.INFO))
 					this.m_logger.info("Detected TR064 Firmware: "+this.m_fw.toString());
 			} catch (FritzBoxInitializationException e6) {
-								if (this.m_logger.isLoggable(Level.INFO))
+				if (this.m_logger.isLoggable(Level.INFO))
 					this.m_logger.info("No TR064 Firmware detected.");
 				
 	    		this.m_fw = new FritzOS559Firmware(getFritzBoxAddress(), getFritzBoxPort(), getFritzBoxPassword(), getFritzBoxUser(), getFritzBoxUseHttps());

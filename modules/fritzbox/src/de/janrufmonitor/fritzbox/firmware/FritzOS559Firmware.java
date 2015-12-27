@@ -641,11 +641,11 @@ public class FritzOS559Firmware extends AbstractFritzBoxFirmware implements IFri
 				this.m_logger.info("Firnware version detected: "+(fwd!=null ? fwd.toString() : "[-]"));
 			
 			if (fwd.getMajor()==6) is600 = true;
-			if ((fwd.getMajor()==5 && fwd.getMinor()>=59) || fwd.getMajor()==6)
+			if (((fwd.getMajor()==5 && fwd.getMinor()>=59)) || (fwd.getMajor()==6 && fwd.getMinor()<30))
 				return fwd;
 			
 			throw new FritzBoxDetectFirmwareException(
-			"FRITZ!Box firmware version < 5.59", false); 
+			"FRITZ!Box firmware version < 5.59 or > 6.20", false); 
 		} 
 		throw new FritzBoxDetectFirmwareException(
 			"Could not detect FRITZ!Box firmware version.", true); 
