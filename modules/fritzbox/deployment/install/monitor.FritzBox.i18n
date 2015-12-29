@@ -13,8 +13,12 @@ repository.FritzBoxPhonebookManager\:title\:label\:de=AVM FRITZ!Box Fon Telefonb
 fritzbox.firmware.login\:title\:label\:de=FRITZ!Box Fon Anmeldung
 fritzbox.firmware.login\:loginfailed\:label\:de=Die Anmeldung an der FRITZ!Box Fon ist fehlgeschlagen. Bitte pr\u00FCfen Sie das FRITZ!Box Fon-Passwort und ggf. den FRITZ!Box Fon-Benutzer unter Administration -> Einstellungen -> AVM FRITZ!Box Fon-Einstellungen.
 
-fritzbox.firmware.hardware\:title\:label\:de=FRITZ!Box Fon Hardware Erkennung
-fritzbox.firmware.hardware\:notfound\:label\:de=Die FRITZ!Box Fon {%1} auf Port {%2} konnte nicht gefunden werden. Bitte pr\u00FCfen Sie die IP-Adresse der FRITZ!Box Fon unter Administration -> Einstellungen -> AVM FRITZ!Box Fon-Einstellungen.
+fritzbox.firmware.hardware\:title\:label\:de=FRITZ!Box Fon Verbindungsmanager
+fritzbox.firmware.hardware\:unknownhost\:label\:de=Die FRITZ!Box Fon mit dem Adresse {%1} ist nicht erreichbar. Bitte pr\u00FCfen Sie die IP-Adresse der FRITZ!Box Fon unter Administration -> Einstellungen -> AVM FRITZ!Box Fon-Einstellungen.
 fritzbox.firmware.hardware\:unsupported\:label\:de=Die Firmware Version auf der FRITZ!Box Fon wird von jAnrufmonitor nicht erkannt. Entweder ist es eine Labor-Firmware oder eine nicht unterst\u00FCtzte Version. jAnrufmonitor kann nicht mit dieser FRITZ!Box Fon genutzt werden.
-fritzbox.firmware.hardware\:conlost\:label\:de=Die FRITZ!Box Fon {%1} auf Port {%2} und 1012 wurde neu gestartet. Alle Verbindungen wurden getrennt.
-fritzbox.firmware.hardware\:reconnect\:label\:de=Versuche Verbindung zur FRITZ!Box Fon {%1} wiederherzustellen.
+fritzbox.firmware.hardware\:conlost\:label\:de=Die Verbindungen zur FRITZ!Box Fon {%1} auf Port {%2} und 1012 wurden unterbrochen. 
+fritzbox.firmware.hardware\:restarted\:label\:de=Die FRITZ!Box Fon {%1} wurde neu gestartet oder die Verbindungen waren kurzzeitig unterbrochen. 
+fritzbox.firmware.hardware\:network\:label\:de=Auf das lokale Netzwerk kann nicht zugegriffen werden. Die FRITZ!Box Fon {%1} ist nicht erreichbar.
+fritzbox.firmware.hardware\:refused\:label\:de=Die Verbindung zur FRITZ!Box Fon {%1} auf Port 1012 wurde abgewiesen. Die \u00DCberwachung auf der FRITZ!Box Fon ist noch nicht freigeschaltet.
+fritzbox.firmware.hardware\:reconnect\:label\:de=Versuche Verbindungen zur FRITZ!Box Fon {%1} automatisch wiederherzustellen...
+fritzbox.firmware.hardware\:maxreconnect\:label\:de=Maximale Anzahl ({%1}) an Verbindungsversuchen erreicht. Weitere automatische Verbindungsversuche werden nicht weiter durchgef\u00FChrt.

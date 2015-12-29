@@ -94,4 +94,39 @@ public interface IEventConst {
 	 * Event type for returning from hibernate mode.
 	 */
     public final static int EVENT_TYPE_RETURNED_HIBERNATE = 201;
+    
+    /**
+	 * Event type for connection lost to monitor hardware
+	 */
+    public final static int EVENT_TYPE_HARDWARE_CONNECTION_LOST = 202;
+    
+    /**
+	 * Event type for network unavailable to monitor hardware
+	 */
+    public final static int EVENT_TYPE_HARDWARE_NETWORK_UNAVAILABLE = 203;
+    
+    /**
+	 * Event type for hardware DNS/IP not found to monitor hardware
+	 */
+    public final static int EVENT_TYPE_HARDWARE_UNKNOWN_HOST = 204;
+
+    /**
+	 * Event type for hardware restarted
+	 */
+    public final static int EVENT_TYPE_HARDWARE_RESTARTED = 205;
+    
+    /**
+	 * Event type for hardware reconnect success
+	 */
+    public final static int EVENT_TYPE_HARDWARE_RECONNECTED_SUCCESS = 206;
+    
+    /**
+	 * Event type for unsupported hardware
+	 */
+    public final static int EVENT_TYPE_HARDWARE_UNSUPPORTED = 207;
+    
+    /**
+	 * Event type for unsupported hardware
+	 */
+    public final static int EVENT_TYPE_HARDWARE_REFUSED = 208;
 }

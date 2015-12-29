@@ -14,7 +14,11 @@ fritzbox.firmware.login\:loginfailed\:label\:en=Login to FRITZ!Box Fon failed. P
 fritzbox.firmware.login\:title\:label\:en=FRITZ!Box Fon login
 
 fritzbox.firmware.hardware\:title\:label\:en=FRITZ!Box Fon hardware detection
-fritzbox.firmware.hardware\:notfound\:label\:en=A FRITZ!Box Fon could not be found. Please check the configuration.
+fritzbox.firmware.hardware\:unknownhost\:label\:en=A FRITZ!Box Fon could not be found. Please check the configuration.
 fritzbox.firmware.hardware\:unsuported\:label\:en=The firmware version on this FRITZ!Box is not supported.
 fritzbox.firmware.hardware\:conlost\:label\:en=The FRITZ!Box Fon was restarted. All connections are shutdown.
+fritzbox.firmware.hardware\:restarted\:label\:en=The FRITZ!Box Fon {%1} was restarted or the connection was temporarily lost.
+fritzbox.firmware.hardware\:network\:label\:en=Cannot access local network. The FRITZ!Box Fon {%1} is not reachable.
 fritzbox.firmware.hardware\:reconnect\:label\:en=Try to re-connect to FRITZ!Box Fon {%1}.
+fritzbox.firmware.hardware\:refused\:label\:en=Connection to FRITZ!Box Fon refused.
+fritzbox.firmware.hardware\:maxreconnect\:label\:en=Reached maximum retry count ({%1}). No further re-connecting attempts.

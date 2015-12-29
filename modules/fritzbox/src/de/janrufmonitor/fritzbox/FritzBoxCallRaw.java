@@ -208,6 +208,7 @@ public class FritzBoxCallRaw extends AbstractFritzBoxCall {
 	}
 	
 	public static String getAction(String call) {
+		if (call==null) return null;
 		String [] data = call.split(";");
 		if (data!=null && data.length>=2) return data[1];
 		return null;

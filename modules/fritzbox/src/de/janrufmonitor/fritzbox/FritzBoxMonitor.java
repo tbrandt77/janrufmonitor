@@ -13,8 +13,6 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-import de.janrufmonitor.exception.Message;
-import de.janrufmonitor.exception.PropagationFactory;
 import de.janrufmonitor.framework.IAttribute;
 import de.janrufmonitor.framework.ICall;
 import de.janrufmonitor.framework.IMsn;
@@ -24,6 +22,7 @@ import de.janrufmonitor.framework.event.IEvent;
 import de.janrufmonitor.framework.event.IEventBroker;
 import de.janrufmonitor.framework.event.IEventConst;
 import de.janrufmonitor.framework.event.IEventReceiver;
+import de.janrufmonitor.framework.event.IEventSender;
 import de.janrufmonitor.framework.monitor.IMonitor;
 import de.janrufmonitor.framework.monitor.IMonitorListener;
 import de.janrufmonitor.fritzbox.firmware.FirmwareManager;
@@ -33,7 +32,7 @@ import de.janrufmonitor.runtime.PIMRuntime;
 
 public class FritzBoxMonitor implements IMonitor, IConfigurable, FritzBoxConst {
 
-	protected class FritzBoxMonitorNotifier implements Runnable, IEventReceiver {
+	protected class FritzBoxMonitorNotifier implements Runnable, IEventReceiver, IEventSender {
 
 		private String ID = "FritzBoxMonitorNotifier";
 		
@@ -41,79 +40,49 @@ public class FritzBoxMonitor implements IMonitor, IConfigurable, FritzBoxConst {
 		private Properties m_configuration;
 		private Socket fb_socket;
 		private boolean isRunning = true;
-		
-		private int retryCount = -1;
 
 		private IRuntime m_runtime;
 		private Map m_connections;
 		private long m_connectTime;
 
 		public void run() {
-			retryCount = 0;
-			while (retryCount<this.getRetryMaxValue()) {
-				if (connect()) {
-					IEventBroker broker = this.getRuntime().getEventBroker();
-					broker.register(this, broker.createEvent(IEventConst.EVENT_TYPE_IDENTIFIED_CALL));
-					broker.register(this, broker.createEvent(IEventConst.EVENT_TYPE_IDENTIFIED_OUTGOING_CALL));
-					
-					this.isRunning = true;
-					m_connections = new HashMap(5);
-					m_logger.info("Retry count currently is "+retryCount);
+			if (connect()) {
+				IEventBroker broker = this.getRuntime().getEventBroker();
+				broker.register(this);
+				broker.register(this, broker.createEvent(IEventConst.EVENT_TYPE_IDENTIFIED_CALL));
+				broker.register(this, broker.createEvent(IEventConst.EVENT_TYPE_IDENTIFIED_OUTGOING_CALL));
+				
+				this.isRunning = true;
+				m_connections = new HashMap(5);
 
-					try {
-						BufferedReader in = new BufferedReader(new InputStreamReader(fb_socket.getInputStream()));
-						String currentLine = null;
-						
-						while(isRunning){
-							currentLine = in.readLine();
-							//System.out.println(currentLine);
-							m_logger.info("Call raw data from FritzBox: "+currentLine);
-							process(currentLine);
-						}
-					} catch (IOException e) {
-						if (isRunning) {
-							m_logger.log(Level.SEVERE, e.getMessage(), e);							
-							PropagationFactory.getInstance().fire(
-									new Message(Message.ERROR,
-									getNamespace(),
-									"connectlost",									
-									e));
-							isRunning = true;
-							try {
-								Thread.sleep((this.getRetryTimeoutValue()*1010));
-							} catch (InterruptedException e1) {
-								m_logger.log(Level.SEVERE, e1.getMessage(), e1);
-							}							
-						} else {
-							m_logger.log(Level.INFO, e.getMessage(), e);
-							isRunning = false;
-						}						
-					} finally {
-						if (broker!=null) {
-							broker.unregister(this, broker.createEvent(IEventConst.EVENT_TYPE_IDENTIFIED_CALL));
-							broker.unregister(this, broker.createEvent(IEventConst.EVENT_TYPE_IDENTIFIED_OUTGOING_CALL));
-						}
-					}
-				} else {
-					m_logger.warning("Connect to FritzBox failed.");
-					isRunning = true;
+				try {
+					BufferedReader in = new BufferedReader(new InputStreamReader(fb_socket.getInputStream()));
+					String currentLine = null;
 					
-					if (retryCount<this.getRetryMaxValue())
-						try {
-							PropagationFactory.getInstance().fire(
-									new Message(Message.WARNING,
-									getNamespace(),
-									"nextconnect",	
-									new String[] {Integer.toString(this.getRetryTimeoutValue() / 60)},
-									new Exception(), 
-									false),
-								"Tray");
-							Thread.sleep((this.getRetryTimeoutValue()*1010));
-						} catch (InterruptedException e1) {
-							m_logger.log(Level.SEVERE, e1.getMessage(), e1);
-						}	
+					while(isRunning){
+						currentLine = in.readLine();
+						//System.out.println(currentLine);
+						m_logger.info("Call raw data from FritzBox: "+currentLine);
+						process(currentLine);
+					}
+				} catch (IOException e) {
+					if (isRunning) {
+						broker.send(this, broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_CONNECTION_LOST));
+					} else {
+						m_logger.log(Level.INFO, e.getMessage(), e);
+						isRunning = false;
+					}						
+				} finally {
+					if (broker!=null) {
+						broker.unregister(this);
+						broker.unregister(this, broker.createEvent(IEventConst.EVENT_TYPE_IDENTIFIED_CALL));
+						broker.unregister(this, broker.createEvent(IEventConst.EVENT_TYPE_IDENTIFIED_OUTGOING_CALL));
+					}
 				}
+			} else {
+				m_logger.warning("Connect to FritzBox failed.");
 			}
+			
 			this.isRunning = false;
 		}
 		
@@ -165,59 +134,41 @@ public class FritzBoxMonitor implements IMonitor, IConfigurable, FritzBoxConst {
 		 public void disconnect() {
 		 	try {
 		 		this.isRunning = false;
-		 		retryCount = getRetryMaxValue();
 		 		if (fb_socket != null)
 		 			fb_socket.close();
 	 		} catch (IOException e) {
 	 			m_logger.log(Level.SEVERE, e.getMessage(), e);
 	 		} finally {
-	 			retryCount = getRetryMaxValue();
 	 			this.isRunning = false;
 	 		}
 		 }
 		
 		protected boolean connect() {
+			IEventBroker broker = this.getRuntime().getEventBroker();
+			broker.register(this);
 			try {
-				m_logger.info("Re-connect try #"+this.retryCount);
 				fb_socket = new Socket(this.m_configuration.getProperty(CFG_IP, "fritz.box"), Integer.parseInt(this.m_configuration.getProperty(CFG_MONITOR_PORT, "1012")));
 				fb_socket.setKeepAlive(true);
-				retryCount = 0;
 				
 				this.m_connectTime = System.currentTimeMillis();
-				
+				broker.send(this, broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_RECONNECTED_SUCCESS));
 				return true;
 			} catch (UnknownHostException e) {
 				m_logger.log(Level.SEVERE, e.getMessage(), e);
-				retryCount++;
-				if (retryCount == getRetryMaxValue())
-					PropagationFactory.getInstance().fire(
-							new Message(Message.ERROR,
-							"fritzbox.firmware.hardware",
-							"notfound",	
-							new String[] {this.m_configuration.getProperty(CFG_IP, "fritz.box"), this.m_configuration.getProperty(CFG_MONITOR_PORT, "1012")},
-							e,
-							true));
+				broker.send(this, broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_UNKNOWN_HOST));
 			} catch (SocketException e) {
 				m_logger.log(Level.SEVERE, e.getMessage(), e);
-				retryCount++;
-				if (retryCount == getRetryMaxValue())
-					PropagationFactory.getInstance().fire(
-							new Message(Message.ERROR,
-							"fritzbox.firmware.hardware",
-							"notfound",	
-							new String[] {this.m_configuration.getProperty(CFG_IP, "fritz.box"), this.m_configuration.getProperty(CFG_MONITOR_PORT, "1012")},
-							e,
-							true));	
+				if (e.getMessage().indexOf("refused")>0) {
+					broker.send(this, broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_REFUSED));
+				} else {
+					broker.send(this, broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_NETWORK_UNAVAILABLE));
+				}
 			} catch (IOException e) {
 				m_logger.log(Level.SEVERE, e.getMessage(), e);
-				PropagationFactory.getInstance().fire(
-						new Message(Message.ERROR,
-						getNamespace(),
-						"connect",	
-						new String[] {Integer.toString(getRetryMaxValue() - retryCount)},
-						e));
-				retryCount++;
-			} 
+				broker.send(this, broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_CONNECTION_LOST));
+			} finally {
+				if (broker!=null) broker.unregister(this);
+			}
 			return false;
 		}
 		
@@ -240,18 +191,6 @@ public class FritzBoxMonitor implements IMonitor, IConfigurable, FritzBoxConst {
 				this.m_runtime = PIMRuntime.getInstance();
 			}
 			return this.m_runtime;
-		}
-		
-		private int getRetryMaxValue() {
-			if (m_configuration!=null)
-				return Integer.parseInt(m_configuration.getProperty(CFG_RETRYMAX, "5"));
-			return 5;
-		}
-		
-		private int getRetryTimeoutValue() {
-			if (m_configuration!=null)
-				return 60 * Integer.parseInt(m_configuration.getProperty(CFG_RETRYTIMEOUT, "1"));
-			return 60;
 		}
 		
 		public String toString() {
@@ -307,6 +246,10 @@ public class FritzBoxMonitor implements IMonitor, IConfigurable, FritzBoxConst {
 		
 		public boolean isRunning() {
 			return this.isRunning;
+		}
+
+		public String getSenderID() {
+			return ID;
 		}
 	}
 

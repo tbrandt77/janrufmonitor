@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.Label;
 import de.janrufmonitor.framework.monitor.IMonitor;
 import de.janrufmonitor.fritzbox.FritzBoxMonitor;
 import de.janrufmonitor.fritzbox.firmware.FirmwareManager;
+import de.janrufmonitor.fritzbox.firmware.TR064FritzBoxFirmware;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.service.IService;
@@ -117,22 +118,6 @@ public class FritzBoxVoip extends AbstractFieldEditorConfigPage {
 		addField(sfe);
 		
 		if (isExpertMode()) {
-//			sfe = new StringFieldEditor(
-//					getConfigNamespace()+SEPARATOR+"boxport",
-//					this.m_i18n.getString(this.getNamespace(), "boxport", "label", this.m_language),
-//					this.getFieldEditorParent()
-//				);
-//			sfe.setEmptyStringAllowed(false);
-//			addField(sfe);
-		
-//			sfe = new StringFieldEditor(
-//					getConfigNamespace()+SEPARATOR+"festnetzalias",
-//				this.m_i18n.getString(this.getNamespace(), "festnetzalias", "label", this.m_language),
-//				this.getFieldEditorParent()
-//			);
-//			sfe.setEmptyStringAllowed(true);
-//			addField(sfe);	
-
 			IntegerFieldEditor ife = new IntegerFieldEditor(
 				getConfigNamespace()+SEPARATOR+"retrymax",
 				this.m_i18n.getString(this.getNamespace(), "retrymax", "label", this.m_language),
@@ -217,34 +202,35 @@ public class FritzBoxVoip extends AbstractFieldEditorConfigPage {
 		status_observer.setText(this.m_i18n.getString(this.getNamespace(), "statuso", "label", this.m_language)+((fbMonitor!=null && fbMonitor.isStarted()) ? "OK" : "---"));
 		new Label(this.getFieldEditorParent(), SWT.NULL);
 		
-		Label status_sync = new Label(this.getFieldEditorParent(), SWT.NULL);
-		status_sync.setText(this.m_i18n.getString(this.getNamespace(), "statuss", "label", this.m_language)+(FirmwareManager.getInstance().isLoggedIn() ? "OK" : "---"));
-		new Label(this.getFieldEditorParent(), SWT.NULL);
-		
-		if (fbMonitor!=null && fbMonitor.isStarted() && FirmwareManager.getInstance().isLoggedIn()) {
-			// set icon to colored
-			IService tray = this.getRuntime().getServiceFactory().getService("TrayIcon");
-			try {
-				Method m = tray.getClass().getMethod("setIconStateActive", new Class[] {});
-				if (m!=null) {
-					m.invoke(tray, new Object[] {});
+		if (FirmwareManager.getInstance().isLoggedIn() && !FirmwareManager.getInstance().isInstance(TR064FritzBoxFirmware.class)) {
+			Label status_sync = new Label(this.getFieldEditorParent(), SWT.NULL);
+			status_sync.setText(this.m_i18n.getString(this.getNamespace(), "statuss", "label", this.m_language)+(FirmwareManager.getInstance().isLoggedIn() ? "OK" : "---"));
+			new Label(this.getFieldEditorParent(), SWT.NULL);
+			
+			if (fbMonitor!=null && fbMonitor.isStarted() && FirmwareManager.getInstance().isLoggedIn()) {
+				// set icon to colored
+				IService tray = this.getRuntime().getServiceFactory().getService("TrayIcon");
+				try {
+					Method m = tray.getClass().getMethod("setIconStateActive", new Class[] {});
+					if (m!=null) {
+						m.invoke(tray, new Object[] {});
+					}
+				} catch (Exception ex) {
 				}
-			} catch (Exception ex) {
+			}
+			
+			if ((fbMonitor==null || !fbMonitor.isStarted()) && !FirmwareManager.getInstance().isLoggedIn()) {
+				// set icon to colored
+				IService tray = this.getRuntime().getServiceFactory().getService("TrayIcon");
+				try {
+					Method m = tray.getClass().getMethod("setIconStateInactive", new Class[] {});
+					if (m!=null) {
+						m.invoke(tray, new Object[] {});
+					}
+				} catch (Exception ex) {
+				}
 			}
 		}
-		
-		if ((fbMonitor==null || !fbMonitor.isStarted()) && !FirmwareManager.getInstance().isLoggedIn()) {
-			// set icon to colored
-			IService tray = this.getRuntime().getServiceFactory().getService("TrayIcon");
-			try {
-				Method m = tray.getClass().getMethod("setIconStateInactive", new Class[] {});
-				if (m!=null) {
-					m.invoke(tray, new Object[] {});
-				}
-			} catch (Exception ex) {
-			}
-		}
-		
 	}
 	
 
