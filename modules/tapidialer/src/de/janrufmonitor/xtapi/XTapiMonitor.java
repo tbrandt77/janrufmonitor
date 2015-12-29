@@ -109,7 +109,12 @@ public class XTapiMonitor implements IMonitor, IConfigurable, XTapiConst {
 				m_tapi = new MSTAPI();
 				int n = m_tapi.init(this);
 				
-				m_deviceIDMapping = new int[n];
+				if (n>=0)
+					m_deviceIDMapping = new int[n];
+				else {
+					if (m_logger!=null && m_logger.isLoggable(Level.SEVERE))
+						m_logger.severe("TAPI provided no lines to observe. Lines count: "+n);
+				}
 
 				IEventBroker broker = this.getRuntime().getEventBroker();
 				broker.register(this, broker
@@ -146,6 +151,8 @@ public class XTapiMonitor implements IMonitor, IConfigurable, XTapiConst {
 					}
 				}
 			} catch (Exception e) {
+				if (m_logger!=null && m_logger.isLoggable(Level.SEVERE))
+					m_logger.log(Level.SEVERE, e.getMessage(), e);
 				PropagationFactory.getInstance().fire(
 						new Message(Message.ERROR,
 						getNamespace(),
