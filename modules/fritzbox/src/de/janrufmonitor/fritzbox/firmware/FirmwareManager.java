@@ -45,6 +45,7 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 	private Thread m_restartedThread;
 	private IEventBroker m_broker;
 	
+	private boolean m_isRunning = false;
 	private int m_retryCount = 0;
     
     private FirmwareManager() {
@@ -65,6 +66,7 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
     
     public void startup() {
 		if (this.m_broker!=null) {
+			this.m_broker.register(this);
 			this.m_broker.register(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_RESTARTED));
 			this.m_broker.register(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_NETWORK_UNAVAILABLE));
 			this.m_broker.register(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_UNKNOWN_HOST));
@@ -324,6 +326,7 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
     
     public void shutdown() {
 		if (this.m_broker!=null) {
+			this.m_broker.unregister(this);
 			this.m_broker.unregister(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_RESTARTED));
 			this.m_broker.unregister(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_NETWORK_UNAVAILABLE));
 			this.m_broker.unregister(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_UNKNOWN_HOST));
@@ -373,7 +376,7 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 							new Exception("FRITZ!Box "+getFritzBoxAddress()+" restart detected."),
 							false),
 						"Tray");
-				this.shutdownAndRestart();
+				this.reconnect(10000L);
 				break;
 			case IEventConst.EVENT_TYPE_HARDWARE_NETWORK_UNAVAILABLE: 
 				if (m_logger.isLoggable(Level.INFO))
@@ -386,7 +389,7 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 							new Exception("Network unreachable."),
 							false),
 						"Tray");
-				this.shutdownAndRestart();
+				this.reconnect(getFritzBoxMaxRetryTimeout());
 				break;
 			case IEventConst.EVENT_TYPE_HARDWARE_CONNECTION_LOST: 
 				if (m_logger.isLoggable(Level.INFO))
@@ -399,7 +402,8 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 							new Exception("Connection to "+getFritzBoxAddress()+":"+getFritzBoxPort()+" lost."),
 							false),
 						"Tray");
-				this.shutdownAndRestart();
+				
+				this.reconnect(getFritzBoxMaxRetryTimeout());
 				break;
 			case IEventConst.EVENT_TYPE_HARDWARE_UNKNOWN_HOST: 
 				if (m_logger.isLoggable(Level.INFO))
@@ -412,7 +416,7 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 							new Exception("Unknown host "+getFritzBoxAddress()),
 							false),
 						"Tray");
-				this.shutdownAndRestart();
+				this.reconnect(getFritzBoxMaxRetryTimeout());
 				break;
 			case IEventConst.EVENT_TYPE_HARDWARE_REFUSED: 
 				if (m_logger.isLoggable(Level.INFO))
@@ -423,14 +427,19 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 							"refused",
 							new String[] {getFritzBoxAddress()},
 							new Exception("Connection refused: "+getFritzBoxAddress()),
-							false),
-						"Tray");
-				this.shutdownAndRestart();
+							false));
+
+				this.reconnect(getFritzBoxMaxRetryTimeout());
 				break;
 			case IEventConst.EVENT_TYPE_HARDWARE_RECONNECTED_SUCCESS: 
 				if (m_logger.isLoggable(Level.INFO))
-					m_logger.info("Connection successfully created. Retry counter = 0");
-				this.m_retryCount = 0;
+					m_logger.info("Connection successfully established.");
+				
+				if (getRuntime().getMonitorListener().isRunning() && this.isLoggedIn()) {
+					m_retryCount = 0;
+					if (m_logger.isLoggable(Level.INFO))
+						m_logger.info("Retry counter = 0");
+				}
 				break;
 			default: break;
 		}
@@ -448,12 +457,30 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 		return "FirmwareManager";
 	}
 	
-    private void shutdownAndRestart() {
+    private void reconnect(long timeout) {
+    	while (this.m_isRunning) {
+    		try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+			}
+    	}
+    	this.m_isRunning = true;
     	IMonitorListener ml = PIMRuntime.getInstance().getMonitorListener();
 		if (ml!=null && ml.isRunning()) {
 			if (m_logger.isLoggable(Level.INFO))
 				m_logger.info("Disconnecting FritzBox monitor on port 1012.");
 			ml.stop();
+		}
+		
+		ICommand c = PIMRuntime.getInstance().getCommandFactory().getCommand("Activator");
+		if (c!=null) {
+			try {
+				Map m = new HashMap();
+				m.put("status", "delay");
+				c.setParameters(m); // this method executes the command as well !!
+			} catch (Exception e) {
+				m_logger.log(Level.SEVERE, e.toString(), e);
+			}
 		}
 		
 		if (m_logger.isLoggable(Level.INFO))
@@ -472,66 +499,76 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
     	}
     	this.m_fw = null;
 
-		if (getFritzBoxAutoReconnect() && this.m_retryCount<=getFritzBoxMaxRetryCount()) {
-			this.m_retryCount++;
-			if (m_logger.isLoggable(Level.INFO))
-				m_logger.info("Re-connecting is configured. Retry counter = "+this.m_retryCount);
-			
+		if (getFritzBoxAutoReconnect() && m_retryCount<getFritzBoxMaxRetryCount()) {
+			m_retryCount++;
 			try {
-				if (m_logger.isLoggable(Level.INFO))
-					m_logger.info("Sleeping "+this.getFritzBoxMaxRetryTimeout()+" ms before re-connect try.");
-				Thread.sleep(getFritzBoxMaxRetryTimeout());
-			} catch (InterruptedException e) {
+				Thread.sleep(7000);
+			} catch (InterruptedException e1) {
 			}
+			
+			if (m_logger.isLoggable(Level.INFO))
+				m_logger.info("Re-connecting is configured. Retry counter = "+m_retryCount);
+			
 			
 			PropagationFactory.getInstance().fire(
 					new Message(Message.INFO,
 						"fritzbox.firmware.hardware",
 						"reconnect",
-						new String[] {getFritzBoxAddress()},
+						new String[] {getFritzBoxAddress(), Integer.toString(m_retryCount)},
 						new Exception("Reconnecting to FRITZ!Box "+getFritzBoxAddress()),
 						false),
 					"Tray");
 			
-			if (ml!=null && !ml.isRunning()) {
-				ml.start();
-				ICommand c = PIMRuntime.getInstance().getCommandFactory().getCommand("Activator");
-				if (c!=null) {
-					try {
-						Map m = new HashMap();
-						m.put("status", "delay");
-						c.setParameters(m); // this method executes the command as well !!
-					} catch (Exception e) {
-						m_logger.log(Level.SEVERE, e.toString(), e);
-					}
-				}
+			try {
+				if (m_logger.isLoggable(Level.INFO))
+					m_logger.info("Sleeping "+timeout+" ms before re-connect try.");
+				Thread.sleep(timeout);
+			} catch (InterruptedException e) {
 			}
-			
+
 			try {
 				this.login();
 				
 				if (m_logger.isLoggable(Level.INFO))
 					m_logger.info("Automatic re-connect to FritzBox done...");
+				
 			} catch (FritzBoxLoginException e) {
 				// check for reason
 				if (m_logger.isLoggable(Level.INFO))
 					m_logger.info("Automatic re-connect to FritzBox failed...");
-				
-				IEventBroker eb = getRuntime().getEventBroker();
-				eb.send(FirmwareManager.m_instance, eb.createEvent(IEventConst.EVENT_TYPE_HARDWARE_NETWORK_UNAVAILABLE));
 			}
-		}
-		
-		if (getFritzBoxAutoReconnect() && this.m_retryCount>=getFritzBoxMaxRetryCount()) {
+			
+			Thread t = new Thread(new Runnable() {
+				public void run() {
+					IMonitorListener ml = PIMRuntime.getInstance().getMonitorListener();
+					if (ml!=null && !ml.isRunning()) {
+						ml.start();
+						ICommand c = PIMRuntime.getInstance().getCommandFactory().getCommand("Activator");
+						if (c!=null) {
+							try {
+								Map m = new HashMap();
+								m.put("status", "delay");
+								c.setParameters(m); // this method executes the command as well !!
+							} catch (Exception e) {
+								m_logger.log(Level.SEVERE, e.toString(), e);
+							}
+						}
+					}}});
+			t.setName("JAM-FritzBoxFirmwareRestartMonitor-Thread-(daemon)");
+			t.setDaemon(true);
+			t.start();
+
+		} else if (getFritzBoxAutoReconnect() && m_retryCount>=getFritzBoxMaxRetryCount()) {
 			PropagationFactory.getInstance().fire(
 					new Message(Message.INFO,
 						"fritzbox.firmware.hardware",
 						"maxreconnect",
-						new String[] {Integer.toString((this.m_retryCount>getFritzBoxMaxRetryCount() ? getFritzBoxMaxRetryCount() : this.m_retryCount))},
-						new Exception("Maximum retry count reached "+this.m_retryCount),
+						new String[] {Integer.toString((m_retryCount>getFritzBoxMaxRetryCount() ? getFritzBoxMaxRetryCount() : m_retryCount))},
+						new Exception("Maximum retry count reached "+m_retryCount),
 						false),
 					"Tray");
 		}
+		this.m_isRunning = false;
     }
 
     private synchronized void createFirmwareInstance() throws FritzBoxInitializationException, FritzBoxNotFoundException, InvalidSessionIDException {
@@ -633,7 +670,7 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 						m_logger.warning("FritzBox reset or restart detected.");
 					
 					if (m_broker!=null)
-						m_broker.send(FirmwareManager.m_instance, m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_RESTARTED));					
+						m_broker.send(FirmwareManager.this, m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_RESTARTED));					
 				} catch (InterruptedException e) {
 					m_logger.log(Level.WARNING,"JAM-FritzBoxFirmwareRestarted-Thread gets interrupted.: "+e.getMessage(), e);
 				}
@@ -720,7 +757,7 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 	
 	private long getFritzBoxMaxRetryTimeout() {
     	String n = getRuntime().getConfigManagerFactory().getConfigManager().getProperty(FritzBoxMonitor.NAMESPACE, FritzBoxConst.CFG_RETRYTIMEOUT);
-    	return Long.parseLong((n!=null && n.length()>0 ? n : "1"))* 60 * 1000;
+    	return Long.parseLong((n!=null && n.length()>0 ? n : "30")) * 1000;
 	}
     
     private IRuntime getRuntime() {

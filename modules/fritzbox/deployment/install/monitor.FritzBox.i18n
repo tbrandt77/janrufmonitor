@@ -1,8 +1,5 @@
 monitor.FritzBoxMonitor\:title\:label\:de=AVM FRITZ!Box Fon Monitor
 monitor.FritzBoxMonitor\:error\:label\:de=Die Anmeldung an der FRITZ!Box Fon ist fehlgeschlagen. Entweder ist die FRITZ!Box Fon nicht erreichbar oder die Anmeldeinformationen sind falsch. Es k\u00F6nnen keine Daten von der FRITZ!Box Fon geladen werden. Bitte \u00FCberpr\u00FCfen Sie die Konfiguration der FRITZ!Box Fon und die Einstellungen im jAnrufmonitor.
-monitor.FritzBoxMonitor\:connectlost\:label\:de=Verbindungsabbruch\n\nDie Verbindung zur FRITZ!Box Fon wurde unterbrochen. Es werden derzeit keine Anrufe erkannt. Ein erneuter Anmeldeversuch wird gestartet, um sich an der FRITZ!Box Fon zu registrieren und die Anrufer\u00FCberwachung fortzusetzen. Sollte das Problem weiterhin bestehen, \u00FCberpr\u00FCfen Sie bitte die Netzwerkverbindung.
-monitor.FritzBoxMonitor\:connect\:label\:de=Keine Verbindung zur FRITZ!Box Fon m\u00F6glich\n\nDie Verbindung zur FRITZ!Box Fon konnte nicht hergestellt werden, da Probleme in der Netzwerkkommunikation auftraten.\nM\u00F6gliche Ursache:\n\n1) Die FRITZ!Box Fon ist noch nicht durch W\u00E4hlen der Ziffernfolge #96*5* an einem Telefon, das direkt an der FRITZ!Box Fon angeschlossen ist, zur \u00DCberwachung freigeschaltet\n\n2) Die Einstellungen zur FRITZ!Box Fon (siehe Administration -> Einstellungen -> AVM FRITZ!Box Fon Einstellungen) sind fehlerhaft\n\n3) Es liegen Netzwerkprobleme vor, die eine Kommunikation mit der FRITZ!Box Fon verhindern (z.B. fehlerhafte Firewall-Konfiguration oder LAN- und WLAN-Einstellungen)\n\nPr\u00FCfen Sie die oben genannten Ursachen und verbinden Sie jAnrufmonitor erneut mit der FRITZ!Box Fon. Momentan werden keine Anrufe erkannt.\n\nVerbleibende automatische Verbindungsversuche: {%1}
-monitor.FritzBoxMonitor\:nextconnect\:label\:de=Neu verbinden mit der FRITZ!Box Fon fehlgeschlagen. N\u00E4chster Verbindungsversuch in {%1} min.
 
 repository.FritzBoxCallListImporter\:filtername\:label\:de=AVM FRITZ!Box Fon-Anrufliste (*.csv)
 repository.FritzBoxCallerExporter\:filtername\:label\:de=AVM FRITZ!Box Fon Telefonbuch (*.xml)
@@ -10,15 +7,15 @@ ui.jface.dialogs.InfoDialog\:edition\:label\:de=(AVM FRITZ!Box Fon-Edition)
 
 repository.FritzBoxPhonebookManager\:title\:label\:de=AVM FRITZ!Box Fon Telefonbuch
 
-fritzbox.firmware.login\:title\:label\:de=FRITZ!Box Fon Anmeldung
+fritzbox.firmware.login\:title\:label\:de=AVM FRITZ!Box Fon Anmeldung
 fritzbox.firmware.login\:loginfailed\:label\:de=Die Anmeldung an der FRITZ!Box Fon ist fehlgeschlagen. Bitte pr\u00FCfen Sie das FRITZ!Box Fon-Passwort und ggf. den FRITZ!Box Fon-Benutzer unter Administration -> Einstellungen -> AVM FRITZ!Box Fon-Einstellungen.
 
-fritzbox.firmware.hardware\:title\:label\:de=FRITZ!Box Fon Verbindungsmanager
-fritzbox.firmware.hardware\:unknownhost\:label\:de=Die FRITZ!Box Fon mit dem Adresse {%1} ist nicht erreichbar. Bitte pr\u00FCfen Sie die IP-Adresse der FRITZ!Box Fon unter Administration -> Einstellungen -> AVM FRITZ!Box Fon-Einstellungen.
-fritzbox.firmware.hardware\:unsupported\:label\:de=Die Firmware Version auf der FRITZ!Box Fon wird von jAnrufmonitor nicht erkannt. Entweder ist es eine Labor-Firmware oder eine nicht unterst\u00FCtzte Version. jAnrufmonitor kann nicht mit dieser FRITZ!Box Fon genutzt werden.
-fritzbox.firmware.hardware\:conlost\:label\:de=Die Verbindungen zur FRITZ!Box Fon {%1} auf Port {%2} und 1012 wurden unterbrochen. 
-fritzbox.firmware.hardware\:restarted\:label\:de=Die FRITZ!Box Fon {%1} wurde neu gestartet oder die Verbindungen waren kurzzeitig unterbrochen. 
-fritzbox.firmware.hardware\:network\:label\:de=Auf das lokale Netzwerk kann nicht zugegriffen werden. Die FRITZ!Box Fon {%1} ist nicht erreichbar.
-fritzbox.firmware.hardware\:refused\:label\:de=Die Verbindung zur FRITZ!Box Fon {%1} auf Port 1012 wurde abgewiesen. Die \u00DCberwachung auf der FRITZ!Box Fon ist noch nicht freigeschaltet.
-fritzbox.firmware.hardware\:reconnect\:label\:de=Versuche Verbindungen zur FRITZ!Box Fon {%1} automatisch wiederherzustellen...
-fritzbox.firmware.hardware\:maxreconnect\:label\:de=Maximale Anzahl ({%1}) an Verbindungsversuchen erreicht. Weitere automatische Verbindungsversuche werden nicht weiter durchgef\u00FChrt.
+fritzbox.firmware.hardware\:title\:label\:de=AVM FRITZ!Box Fon Verbindungsmanager
+fritzbox.firmware.hardware\:unknownhost\:label\:de=Die AVM FRITZ!Box Fon mit dem Adresse {%1} ist nicht erreichbar. Bitte pr\u00FCfen Sie die IP-Adresse der AVM FRITZ!Box Fon unter Administration -> Einstellungen -> AVM FRITZ!Box Fon-Einstellungen.
+fritzbox.firmware.hardware\:unsupported\:label\:de=Die Firmware Version auf der AVM FRITZ!Box Fon wird von jAnrufmonitor nicht erkannt. Entweder ist es eine Labor-Firmware oder eine nicht unterst\u00FCtzte Version. jAnrufmonitor kann nicht mit dieser AVM FRITZ!Box Fon genutzt werden.
+fritzbox.firmware.hardware\:conlost\:label\:de=Die Verbindungen zur AVM FRITZ!Box Fon {%1} auf Port {%2} und 1012 wurden unterbrochen. 
+fritzbox.firmware.hardware\:restarted\:label\:de=Die AVM FRITZ!Box Fon {%1} wurde neu gestartet oder die Verbindungen waren kurzzeitig unterbrochen. 
+fritzbox.firmware.hardware\:network\:label\:de=Auf das lokale Netzwerk kann nicht zugegriffen werden. Die AVM FRITZ!Box Fon {%1} ist nicht erreichbar.
+fritzbox.firmware.hardware\:refused\:label\:de=Die \u00DCberwachung auf der AVM FRITZ!Box Fon {%1} ist nicht freigeschaltet. Die Verbindung auf Port 1012 wurde abgewiesen.
+fritzbox.firmware.hardware\:reconnect\:label\:de=Versuche Verbindungen zur AVM FRITZ!Box Fon {%1} automatisch wiederherzustellen (#{%2})...
+fritzbox.firmware.hardware\:maxreconnect\:label\:de=Maximale Anzahl ({%1}) an Verbindungsversuchen ist erreicht. Es werden keine weiteren automatische Verbindungsversuche durchgef\u00FChrt.

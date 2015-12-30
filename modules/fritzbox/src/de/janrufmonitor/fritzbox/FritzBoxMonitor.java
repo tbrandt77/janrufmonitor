@@ -58,10 +58,14 @@ public class FritzBoxMonitor implements IMonitor, IConfigurable, FritzBoxConst {
 				try {
 					BufferedReader in = new BufferedReader(new InputStreamReader(fb_socket.getInputStream()));
 					String currentLine = null;
-					
+					int countNullLines = 0;
 					while(isRunning){
 						currentLine = in.readLine();
-						//System.out.println(currentLine);
+						if (currentLine==null) countNullLines++;
+						if (countNullLines>100) {
+							broker.send(this, broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_REFUSED));
+							this.isRunning = false;
+						}
 						m_logger.info("Call raw data from FritzBox: "+currentLine);
 						process(currentLine);
 					}
@@ -147,6 +151,7 @@ public class FritzBoxMonitor implements IMonitor, IConfigurable, FritzBoxConst {
 			IEventBroker broker = this.getRuntime().getEventBroker();
 			broker.register(this);
 			try {
+				Thread.sleep(1000);
 				fb_socket = new Socket(this.m_configuration.getProperty(CFG_IP, "fritz.box"), Integer.parseInt(this.m_configuration.getProperty(CFG_MONITOR_PORT, "1012")));
 				fb_socket.setKeepAlive(true);
 				
@@ -166,6 +171,7 @@ public class FritzBoxMonitor implements IMonitor, IConfigurable, FritzBoxConst {
 			} catch (IOException e) {
 				m_logger.log(Level.SEVERE, e.getMessage(), e);
 				broker.send(this, broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_CONNECTION_LOST));
+			} catch (InterruptedException e) {
 			} finally {
 				if (broker!=null) broker.unregister(this);
 			}

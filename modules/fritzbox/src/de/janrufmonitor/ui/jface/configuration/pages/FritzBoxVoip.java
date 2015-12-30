@@ -127,8 +127,8 @@ public class FritzBoxVoip extends AbstractFieldEditorConfigPage {
 			addField(ife);
 			
 			ife = new IntegerFieldEditor(
-				getConfigNamespace()+SEPARATOR+"retrytimeout",
-				this.m_i18n.getString(this.getNamespace(), "retrytimeout", "label", this.m_language),
+				getConfigNamespace()+SEPARATOR+"retrytimeouts",
+				this.m_i18n.getString(this.getNamespace(), "retrytimeouts", "label", this.m_language),
 				this.getFieldEditorParent()
 			);
 			ife.setTextLimit(2);
