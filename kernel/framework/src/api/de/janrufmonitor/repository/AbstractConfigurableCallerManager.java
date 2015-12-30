@@ -12,12 +12,14 @@ import de.janrufmonitor.framework.IAttributeMap;
 import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.ICallerList;
 import de.janrufmonitor.framework.IJAMConst;
+import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.framework.configuration.IConfigurable;
 import de.janrufmonitor.repository.filter.AttributeFilter;
 import de.janrufmonitor.repository.filter.CharacterFilter;
 import de.janrufmonitor.repository.filter.FilterType;
 import de.janrufmonitor.repository.filter.IFilter;
 import de.janrufmonitor.repository.filter.PhonenumberFilter;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.runtime.IRuntime;
 
 /**
@@ -84,6 +86,17 @@ public abstract class AbstractConfigurableCallerManager implements ICallerManage
 	public abstract String getID();
 
 	public abstract String getNamespace();
+	
+	/**
+	 * Check for internal phone numbers
+	 * 
+	 * @param pn
+	 * @return
+	 * @deprecated use PhonenumberAnalyzer.getInstance(this.getRuntime()).isInternal(number) instead
+	 */
+	protected boolean isInternalNumber(IPhonenumber pn) {
+		return PhonenumberAnalyzer.getInstance(this.getRuntime()).isInternal(pn);
+	}
 
 	public void setManagerID(String id) { 
 		this.m_externalID = id;
