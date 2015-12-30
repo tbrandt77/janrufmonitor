@@ -340,7 +340,7 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 					FirmwareManager.getInstance().login();
 					m_loggedin = true;
 				} catch (FritzBoxLoginException e) {
-					this.m_logger.log(Level.WARNING, "Login to fritzbox trial #"+counter+ "failed. Retrying.", e);
+					this.m_logger.log(Level.SEVERE, "Login to fritzbox trial #"+counter+ " failed. Retrying.", e);
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e1) {
