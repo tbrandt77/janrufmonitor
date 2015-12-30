@@ -1,5 +1,27 @@
 ﻿===
 
+jAnrufmonitor 5.0.62 (01.01.2016)
+---------------------------------
+Neu:
+- Länder- und Vorwahlverzeichnis: Fallback für interne Telefonanlagenrufnummern integriert
+- Tray: Ungültige Rufnummern werden signalisisert
+
+Bugfix:
+- Serializer: NullPointerException behoben
+- Copyright Information angepasst
+
+Module:
+- FRITZ!Box-Überwachung: MSN Alias Auflösung für TR-064 Firmware
+- FRITZ!Box-Überwachung: Zeitfilter beim Synchronisieren hinzugefügt
+- FRITZ!Box-Überwachung: Neue Routine zur Überprüfung von aktivem TR-064
+- FRITZ!Box-Überwachung: Bugfix in der Sync-Zeitberechnung
+- FRITZ!Box-Überwachung: Neuer Verbindungsmanager und zentrale Fehlerbehandlung
+- TAPI-Überwachung: Prüfung der Anzahl der überwachten Nebenstellen
+- Client Erweiterung: Automatisches Wiederverbinden ohne Popup-Dialog
+
+
+===
+
 jAnrufmonitor 5.0.61 (01.12.2015)
 ---------------------------------
 Neu:
