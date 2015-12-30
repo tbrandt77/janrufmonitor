@@ -45,6 +45,7 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 	private Thread m_restartedThread;
 	private IEventBroker m_broker;
 	
+	private boolean m_isReconnecting = false;
 	private boolean m_isRunning = false;
 	private int m_retryCount = 0;
     
@@ -65,6 +66,8 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
     }
     
     public void startup() {
+    	if (this.m_isRunning) return;
+    	
 		if (this.m_broker!=null) {
 			this.m_broker.register(this);
 			this.m_broker.register(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_RESTARTED));
@@ -77,9 +80,11 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 		}
    		try {   			
 			this.login();
+			this.m_isRunning = true;
 		} catch (FritzBoxLoginException e) {
-			this.m_fw = null;
 			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			this.m_fw = null;
+			this.m_isRunning = false;
 		}
     }
     
@@ -348,6 +353,7 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
     		this.m_fw.destroy();
     	}
     	this.m_fw = null;
+    	this.m_isRunning = false;
     }
 
 	public void received(IEvent event) {
@@ -458,13 +464,13 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 	}
 	
     private void reconnect(long timeout) {
-    	while (this.m_isRunning) {
+    	while (this.m_isReconnecting) {
     		try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
 			}
     	}
-    	this.m_isRunning = true;
+    	this.m_isReconnecting = true;
     	IMonitorListener ml = PIMRuntime.getInstance().getMonitorListener();
 		if (ml!=null && ml.isRunning()) {
 			if (m_logger.isLoggable(Level.INFO))
@@ -568,7 +574,7 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 						false),
 					"Tray");
 		}
-		this.m_isRunning = false;
+		this.m_isReconnecting = false;
     }
 
     private synchronized void createFirmwareInstance() throws FritzBoxInitializationException, FritzBoxNotFoundException, InvalidSessionIDException {
@@ -672,7 +678,7 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 					if (m_broker!=null)
 						m_broker.send(FirmwareManager.this, m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_RESTARTED));					
 				} catch (InterruptedException e) {
-					m_logger.log(Level.WARNING,"JAM-FritzBoxFirmwareRestarted-Thread gets interrupted.: "+e.getMessage(), e);
+					m_logger.log(Level.INFO,"JAM-FritzBoxFirmwareRestarted-Thread gets interrupted.: "+e.getMessage(), e);
 				}
 			}
 		};

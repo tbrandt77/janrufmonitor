@@ -122,7 +122,7 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 				Thread t = new Thread(new Runnable() {
 					public void run() {
 						try {
-							Thread.sleep(delay);
+							Thread.sleep((delay + 2000));
 						} catch (InterruptedException e) {
 						}
 						new SWTExecuter() {
