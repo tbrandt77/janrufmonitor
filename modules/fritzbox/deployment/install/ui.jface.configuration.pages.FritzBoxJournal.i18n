@@ -27,6 +27,7 @@ ui.jface.configuration.pages.FritzBoxVoip\:statuss\:label\:de=Verbindung zum Syn
 ui.jface.configuration.pages.FritzBoxVoip\:openfb\:label\:de=Um die FRITZ!Box Fon Hardware mit jAnrufmonitor zu \u00FCberwachen,\nmuss diese freigeschaltet werden. Durch W\u00E4hlen der Ziffernfolge #96*5*\nmit einem an der FRITZ!Box Fon angeschlossenen Telefon erfolgt\ndie Freischaltung.
 ui.jface.configuration.pages.FritzBoxVoip\:nohttp\:label\:de=Die IP-Adresse der FRITZ!Box Fon ohne http:// angeben.
 ui.jface.configuration.pages.FritzBoxVoip\:usehttps\:label\:de=FRITZ!Box Fon per HTTPS verbinden
+ui.jface.configuration.pages.FritzBoxVoip\:tr064off\:label\:de=FRITZ!Box Fon ohne TR-064 Protokoll nutzen
 
 ui.jface.configuration.pages.FritzBoxSynchronizer\:title\:label\:de=AVM FRITZ!Box Fon Synchronizer
 service.SynchronizerService\:title\:label\:de=AVM FRITZ!Box Fon Synchronizer

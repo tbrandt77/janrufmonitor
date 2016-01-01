@@ -26,6 +26,7 @@ ui.jface.configuration.pages.FritzBoxVoip\:statuss\:label\:en=Connection to sync
 ui.jface.configuration.pages.FritzBoxVoip\:openfb\:label\:en=To enable the connection of jAnrufmonitor to the FRITZ!Box Fon, please dial the\ncode #96*5* on a phone connected with the FRITZ!Box Fon hardware.
 ui.jface.configuration.pages.FritzBoxVoip\:nohttp\:label\:en=Please remove http:// from FRITZ!Box Fon IP address.
 ui.jface.configuration.pages.FritzBoxVoip\:usehttps\:label\:en=Connect FRITZ!Box Fon via HTTPS
+ui.jface.configuration.pages.FritzBoxVoip\:tr064off\:label\:en=Switch off TR-064 checks.
 
 ui.jface.configuration.pages.FritzBoxSynchronizer\:title\:label\:en=AVM FRITZ!Box Fon Synchronizer
 service.SynchronizerService\:title\:label\:en=AVM FRITZ!Box Fon Synchronizer

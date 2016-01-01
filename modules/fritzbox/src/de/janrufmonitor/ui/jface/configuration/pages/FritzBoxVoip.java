@@ -134,6 +134,13 @@ public class FritzBoxVoip extends AbstractFieldEditorConfigPage {
 			ife.setTextLimit(2);
 			addField(ife);	
 			
+			bfe = new BooleanFieldEditor(
+					getConfigNamespace()+SEPARATOR+"tr064off",
+				this.m_i18n.getString(this.getNamespace(), "tr064off", "label", this.m_language),
+				this.getFieldEditorParent()
+			);
+			addField(bfe);
+			
 			new Label(this.getFieldEditorParent(), SWT.NULL);
 			new Label(this.getFieldEditorParent(), SWT.NULL);
 			

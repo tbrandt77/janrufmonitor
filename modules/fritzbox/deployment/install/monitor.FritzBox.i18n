@@ -18,4 +18,5 @@ fritzbox.firmware.hardware\:restarted\:label\:de=Die AVM FRITZ!Box Fon {%1} wurd
 fritzbox.firmware.hardware\:network\:label\:de=Auf das lokale Netzwerk kann nicht zugegriffen werden. Die AVM FRITZ!Box Fon {%1} ist nicht erreichbar.
 fritzbox.firmware.hardware\:refused\:label\:de=Die \u00DCberwachung auf der AVM FRITZ!Box Fon {%1} ist nicht freigeschaltet. Die Verbindung auf Port 1012 wurde abgewiesen.
 fritzbox.firmware.hardware\:reconnect\:label\:de=Versuche Verbindungen zur AVM FRITZ!Box Fon {%1} automatisch wiederherzustellen (#{%2})...
+fritzbox.firmware.hardware\:notr064\:label\:de=Verbindung zur AVM FRITZ!Box Fon {%1} fehlgeschlagen. Das Verbindungsprotokoll TR-064 ist auf der AVM FRITZ!Box deaktiviert. Aktivieren Sie dieses, um das Programm nutzen zu k\u00F6nnen.
 fritzbox.firmware.hardware\:maxreconnect\:label\:de=Maximale Anzahl ({%1}) an Verbindungsversuchen ist erreicht. Es werden keine weiteren automatische Verbindungsversuche durchgef\u00FChrt.

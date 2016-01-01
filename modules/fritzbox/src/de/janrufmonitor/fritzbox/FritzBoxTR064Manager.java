@@ -32,6 +32,8 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import de.janrufmonitor.exception.Message;
+import de.janrufmonitor.exception.PropagationFactory;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.logging.LoggingInitializer;
 
@@ -943,7 +945,12 @@ public class FritzBoxTR064Manager {
 	}
 	
 	public boolean isTR064Supported(String server, String port) throws IOException {
-		if ("true".equalsIgnoreCase(System.getProperty("jam.fritzbox.tr064off", "false"))) return false;
+		if ("true".equalsIgnoreCase(System.getProperty("jam.fritzbox.tr064off", "false"))) {
+			if (this.m_logger.isLoggable(Level.INFO))
+				this.m_logger.info("System property jam.fritzbox.tr064off=true: TR-064 is switched off on jAnrufmonitor");
+			return false;
+		}
+		
 		StringBuffer response = null;
 		
 		try {
@@ -952,10 +959,19 @@ public class FritzBoxTR064Manager {
 			;
 		} catch (FileNotFoundException ex) {
 			if (this.m_logger.isLoggable(Level.WARNING))
-				this.m_logger.warning(ex.getMessage());
+				this.m_logger.warning(ex.toString()+": "+ex.getMessage());
 			
 			if (this.m_logger.isLoggable(Level.INFO))
 				this.m_logger.info("Can't access http://"+server+":"+port+"/tr64desc.xml: TR-064 is switched off on FRITZ!Box");
+			
+			PropagationFactory.getInstance().fire(
+					new Message(Message.ERROR,
+						"fritzbox.firmware.hardware",
+						"notr064",
+						new String[] {server},
+						ex,
+						false));
+			
 			return false;
 		}
 

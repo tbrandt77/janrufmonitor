@@ -68,6 +68,8 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
     public void startup() {
     	if (this.m_isRunning) return;
     	
+    	System.getProperties().setProperty("jam.fritzbox.tr064off", this.getFritzBoxTR064Off() ? "true": "false");
+    	
 		if (this.m_broker!=null) {
 			this.m_broker.register(this);
 			this.m_broker.register(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_RESTARTED));
@@ -750,6 +752,10 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
     
     private boolean getFritzBoxAutoReconnect() {
     	return getRuntime().getConfigManagerFactory().getConfigManager().getProperty(FritzBoxMonitor.NAMESPACE, FritzBoxConst.CFG_AUTO_RECONNECT_SESSIONID).equalsIgnoreCase("true");
+    }
+    
+    private boolean getFritzBoxTR064Off() {
+    	return getRuntime().getConfigManagerFactory().getConfigManager().getProperty(FritzBoxMonitor.NAMESPACE, FritzBoxConst.CFG_TR064_OFF).equalsIgnoreCase("true");
     }
     
     private boolean getFritzBoxUseHttps() {
