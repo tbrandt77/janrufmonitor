@@ -55,7 +55,7 @@ public class ClientMonitor implements IMonitor, IClientStateMonitor,
 				}
 			} else {
 				try {
-					Thread.sleep(2000);
+					Thread.sleep(30000);
 				} catch (InterruptedException e) {
 					m_logger.severe(e.toString());
 				}
