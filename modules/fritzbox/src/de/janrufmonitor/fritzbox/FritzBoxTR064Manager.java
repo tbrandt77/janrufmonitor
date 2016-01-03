@@ -134,6 +134,8 @@ public class FritzBoxTR064Manager {
     }
     
     public String getSID(String usr, String passwd, String server, String port, String protocol) throws IOException {
+    	if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info("Entering getSID(String usr, String passwd, String server, String port, String protocol)");
     	String user = new String(usr.getBytes("utf-8"));
 		
     	StringBuffer content = new StringBuffer();
@@ -280,6 +282,8 @@ public class FritzBoxTR064Manager {
     }
 
     public Map getPhonePorts(String usr, String passwd, String server, String port, String protocol) throws IOException {
+    	if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info("Entering getPhonePorts(String usr, String passwd, String server, String port, String protocol, String id)");
     	String user = new String(usr.getBytes("utf-8"));
 
     	StringBuffer content = new StringBuffer();
@@ -342,6 +346,9 @@ public class FritzBoxTR064Manager {
     }
     
     public String getPhonebookHash(String usr, String passwd, String server, String port, String protocol, String id) throws IOException {
+    	if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info("Entering getPhonebookHash(String usr, String passwd, String server, String port, String protocol, String id)");
+    	
     	String user = new String(usr.getBytes("utf-8"));
     	
     	long start = System.currentTimeMillis();
@@ -423,6 +430,8 @@ public class FritzBoxTR064Manager {
     }
     
     public InputStream getPhonebook(String usr, String passwd, String server, String port, String protocol, String id) throws IOException {
+    	if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info("Entering getPhonebook(String usr, String passwd, String server, String port, String protocol, String id)");
     	String user = new String(usr.getBytes("utf-8"));
     	
     	long start = System.currentTimeMillis();
@@ -482,6 +491,8 @@ public class FritzBoxTR064Manager {
     }
     
     public Map getPhonebookList(String usr, String passwd, String server, String port, String protocol) throws IOException {
+    	if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info("Entering getPhonebookList(String usr, String passwd, String server, String port, String protocol)");
     	String user = new String(usr.getBytes("utf-8"));
     	
 		long start = System.currentTimeMillis();
@@ -627,6 +638,8 @@ public class FritzBoxTR064Manager {
     }
     
     public Map getTelephoneAnsweringMachineList(String usr, String passwd, String server, String port, String protocol) throws IOException {
+    	if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info("Entering getTelephoneAnsweringMachineList(String usr, String passwd, String server, String port, String protocol)");
     	String user = new String(usr.getBytes("utf-8"));
     	
 		long start = System.currentTimeMillis();
@@ -699,6 +712,8 @@ public class FritzBoxTR064Manager {
     }
 
 	public InputStream getCallList(String usr, String passwd, String server, String port, String protocol, int days) throws IOException {
+		if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info("Entering getCallList(String usr, String passwd, String server, String port, String protocol, int days)");
 		String user = new String(usr.getBytes("utf-8"));
 
 		long start = System.currentTimeMillis();
@@ -794,6 +809,8 @@ public class FritzBoxTR064Manager {
 	}
 
 	public String getFirmwareVersion(String usr, String passwd, String server, String port, String protocol) throws IOException {
+		if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info("Entering getFirmwareVersion(String usr, String passwd, String server, String port, String protocol)");
 		String user = new String(usr.getBytes("utf-8"));
 		
 		StringBuffer content = new StringBuffer();
@@ -845,6 +862,8 @@ public class FritzBoxTR064Manager {
 	}
 	
 	public long getUptime(String usr, String passwd, String server, String port, String protocol) throws IOException {
+		if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info("Entering getUptime(String usr, String passwd, String server, String port, String protocol)");
 		String user = new String(usr.getBytes("utf-8"));
 		
 		StringBuffer content = new StringBuffer();
@@ -896,6 +915,8 @@ public class FritzBoxTR064Manager {
 	}
 	
 	public String[] getDescription(String usr, String passwd, String server, String port, String protocol) throws IOException {
+		if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info("Entering getDescription(String usr, String passwd, String server, String port, String protocol)");
 		String user = new String(usr.getBytes("utf-8"));
 		
 		StringBuffer content = new StringBuffer();
@@ -945,6 +966,8 @@ public class FritzBoxTR064Manager {
 	}
 	
 	public boolean isTR064Supported(String server, String port) throws IOException {
+		if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info("Entering isTR064Supported(String server, String port)");
 		if ("true".equalsIgnoreCase(System.getProperty("jam.fritzbox.tr064off", "false"))) {
 			if (this.m_logger.isLoggable(Level.INFO))
 				this.m_logger.info("System property jam.fritzbox.tr064off=true: TR-064 is switched off on jAnrufmonitor");

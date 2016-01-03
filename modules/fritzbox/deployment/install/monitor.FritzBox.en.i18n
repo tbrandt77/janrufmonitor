@@ -20,3 +20,4 @@ fritzbox.firmware.hardware\:reconnect\:label\:en=Try to re-connect to FRITZ!Box 
 fritzbox.firmware.hardware\:refused\:label\:en=Connection to FRITZ!Box Fon refused.
 fritzbox.firmware.hardware\:notr064\:label\:en=Connection failed with FRITZ!Box. TR-064 is disabled. Please activate before continuing.
 fritzbox.firmware.hardware\:maxreconnect\:label\:en=Reached maximum retry count ({%1}). No further re-connecting attempts.
+fritzbox.firmware.hardware\:sslerror\:label\:en=SSL Handshake failed. Please install Java 7 or higher.

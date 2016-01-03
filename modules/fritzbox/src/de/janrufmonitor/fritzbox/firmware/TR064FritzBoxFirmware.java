@@ -33,6 +33,8 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import de.janrufmonitor.exception.Message;
+import de.janrufmonitor.exception.PropagationFactory;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.fritzbox.FritzBoxTR064Manager;
 import de.janrufmonitor.fritzbox.IPhonebookEntry;
@@ -242,6 +244,18 @@ public class TR064FritzBoxFirmware implements
 			} else
 				throw new InvalidSessionIDException("FritzBox could not receive firmware version. Invalid Login data.");
 		} catch (IOException e) {
+			if (this.m_logger.isLoggable(Level.SEVERE))
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			if (e.getMessage().indexOf("DH keypair")>0) {
+				PropagationFactory.getInstance().fire(
+						new Message(Message.ERROR,
+							"fritzbox.firmware.hardware",
+							"sslerror",
+							new String[] {this.m_server, System.getProperty("java.runtime.version", "-")},
+							new Exception("SSL Handshake failed for server: "+this.m_server),
+							true));
+			}
+			
 			throw new FritzBoxInitializationException("FritzBox initializing failed: "+e.getMessage());
 		}
 	}
