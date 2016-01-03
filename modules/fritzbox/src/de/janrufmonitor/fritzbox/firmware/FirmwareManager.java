@@ -47,6 +47,7 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 	
 	private boolean m_isReconnecting = false;
 	private boolean m_isRunning = false;
+	private boolean m_isCreatingFirmware = false;
 	private int m_retryCount = 0;
     
     private FirmwareManager() {
@@ -87,6 +88,7 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 			this.m_fw = null;
 			this.m_isRunning = false;
+			this.m_isCreatingFirmware = false;
 		}
     }
     
@@ -580,6 +582,16 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
     }
 
     private synchronized void createFirmwareInstance() throws FritzBoxInitializationException, FritzBoxNotFoundException, InvalidSessionIDException {
+    	do {
+    		try {
+				Thread.sleep(250);
+				if (this.m_logger.isLoggable(Level.INFO))
+					this.m_logger.info("Firmware is beeing created. Sleeping thread: "+Thread.currentThread().getName());
+			} catch (InterruptedException e) {
+			}
+    	} while (this.m_isCreatingFirmware);
+    	this.m_isCreatingFirmware = true;
+    	
     	if (this.m_fw==null) {
     		this.m_fw = new TR064FritzBoxFirmware(getFritzBoxAddress(), getFritzBoxPort(), getFritzBoxPassword(), getFritzBoxUser());
     		try {
@@ -589,7 +601,7 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 					this.m_logger.info("Detected TR064 Firmware: "+this.m_fw.toString());
 			} catch (FritzBoxInitializationException e6) {
 				if (this.m_logger.isLoggable(Level.INFO))
-					this.m_logger.info("No TR064 Firmware detected.");
+					this.m_logger.log(Level.INFO, "No TR064 Firmware detected.", e6);
 				
 	    		this.m_fw = new FritzOS559Firmware(getFritzBoxAddress(), getFritzBoxPort(), getFritzBoxPassword(), getFritzBoxUser(), getFritzBoxUseHttps());
 	    		try {
@@ -598,7 +610,10 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 					if (this.m_logger.isLoggable(Level.INFO))
 						this.m_logger.info("Detected Fritz!OS 05.59+ firmware: "+this.m_fw.toString());
 				} catch (FritzBoxInitializationException e5) {
-					if (e5.isUnsupportedFirmware()) throw e5;
+					if (e5.isUnsupportedFirmware()) {
+						this.m_isCreatingFirmware = false;
+						throw e5;
+					}
 					
 					if (this.m_logger.isLoggable(Level.INFO))
 						this.m_logger.info("No Fritz!OS 05.59+ Firmware detected.");
@@ -639,6 +654,7 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 									if (this.m_logger.isLoggable(Level.INFO))
 										this.m_logger.info("No FritzBox standard Firmware detected.");
 									this.m_fw = null;
+									this.m_isCreatingFirmware = false;
 									throw new InvalidSessionIDException(e1.getMessage());
 								} 
 							}
@@ -659,6 +675,7 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 				this.launchRestartedThread();
 			}
     	}
+    	this.m_isCreatingFirmware = true;
     }
     
     private void launchRestartedThread() {

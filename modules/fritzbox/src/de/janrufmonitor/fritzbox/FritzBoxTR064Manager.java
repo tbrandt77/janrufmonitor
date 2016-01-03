@@ -410,7 +410,7 @@ public class FritzBoxTR064Manager {
 		    return buf.toString();
 		} 
 		
-		this.m_logger.severe("No valid XML download link provided by fritzbox for has calculation: "+xml_url);
+		this.m_logger.severe("No valid XML download link provided by fritzbox for hash calculation: "+xml_url);
 		return null;
     }
 
