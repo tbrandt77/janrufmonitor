@@ -13,8 +13,6 @@ import java.util.Enumeration;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import de.janrufmonitor.exception.Message;
-import de.janrufmonitor.exception.PropagationFactory;
 import de.janrufmonitor.framework.IAttributeMap;
 import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.ICallerList;
@@ -169,14 +167,14 @@ public class CountryDirectory extends AbstractReadOnlyDatabaseCallerManager {
 			if (this.m_logger.isLoggable(Level.SEVERE))
 				this.m_logger.severe("Number has invalid data or structure, no country or city found: "+pnp);
 			
-			PropagationFactory.getInstance().fire(
-					new Message(Message.ERROR,
-						NAMESPACE,
-						"error_number",
-						new String[] {pnp.getTelephoneNumber()},
-						new Exception("Number has invalid data or structure, no country or city found: "+pnp),
-						false),
-					"Tray");
+//			PropagationFactory.getInstance().fire(
+//					new Message(Message.ERROR,
+//						NAMESPACE,
+//						"error_number",
+//						new String[] {pnp.getTelephoneNumber()},
+//						new Exception("Number has invalid data or structure, no country or city found: "+pnp),
+//						false),
+//					"Tray");
 			
 			return null;
 		}
