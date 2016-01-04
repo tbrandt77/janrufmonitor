@@ -68,7 +68,7 @@
 				<component id="ntservice" name="ntservice"/>
 			</components>
 		</feature>
-		<feature description="Führt die Installation zur SUN Java Runtime Environment JavaSE 6 aus." id="jre" name="Java Runtime Environment JavaSE 6">
+		<feature description="Führt die Installation zur SUN Java Runtime Environment JavaSE 8 aus." id="jre" name="Java Runtime Environment JavaSE 8">
 			<components>
 				<component id="jre" name="jre"/>
 			</components>
@@ -160,31 +160,31 @@
 		</feature>
 	</features>
 	<installtypes>
-		<installtype default="1" description="Installiert jAnrufmonitor für ISDN. Der CAPI-Treiber des ISDN-Endgerätes und eine Java Runtime Environment JavaSE 6 müssen  installiert sein. Alternativ: Führen Sie eine 'Benutzerdefinierte Installation' aus und installieren Sie die Java Runtime Environment JavaSE 6." id="{C7CD317C-1F10-47FE-BF29-EF1C9D1DEE6E}" name="jAnrufmonitor für einen ISDN-Anschluss [empfohlen]">
+		<installtype default="1" description="Installiert jAnrufmonitor für ISDN. Der CAPI-Treiber des ISDN-Endgerätes und eine Java Runtime Environment JavaSE 8 müssen  installiert sein. Alternativ: Führen Sie eine 'Benutzerdefinierte Installation' aus und installieren Sie die Java Runtime Environment JavaSE 8." id="{C7CD317C-1F10-47FE-BF29-EF1C9D1DEE6E}" name="jAnrufmonitor für einen ISDN-Anschluss [empfohlen]">
 			<features>
 				<feature id="application"/>
 				<feature id="capi"/>
 			</features>
 		</installtype>
-		<installtype description="Installiert jAnrufmonitor für MS TAPI-fähige Endgeräte an einem Standard Telefonanschluss (z.B. T-Net). Der TAPI-Treiber des Telefongerätes (TK-Anlage) und eine Java Runtime Environment JavaSE 5 müssen installiert sein. Alternativ: Führen Sie eine 'Benutzerdefinierte Installation' aus und installieren Sie die Java Runtime Environment JavaSE 6." id="{CA4074FE-67CE-4732-98DB-CF111B7A0DA6}" name="jAnrufmonitor für einen Telefon-Anschluss (T-Net)">
+		<installtype description="Installiert jAnrufmonitor für MS TAPI-fähige Endgeräte an einem Standard Telefonanschluss (z.B. T-Net). Der TAPI-Treiber des Telefongerätes (TK-Anlage) und eine Java Runtime Environment JavaSE 8 müssen installiert sein. Alternativ: Führen Sie eine 'Benutzerdefinierte Installation' aus und installieren Sie die Java Runtime Environment JavaSE 8." id="{CA4074FE-67CE-4732-98DB-CF111B7A0DA6}" name="jAnrufmonitor für einen Telefon-Anschluss (T-Net)">
 			<features>
 				<feature id="application"/>
 				<feature id="tapi"/>
 			</features>
 		</installtype>
-		<installtype description="Installiert jAnrufmonitor für eine AVM FRITZ!Box. Der PC muss mit der AVM FRITZ!Box Fon verbunden und eine Java Runtime Environment JavaSE 6 muss installiert sein. Alternativ: Führen Sie eine 'Benutzerdefinierte Installation' aus und installieren Sie die Java Runtime Environment JavaSE 6." id="{E3442B14-8208-4607-8737-FEE017F90479}" name="jAnrufmonitor für eine AVM FRITZ!Box Fon">
+		<installtype description="Installiert jAnrufmonitor für eine AVM FRITZ!Box. Der PC muss mit der AVM FRITZ!Box Fon verbunden und eine Java Runtime Environment JavaSE 8 muss installiert sein. Alternativ: Führen Sie eine 'Benutzerdefinierte Installation' aus und installieren Sie die Java Runtime Environment JavaSE 8." id="{E3442B14-8208-4607-8737-FEE017F90479}" name="jAnrufmonitor für eine AVM FRITZ!Box Fon">
 			<features>
 				<feature id="application"/>
 				<feature id="fritzbox"/>
 			</features>
 		</installtype>
-		<installtype description="Installiert jAnrufmonitor für NCID Server. Der PC muss mit einem NCID Sever verbunden und eine Java Runtime Environment JavaSE 6 muss installiert sein. Alternativ: Führen Sie eine 'Benutzerdefinierte Installation' aus und installieren Sie die Java Runtime Environment JavaSE 6." id="{193C6F22-4ACC-434B-85E4-33FC9838B851}" name="jAnrufmonitor für NCID Server">
+		<installtype description="Installiert jAnrufmonitor für NCID Server. Der PC muss mit einem NCID Sever verbunden und eine Java Runtime Environment JavaSE 8 muss installiert sein. Alternativ: Führen Sie eine 'Benutzerdefinierte Installation' aus und installieren Sie die Java Runtime Environment JavaSE 8." id="{193C6F22-4ACC-434B-85E4-33FC9838B851}" name="jAnrufmonitor für NCID Server">
 			<features>
 				<feature id="application"/>
 				<feature id="ncid"/>
 			</features>
 		</installtype>
-		<installtype custom="1" description="Installiert eine benutzerdefinierte Version von jAnrufmonitor (inkl. Java Runtime Environment JavaSE 6 und ausgewählte Module)." id="{4431F8C1-6DED-4881-87C7-617BAF27ADD8}" name="Benutzerdefinierte Installation">
+		<installtype custom="1" description="Installiert eine benutzerdefinierte Version von jAnrufmonitor (inkl. Java Runtime Environment JavaSE 8 und ausgewählte Module)." id="{4431F8C1-6DED-4881-87C7-617BAF27ADD8}" name="Benutzerdefinierte Installation">
 			<features>
 				<feature id="application"/>
 				<feature id="capi"/>
@@ -213,10 +213,10 @@
 				</component>
 				<component dst="%AppDataFolder%\jre" id="jre" name="Java Runtime Environment">
 					<files>
-						<file dst="*.*" src="jre1.6\*.*"/>
+						<file dst="*.*" src="jre1.8\*.*"/>
 					</files>
 					<runapps>
-						<runapp cmdline="%AppDataFolder%\jre\jre-6u16-windows-i586-iftw.exe" flags="check_exitcode" msg="Starte Installation SUN Java Runtime Environment..."/>
+						<runapp cmdline="%AppDataFolder%\jre\jre-8u65-windows-i586-iftw.exe" flags="check_exitcode" msg="Starte Installation SUN Java Runtime Environment..."/>
 					</runapps>
 				</component>
 				<component dst="%AppDataFolder%\install" id="capi" name="capi">

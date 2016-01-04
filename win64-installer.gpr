@@ -122,19 +122,19 @@
 		</feature>
 	</features>
 	<installtypes>
-		<installtype default="1" description="Installiert jAnrufmonitor für eine AVM FRITZ!Box. Der PC muss mit der AVM FRITZ!Box Fon verbunden und eine Java Runtime Environment JavaSE 6 muss installiert sein. Alternativ: Führen Sie eine 'Benutzerdefinierte Installation' aus und installieren Sie die Java Runtime Environment JavaSE 6." id="{E3442B14-8208-4607-8737-FEE017F90479}" name="jAnrufmonitor für eine AVM FRITZ!Box Fon">
+		<installtype default="1" description="Installiert jAnrufmonitor für eine AVM FRITZ!Box. Der PC muss mit der AVM FRITZ!Box Fon verbunden und eine Java Runtime Environment JavaSE 8 muss installiert sein. Alternativ: Führen Sie eine 'Benutzerdefinierte Installation' aus und installieren Sie die Java Runtime Environment JavaSE 8." id="{E3442B14-8208-4607-8737-FEE017F90479}" name="jAnrufmonitor für eine AVM FRITZ!Box Fon">
 			<features>
 				<feature id="application"/>
 				<feature id="fritzbox"/>
 			</features>
 		</installtype>
-		<installtype description="Installiert jAnrufmonitor für NCID Server. Der PC muss mit einem NCID Sever verbunden und eine Java Runtime Environment JavaSE 6 muss installiert sein. Alternativ: Führen Sie eine 'Benutzerdefinierte Installation' aus und installieren Sie die Java Runtime Environment JavaSE 6." id="{193C6F22-4ACC-434B-85E4-33FC9838B851}" name="jAnrufmonitor für NCID Server">
+		<installtype description="Installiert jAnrufmonitor für NCID Server. Der PC muss mit einem NCID Sever verbunden und eine Java Runtime Environment JavaSE 8 muss installiert sein. Alternativ: Führen Sie eine 'Benutzerdefinierte Installation' aus und installieren Sie die Java Runtime Environment JavaSE 8." id="{193C6F22-4ACC-434B-85E4-33FC9838B851}" name="jAnrufmonitor für NCID Server">
 			<features>
 				<feature id="application"/>
 				<feature id="ncid"/>
 			</features>
 		</installtype>
-		<installtype custom="1" description="Installiert eine benutzerdefinierte Version von jAnrufmonitor (inkl. Java Runtime Environment JavaSE 6 und ausgewählte Module)." id="{4431F8C1-6DED-4881-87C7-617BAF27ADD8}" name="Benutzerdefinierte Installation">
+		<installtype custom="1" description="Installiert eine benutzerdefinierte Version von jAnrufmonitor." id="{4431F8C1-6DED-4881-87C7-617BAF27ADD8}" name="Benutzerdefinierte Installation">
 			<features>
 				<feature id="application"/>
 				<feature id="fritzbox"/>

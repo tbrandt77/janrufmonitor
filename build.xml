@@ -761,9 +761,9 @@
           <fileset dir="${jam.dist.dir}/modules/ntservice"/>
       </copy>
       
-      <mkdir dir="${jam.dist.dir}/installers/win32-installer/jre1.6"/>
-      <copy todir="${jam.dist.dir}/installers/win32-installer/jre1.6/">
-          <fileset dir="./internal/jre/jre1.6/"/>
+      <mkdir dir="${jam.dist.dir}/installers/win32-installer/jre1.8"/>
+      <copy todir="${jam.dist.dir}/installers/win32-installer/jre1.8/">
+          <fileset dir="./internal/jre/jre1.8/"/>
       </copy>
     </target>
     
@@ -799,9 +799,9 @@
           <fileset dir="${jam.dist.dir}/modules"/>
       </copy>
 
-      <mkdir dir="${jam.dist.dir}/installers/win64-installer/jre1.6"/>
-      <copy todir="${jam.dist.dir}/installers/win64-installer/jre1.6/">
-          <fileset dir="./internal/jre/jre1.6/"/>
+      <mkdir dir="${jam.dist.dir}/installers/win64-installer/jre1.8"/>
+      <copy todir="${jam.dist.dir}/installers/win64-installer/jre1.8/">
+          <fileset dir="./internal/jre/jre1.8/"/>
       </copy>
     </target>
 
