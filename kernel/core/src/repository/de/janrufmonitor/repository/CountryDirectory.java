@@ -234,9 +234,7 @@ public class CountryDirectory extends AbstractReadOnlyDatabaseCallerManager {
 					this.m_logger.info("Complete number to check int area code: "+intAreaCode);
 				
 				// remove trailing prefix
-				intAreaCode = intAreaCode.substring(intAreaCode.indexOf(this
-						.getPrefix())
-						+ this.getPrefix().length(), intAreaCode.length());
+				intAreaCode = intAreaCode.substring(this.getPrefix().length(), intAreaCode.length());
 				
 				if (this.m_logger.isLoggable(Level.INFO))
 					this.m_logger.info("Removed prefix ("+this.getPrefix()+"): "+intAreaCode);
@@ -266,8 +264,7 @@ public class CountryDirectory extends AbstractReadOnlyDatabaseCallerManager {
 			}
 
 			String areaCode = pn.getTelephoneNumber();
-			int from = 0;
-			int to = this.getDefaultAreaCodeLenth();
+			int to = this.getDefaultAreaCodeLength();
 
 			// no prefix match
 			if (!pn.getTelephoneNumber().startsWith(this.getPrefix()) || this.isSpecialLocalIntAreaCode()) {
@@ -277,7 +274,7 @@ public class CountryDirectory extends AbstractReadOnlyDatabaseCallerManager {
 						return check;
 					}
 				}
-				return areaCode.substring(Math.max(0, from), Math.min(to,
+				return areaCode.substring(0, Math.min(to,
 						areaCode.length()));
 			}
 
@@ -291,11 +288,11 @@ public class CountryDirectory extends AbstractReadOnlyDatabaseCallerManager {
 					return check;
 				}
 			}
-			return areaCode.substring(Math.max(0, from), Math.min(to, areaCode
+			return areaCode.substring(0, Math.min(to, areaCode
 					.length()));
 		}
 
-		private int getDefaultAreaCodeLenth() {
+		private int getDefaultAreaCodeLength() {
 			String value = m_configuration.getProperty(
 					CFG_DEFAULT_AREACODE_LENGTH, "3");
 			try {
