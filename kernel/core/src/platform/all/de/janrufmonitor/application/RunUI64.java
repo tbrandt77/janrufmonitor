@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
-//import de.janrufmonitor.ui.swt.DisplayManager;
+import de.janrufmonitor.util.io.OSUtils;
 import de.janrufmonitor.util.io.PathResolver;
 import de.janrufmonitor.classloader.JamCacheMasterClassLoader;
 import de.janrufmonitor.exception.Message;
@@ -74,10 +74,10 @@ public class RunUI64 {
 
 			boolean isJavaVersionOK = false;
 			String javaversion = System.getProperty("java.specification.version");
-			if (javaversion!=null && javaversion.compareTo("1.6")>=0) isJavaVersionOK = true;
+			if ((javaversion!=null && javaversion.compareTo("1.6")>=0 && OSUtils.isMacOSX()) || (javaversion!=null && javaversion.compareTo("1.7")>=0) ) isJavaVersionOK = true;
 			
 			javaversion = System.getProperty("java.version").substring(0,3);
-			if (!isJavaVersionOK && javaversion.compareTo("1.6")>=0) isJavaVersionOK = true;
+			if ((!isJavaVersionOK && javaversion.compareTo("1.6")>=0 && OSUtils.isMacOSX()) || (!isJavaVersionOK && javaversion.compareTo("1.7")>=0) ) isJavaVersionOK = true;
 			
 			if (!isJavaVersionOK) {
 				Thread t = new Thread () {
@@ -87,11 +87,11 @@ public class RunUI64 {
 								public void run () {
 									Shell shell = new Shell(Display.getDefault());
 									shell.setSize(0,0);
-									int style = SWT.APPLICATION_MODAL | SWT.OK;
+									int style = SWT.APPLICATION_MODAL | SWT.OK | SWT.WRAP;
 									MessageBox messageBox = new MessageBox (shell, style);
 									String lang = System.getProperty("user.language");
 									if (lang==null) lang = "de";									
-									messageBox.setMessage (lang.equalsIgnoreCase("de") ? "jAnrufmonitor kann nicht gestartet werden, da Java nur in\nVersion "+System.getProperty("java.specification.version")+" installiert ist. Es wird jedoch mindestens\nJava Version 1.6 ben\u00F6tigt." : "jAnrufmonitor wrong Java version.");
+									messageBox.setMessage (lang.equalsIgnoreCase("de") ? "jAnrufmonitor kann nicht gestartet werden, da Java nur in Version "+System.getProperty("java.specification.version")+" installiert ist. Es wird jedoch mindestens Java Version "+(OSUtils.isMacOSX() ? "1.6": "1.7")+" ben\u00F6tigt." : "jAnrufmonitor wrong Java version.");
 									messageBox.setText(lang.equalsIgnoreCase("de") ? "jAnrufmonitor - Fehler beim Programmstart": "jAnrufmonitor Error...");
 									if (messageBox.open () == SWT.OK) {
 										RunUI64.m_logger.severe("Emergency exit: Invalid Java Version: "+System.getProperty("java.specification.version"));
@@ -135,11 +135,11 @@ public class RunUI64 {
 								public void run () {
 									Shell shell = new Shell(Display.getDefault());
 									shell.setSize(0,0);
-									int style = SWT.APPLICATION_MODAL | SWT.OK;
+									int style = SWT.APPLICATION_MODAL | SWT.OK | SWT.WRAP;
 									MessageBox messageBox = new MessageBox (shell, style);
 									String lang = System.getProperty("user.language");
 									if (lang==null) lang = "de";									
-									messageBox.setMessage (lang.equalsIgnoreCase("de") ? "jAnrufmonitor kann nicht erneut gestartet werden. Er ist\nbereits gestartet und kann nur einmal ausgef\u00FChrt werden." : "jAnrufmonitor already running.");
+									messageBox.setMessage (lang.equalsIgnoreCase("de") ? "jAnrufmonitor kann nicht erneut gestartet werden. Er ist bereits gestartet und kann nur einmal ausgef\u00FChrt werden." : "jAnrufmonitor already running.");
 									messageBox.setText(lang.equalsIgnoreCase("de") ? "jAnrufmonitor - Fehler beim Programmstart": "jAnrufmonitor Error...");
 									if (messageBox.open () == SWT.OK) {
 										RunUI64.m_logger.severe("Emergency exit: jAnrufmonitor already running! Failed to initialize JamCacheMasterClassLoader. Aborting startup. Make sure that only one instance of jAnrufmonitor is running and clear all files from folder: %jam-installpath%/lib/cache.");							
@@ -241,11 +241,14 @@ public class RunUI64 {
 	}
 
     public static void main(String[] args) { 
+    	// added 2016/01/05: Display under Cocoa must be initialized with main-Thread
+    	if (OSUtils.isMacOSX()) Display.getDefault();
+    	
     	final Runnable error = new Runnable () {
 			public void run () {
 				Shell shell = new Shell(Display.getDefault());
 				shell.setSize(0,0);
-				int style = SWT.APPLICATION_MODAL | SWT.OK;
+				int style = SWT.APPLICATION_MODAL | SWT.OK | SWT.WRAP;
 				MessageBox messageBox = new MessageBox (shell, style);
 				String lang = System.getProperty("user.language");
 				if (lang==null) lang = "de";									
