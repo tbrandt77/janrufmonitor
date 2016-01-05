@@ -935,12 +935,14 @@ public class PhonenumberAnalyzer {
 					.getConfigManager()
 					.getProperty(IJAMConst.GLOBAL_NAMESPACE,
 							msn + "_" + IJAMConst.GLOBAL_TRUNCATE);
-			if (this.m_logger.isLoggable(Level.INFO))
-				this.m_logger
-						.info("PhonenumberAnalyzer detetced MSN specific truncate value: ["
-								+ msn + ", " + trunc + "]");
-			if (trunc != null && trunc.length() > 0)
+			
+			if (trunc != null && trunc.length() > 0) {
+				if (this.m_logger.isLoggable(Level.INFO))
+					this.m_logger
+							.info("PhonenumberAnalyzer detetced MSN specific truncate value: ["
+									+ msn + ", " + trunc + "]");
 				return Integer.parseInt(trunc);
+			}
 		}
 
 		trunc = this
@@ -978,12 +980,15 @@ public class PhonenumberAnalyzer {
 					.getConfigManager()
 					.getProperty(IJAMConst.GLOBAL_NAMESPACE,
 							msn + "_" + IJAMConst.GLOBAL_TRUNCATE);
-			if (this.m_logger.isLoggable(Level.INFO))
-				this.m_logger
-						.info("PhonenumberAnalyzer detetced MSN specific truncate value: ["
-								+ msn + ", " + trunc + "]");
-			if (trunc != null && trunc.length() > 0)
+			
+			if (trunc != null && trunc.trim().length() > 0) {
+					if (this.m_logger.isLoggable(Level.INFO))
+						this.m_logger
+								.info("PhonenumberAnalyzer detetced MSN specific truncate value: ["
+										+ msn + ", " + trunc + "]");
 				return Integer.parseInt(trunc);
+			}
+				
 		}
 
 		trunc = this
