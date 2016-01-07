@@ -49,6 +49,7 @@ import de.janrufmonitor.service.IService;
 import de.janrufmonitor.ui.jface.application.journal.Journal;
 import de.janrufmonitor.ui.swt.DisplayManager;
 import de.janrufmonitor.ui.swt.SWTExecuter;
+import de.janrufmonitor.util.formatter.Formatter;
 import de.janrufmonitor.util.io.PathResolver;
 import de.janrufmonitor.util.string.StringUtils;
 
@@ -274,6 +275,12 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 		
 		}
 		
+		try {
+			Thread.sleep((progressMonitor!=null ? 500 : 100));
+		} catch (InterruptedException e1) {
+			m_logger.log(Level.SEVERE, e1.getMessage(), e1);
+		}
+		
 		FirmwareManager fwm = FirmwareManager.getInstance();
 		try {
 			fwm.login();
@@ -283,6 +290,12 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 					.getString(getNamespace(),
 							"getprogress", "label",
 							getLanguage()));
+			
+			try {
+				Thread.sleep((progressMonitor!=null ? 1500 : 100));
+			} catch (InterruptedException e1) {
+				m_logger.log(Level.SEVERE, e1.getMessage(), e1);
+			}
 			
 			long synctime = Long.parseLong(SynchronizerService.this.m_configuration.getProperty(CFG_SYNCTIME, "-1"));
 			// added: 2013/02/04: check sync all
@@ -308,7 +321,7 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 							getLanguage()));
 		
 			try {
-				Thread.sleep((progressMonitor!=null ? 250 : 100));
+				Thread.sleep((progressMonitor!=null ? 1500 : 100));
 			} catch (InterruptedException e1) {
 				m_logger.log(Level.SEVERE, e1.getMessage(), e1);
 			}
@@ -332,7 +345,20 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 					if (c!=null) {
 						if (getRuntime().getMsnManager().isMsnMonitored(
 								c.getMSN())
-							) {										
+							) {		
+							
+							if (progressMonitor!=null) {
+								progressMonitor.setTaskName(getI18nManager()
+									.getString(getNamespace(),
+											"processing", "label",
+											getLanguage()) + Formatter.getInstance(this.getRuntime()).parse(IJAMConst.GLOBAL_VARIABLE_CALLERNUMBER, c));
+								try {
+									Thread.sleep(125);
+								} catch (InterruptedException e1) {
+									m_logger.log(Level.SEVERE, e1.getMessage(), e1);
+								}
+							}
+							
 							if (!m_callList.contains(c)) {
 								if (m_logger.isLoggable(Level.INFO))
 									m_logger.info("Adding call imported from FRITZ!Box: "+c.toString());
@@ -363,16 +389,27 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 						.getString(getNamespace(),
 								"geocodeprogress", "label",
 								getLanguage()));
+				try {
+					Thread.sleep((progressMonitor!=null ? 1000 : 100));
+				} catch (InterruptedException e1) {
+					m_logger.log(Level.SEVERE, e1.getMessage(), e1);
+				}
 				
 				if (m_logger.isLoggable(Level.INFO))
 					m_logger.info("Processing modifier services on call list: "+getRuntime().getServiceFactory().getModifierServices());
-				processModifierServices(m_callList);
+				processModifierServices(m_callList, progressMonitor);
 				
 				if (progressMonitor!=null)
 					progressMonitor.setTaskName(getI18nManager()
 						.getString(getNamespace(),
 								"synchprogress", "label",
 								getLanguage()));
+				
+				try {
+					Thread.sleep((progressMonitor!=null ? 1000 : 100));
+				} catch (InterruptedException e1) {
+					m_logger.log(Level.SEVERE, e1.getMessage(), e1);
+				}
 				
 				if (m_callList!=null && m_callList.size()>0) {
 					String repository = getRuntime().getConfigManagerFactory().getConfigManager().getProperty(Journal.NAMESPACE, "repository");
@@ -390,6 +427,12 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 									.getString(getNamespace(),
 											"syncclean", "label",
 											getLanguage()));
+							
+							try {
+								Thread.sleep((progressMonitor!=null ? 500 : 100));
+							} catch (InterruptedException e1) {
+								m_logger.log(Level.SEVERE, e1.getMessage(), e1);
+							}
 							
 							IFilter syncFilter = new DateFilter(new Date(System.currentTimeMillis()), new Date(synctime));
 							ICallList cl = ((IReadCallRepository)cm).getCalls(syncFilter);
@@ -425,6 +468,19 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 							ca = m_callList.get(i);
 							try {
 								((IWriteCallRepository)cm).setCall(ca);
+								
+								if (progressMonitor!=null) {
+									progressMonitor.setTaskName(getI18nManager()
+										.getString(getNamespace(),
+												"processing2", "label",
+												getLanguage()) + Formatter.getInstance(this.getRuntime()).parse(IJAMConst.GLOBAL_VARIABLE_CALLERNAME, ca));
+									try {
+										Thread.sleep(50);
+									} catch (InterruptedException e1) {
+										m_logger.log(Level.SEVERE, e1.getMessage(), e1);
+									}
+								}
+								
 								if (m_logger.isLoggable(Level.INFO))
 									m_logger.info("Call imported to repository: "+ca.toString());
 							} catch (Exception e) {
@@ -647,7 +703,7 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 		}
 	}
 	
-	private void processModifierServices(ICallList cl) {
+	private void processModifierServices(ICallList cl, IProgressMonitor progressMonitor) {
 		if (cl!=null && cl.size()>0) {
 			List msvc = getRuntime().getServiceFactory().getModifierServices();
 			IModifierService s = null;
@@ -659,6 +715,17 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 					ICall call = null;
 					for (int i=0,j=cl.size();i<j;i++) {
 						call = cl.get(i);
+						if (progressMonitor!=null && s.getServiceID().equalsIgnoreCase("GeoCoding")) {
+							progressMonitor.setTaskName(getI18nManager()
+								.getString(getNamespace(),
+										"geocodeprogress2", "label",
+										getLanguage()) + Formatter.getInstance(this.getRuntime()).parse(IJAMConst.GLOBAL_VARIABLE_CALLERNAME, call));
+							try {
+								Thread.sleep(100);
+							} catch (InterruptedException e1) {
+								m_logger.log(Level.SEVERE, e1.getMessage(), e1);
+							}
+						}
 						s.modifyObject(call);
 					}			
 				}
