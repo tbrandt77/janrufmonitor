@@ -9,9 +9,12 @@ import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -21,6 +24,7 @@ import de.janrufmonitor.framework.monitor.IMonitor;
 import de.janrufmonitor.fritzbox.FritzBoxMonitor;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
+import de.janrufmonitor.ui.jface.application.controls.HyperLink;
 import de.janrufmonitor.ui.jface.configuration.controls.BooleanFieldEditor;
 import de.janrufmonitor.ui.swt.DisplayManager;
 
@@ -149,6 +153,18 @@ public class InitFritzBoxVariantPage extends InitVariantPage {
 	    l.setText(this.m_i18n.getString("ui.jface.configuration.pages.FritzBoxVoip", "openfb", "label", this.m_language));
 	    l.setEditable(false);	
 	    l.setBackground(parent.getBackground());
+	    
+	    new Label(c, SWT.LEFT);
+	    HyperLink hl = new HyperLink(c, SWT.LEFT | SWT.WRAP);
+		hl.setText(this.m_i18n.getString("ui.jface.configuration.pages.FritzBoxVoip", "openfb2", "label", this.m_language));
+		hl.addMouseListener( 
+			new MouseAdapter() {
+				public void mouseDown(MouseEvent e) {
+					if (e.button==1)
+					Program.launch("http://www.janrufmonitor.de/fritzbox-freischalten");
+				}
+			}
+		);
 
 	    setPageComplete(isComplete());
 	    setControl(c);
