@@ -333,8 +333,17 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 				ICall c = null;
 				FritzBoxUUIDManager.getInstance().init();
 				
+				boolean skipOutgoing = !Boolean.parseBoolean(conf.getProperty(CFG_OUTGOING, "false"));
+				
 				for (int i=0,j=result.size();i<j;i++) {
 					call = new FritzBoxCallCsv((String) result.get(i), conf);
+					// added 2016/01/11: check if outgoing call applicable 
+					if (call!=null && call.isOutgoingCall() && skipOutgoing ) {
+						if (m_logger.isLoggable(Level.INFO))
+							m_logger.info("Call import skipped by call state (outgoing) from FRITZ!Box.");
+						continue;
+					}
+					
 					Date calltime = call.getPrecalculatedDate();
 					if (calltime!=null && calltime.getTime()<synctime && synctime>0) {
 						if (m_logger.isLoggable(Level.INFO))

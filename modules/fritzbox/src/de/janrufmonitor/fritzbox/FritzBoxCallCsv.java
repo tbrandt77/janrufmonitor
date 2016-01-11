@@ -22,9 +22,13 @@ import de.janrufmonitor.runtime.PIMRuntime;
 public class FritzBoxCallCsv extends AbstractFritzBoxCall {
 
 	public FritzBoxCallCsv(String csvline, Properties config) {
-		// Typ;Datum;Name;Rufnummer;Nebenstelle;Eigene Rufnummer;Dauer 
-		// 1;18.08.06 10:07;;02736294863;FON S0;911955;0:01
 		super(csvline, config);
+	}
+
+	public boolean isOutgoingCall() {
+		if (this.m_line==null || this.m_line.length()<2) return false;
+		int state = Integer.parseInt(this.m_line.substring(0,1));
+		return state == this.getOutgoingState();
 	}
 	
 	public Date getPrecalculatedDate() {
