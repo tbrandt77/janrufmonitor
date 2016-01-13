@@ -111,6 +111,8 @@ public class FritzBoxCallRaw extends AbstractFritzBoxCall {
 				if (call.length>=7) {
 					s_msn = getMsn(call[6]);
 					if (s_msn==null || call[6].equalsIgnoreCase(s_msn)) s_msn = getMsn(call[4]);
+				} else {
+					s_msn = getMsn(call[4]);
 				}
 				IMsn msn = r.getCallFactory().createMsn((s_msn==null ? "" : s_msn), "");
 				msn.setAdditional(r.getMsnManager().getMsnLabel(msn));
