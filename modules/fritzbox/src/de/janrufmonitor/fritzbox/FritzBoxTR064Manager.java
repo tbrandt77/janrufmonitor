@@ -36,6 +36,7 @@ import de.janrufmonitor.exception.Message;
 import de.janrufmonitor.exception.PropagationFactory;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.logging.LoggingInitializer;
+import de.janrufmonitor.util.string.StringEscapeUtils;
 
 public class FritzBoxTR064Manager {
 
@@ -74,6 +75,9 @@ public class FritzBoxTR064Manager {
 	
 	// getUptime PATTERN
 	private final static String PATTERN_UPTIME = "<NewUpTime>([^<]*)</NewUpTime>";
+	
+	// getSIPResolution
+	private final static String PATTERN_SIP_NUMBERS = "<NewNumberList>([^<]*)</NewNumberList>";
 	
 	private static FritzBoxTR064Manager m_instance = null;
 	
@@ -419,6 +423,65 @@ public class FritzBoxTR064Manager {
 		
 		this.m_logger.severe("No valid XML download link provided by fritzbox for hash calculation: "+xml_url);
 		return null;
+    }
+    
+    public String getSIPResolution(String usr, String passwd) throws IOException {
+    	return this.getSIPResolution(usr, passwd, this.getDefaultFritzBoxDNS(), this.getDefaultFritzBoxTR064SecurePort(this.getDefaultFritzBoxDNS()), "https");
+    }
+    
+    public String getSIPResolution(String usr, String passwd, String server) throws IOException {
+    	return this.getSIPResolution(usr, passwd, server, this.getDefaultFritzBoxTR064SecurePort(server), "https");
+    }
+    
+    public String getSIPResolution(String usr, String passwd, String server, String port, String protocol) throws IOException {
+    	if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info("Entering getSIPResolution(String usr, String passwd, String server, String port, String protocol)");
+    	
+    	String user = new String(usr.getBytes("utf-8"));
+
+    	StringBuffer content = new StringBuffer();
+		content.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+		content.append("<s:Envelope s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"");
+		content.append("xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" >");
+		content.append("<s:Header><h:InitChallenge xmlns:h=\"http://soap-authentication.org/digest/2001/10/\" s:mustUnderstand=\"1\">");
+		content.append("<UserID>"+user+"</UserID>");
+		content.append("</h:InitChallenge></s:Header><s:Body><u:X_AVM-DE_GetNumbers xmlns:u=\"urn:dslforum-org:service:X_VoIP:1\">");
+		content.append("</u:X_AVM-DE_GetNumbers></s:Body></s:Envelope>");
+
+		StringBuffer response = doHttpCall(protocol+"://"+server+":"+port+"/upnp/control/x_voip", "POST", content.toString(), new String[][] { 
+			{"Content-Type", "text/xml; charset=\"utf-8\""}, {"Content-Length", Integer.toString(content.length())}, {"SOAPACTION", "\"urn:dslforum-org:service:X_VoIP:1#X_AVM-DE_GetNumbers\""}, {"User-Agent", USER_AGENT}})
+		;
+		
+		String nonce = find(Pattern.compile(PATTERN_DETECT_NONCE, Pattern.UNICODE_CASE), response);
+		String realm = find(Pattern.compile(PATTERN_DETECT_REALM, Pattern.UNICODE_CASE), response);
+		
+		String auth = FritzBoxMD5Handler.getTR064Auth(usr, passwd, realm, nonce);
+		
+		content = new StringBuffer();
+		content.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+		content.append("<s:Envelope s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"");
+		content.append("xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" >");
+		content.append("<s:Header><h:ClientAuth xmlns:h=\"http://soap-authentication.org/digest/2001/10/\" s:mustUnderstand=\"1\">");
+		content.append("<Nonce>"+nonce+"</Nonce>");
+		content.append("<Auth>"+auth+"</Auth>");
+		content.append("<UserID>"+user+"</UserID>");
+		content.append("<Realm>"+realm+"</Realm>");
+		content.append("</h:ClientAuth></s:Header>");
+		content.append("<s:Body><u:GetNumbers xmlns:u=\"urn:dslforum-org:service:X_VoIP:1\"></u:GetNumbers></s:Body>");
+		content.append("</s:Envelope>");
+		
+		response = doHttpCall(protocol+"://"+server+":"+port+"/upnp/control/x_voip", "POST", content.toString(), new String[][] { 
+			{"Content-Type", "text/xml; charset=\"utf-8\""}, {"Content-Length", Integer.toString(content.length())}, {"SOAPACTION", "\"urn:dslforum-org:service:X_VoIP:1#X_AVM-DE_GetNumbers\""}, {"User-Agent", USER_AGENT}})
+		;
+		
+		String xml = find(Pattern.compile(PATTERN_SIP_NUMBERS, Pattern.UNICODE_CASE), response);
+		if (xml!=null && xml.length()>0)
+			try {
+				xml = StringEscapeUtils.unescapeXml(xml);
+			} catch (Exception e) {
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			}
+		return (xml!=null && xml.length()>0 ? xml : null);
     }
 
     public InputStream getPhonebook(String usr, String passwd, String id) throws IOException {
@@ -1081,7 +1144,7 @@ public class FritzBoxTR064Manager {
 			//System.out.print(FritzBoxTR064Manager.getInstance().getPhonebook("thilo.brandt", "Tb2743507", "fritz.box", "49443", "https", "0"));
 			//System.out.println(FritzBoxTR064Manager.getInstance().getPhonebookHash("admin", "Tb2743507", "fritz.box", "0"));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort());
-			System.out.print(FritzBoxTR064Manager.getInstance().isTR064Supported("fritz.box", "49000"));
+			System.out.print(FritzBoxTR064Manager.getInstance().getSIPResolution("thilo.brandt", "Tb2743507"));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getTelephoneAnsweringMachineMessageList("thilo.brandt", "xxxx","fritz.box", "49000", "http", "0"));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getDescription("thilo.brandt", "Tb2743507","fritz.box"));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getPhonePorts("thilo.brandt", "Tb2743507","fritz.box", "49443", "https"));

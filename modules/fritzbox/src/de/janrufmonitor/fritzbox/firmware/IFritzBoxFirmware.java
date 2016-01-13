@@ -92,6 +92,8 @@ public interface IFritzBoxFirmware {
     
     public boolean isRestarted();
     
+    public String getMSNFromSIP(String idx) throws IOException;
+    
     public List getCallList() throws GetCallListException, IOException;
     
     public List getCallList(long lastSyncTimestamp) throws GetCallListException, IOException;

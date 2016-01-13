@@ -56,6 +56,53 @@ import de.janrufmonitor.util.string.StringUtils;
 public class TR064FritzBoxFirmware implements
 		IFritzBoxFirmware {
 	
+	private class XMLSipMsnHandler extends DefaultHandler {
+		private Map m;
+		
+		private String currentValue; 
+		private String m_msn;
+		private String m_index;
+		
+		public XMLSipMsnHandler() {
+			m = new HashMap();
+		}
+		
+		public void characters(char[] ch, int start, int length)
+	      throws SAXException {
+			currentValue = new String(ch, start, length);
+		}
+		
+		public void startElement(String uri, String name, String qname, Attributes attributes)
+		throws SAXException {
+			if (qname.equalsIgnoreCase("item")) {
+				this.m_index = null;
+				this.m_msn = null;
+			}
+		}
+		
+		public void endElement(String uri, String name, String qname)
+		throws SAXException {
+			if (qname.equalsIgnoreCase("number")) {
+				this.m_msn = this.currentValue;
+			}
+			
+			if (qname.equalsIgnoreCase("index")) {
+				this.m_index = this.currentValue;
+			}
+			
+			if (qname.equalsIgnoreCase("item") && this.m_index!=null && this.m_msn!=null) {
+				m.put(this.m_index, this.m_msn);
+				this.m_index = null;
+				this.m_msn = null;
+			}
+
+		}
+		
+		public Map getMap() {
+			return this.m;
+		}
+	}
+	
 	private class XMLPeHandler extends DefaultHandler {
 		private List contacts = new ArrayList();;
 		private PhonebookEntry currentPe;
@@ -196,6 +243,8 @@ public class TR064FritzBoxFirmware implements
 	protected String m_password;
 	protected String m_user; // new since Fritz!OS Version 05.50
 	
+	private Map m_msnSipMapping;
+	
 	protected long m_loginUptime = -1L;
 	
 	protected FirmwareData m_firmware;
@@ -221,7 +270,7 @@ public class TR064FritzBoxFirmware implements
 		try {
 			if (!FritzBoxTR064Manager.getInstance().isTR064Supported(this.m_server, FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port())) 
 				throw new FritzBoxInitializationException("FritzBox "+this.m_server+" does not support TR064.");
-		
+			
 			String version = FritzBoxTR064Manager.getInstance().getFirmwareVersion(this.m_user, this.m_password, this.m_server);
 			
 			if (this.m_logger.isLoggable(Level.INFO))
@@ -262,13 +311,32 @@ public class TR064FritzBoxFirmware implements
 
 	public void destroy() {
 		this.m_firmware = null;
+		this.m_msnSipMapping = null;
 		this.m_loginUptime = -1L;
 	}
 
 	public boolean isInitialized() {
 		return this.m_firmware!=null;
 	}
-	
+
+	public String getMSNFromSIP(String idx) throws IOException {
+		if (!this.isInitialized()) return null;
+		if (this.m_msnSipMapping==null) {
+			String xml = FritzBoxTR064Manager.getInstance().getSIPResolution(this.m_user, this.m_password, this.m_server);
+			if (xml!=null) {
+				this.m_msnSipMapping = this.parseXML(xml);
+				if (this.m_logger.isLoggable(Level.INFO))
+					this.m_logger.info("SIP -> MSN mapping table: "+this.m_msnSipMapping);
+			}
+		}
+		if (this.m_msnSipMapping!=null && this.m_msnSipMapping.containsKey(idx)) {
+			return (String) this.m_msnSipMapping.get(idx);
+		}
+		if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info("No SIP to MSN mapping found for index # "+idx);
+		return null;
+	}
+
 	public List getCallList() throws GetCallListException, IOException {
 		return this.getCallList(-1L);
 	}
@@ -602,6 +670,30 @@ public class TR064FritzBoxFirmware implements
 			is.setEncoding(encoding);
 			p.parse(is, handler);
 			return handler.getList();
+		} catch (SAXException e) {
+			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+		} catch (ParserConfigurationException e) {
+			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+		} catch (UnsupportedEncodingException e) {
+			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+		} catch (IOException e) {
+			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+		} catch (Throwable e) {
+			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+		}
+		return null;
+	}
+	
+	private Map parseXML(String xml) {
+		try {
+			XMLSipMsnHandler handler = new XMLSipMsnHandler();
+			SAXParser p = SAXParserFactory.newInstance().newSAXParser();
+			String encoding = "utf-8";
+			ByteArrayInputStream in = new ByteArrayInputStream(xml.getBytes(encoding));
+			InputSource is = new InputSource(in);
+			is.setEncoding(encoding);
+			p.parse(is, handler);
+			return handler.getMap();
 		} catch (SAXException e) {
 			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 		} catch (ParserConfigurationException e) {

@@ -382,6 +382,10 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 		return null;
 	}
 	
+	public String getMSNFromSIP(String idx) throws IOException {
+		return null;
+	}
+
 	public String toString() {
 		if (this.m_firmware!=null) {
 			StringBuffer s = new StringBuffer(64);

@@ -1,5 +1,6 @@
 package de.janrufmonitor.fritzbox;
 
+import java.io.IOException;
 import java.util.Properties;
 
 import de.janrufmonitor.framework.ICall;
@@ -57,6 +58,14 @@ public abstract class AbstractFritzBoxCall implements IFritzBoxCall, FritzBoxCon
 		}
 		if (field.trim().toLowerCase().startsWith("sip:")) {
 			return field.substring("sip:".length()).trim();
+		}
+		// added for FritzBoxRawCall on SIP index
+		if (field.trim().toLowerCase().startsWith("sip")) {
+			try {
+				return FirmwareManager.getInstance().getMSNFromSIP(field.substring("sip".length()).trim());
+			} catch (IOException e) {
+			}
+			return null;
 		}
 		// added 2015/12/01: TR-064 could deliver MSN number or MSN alias in the CSV export file, so check for alias first
 		if (!field.matches("[+-]?[0-9]+")) {
