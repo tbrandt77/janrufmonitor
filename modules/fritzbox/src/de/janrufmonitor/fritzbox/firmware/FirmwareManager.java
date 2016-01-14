@@ -694,7 +694,7 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 				this.launchRestartedThread();
 			}
     	}
-    	this.m_isCreatingFirmware = true;
+    	this.m_isCreatingFirmware = false;
     }
     
     private void launchRestartedThread() {
