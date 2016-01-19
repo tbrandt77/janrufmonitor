@@ -254,6 +254,9 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 						while (entries.hasNext()) {
 							key = (String) entries.next();
 							
+							// added 2016/01/19: remove internal FB AB numbers from contact list.
+							if (key!=null && key.startsWith("**")) continue;
+							
 							if (key !=null && !PhonenumberAnalyzer.getInstance(getRuntime()).isInternal(key) && !PhonenumberAnalyzer.getInstance(getRuntime()).isClired(key)) {
 							
 								if (this.m_logger.isLoggable(Level.INFO)) {
