@@ -14,6 +14,7 @@ import de.janrufmonitor.framework.ICip;
 import de.janrufmonitor.framework.IMsn;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
+import de.janrufmonitor.repository.FritzBoxPhonebookManager;
 import de.janrufmonitor.repository.identify.Identifier;
 import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.runtime.IRuntime;
@@ -64,6 +65,8 @@ public class FritzBoxCallCsv extends AbstractFritzBoxCall {
 		
 		/**
 		 * Added 2011/01/05: added do to NumberFormatException in log, remove the header
+		 * 
+		 * Format: Typ;Datum;Name;Rufnummer;Nebenstelle;Eigene Rufnummer;Dauer
 		 */
 		if (this.m_line.trim().toLowerCase().startsWith("typ;")) return null;
 
@@ -117,7 +120,14 @@ public class FritzBoxCallCsv extends AbstractFritzBoxCall {
 					caller = Identifier.identify(r, pn);
 					
 					if (caller==null) {
-						caller = r.getCallerFactory().createCaller(pn);
+						caller = r.getCallerFactory().createCaller(r.getCallerFactory().createName("", call[2]), pn);
+					}
+					
+					// added 2016/01/19: FB Name data if jAnrufmonitor did not find any in his callermanagers
+					if (caller.getName().getLastname().length()== 0 && caller.getName().getFirstname().length()== 0 && call[2].trim().length()>0) {
+						caller.getAttributes().add(r.getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_LASTNAME, call[2]));
+						caller.getAttributes().add(r.getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CALLERMANAGER, FritzBoxPhonebookManager.ID));
+						caller.getAttributes().remove(IJAMConst.ATTRIBUTE_NAME_CITY);
 					}
 					
 					// create call data
