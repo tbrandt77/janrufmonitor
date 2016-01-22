@@ -1,5 +1,32 @@
 ﻿===
 
+jAnrufmonitor 5.0.63 (01.02.2016)
+---------------------------------
+Neu:
+- Java 8 (1.8) JRE als Standard-Umgebung im Installer
+
+Bugfix:
+- Unterstützung für Java 5 (1.5) und 6 (1.6) entfernt
+- Rufnummernerkennung: Optimierung beim Entfernen führender Ziffern
+- Länder- und Vorwahlverzeichnis: Code-Cleanup und Optimierung einiger Funktionen
+- Länder- und Vorwahlverzeichnis: Falsches Pupop bei der Rufnummernerkennung entfernt
+
+Module:
+- FRITZ!Box-Überwachung: Erzwungener Firmwarecheck bei der Überwachung entfernt
+- FRITZ!Box-Überwachung: Option zum Abschalten von TR064 in Konfiguration aufgenommen
+- FRITZ!Box-Überwachung: SSL Prüfung beim Verbinden über TR-064
+- FRITZ!Box-Überwachung: Detailierte Fortschrittsanzeige beim Synchronisieren
+- FRITZ!Box-Überwachung: Hinweis auf FAQ zur TR-064 Freischaltung beim Einrichtungs-Assistent hinzugefügt
+- FRITZ!Box-Überwachung: Ausgehende Gespräche beim Synchronisieren ignorieren, wenn Überwachung diese ignoriert
+- FRITZ!Box-Überwachung: SIP -> MSN Mapping bei der Echtzeiterkennung hinzugefügt
+- FRITZ!Box-Überwachung: Alternative MSN Erkennung ohne SIP -> MSN Mapping
+- FRITZ!Box-Überwachung: Beim Synchronisieren wird Name aus der FRITZ!Box genommen, falls installierte Adressbücher keinen findet
+- FRITZ!Box-Überwachung: interne FRITZ!Box Nummern für Wecker etc. aus FRITZ!Box Telefonbcuh entfernt
+- Client Erweiterung: Wartezeit zwischen Verbindunsgversuche auf 30 Sek. gesetzt
+
+
+===
+
 jAnrufmonitor 5.0.62 (01.01.2016)
 ---------------------------------
 Neu:
