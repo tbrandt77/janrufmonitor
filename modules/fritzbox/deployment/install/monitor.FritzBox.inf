@@ -23,6 +23,7 @@ monitor.FritzBoxMonitor\:retrytimeouts\:value=25
 monitor.FritzBoxMonitor\:connectionlostchecktime\:value=2
 monitor.FritzBoxMonitor\:autoreconnect\:value=true
 monitor.FritzBoxMonitor\:autoreconnect\:type=boolean
+monitor.FritzBoxMonitor\:synctimeoffset\:value=30
 
 repository.CallerManagerFactory\:manager_fbp\:access=system
 repository.CallerManagerFactory\:manager_fbp\:value=de.janrufmonitor.repository.FritzBoxPhonebookManager

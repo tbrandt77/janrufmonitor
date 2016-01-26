@@ -190,6 +190,14 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 		}
 	}
 	
+	private long getSyncTimeOffset() {
+		Properties config = getRuntime().getConfigManagerFactory().getConfigManager().getProperties(FritzBoxMonitor.NAMESPACE);
+		if (config!=null)
+			return (Long.parseLong(config.getProperty(CFG_SYNCTIME_OFFSET, "30")) * 60 * 1000);
+		return 30 * 60 * 1000;
+	}
+	
+	
 	private int getRetryMaxValue() {
 		Properties config = getRuntime().getConfigManagerFactory().getConfigManager().getProperties(FritzBoxMonitor.NAMESPACE);
 		if (config!=null)
@@ -442,6 +450,10 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 							} catch (InterruptedException e1) {
 								m_logger.log(Level.SEVERE, e1.getMessage(), e1);
 							}
+							
+							// sub getSynctimeOffset from time
+							if (synctime>0)
+								synctime -= this.getSyncTimeOffset();
 							
 							IFilter syncFilter = new DateFilter(new Date(System.currentTimeMillis()), new Date(synctime));
 							ICallList cl = ((IReadCallRepository)cm).getCalls(syncFilter);
