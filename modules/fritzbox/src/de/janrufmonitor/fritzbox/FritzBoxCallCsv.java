@@ -61,26 +61,49 @@ public class FritzBoxCallCsv extends AbstractFritzBoxCall {
 	}
 
 	public ICall toCall() {
-		if (this.m_line==null || this.m_line.trim().length()==0) return null;
+		Logger logger = Logger.getLogger(IJAMConst.DEFAULT_LOGGER);
+		if (this.m_line==null || this.m_line.trim().length()==0) {
+			if (logger!=null && logger.isLoggable(Level.INFO))
+				logger.info("No call data found in CSV line: "+this.m_line);
+			return null;
+		}
 		
 		/**
 		 * Added 2011/01/05: added do to NumberFormatException in log, remove the header
 		 * 
 		 * Format: Typ;Datum;Name;Rufnummer;Nebenstelle;Eigene Rufnummer;Dauer
 		 */
-		if (this.m_line.trim().toLowerCase().startsWith("typ;")) return null;
+		if (this.m_line.trim().toLowerCase().startsWith("typ;")) {
+			if (logger!=null && logger.isLoggable(Level.INFO))
+				logger.info("Ignore CSV header line: "+this.m_line);
+			return null;
+		}
 
 		if (this.m_call==null) {
 			try {
 				IRuntime r = PIMRuntime.getInstance();
 				String call[] = this.m_line.split(";");
 				if (call.length>=7) {
+					if (logger!=null && logger.isLoggable(Level.INFO))
+						logger.info("Tokens in CSV line: "+call.length);
 					// create msn
 					IMsn msn = r.getCallFactory().createMsn(getMsn(call[5]), "");
 					msn.setAdditional(r.getMsnManager().getMsnLabel(msn));
+					if (logger!=null && logger.isLoggable(Level.INFO))
+						logger.info("MSN set to: "+msn.toString());
 					
 					// create caller data
 					int state = Integer.parseInt(call[0]);
+					
+					if (logger!=null && logger.isLoggable(Level.INFO))
+						logger.info("State set to: "+call.length);
+					
+					// added 2016/01/26: ignore incoming active (5) and outgoung active calls (6)
+					if (state==5 || state == 6) {
+						if (logger!=null && logger.isLoggable(Level.INFO))
+							logger.info("Ignoring call state: "+state);
+						return null;
+					}
 					
 					String callByCall = null;
 					ICaller caller = null;
@@ -93,11 +116,14 @@ public class FritzBoxCallCsv extends AbstractFritzBoxCall {
 						// if incoming call does not start with 0, the Provider number seems to have the wrong format
 						// assume it is an international format 4971657110
 						boolean onlyNumbers = call[3].matches("[+-]?[0-9]+");
-						if (!call[3].startsWith("0")&& onlyNumbers) {
+						if (!call[3].startsWith("0") && onlyNumbers) {
+							if (logger!=null && logger.isLoggable(Level.INFO))
+								logger.info("Assuming international call: "+call[3]);
 							call[3] = "00"+call[3];
 						}
 						pn = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toPhonenumber(call[3].trim(), msn.getMSN());
 					}
+
 					if (pn==null && state ==  this.getOutgoingState())  {
 						// added 2006/08/10: trim call-by-call information
 						// only can occure on state 3/4 (out-going calls)
@@ -110,17 +136,27 @@ public class FritzBoxCallCsv extends AbstractFritzBoxCall {
 							// added 2011/01/13: added areacode additional on special FritzBox mode. Having no leading 0, 
 							// requires addition of areacode
 							if (!call[3].startsWith("0")) {
-								Logger.getLogger(IJAMConst.DEFAULT_LOGGER).info("Assuming number "+call[3]+" has missing areacode.");
+								if (logger!=null && logger.isLoggable(Level.INFO))
+									logger.info("Assuming number "+call[3]+" has missing areacode.");
+								
 								call[3] = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).getAreaCode() + call[3];
-								Logger.getLogger(IJAMConst.DEFAULT_LOGGER).info("Added areacode to number "+call[3]);
+								
+								if (logger!=null && logger.isLoggable(Level.INFO))
+									logger.info("Added areacode to number "+call[3]);
 							}
 							pn = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toPhonenumber(call[3].trim(), msn.getMSN());
 						}
 					}
+					
+					if (logger!=null && logger.isLoggable(Level.INFO))
+						logger.info("Phonenumber set to: "+pn);
+					
 					caller = Identifier.identify(r, pn);
 					
 					if (caller==null) {
 						caller = r.getCallerFactory().createCaller(r.getCallerFactory().createName("", call[2]), pn);
+						if (logger!=null && logger.isLoggable(Level.INFO))
+							logger.info("Setting CSV name field as caller name: "+call[2]);
 					}
 					
 					// added 2016/01/19: FB Name data if jAnrufmonitor did not find any in his callermanagers
@@ -136,11 +172,15 @@ public class FritzBoxCallCsv extends AbstractFritzBoxCall {
 					try {
 						date = sdf.parse(call[1]);
 					} catch (ParseException e) {
-						Logger.getLogger(IJAMConst.DEFAULT_LOGGER).severe("Wrong date format detected.");
+						if (logger!=null && logger.isLoggable(Level.SEVERE))
+							logger.severe("Wrong date format detected: "+e.getMessage());
 					}
 									
 					ICip cip = r.getCallFactory().createCip(getCip(call[4]), "");
 					cip.setAdditional(r.getCipManager().getCipLabel(cip, ""));
+					
+					if (logger!=null && logger.isLoggable(Level.INFO))
+						logger.info("Set CIP to: "+cip);
 					
 					// create attributes
 					IAttributeMap am = r.getCallFactory().createAttributeMap();
@@ -162,6 +202,9 @@ public class FritzBoxCallCsv extends AbstractFritzBoxCall {
 						am.add(r.getCallFactory().createAttribute("fritzbox.callbycall", callByCall));
 					
 					if (isSpoofingnumber(call[2])) {
+						if (logger!=null && logger.isLoggable(Level.INFO))
+							logger.info("Spoofing number detected: "+call[2]);
+						
 						String sn = getSpoofingnumber(call[2]);
 						IPhonenumber pnx = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toPhonenumber(sn.trim());
 						ICaller cx = Identifier.identify(r, pnx);
@@ -171,6 +214,9 @@ public class FritzBoxCallCsv extends AbstractFritzBoxCall {
 						}
 					}
 					
+					if (logger!=null && logger.isLoggable(Level.INFO))
+						logger.info("Set attributes to: "+am);
+					
 					// create UUID
 					StringBuffer uuid = new StringBuffer();
 					uuid.append(date.getTime());
@@ -179,10 +225,15 @@ public class FritzBoxCallCsv extends AbstractFritzBoxCall {
 					uuid.append("-");
 					uuid.append(msn.getMSN());
 					
+					if (logger!=null && logger.isLoggable(Level.INFO))
+						logger.info("Set UUID to: "+uuid);
+					
 					// limit uuid to 32 chars
 					if (uuid.length()>31) {
 						// reduce byte length to append -1 for redundant calls max -1-1 --> 3 calls
 						uuid = new StringBuffer(uuid.substring(0,31));
+						if (logger!=null && logger.isLoggable(Level.INFO))
+							logger.info("Reduce UUID to: "+uuid);
 					}
 					//uuid = new StringBuffer(FritzBoxUUIDManager.getInstance().calculateUUID(uuid.toString()));
 					
@@ -190,11 +241,14 @@ public class FritzBoxCallCsv extends AbstractFritzBoxCall {
 					this.m_call.setAttributes(am);
 				}
 			} catch (NumberFormatException ex) {
-				Logger.getLogger(IJAMConst.DEFAULT_LOGGER).log(Level.SEVERE, ex.toString(), ex);
+				if (logger!=null && logger.isLoggable(Level.SEVERE))
+					logger.log(Level.SEVERE, ex.toString(), ex);
 			} catch (Exception ex) {
-				Logger.getLogger(IJAMConst.DEFAULT_LOGGER).warning(ex.toString() + ":" +ex.getMessage() + " : problem with line parsing : "+this.m_line);
+				if (logger!=null && logger.isLoggable(Level.WARNING))
+					logger.log(Level.WARNING, ex.toString() + ":" +ex.getMessage() + " : problem with line parsing : "+this.m_line, ex);
 				if (ex instanceof NullPointerException)
-					Logger.getLogger(IJAMConst.DEFAULT_LOGGER).log(Level.SEVERE, ex.toString(), ex);
+					if (logger!=null && logger.isLoggable(Level.SEVERE))
+						logger.log(Level.SEVERE, ex.toString(), ex);
 				return null;
 			}
 		}
