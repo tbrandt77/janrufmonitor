@@ -1,5 +1,5 @@
-﻿jAnrufmonitor
-Copyright (C) 1999 - 2013 Thilo Brandt
+jAnrufmonitor
+Copyright (C) 1999 - 2016 Thilo Brandt
 
 
 SOFTWARE LIZENZVERTRAG *FREEWARE* (English version below)
@@ -8,7 +8,7 @@ SIE MÜSSEN DIESEM VERTRAG ZUSTIMMEN BEVOR SIE DIE SOFTWARE BENUTZEN!
 
 1. ALLGEMEINES
 
-Dieser Software Lizenzvertrag (nachfolgend "Vertrag" genannt) ist ein bindender Vertrag zwischen Ihnen, dem Endbenutzer (entweder natürliche oder juristische Person) und Thilo Brandt (nachstehend "Hersteller" genannt). Das Urheberrecht dieser Software (nachfolgend "die Software" genannt) und seine dazugehörigen Dokumente (einschließlich aller im Softwarepaket enthaltenen Dateien, Bilder, enthaltener Texte der Software) sowie alles begleitende schriftliche Material gehören dem Hersteller, ansässig im Lindenweg 12, 74918 Angelbachtal, Deutschland, und sind durch nationale und internationale Rechtsvorschriften geschützt.
+Dieser Software Lizenzvertrag (nachfolgend "Vertrag" genannt) ist ein bindender Vertrag zwischen Ihnen, dem Endbenutzer (entweder natürliche oder juristische Person) und Thilo Brandt (nachstehend "Hersteller" genannt). Das Urheberrecht dieser Software (nachfolgend "die Software" genannt) und seine dazugehörigen Dokumente (einschließlich aller im Softwarepaket enthaltenen Dateien, Bilder, enthaltener Texte der Software) sowie alles begleitende schriftliche Material gehören dem Hersteller, ansässig in Kelterwiesen 31, 74889 Sinsheim, Deutschland, und sind durch nationale und internationale Rechtsvorschriften geschützt.
 
 Durch Installation, kopieren, herunterladen oder anderweitige Nutzung der Software erklären Sie sich dem Hersteller gegenüber einverstanden, an die Bedingungen und Konditionen dieses Vertrages gebunden zu sein, welcher Ihre Benutzung der Software regelt. Wenn Sie mit dem Vertrag nicht einverstanden sind, dürfen Sie die Software nicht installieren. 
 
@@ -59,7 +59,7 @@ YOU MUST AGREE TO THIS LICENSE BEFORE USING THE SOFTWARE!
 
 1. GENERAL
 
-This Software License Agreement (hereinafter this Agreement) is a legal agreement between you i.e., the end user or customer (either an individual or a legal entity) and Thilo Brandt (hereinafter "author"). The copyright of this software (hereinafter the Software) and its associated documentation (including any files, images, text incorporated into the Software) as well as any accompanying written materials is owned by Thilo Brandt (the Owner), located at Lindenweg 12, 74918 Angelbachtal, Germany, and is protected by German copyright laws and international treaties. 
+This Software License Agreement (hereinafter this Agreement) is a legal agreement between you i.e., the end user or customer (either an individual or a legal entity) and Thilo Brandt (hereinafter "author"). The copyright of this software (hereinafter the Software) and its associated documentation (including any files, images, text incorporated into the Software) as well as any accompanying written materials is owned by Thilo Brandt (the Owner), located at Kelterwiesen 31, 74889 Sinsheim, Germany, and is protected by German copyright laws and international treaties. 
 
 By installing, copying, downloading or otherwise using this software, you agree with the Owner to be bound by the terms and conditions of this Agreement, which will govern your use of the Software. You also agree then to the author standard business conditions. If you do not agree to this Agreement, do not install or use this Software.
 
@@ -97,5 +97,5 @@ BECAUSE SOME STATES/JURISDICTIONS DO NOT ALLOW THE EXCLUSION OR LIMITATION OF LI
 
 This Agreement shall be governed by German laws and regulations and international treaties. Legal venue shall be Sinsheim Elsenz, Germany. This license based upon laws of the federal republic of Germany. If any part of this license should be declared antinomian by a court with competent jurisprudence the remaining parts keep their validity anyway.
 
-January 2013, Thilo Brandt, Softwareentwickler
+January 2016, Thilo Brandt, Softwareentwickler
 http://www.janrufmonitor.de
