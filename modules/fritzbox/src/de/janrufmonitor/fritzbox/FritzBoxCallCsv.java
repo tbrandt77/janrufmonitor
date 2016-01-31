@@ -28,7 +28,12 @@ public class FritzBoxCallCsv extends AbstractFritzBoxCall {
 
 	public boolean isOutgoingCall() {
 		if (this.m_line==null || this.m_line.length()<2) return false;
-		int state = Integer.parseInt(this.m_line.substring(0,1));
+		int state = -1;
+		try {
+			state = Integer.parseInt(this.m_line.substring(0,1));
+		} catch (NumberFormatException ex) {
+			Logger.getLogger(IJAMConst.DEFAULT_LOGGER).log(Level.SEVERE, ex.toString(), ex);
+		}
 		return state == this.getOutgoingState();
 	}
 	
