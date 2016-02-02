@@ -50,6 +50,7 @@ import de.janrufmonitor.fritzbox.firmware.exception.GetCallListException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallerListException;
 import de.janrufmonitor.fritzbox.firmware.exception.InvalidSessionIDException;
 import de.janrufmonitor.util.io.Base64Encoder;
+import de.janrufmonitor.util.io.OSUtils;
 import de.janrufmonitor.util.io.Stream;
 import de.janrufmonitor.util.string.StringUtils;
 
@@ -244,6 +245,7 @@ public class TR064FritzBoxFirmware implements
 	protected String m_user; // new since Fritz!OS Version 05.50
 	
 	private Map m_msnSipMapping;
+	private boolean m_useHttp;
 	
 	protected long m_loginUptime = -1L;
 	
@@ -268,10 +270,13 @@ public class TR064FritzBoxFirmware implements
 	public void init() throws FritzBoxInitializationException,
 			FritzBoxNotFoundException, InvalidSessionIDException {
 		try {
+			
+			this.m_useHttp = Boolean.parseBoolean(System.getProperty("jam.fritzbox.useHttp", "false"));
+			
 			if (!FritzBoxTR064Manager.getInstance().isTR064Supported(this.m_server, FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port())) 
 				throw new FritzBoxInitializationException("FritzBox "+this.m_server+" does not support TR064.");
 			
-			String version = FritzBoxTR064Manager.getInstance().getFirmwareVersion(this.m_user, this.m_password, this.m_server);
+			String version = FritzBoxTR064Manager.getInstance().getFirmwareVersion(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort()), (this.m_useHttp ? "http" : "https"));
 			
 			if (this.m_logger.isLoggable(Level.INFO))
 				this.m_logger.info("FritzBox firmware version string: "+version);
@@ -283,7 +288,7 @@ public class TR064FritzBoxFirmware implements
 					if (this.m_logger.isLoggable(Level.INFO))
 						this.m_logger.info("Initializing of FritzBox firmware succuessfully finished: "+this.m_firmware.toString());
 					
-					this.m_loginUptime = FritzBoxTR064Manager.getInstance().getUptime(this.m_user, this.m_password, this.m_server);
+					this.m_loginUptime = FritzBoxTR064Manager.getInstance().getUptime(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort()), (this.m_useHttp ? "http" : "https"));
 					if (this.m_loginUptime==-1L) {
 						throw new FritzBoxInitializationException("FritzBox did not provide uptime attribute: "+this.m_loginUptime);
 					}
@@ -296,15 +301,22 @@ public class TR064FritzBoxFirmware implements
 			if (this.m_logger.isLoggable(Level.SEVERE))
 				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 			if (e.getMessage().indexOf("DH keypair")>0) {
-				PropagationFactory.getInstance().fire(
+				if (!OSUtils.isMacOSX()) {
+					PropagationFactory.getInstance().fire(
 						new Message(Message.ERROR,
 							"fritzbox.firmware.hardware",
 							"sslerror",
 							new String[] {this.m_server, System.getProperty("java.runtime.version", "-")},
 							new Exception("SSL Handshake failed for server: "+this.m_server),
 							true));
+				} else {
+					System.setProperty("jam.fritzbox.useHttp", "true");
+					if (this.m_logger.isLoggable(Level.INFO))
+						this.m_logger.info("SSL over HTTPS not possible. Using HTTP. Set jam.fritzbox.useHttp=true");
+					this.init();
+					return;
+				}
 			}
-			
 			throw new FritzBoxInitializationException("FritzBox initializing failed: "+e.getMessage());
 		}
 	}
@@ -322,7 +334,7 @@ public class TR064FritzBoxFirmware implements
 	public String getMSNFromSIP(String idx) throws IOException {
 		if (!this.isInitialized()) return null;
 		if (this.m_msnSipMapping==null) {
-			String xml = FritzBoxTR064Manager.getInstance().getSIPResolution(this.m_user, this.m_password, this.m_server);
+			String xml = FritzBoxTR064Manager.getInstance().getSIPResolution(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort()), (this.m_useHttp ? "http" : "https"));
 			if (xml!=null) {
 				this.m_msnSipMapping = this.parseXML(xml);
 				if (this.m_logger.isLoggable(Level.INFO))
@@ -346,13 +358,13 @@ public class TR064FritzBoxFirmware implements
 		InputStream in = null;
 		try {
 			if (lastSyncTimestamp==-1L) {
-				in = FritzBoxTR064Manager.getInstance().getCallList(this.m_user, this.m_password, this.m_server);
+				in = FritzBoxTR064Manager.getInstance().getCallList(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort()), (this.m_useHttp ? "http" : "https"), -1);
 			} else {
 				long now = System.currentTimeMillis();
 				int days = (int) ((now - lastSyncTimestamp) / (1000 * 60 * 60 * 24)) + 1;
 				if (this.m_logger.isLoggable(Level.INFO))
 					this.m_logger.info("Only retrieve call list for the last x days: "+days);
-				in = FritzBoxTR064Manager.getInstance().getCallList(this.m_user, this.m_password, this.m_server, (days > 0 ? days : 1));
+				in = FritzBoxTR064Manager.getInstance().getCallList(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort()), (this.m_useHttp ? "http" : "https"), (days > 0 ? days : 1));
 			}
 		} catch (IOException e) {
 			throw new GetCallListException(e.getMessage());
@@ -390,7 +402,7 @@ public class TR064FritzBoxFirmware implements
 		if (!this.isInitialized()) throw new GetCallerListException("Could not get phone book from FritzBox: FritzBox firmware not initialized.");
 		InputStream in = null;
 		try {
-			in = FritzBoxTR064Manager.getInstance().getPhonebook(this.m_user, this.m_password, this.m_server, Integer.toString(addressbookId));
+			in = FritzBoxTR064Manager.getInstance().getPhonebook(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort()), (this.m_useHttp ? "http" : "https"), Integer.toString(addressbookId));
 		} catch (IOException e) {
 			throw new GetCallerListException(e.getMessage());
 		}
@@ -422,7 +434,7 @@ public class TR064FritzBoxFirmware implements
 	public Map getAddressbooks() throws GetAddressbooksException, IOException {
 		if (!this.isInitialized()) throw new GetAddressbooksException("Could not get address book list from FritzBox: FritzBox firmware not initialized.");
 		try {
-			return FritzBoxTR064Manager.getInstance().getPhonebookList(this.m_user, this.m_password, this.m_server);
+			return FritzBoxTR064Manager.getInstance().getPhonebookList(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort()), (this.m_useHttp ? "http" : "https"));
 		} catch (IOException e) {
 			throw new GetAddressbooksException(e.getMessage());
 		}
@@ -431,7 +443,7 @@ public class TR064FritzBoxFirmware implements
 	public String getAddressbookModificationHash(int addressbookId) throws GetAddressbooksException, IOException {
 		if (!this.isInitialized()) throw new GetAddressbooksException("Could not get address book list from FritzBox: FritzBox firmware not initialized.");
 		try {
-			return FritzBoxTR064Manager.getInstance().getPhonebookHash(this.m_user, this.m_password, this.m_server, Integer.toString(addressbookId));
+			return FritzBoxTR064Manager.getInstance().getPhonebookHash(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort()), (this.m_useHttp ? "http" : "https"), Integer.toString(addressbookId));
 		} catch (IOException e) {
 			throw new GetAddressbooksException(e.getMessage());
 		}
@@ -441,7 +453,7 @@ public class TR064FritzBoxFirmware implements
 		if (!this.isInitialized()) throw new DeleteCallListException("Could not delete call list from FritzBox: FritzBox firmware not initialized.");
 		
 		String u = "http://" + this.m_server + ":" + this.m_port + "/fon_num/foncalls_list.lua"; 
-		String body = "usejournal=on&clear=&callstab=all&sid=" + FritzBoxTR064Manager.getInstance().getSID(this.m_user, this.m_password, this.m_server);
+		String body = "usejournal=on&clear=&callstab=all&sid=" + FritzBoxTR064Manager.getInstance().getSID(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort()), (this.m_useHttp ? "http" : "https"));
 
 		doHttpCall(u, "POST", body, new String[][] { {"Content-Length", Integer.toString(body.length())} });
 		
@@ -453,7 +465,7 @@ public class TR064FritzBoxFirmware implements
 		if (!this.isInitialized()) throw new GetBlockedListException("Could not get blocked list from FritzBox: FritzBox firmware not initialized.");
 
 		StringBuffer data = new StringBuffer();
-		String u = "http://" + this.m_server +":" + this.m_port + "/fon_num/sperre.lua?sid="+FritzBoxTR064Manager.getInstance().getSID(this.m_user, this.m_password, this.m_server);
+		String u = "http://" + this.m_server +":" + this.m_port + "/fon_num/sperre.lua?sid="+FritzBoxTR064Manager.getInstance().getSID(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort()), (this.m_useHttp ? "http" : "https"));
 
 		try {
 			data.append(
@@ -484,7 +496,7 @@ public class TR064FritzBoxFirmware implements
 		if (!this.isInitialized()) throw new DoBlockException("Could not block number "+number+" on FritzBox: FritzBox firmware not initialized.");
 		
 		String u = "http://" + this.m_server + ":" + this.m_port + "/fon_num/sperre_edit.lua"; 
-		String body = "mode_call=_in&rule_kind=rufnummer&rule_number="+number+"&current_rule=&current_mode=_new&backend_validation=false&apply=&sid="+ FritzBoxTR064Manager.getInstance().getSID(this.m_user, this.m_password, this.m_server);
+		String body = "mode_call=_in&rule_kind=rufnummer&rule_number="+number+"&current_rule=&current_mode=_new&backend_validation=false&apply=&sid="+ FritzBoxTR064Manager.getInstance().getSID(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort()), (this.m_useHttp ? "http" : "https"));
 		
 		doHttpCall(u, "POST", body, new String[][] { {"Content-Length", Integer.toString(body.length())} });
 		
@@ -507,14 +519,14 @@ public class TR064FritzBoxFirmware implements
 		
 		if (this.m_firmware!=null && this.m_firmware.getMajor()>=6 && this.m_firmware.getMinor()>=30) {
 			try {
-				String body = "sid="+FritzBoxTR064Manager.getInstance().getSID(this.m_user, this.m_password, this.m_server)+"&clicktodial=on&port="+extension+"&btn_apply=";
+				String body = "sid="+FritzBoxTR064Manager.getInstance().getSID(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort()), (this.m_useHttp ? "http" : "https"))+"&clicktodial=on&port="+extension+"&btn_apply=";
 				if (this.m_logger.isLoggable(Level.INFO))
 					this.m_logger.info("Set up extension for dialing: "+body);
 				data.append(
 					doHttpCall(u + "/fon_num/dial_foncalls.lua", "POST", body, new String[][] { {"Content-Length", Integer.toString(body.length())} })
 				);
 	
-				String dial_u = u + "/fon_num/fonbook_list.lua?sid="+FritzBoxTR064Manager.getInstance().getSID(this.m_user, this.m_password, this.m_server)+"&dial="+StringUtils.urlEncode(number);
+				String dial_u = u + "/fon_num/fonbook_list.lua?sid="+FritzBoxTR064Manager.getInstance().getSID(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort()), (this.m_useHttp ? "http" : "https"))+"&dial="+StringUtils.urlEncode(number);
 				if (this.m_logger.isLoggable(Level.INFO))
 					this.m_logger.info("Dial URL: "+dial_u);
 				data.append(
@@ -528,7 +540,7 @@ public class TR064FritzBoxFirmware implements
 			} 
 		} else {
 			try {
-				String body = "&sid="+FritzBoxTR064Manager.getInstance().getSID(this.m_user, this.m_password, this.m_server)+"&telcfg:settings/UseClickToDial=1&telcfg:settings/DialPort="+extension+"&telcfg:command/Dial="+number;
+				String body = "&sid="+FritzBoxTR064Manager.getInstance().getSID(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort()), (this.m_useHttp ? "http" : "https"))+"&telcfg:settings/UseClickToDial=1&telcfg:settings/DialPort="+extension+"&telcfg:command/Dial="+number;
 				data.append(
 					doHttpCall(u + "/cgi-bin/webcm", "POST", body, new String[][] { {"Content-Length", Integer.toString(body.length())} })
 				);
@@ -556,7 +568,7 @@ public class TR064FritzBoxFirmware implements
 		
 		long currentUptime = -1L;
 		try {
-			currentUptime = FritzBoxTR064Manager.getInstance().getUptime(this.m_user, this.m_password, this.m_server);
+			currentUptime = FritzBoxTR064Manager.getInstance().getUptime(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort()), (this.m_useHttp ? "http" : "https"));
 		} catch (IOException e) {
 			this.m_logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
 		}
@@ -567,7 +579,7 @@ public class TR064FritzBoxFirmware implements
 		if (this.m_firmware!=null) {
 			StringBuffer s = new StringBuffer(64);
 			try {
-				String[] desc = FritzBoxTR064Manager.getInstance().getDescription(this.m_user, this.m_password, this.m_server);
+				String[] desc = FritzBoxTR064Manager.getInstance().getDescription(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort()), (this.m_useHttp ? "http" : "https"));
 				for (int i=0;i<desc.length;i++) {
 					s.append(desc[i]);
 					if (i<desc.length-1)
@@ -728,7 +740,7 @@ public class TR064FritzBoxFirmware implements
 //			}
 //		}
 		try {
-			String u = "https://"+this.m_server+":"+FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server)+path+"&sid="+FritzBoxTR064Manager.getInstance().getSID(this.m_user, this.m_password, this.m_server);
+			String u = (this.m_useHttp ? "http://" : "https://")+this.m_server+":"+(this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server))+path+"&sid="+FritzBoxTR064Manager.getInstance().getSID(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort()), (this.m_useHttp ? "http" : "https"));
 			if (this.m_logger.isLoggable(Level.INFO)) 
 				this.m_logger.info("requesting URL: "+u);
 			return doHttpCall(u, "GET", null, new String[][] {  }, true).toString();
