@@ -301,21 +301,21 @@ public class TR064FritzBoxFirmware implements
 			if (this.m_logger.isLoggable(Level.SEVERE))
 				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 			if (e.getMessage().indexOf("DH keypair")>0) {
-				if (!OSUtils.isMacOSX()) {
-					PropagationFactory.getInstance().fire(
-						new Message(Message.ERROR,
-							"fritzbox.firmware.hardware",
-							"sslerror",
-							new String[] {this.m_server, System.getProperty("java.runtime.version", "-")},
-							new Exception("SSL Handshake failed for server: "+this.m_server),
-							true));
-				} else {
+				if (OSUtils.isMacOSX()) {
 					System.setProperty("jam.fritzbox.useHttp", "true");
 					if (this.m_logger.isLoggable(Level.INFO))
-						this.m_logger.info("SSL over HTTPS not possible. Using HTTP. Set jam.fritzbox.useHttp=true");
+						this.m_logger.info("SSL over HTTPS not possible on this Mac. Using HTTP. Set jam.fritzbox.useHttp=true");
 					this.init();
 					return;
 				}
+				PropagationFactory.getInstance().fire(
+					new Message(Message.ERROR,
+						"fritzbox.firmware.hardware",
+						"sslerror",
+						new String[] {this.m_server, System.getProperty("java.runtime.version", "-")},
+						new Exception("SSL Handshake failed for server: "+this.m_server),
+						true)
+					);
 			}
 			throw new FritzBoxInitializationException("FritzBox initializing failed: "+e.getMessage());
 		}
