@@ -314,6 +314,16 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 					m_logger.info("Sync all option enabled.");
 			}
 			
+			// sub getSynctimeOffset from time
+			if (synctime>0) {
+				if (m_logger.isLoggable(Level.INFO))
+					m_logger.info("Sync timestamp before decrementing offset: "+synctime);
+				synctime -= this.getSyncTimeOffset();
+				
+				if (m_logger.isLoggable(Level.INFO))
+					m_logger.info("Sync timestamp after decrementing offset: "+synctime);
+			}
+			
 			if (m_logger.isLoggable(Level.INFO))
 				m_logger.info("Syncing call list from FRITZ!Box with timestamp: "+synctime);
 			
@@ -450,10 +460,6 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 							} catch (InterruptedException e1) {
 								m_logger.log(Level.SEVERE, e1.getMessage(), e1);
 							}
-							
-							// sub getSynctimeOffset from time
-							if (synctime>0)
-								synctime -= this.getSyncTimeOffset();
 							
 							IFilter syncFilter = new DateFilter(new Date(System.currentTimeMillis()), new Date(synctime));
 							ICallList cl = ((IReadCallRepository)cm).getCalls(syncFilter);
