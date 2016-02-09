@@ -52,6 +52,11 @@ public class Formatter {
 		"{}"
 	};
 	
+	private String[][] replaceTags = new String[][] {
+			{IJAMConst.CRLF+", ", IJAMConst.CRLF}, 
+			{IJAMConst.CRLF+IJAMConst.CRLF, IJAMConst.CRLF}
+	};
+	
 	private IRuntime m_runtime;
 
 	private Formatter(IRuntime runtime) { 
@@ -578,6 +583,9 @@ public class Formatter {
 			text = StringUtils.replaceString(text, tag, "");
 		}
 		
+		for (int i=0;i<this.replaceTags.length;i++) {
+			text = StringUtils.replaceString(text, this.replaceTags[i][0], this.replaceTags[i][1]);
+		}
 		
 		for (int i=0;i<this.removeableEndTags.length;i++) {
 			tag = this.removeableEndTags[i];
