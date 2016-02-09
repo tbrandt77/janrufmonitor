@@ -306,6 +306,8 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 			}
 			
 			long synctime = Long.parseLong(SynchronizerService.this.m_configuration.getProperty(CFG_SYNCTIME, "-1"));
+			long oldestCallTime = -1;
+			
 			// added: 2013/02/04: check sync all
 			boolean syncall = SynchronizerService.this.m_configuration.getProperty(CFG_SYNCALL, "false").equalsIgnoreCase("true");
 			if (syncall) {
@@ -339,7 +341,7 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 							getLanguage()));
 		
 			try {
-				Thread.sleep((progressMonitor!=null ? 1500 : 100));
+				Thread.sleep((progressMonitor!=null ? 1000 : 100));
 			} catch (InterruptedException e1) {
 				m_logger.log(Level.SEVERE, e1.getMessage(), e1);
 			}
@@ -368,6 +370,14 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 							m_logger.info("Call import skipped by timestamp (last sync time: "+new Date(synctime).toString()+", call time: "+calltime.toString()+") from FRITZ!Box.");
 						continue;
 					}
+					
+					if (synctime<0) {
+						if (oldestCallTime==-1) oldestCallTime = calltime.getTime();
+						if (oldestCallTime>calltime.getTime()) oldestCallTime = calltime.getTime();
+						if (m_logger.isLoggable(Level.INFO))
+							m_logger.info("Set oldest call time to: "+new Date(oldestCallTime).toString());
+					}
+					
 					c = call.toCall();
 					if (c!=null) {
 						if (getRuntime().getMsnManager().isMsnMonitored(
@@ -380,7 +390,7 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 											"processing", "label",
 											getLanguage()) + Formatter.getInstance(this.getRuntime()).parse(IJAMConst.GLOBAL_VARIABLE_CALLERNUMBER, c));
 								try {
-									Thread.sleep(125);
+									Thread.sleep(75);
 								} catch (InterruptedException e1) {
 									m_logger.log(Level.SEVERE, e1.getMessage(), e1);
 								}
@@ -411,40 +421,46 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 					}
 				}
 				
-				if (progressMonitor!=null)
-					progressMonitor.setTaskName(getI18nManager()
-						.getString(getNamespace(),
-								"geocodeprogress", "label",
-								getLanguage()));
-				try {
-					Thread.sleep((progressMonitor!=null ? 1000 : 100));
-				} catch (InterruptedException e1) {
-					m_logger.log(Level.SEVERE, e1.getMessage(), e1);
-				}
-				
-				if (m_logger.isLoggable(Level.INFO))
-					m_logger.info("Processing modifier services on call list: "+getRuntime().getServiceFactory().getModifierServices());
-				processModifierServices(m_callList, progressMonitor);
-				
-				if (progressMonitor!=null)
-					progressMonitor.setTaskName(getI18nManager()
-						.getString(getNamespace(),
-								"synchprogress", "label",
-								getLanguage()));
-				
-				try {
-					Thread.sleep((progressMonitor!=null ? 1000 : 100));
-				} catch (InterruptedException e1) {
-					m_logger.log(Level.SEVERE, e1.getMessage(), e1);
-				}
-				
 				if (m_callList!=null && m_callList.size()>0) {
+					if (progressMonitor!=null)
+						progressMonitor.setTaskName(getI18nManager()
+							.getString(getNamespace(),
+									"geocodeprogress", "label",
+									getLanguage()));
+					try {
+						Thread.sleep((progressMonitor!=null ? 1000 : 100));
+					} catch (InterruptedException e1) {
+						m_logger.log(Level.SEVERE, e1.getMessage(), e1);
+					}
+					
+					if (m_logger.isLoggable(Level.INFO))
+						m_logger.info("Processing modifier services on call list: "+getRuntime().getServiceFactory().getModifierServices());
+					processModifierServices(m_callList, progressMonitor);
+				
+					if (progressMonitor!=null)
+						progressMonitor.setTaskName(getI18nManager()
+							.getString(getNamespace(),
+									"synchprogress", "label",
+									getLanguage()));
+					
+					try {
+						Thread.sleep((progressMonitor!=null ? 1000 : 100));
+					} catch (InterruptedException e1) {
+						m_logger.log(Level.SEVERE, e1.getMessage(), e1);
+					}
+					
 					String repository = getRuntime().getConfigManagerFactory().getConfigManager().getProperty(Journal.NAMESPACE, "repository");
 					ICallManager cm = getRuntime().getCallManagerFactory().getCallManager(repository);
 					if (cm!=null && cm.isActive() && cm.isSupported(IWriteCallRepository.class)) {
 						ICall ca = null;
 
 						boolean syncclean = SynchronizerService.this.m_configuration.getProperty(CFG_SYNCCLEAN, "false").equalsIgnoreCase("true");
+						if (synctime<0) {
+							if (m_logger.isLoggable(Level.INFO))
+								m_logger.info("Set syntime to oldest call time to eliminate duplicates.");
+							synctime = oldestCallTime;
+						}
+						
 						if (syncclean && synctime>0 && cm.isSupported(IReadCallRepository.class) && cm.isSupported(IWriteCallRepository.class)) {
 							if (m_logger.isLoggable(Level.INFO))
 								m_logger.info("Remove duplicated entries (sync clean) option enabled.");
@@ -748,7 +764,7 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 										"geocodeprogress2", "label",
 										getLanguage()) + Formatter.getInstance(this.getRuntime()).parse(IJAMConst.GLOBAL_VARIABLE_CALLERNAME, call));
 							try {
-								Thread.sleep(100);
+								Thread.sleep(75);
 							} catch (InterruptedException e1) {
 								m_logger.log(Level.SEVERE, e1.getMessage(), e1);
 							}
