@@ -382,7 +382,8 @@ public class TR064FritzBoxFirmware implements
 		
 		while (bufReader.ready()) {
 			line = bufReader.readLine();
-			result.add(line);
+			if (line!=null && line.trim().length()>0)
+				result.add(line);
 		}
 		bufReader.close();
 		in.close();

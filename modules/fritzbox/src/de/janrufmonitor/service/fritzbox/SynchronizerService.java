@@ -3,6 +3,7 @@ package de.janrufmonitor.service.fritzbox;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -333,88 +334,96 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 			
 			if (m_logger.isLoggable(Level.INFO))
 				m_logger.info("Call list size from FRITZ!Box: "+result.size());
-
-			if (progressMonitor!=null)
-				progressMonitor.setTaskName(getI18nManager()
-					.getString(getNamespace(),
-							"identifyprogress", "label",
-							getLanguage()));
 		
-			try {
-				Thread.sleep((progressMonitor!=null ? 1000 : 100));
-			} catch (InterruptedException e1) {
-				m_logger.log(Level.SEVERE, e1.getMessage(), e1);
-			}
-			
 			if (result.size()>0) {
 				ICallList m_callList = PIMRuntime.getInstance().getCallFactory().createCallList(result.size());
+				List m_prefilteredList = new ArrayList(result.size());
 				FritzBoxCallCsv call = null;
 				Properties conf = PIMRuntime.getInstance().getConfigManagerFactory().getConfigManager().getProperties(FritzBoxMonitor.NAMESPACE);
 				ICall c = null;
 				FritzBoxUUIDManager.getInstance().init();
 				
 				boolean skipOutgoing = !Boolean.parseBoolean(conf.getProperty(CFG_OUTGOING, "false"));
-				
+					
 				for (int i=0,j=result.size();i<j;i++) {
 					call = new FritzBoxCallCsv((String) result.get(i), conf);
 					// added 2016/01/11: check if outgoing call applicable 
-					if (call!=null && call.isOutgoingCall() && skipOutgoing ) {
-						if (m_logger.isLoggable(Level.INFO))
-							m_logger.info("Call import skipped by call state (outgoing) from FRITZ!Box.");
-						continue;
+					if (call!=null) {
+						if (call.isOutgoingCall() && skipOutgoing ) {
+							if (m_logger.isLoggable(Level.INFO))
+								m_logger.info("Call import skipped by call state (outgoing) from FRITZ!Box.");
+							continue;
+						}
+						
+						Date calltime = call.getPrecalculatedDate();
+						if (calltime!=null && calltime.getTime()<synctime && synctime>0) {
+							if (m_logger.isLoggable(Level.INFO))
+								m_logger.info("Call import skipped by timestamp (last sync time: "+new Date(synctime).toString()+", call time: "+calltime.toString()+") from FRITZ!Box.");
+							continue;
+						}
+						
+						if (calltime!=null && synctime<0) {
+							if (oldestCallTime==-1) oldestCallTime = calltime.getTime();
+							if (oldestCallTime>calltime.getTime()) oldestCallTime = calltime.getTime();
+							if (m_logger.isLoggable(Level.INFO))
+								m_logger.info("Set oldest call time to: "+new Date(oldestCallTime).toString());
+						}
+						m_prefilteredList.add(call);
 					}
-					
-					Date calltime = call.getPrecalculatedDate();
-					if (calltime!=null && calltime.getTime()<synctime && synctime>0) {
-						if (m_logger.isLoggable(Level.INFO))
-							m_logger.info("Call import skipped by timestamp (last sync time: "+new Date(synctime).toString()+", call time: "+calltime.toString()+") from FRITZ!Box.");
-						continue;
+				}
+				
+				if (m_prefilteredList.size()>0) {
+					if (progressMonitor!=null)
+						progressMonitor.setTaskName(getI18nManager()
+							.getString(getNamespace(),
+									"identifyprogress", "label",
+									getLanguage()));
+				
+					try {
+						Thread.sleep((progressMonitor!=null ? 1000 : 100));
+					} catch (InterruptedException e1) {
+						m_logger.log(Level.SEVERE, e1.getMessage(), e1);
 					}
-					
-					if (synctime<0) {
-						if (oldestCallTime==-1) oldestCallTime = calltime.getTime();
-						if (oldestCallTime>calltime.getTime()) oldestCallTime = calltime.getTime();
-						if (m_logger.isLoggable(Level.INFO))
-							m_logger.info("Set oldest call time to: "+new Date(oldestCallTime).toString());
-					}
-					
-					c = call.toCall();
-					if (c!=null) {
-						if (getRuntime().getMsnManager().isMsnMonitored(
-								c.getMSN())
-							) {		
-							
-							if (progressMonitor!=null) {
-								progressMonitor.setTaskName(getI18nManager()
-									.getString(getNamespace(),
-											"processing", "label",
-											getLanguage()) + Formatter.getInstance(this.getRuntime()).parse(IJAMConst.GLOBAL_VARIABLE_CALLERNUMBER, c));
-								try {
-									Thread.sleep(75);
-								} catch (InterruptedException e1) {
-									m_logger.log(Level.SEVERE, e1.getMessage(), e1);
-								}
-							}
-							
-							if (!m_callList.contains(c)) {
-								if (m_logger.isLoggable(Level.INFO))
-									m_logger.info("Adding call imported from FRITZ!Box: "+c.toString());
-		
-								m_callList.add(c);
-							} else {
-								if (m_logger.isLoggable(Level.WARNING))
-									m_logger.warning("Adding duplicated call imported from FRITZ!Box: "+c.toString());
+
+					for (int i=0,j=m_prefilteredList.size();i<j;i++) {
+						c = ((FritzBoxCallCsv) m_prefilteredList.get(i)).toCall();
+						if (c!=null) {
+							if (getRuntime().getMsnManager().isMsnMonitored(
+									c.getMSN())
+								) {		
 								
-								c.setUUID(c.getUUID()+"-1");
-								ICip cip = c.getCIP();
-								cip.setCIP("4"); // just a dirty hack 
-								c.setCIP(cip);
-								if (!m_callList.contains(c))
+								if (progressMonitor!=null) {
+									progressMonitor.setTaskName(getI18nManager()
+										.getString(getNamespace(),
+												"processing", "label",
+												getLanguage()) + Formatter.getInstance(this.getRuntime()).parse(IJAMConst.GLOBAL_VARIABLE_CALLERNUMBER, c));
+									try {
+										Thread.sleep(75);
+									} catch (InterruptedException e1) {
+										m_logger.log(Level.SEVERE, e1.getMessage(), e1);
+									}
+								}
+								
+								if (!m_callList.contains(c)) {
+									if (m_logger.isLoggable(Level.INFO))
+										m_logger.info("Adding call imported from FRITZ!Box: "+c.toString());
+			
 									m_callList.add(c);
-								else {
+								} else {
+									if (m_logger.isLoggable(Level.WARNING))
+										m_logger.warning("Adding duplicated call imported from FRITZ!Box: "+c.toString());
+									
 									c.setUUID(c.getUUID()+"-1");
+									ICip cip = c.getCIP();
+									cip.setCIP("4"); // just a dirty hack 
+									c.setCIP(cip);
 									if (!m_callList.contains(c))
 										m_callList.add(c);
+									else {
+										c.setUUID(c.getUUID()+"-1");
+										if (!m_callList.contains(c))
+											m_callList.add(c);
+									}
 								}
 							}
 						}
@@ -609,6 +618,19 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 					} catch (InterruptedException e1) {
 						m_logger.log(Level.SEVERE, e1.getMessage(), e1);
 					}
+			} else {
+				// no results from FB list
+				if (progressMonitor!=null)
+					progressMonitor.setTaskName(getI18nManager()
+						.getString(getNamespace(),
+								"noresults", "label",
+								getLanguage()));
+			
+				try {
+					Thread.sleep((progressMonitor!=null ? 1500 : 100));
+				} catch (InterruptedException e1) {
+					m_logger.log(Level.SEVERE, e1.getMessage(), e1);
+				}
 			}
 		} catch (IOException e) {
 			m_logger.warning(e.toString());
@@ -635,15 +657,15 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 					e));
 		} catch (CloneNotSupportedException e) {
 			m_logger.warning(e.toString());
+		} finally {
+			if (progressMonitor!=null)
+				progressMonitor.done();
+			
+			this.m_activeSync = false;
 		}
-		
-		if (progressMonitor!=null)
-			progressMonitor.done();
 		
 		if (m_logger.isLoggable(Level.INFO))
 			m_logger.info("--> Finished Synchronizing ("+(progressMonitor==null ? "w/o progress monitor" : "with progress monitor")+") in "+((System.currentTimeMillis() - start)/ 1000)+" sec.");
-		
-		this.m_activeSync = false;
 	}
 
 	private synchronized void synchronize(boolean isSuppressed) {
