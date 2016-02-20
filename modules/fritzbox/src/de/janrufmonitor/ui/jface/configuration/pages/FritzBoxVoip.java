@@ -123,7 +123,7 @@ public class FritzBoxVoip extends AbstractFieldEditorConfigPage {
 				this.m_i18n.getString(this.getNamespace(), "retrymax", "label", this.m_language),
 				this.getFieldEditorParent()
 			);
-			ife.setTextLimit(2);
+			ife.setTextLimit(3);
 			addField(ife);
 			
 			ife = new IntegerFieldEditor(
@@ -131,7 +131,7 @@ public class FritzBoxVoip extends AbstractFieldEditorConfigPage {
 				this.m_i18n.getString(this.getNamespace(), "retrytimeouts", "label", this.m_language),
 				this.getFieldEditorParent()
 			);
-			ife.setTextLimit(2);
+			ife.setTextLimit(3);
 			addField(ife);	
 			
 			bfe = new BooleanFieldEditor(
