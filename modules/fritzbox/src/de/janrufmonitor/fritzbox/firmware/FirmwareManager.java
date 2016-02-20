@@ -487,12 +487,20 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 	}
 	
     private void reconnect(long timeout) {
+    	
+    	if (this.m_isReconnecting) {
+    		if (m_logger.isLoggable(Level.INFO))
+    			m_logger.info("Re-connecting already in progress. Exiting thread "+Thread.currentThread().getName());
+    		return;
+    	}
+    	
     	while (this.m_isReconnecting) {
     		try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
 			}
     	}
+    	
     	this.m_isReconnecting = true;
     	IMonitorListener ml = PIMRuntime.getInstance().getMonitorListener();
 		if (ml!=null && ml.isRunning()) {
@@ -680,6 +688,8 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 						}
 					}
 				}
+			} finally {
+				this.m_isCreatingFirmware = false;
 			}
 			if (this.m_fw!=null) {
 				if (this.m_fw.getFirmwareTimeout()>0) {
