@@ -1,5 +1,29 @@
 ﻿===
 
+jAnrufmonitor 5.0.64 (01.03.2016)
+---------------------------------
+
+Bugfix:
+- Journal: Doppelte Leerzeile bei Formatierung zwischen Adresse und Land entfernt
+
+Module:
+- FRITZ!Box-Überwachung: HTTPS Fehlerprüfung bei falschen DH key pairs
+- FRITZ!Box-Überwachung: HTTP Fallback für TR-064 wenn HTTPS Zugriff auf FRITZ!Box scheitert
+- FRITZ!Box-Überwachung: HTTP für TR-064 erzwingen mit JVM Option -Djam.fritzbox.useHttp=true
+- FRITZ!Box-Überwachung: Optimierung des FRITZ!Box Zugriffes mit TR-064 unter MacOSX
+- FRITZ!Box-Überwachung: IP-Auflösung zur FRITZ!Box bei HTTPS Zugriff
+- FRITZ!Box-Überwachung: Offset von 30 min. bei manuellem Synchonisieren hinzugefügt
+- FRITZ!Box-Überwachung: Erkennung von aktiven Gesprächen beim Synchonisieren hinzugefügt
+- FRITZ!Box-Überwachung: Neue Erkennung für doppelte Anrufe bei der Option "Gesamte Anrufeliste der FRITZ!Box Fon synchronisieren"
+- FRITZ!Box-Überwachung: Optimierung bei Synchronisation und Erkennen von leeren Sync-Listen
+- FRITZ!Box-Überwachung: Beschleunigte Anzeige von Synchronisationsmeldungen
+- FRITZ!Box-Überwachung: Semaphore Management bei Firmware-Erkennung (zweifache Firmware Erkennung)
+- FRITZ!Box-Überwachung: Max. Verbindungsversuche beim Wiederverbinden von 99 auf 999 gesetzt
+- FRITZ!Box-Überwachung: Max. Wartezeit beim Wiederverbinden von 99 auf 999 Sekunden gesetzt
+
+
+===
+
 jAnrufmonitor 5.0.63 (01.02.2016)
 ---------------------------------
 Neu:
