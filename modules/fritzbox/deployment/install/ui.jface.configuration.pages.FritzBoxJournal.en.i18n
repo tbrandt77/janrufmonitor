@@ -27,6 +27,7 @@ ui.jface.configuration.pages.FritzBoxVoip\:openfb\:label\:en=To enable the conne
 ui.jface.configuration.pages.FritzBoxVoip\:openfb2\:label\:en=http://www.janrufmonitor.de/fritzbox-freischalten
 ui.jface.configuration.pages.FritzBoxVoip\:nohttp\:label\:en=Please remove http:// from FRITZ!Box Fon IP address.
 ui.jface.configuration.pages.FritzBoxVoip\:usehttps\:label\:en=Connect FRITZ!Box Fon via HTTPS
+ui.jface.configuration.pages.FritzBoxVoip\:usemsns\:label\:en=Use FRITZ!Box Fon numbers in MSN manager
 ui.jface.configuration.pages.FritzBoxVoip\:tr064off\:label\:en=Switch off TR-064 checks.
 
 ui.jface.configuration.pages.FritzBoxSynchronizer\:title\:label\:en=AVM FRITZ!Box Fon Synchronizer

@@ -153,6 +153,25 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 		return this.m_fw.getMSNFromSIP(idx);
     }
     
+    public Map getMSNMap() throws IOException {
+    	if (this.m_fw==null)
+			try {
+				this.createFirmwareInstance();
+			} catch (FritzBoxInitializationException e) {
+			} catch (FritzBoxNotFoundException e) {
+				if (this.m_broker!=null)
+					this.m_broker.send(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_UNKNOWN_HOST));
+			} catch (InvalidSessionIDException e) {
+				PropagationFactory.getInstance().fire(
+						new Message(Message.ERROR,
+						"fritzbox.firmware.login",
+						"loginfailed",	
+						e,
+						true));
+			}
+		return this.m_fw.getMSNMap();
+    }
+    
     public List getCallList(long lastSyncTimestamp) throws GetCallListException, IOException {
     	if (this.m_fw==null)
 			try {

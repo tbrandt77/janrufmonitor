@@ -156,7 +156,8 @@ public class InitMsnPage extends AbstractPage {
 			list.append(m.getMSN());
 			list.append(",");
 		}
-		this.getRuntime().getConfigManagerFactory().getConfigManager()
+		if (list.length()>0)
+			this.getRuntime().getConfigManagerFactory().getConfigManager()
 				.setProperty(this.CONFIG_NAMESPACE, "list", list.toString());
 		this.getRuntime().getConfigManagerFactory().getConfigManager()
 				.setProperty(IJAMConst.GLOBAL_NAMESPACE, "detectallmsn", "true");

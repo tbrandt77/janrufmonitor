@@ -284,6 +284,7 @@ public class FritzBoxTR064Manager {
 		}
 		}
     }
+    
 
     public Map getPhonePorts(String usr, String passwd, String server, String port, String protocol) throws IOException {
     	if (this.m_logger.isLoggable(Level.INFO))
@@ -300,7 +301,7 @@ public class FritzBoxTR064Manager {
 		content.append("</u:X_AVM-DE_GetPhonePort></s:Body></s:Envelope>");
 
 		StringBuffer response = doHttpCall(protocol+"://"+server+":"+port+"/upnp/control/x_voip", "POST", content.toString(), new String[][] { 
-			{"Content-Type", "text/xml; charset=\"utf-8\""}, {"Content-Length", Integer.toString(content.length())}, {"SOAPACTION", "\"urn:dslforum-org:service:X_VoIP:1#X_AVM-DE_DialGetConfig\""}, {"User-Agent", USER_AGENT}})
+			{"Content-Type", "text/xml; charset=\"utf-8\""}, {"Content-Length", Integer.toString(content.length())}, {"SOAPACTION", "\"urn:dslforum-org:service:X_VoIP:1#X_AVM-DE_GetPhonePort\""}, {"User-Agent", USER_AGENT}})
 		;
 		
 		String nonce = find(Pattern.compile(PATTERN_DETECT_NONCE, Pattern.UNICODE_CASE), response);

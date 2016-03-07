@@ -57,6 +57,54 @@ import de.janrufmonitor.util.string.StringUtils;
 public class TR064FritzBoxFirmware implements
 		IFritzBoxFirmware {
 	
+	private class XMLMsnMapHandler extends DefaultHandler {
+		private Map m;
+		
+		private String currentValue; 
+		private String m_msn;
+		private String m_name;
+		
+		public XMLMsnMapHandler() {
+			m = new HashMap();
+		}
+		
+		public void characters(char[] ch, int start, int length)
+	      throws SAXException {
+			currentValue = new String(ch, start, length);
+		}
+		
+		public void startElement(String uri, String name, String qname, Attributes attributes)
+		throws SAXException {
+			if (qname.equalsIgnoreCase("item")) {
+				this.m_name = null;
+				this.m_msn = null;
+			}
+		}
+		
+		public void endElement(String uri, String name, String qname)
+		throws SAXException {
+			if (qname.equalsIgnoreCase("number")) {
+				this.m_msn = this.currentValue;
+			}
+			
+			if (qname.equalsIgnoreCase("name")) {
+				this.m_name = (this.currentValue == null ? "" : this.currentValue);
+			}
+			
+			if (qname.equalsIgnoreCase("item") && this.m_name!=null && this.m_msn!=null) {
+				m.put(this.m_msn, this.m_name);
+				this.m_name = null;
+				this.m_msn = null;
+			}
+			this.currentValue = null;
+		}
+		
+		public Map getMap() {
+			return this.m;
+		}
+	}
+	
+	
 	private class XMLSipMsnHandler extends DefaultHandler {
 		private Map m;
 		
@@ -245,6 +293,7 @@ public class TR064FritzBoxFirmware implements
 	protected String m_user; // new since Fritz!OS Version 05.50
 	
 	private Map m_msnSipMapping;
+	private Map m_msnMap;
 	private boolean m_useHttp;
 	
 	protected long m_loginUptime = -1L;
@@ -346,6 +395,21 @@ public class TR064FritzBoxFirmware implements
 		}
 		if (this.m_logger.isLoggable(Level.INFO))
 			this.m_logger.info("No SIP to MSN mapping found for index # "+idx);
+		return null;
+	}
+	
+	public Map getMSNMap() throws IOException {
+		if (!this.isInitialized()) return null;
+		
+		if (this.m_msnMap==null) {
+			String xml = FritzBoxTR064Manager.getInstance().getSIPResolution(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server)), (this.m_useHttp ? "http" : "https"));
+			if (xml!=null) {
+				this.m_msnMap = this.parseMsnMapXML(xml);
+				if (this.m_logger.isLoggable(Level.INFO))
+					this.m_logger.info("MSN -> Description mapping table: "+this.m_msnMap);
+				return this.m_msnMap;
+			}
+		}
 		return null;
 	}
 
@@ -697,6 +761,30 @@ public class TR064FritzBoxFirmware implements
 		return null;
 	}
 	
+	private Map parseMsnMapXML(String xml) {
+		try {
+			XMLMsnMapHandler handler = new XMLMsnMapHandler();
+			SAXParser p = SAXParserFactory.newInstance().newSAXParser();
+			String encoding = "utf-8";
+			ByteArrayInputStream in = new ByteArrayInputStream(xml.getBytes(encoding));
+			InputSource is = new InputSource(in);
+			is.setEncoding(encoding);
+			p.parse(is, handler);
+			return handler.getMap();
+		} catch (SAXException e) {
+			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+		} catch (ParserConfigurationException e) {
+			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+		} catch (UnsupportedEncodingException e) {
+			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+		} catch (IOException e) {
+			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+		} catch (Throwable e) {
+			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+		}
+		return null;
+	}
+	
 	private Map parseXML(String xml) {
 		try {
 			XMLSipMsnHandler handler = new XMLSipMsnHandler();
@@ -750,6 +838,8 @@ public class TR064FritzBoxFirmware implements
 		}
 		return null;
 	}
+
+
 
 
 

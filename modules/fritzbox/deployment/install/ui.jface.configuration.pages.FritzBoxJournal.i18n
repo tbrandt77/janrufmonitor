@@ -28,6 +28,7 @@ ui.jface.configuration.pages.FritzBoxVoip\:openfb\:label\:de=Bevor Sie jAnrufmon
 ui.jface.configuration.pages.FritzBoxVoip\:openfb2\:label\:de=FAQ \"Wie schalte ich die AVM FRITZ!Box f\u00FCr jAnrufmonitor frei?\"
 ui.jface.configuration.pages.FritzBoxVoip\:nohttp\:label\:de=Die IP-Adresse der FRITZ!Box Fon ohne http:// angeben.
 ui.jface.configuration.pages.FritzBoxVoip\:usehttps\:label\:de=FRITZ!Box Fon per HTTPS verbinden
+ui.jface.configuration.pages.FritzBoxVoip\:usemsns\:label\:de=FRITZ!Box Fon Rufnummern in MSN Verwaltung verwenden
 ui.jface.configuration.pages.FritzBoxVoip\:tr064off\:label\:de=FRITZ!Box Fon ohne TR-064 Protokoll nutzen
 
 ui.jface.configuration.pages.FritzBoxSynchronizer\:title\:label\:de=AVM FRITZ!Box Fon Synchronizer

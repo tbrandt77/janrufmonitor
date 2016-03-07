@@ -1,6 +1,8 @@
 package de.janrufmonitor.ui.jface.wizards.pages;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 
@@ -22,6 +24,7 @@ import org.eclipse.swt.widgets.Text;
 import de.janrufmonitor.framework.command.ICommand;
 import de.janrufmonitor.framework.monitor.IMonitor;
 import de.janrufmonitor.fritzbox.FritzBoxMonitor;
+import de.janrufmonitor.fritzbox.firmware.FirmwareManager;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.ui.jface.application.controls.HyperLink;
@@ -32,6 +35,7 @@ public class InitFritzBoxVariantPage extends InitVariantPage {
 	
 	private String m_boxuser;
 	private boolean m_active;
+	private boolean m_usemsns;
 	private String m_boxpassword;
 	private String m_boxip;
 	private IRuntime m_runtime;
@@ -149,6 +153,24 @@ public class InitFritzBoxVariantPage extends InitVariantPage {
 		   });
 	    
 	    new Label(c, SWT.LEFT);
+	    
+		bfe = new BooleanFieldEditor(
+				"usemsns",
+			this.m_i18n.getString("ui.jface.configuration.pages.FritzBoxVoip", "usemsns", "label", this.m_language),
+			c
+		);
+		bfe.setPropertyChangeListener(new IPropertyChangeListener() {
+
+			public void propertyChange(PropertyChangeEvent e) {
+				if (e!=null && e.getNewValue()!=null && e.getNewValue() instanceof Boolean)
+					m_usemsns = ((Boolean) e.getNewValue()).booleanValue();
+				setPageComplete(isComplete());
+			}
+			   
+		   });
+		
+		new Label(c, SWT.LEFT);
+		
 	    Text l = new Text(c, SWT.LEFT | SWT.WRAP);
 	    l.setText(this.m_i18n.getString("ui.jface.configuration.pages.FritzBoxVoip", "openfb", "label", this.m_language));
 	    l.setEditable(false);	
@@ -244,6 +266,31 @@ public class InitFritzBoxVariantPage extends InitVariantPage {
 			m_logger.log(Level.SEVERE, e.getMessage(), e);
 			return false;
 		}
+		
+		// save MSN settings
+		FirmwareManager.getInstance().startup();
+		if (m_usemsns && FirmwareManager.getInstance().isLoggedIn()) {
+			try {
+				Map msns = FirmwareManager.getInstance().getMSNMap();
+				if (msns!=null && msns.size()>0) {
+					StringBuffer list = new StringBuffer();
+					Iterator i = msns.keySet().iterator();
+					String msn = null;
+					while (i.hasNext()) {
+						msn = (String) i.next();
+						list.append(msn);list.append(",");
+						getRuntime().getConfigManagerFactory().getConfigManager().setProperty("manager.MsnManager", msn+"_msn", msn);
+						getRuntime().getConfigManagerFactory().getConfigManager().setProperty("manager.MsnManager", msn+"_label", (String) msns.get(msn));
+					}
+					getRuntime().getConfigManagerFactory().getConfigManager().setProperty("manager.MsnManager", "list", list.toString());
+					getRuntime().getConfigManagerFactory().getConfigManager().saveConfiguration();
+				}
+			} catch (IOException e) {
+				m_logger.log(Level.SEVERE, e.toString(), e);
+			}
+			
+		}
+		
 		return true;
 	}
 

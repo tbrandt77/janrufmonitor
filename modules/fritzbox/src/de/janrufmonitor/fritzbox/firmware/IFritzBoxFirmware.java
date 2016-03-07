@@ -94,6 +94,8 @@ public interface IFritzBoxFirmware {
     
     public String getMSNFromSIP(String idx) throws IOException;
     
+    public Map getMSNMap() throws IOException;
+    
     public List getCallList() throws GetCallListException, IOException;
     
     public List getCallList(long lastSyncTimestamp) throws GetCallListException, IOException;
