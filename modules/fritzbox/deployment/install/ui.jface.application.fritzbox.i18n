@@ -58,6 +58,8 @@ ui.jface.application.dialer.DialerCommand\:number\:description\:de=Rufnummer mus
 ui.jface.application.dialer.DialerCommand\:prefix\:label\:de=W\u00E4hlpr\u00E4fix
 ui.jface.application.dialer.DialerCommand\:prefix\:description\:de=Das W\u00E4hlpr\u00E4fix wird vor der eigentlichen Rufnummer gew\u00E4hlt.
 ui.jface.application.dialer.DialerCommand\:dial\:label\:de=W\u00E4hlen...
+ui.jface.application.dialer.DialerCommand\:boxclickdial\:label\:de=Nebenstelle
+ui.jface.application.dialer.DialerCommand\:boxclickdial\:description\:de=Die Nebenstelle mit der die Rufnummer gew\u00E4hlt wird.
 
 # added 5.0.1
 ui.jface.application.fritzbox.action.FritzboxStatAction\:title\:label\:de=FRITZ!Box Fon Statistik

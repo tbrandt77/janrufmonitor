@@ -50,6 +50,7 @@ public class DialerDialog extends TitleAreaDialog implements FritzBoxConst {
 	
 	private Combo dialBox;
 	private Combo dialPrefix;
+	private Combo clickDial;
 	private String number;
 	private List dials;
 
@@ -92,6 +93,31 @@ public class DialerDialog extends TitleAreaDialog implements FritzBoxConst {
 		gd.horizontalIndent = 15;
 		gd.verticalIndent = 15;
 		composite.setLayoutData(gd);
+		
+		String clickdial = getRuntime().getConfigManagerFactory().getConfigManager().getProperty(FritzBoxMonitor.NAMESPACE, CFG_CLICKDIAL);
+		if (clickdial!=null && (clickdial.equalsIgnoreCase("50") || clickdial.equalsIgnoreCase("9"))) {
+			String[] pfs = {
+					"FON 1", "FON 2", "FON 3",
+					"ISDN 1", "ISDN 2", "ISDN 3", "ISDN 4", "ISDN 5", "ISDN 6", "ISDN 7", "ISDN 8", "ISDN 9",
+					"DECT 610", "DECT 611", "DECT 612", "DECT 613", "DECT 614", "DECT 615"
+			};
+			int lastext = 0;
+			String lext = this.getRuntime().getConfigManagerFactory().getConfigManager().getProperty(FritzBoxMonitor.NAMESPACE, "lastext");
+			if (lext!=null && lext.length()>0) {
+				for (int i=0;i<pfs.length;i++) {
+					if (pfs[i].equalsIgnoreCase(lext)) lastext = i;
+				}
+			}
+			Label l = new Label(composite, SWT.LEFT);
+			l.setText(this.getI18nManager().getString(this.getNamespace(), "boxclickdial", "label", this.getLanguage()));
+		    l.setToolTipText(
+				this.getI18nManager().getString(this.getNamespace(), "boxclickdial", "description", this.getLanguage())
+		    );
+		       
+		    clickDial = new Combo(composite, SWT.READ_ONLY);
+		    clickDial.setItems(pfs);
+		    clickDial.select(lastext);	    
+		}
 		
 		String prefixes = getRuntime().getConfigManagerFactory().getConfigManager().getProperty(FritzBoxMonitor.NAMESPACE, "dialprefixes");
 		if (prefixes!=null && prefixes.length()>0) {
@@ -192,25 +218,43 @@ public class DialerDialog extends TitleAreaDialog implements FritzBoxConst {
 						dial = dialPrefix.getText().trim() + dial;
 					}
 				}
+				Properties config = this.getRuntime().getConfigManagerFactory().getConfigManager().getProperties(FritzBoxMonitor.NAMESPACE);
+				String clickdial = config.getProperty(CFG_CLICKDIAL, "50");
+				if (clickDial!=null) {
+					if (clickDial.getText().trim().length()>0) {
+						if (clickDial.getText().equalsIgnoreCase("FON 1")) clickdial = "1";
+						if (clickDial.getText().equalsIgnoreCase("FON 2")) clickdial = "2";
+						if (clickDial.getText().equalsIgnoreCase("FON 3")) clickdial = "3";
+						if (clickDial.getText().equalsIgnoreCase("ISDN 1")) clickdial = "51";
+						if (clickDial.getText().equalsIgnoreCase("ISDN 2")) clickdial = "52";
+						if (clickDial.getText().equalsIgnoreCase("ISDN 3")) clickdial = "53";
+						if (clickDial.getText().equalsIgnoreCase("ISDN 4")) clickdial = "54";
+						if (clickDial.getText().equalsIgnoreCase("ISDN 5")) clickdial = "55";
+						if (clickDial.getText().equalsIgnoreCase("ISDN 6")) clickdial = "56";
+						if (clickDial.getText().equalsIgnoreCase("ISDN 7")) clickdial = "57";
+						if (clickDial.getText().equalsIgnoreCase("ISDN 8")) clickdial = "58";
+						if (clickDial.getText().equalsIgnoreCase("ISDN 9")) clickdial = "59";
+						if (clickDial.getText().equalsIgnoreCase("DECT 610")) clickdial = "60";
+						if (clickDial.getText().equalsIgnoreCase("DECT 611")) clickdial = "61";
+						if (clickDial.getText().equalsIgnoreCase("DECT 612")) clickdial = "62";
+						if (clickDial.getText().equalsIgnoreCase("DECT 613")) clickdial = "63";
+						if (clickDial.getText().equalsIgnoreCase("DECT 614")) clickdial = "64";
+						if (clickDial.getText().equalsIgnoreCase("DECT 615")) clickdial = "65";
+						this.getRuntime().getConfigManagerFactory().getConfigManager().setProperty(FritzBoxMonitor.NAMESPACE, "lastext", clickDial.getText());
+					}
+				}
 				String text = getI18nManager()
 				.getString("ui.jface.application.fritzbox.action.ClickDialAction",
 						"dial", "description",
 						getLanguage());
 				
 				text = StringUtils.replaceString(text, "{%1}", dial);
-				
-//				if (MessageDialog.openConfirm(
-//						new Shell(DisplayManager.getDefaultDisplay()),
-//						this.getI18nManager().getString("ui.jface.application.fritzbox.action.ClickDialAction", "success", "label", this.getLanguage()),
-//						text)
-//					) {
 
-					Properties config = this.getRuntime().getConfigManagerFactory().getConfigManager().getProperties(FritzBoxMonitor.NAMESPACE);
 					FirmwareManager fwm = FirmwareManager.getInstance();
 					try {
 						fwm.login();
 						
-						fwm.doCall(dial + "#", config.getProperty(CFG_CLICKDIAL, "50"));
+						fwm.doCall(dial + "#", clickdial);
 				
 							text = getI18nManager()
 							.getString("ui.jface.application.fritzbox.action.ClickDialAction",
@@ -247,8 +291,7 @@ public class DialerDialog extends TitleAreaDialog implements FritzBoxConst {
 								"faileddial",	
 								e));
 					}
-					
-			//	}
+
 			
 			}
 		}

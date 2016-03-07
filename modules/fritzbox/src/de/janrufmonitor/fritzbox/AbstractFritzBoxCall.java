@@ -49,6 +49,10 @@ public abstract class AbstractFritzBoxCall implements IFritzBoxCall, FritzBoxCon
 	}
 	
 	protected String getMsn(String field) {
+		if (field.trim().length()==0) {
+			String alias = this.m_config.getProperty(FritzBoxConst.CFG_FESTNETZALIAS); 
+			return ((alias==null || alias.trim().length()==0)? field : alias);
+		}
 		if (field.trim().toLowerCase().startsWith("festnetz")) {
 			String alias = this.m_config.getProperty(FritzBoxConst.CFG_FESTNETZALIAS); 
 			return ((alias==null || alias.trim().length()==0)? field : alias);

@@ -57,6 +57,8 @@ ui.jface.application.dialer.DialerCommand\:number\:label\:en=Calling number:
 ui.jface.application.dialer.DialerCommand\:number\:description\:en=Please remove spaces and special characters from the number.
 ui.jface.application.dialer.DialerCommand\:prefix\:label\:en=Dial prefix:
 ui.jface.application.dialer.DialerCommand\:dial\:label\:en=Dial...
+ui.jface.application.dialer.DialerCommand\:boxclickdial\:label\:en=Extension
+
 
 # added 5.0.1
 ui.jface.application.fritzbox.action.FritzboxStatAction\:title\:label\:en=FRITZ!Box Fon statistics
