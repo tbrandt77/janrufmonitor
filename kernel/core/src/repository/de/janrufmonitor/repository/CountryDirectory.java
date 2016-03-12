@@ -1,16 +1,18 @@
 package de.janrufmonitor.repository;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Enumeration;
-import java.util.Properties;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 
 import de.janrufmonitor.framework.IAttributeMap;
@@ -41,10 +43,6 @@ public class CountryDirectory extends AbstractReadOnlyDatabaseCallerManager {
 
 	private static String CFG_DB = "db";
 
-	private static String CFG_ROOT = "root";
-
-	private static String CFG_DATAFILE = "datafile";
-
 	private static String CFG_COMMIT_COUNT = "commit";
 
 	private static String CFG_KEEP_ALIVE = "keepalive";
@@ -53,7 +51,6 @@ public class CountryDirectory extends AbstractReadOnlyDatabaseCallerManager {
 
 	private IRuntime m_runtime;
 
-	private String m_root;
 
 	private boolean m_isMigrating; 
 	
@@ -472,10 +469,10 @@ public class CountryDirectory extends AbstractReadOnlyDatabaseCallerManager {
 
 		super.startup();
 
-		this.insertPropertiesFiles();
+		this.importAreacodeCsvFiles();
 	}
-
-	private void insertPropertiesFiles() {
+	
+	private void importAreacodeCsvFiles() {
 		String restart = System.getProperty("jam.installer.restart");
 		if (restart==null || restart.equalsIgnoreCase("true")) {
 			this.m_logger.info("Detected jam.installer.restart flag as: "+System.getProperty("jam.installer.restart"));
@@ -486,127 +483,93 @@ public class CountryDirectory extends AbstractReadOnlyDatabaseCallerManager {
 			
 			restart = System.getProperty("jam.installer.restart");
 			if (restart !=null && restart.equalsIgnoreCase("true")) {
-				this.m_logger.info("Areacode migration is not started, due to installation of new modules.");
+				this.m_logger.info("Areacode update is not started, due to installation of new modules.");
 				return;
 			}
 		}
-		
 		this.m_isMigrating = true;
-		ICallerList l = getRuntime().getCallerFactory().createCallerList();
-		// Read country file
-		File countryFile = new File(this.getHierarchyRoot() + File.separator
-				+ this.getDatafile());
-		if (countryFile.exists() && countryFile.isFile()) {
-			try {
-				Properties areaCodes = new Properties();
-				FileInputStream istream = new FileInputStream(countryFile);
-				areaCodes.load(istream);
-				this.m_logger
-						.info("Loaded international area code properties file.");
-				istream.close();
-
-				ICaller c = null;
-				IPhonenumber pn = null;
-				IAttributeMap m = null;
-				String key = null;
-				String value = null;
-				Enumeration i = areaCodes.keys();
-				while (i.hasMoreElements()) {
-					key = (String) i.nextElement();
-					value = areaCodes.getProperty(key);
-					pn = getRuntime().getCallerFactory().createPhonenumber(key,
-							"", "country");
-					m = getRuntime().getCallerFactory().createAttributeMap();
-					m.add(getRuntime().getCallerFactory().createAttribute(
-							IJAMConst.ATTRIBUTE_NAME_COUNTRY, value));
-					c = getRuntime().getCallerFactory().createCaller(
-							getRuntime().getCallerFactory().createName("", ""),
-							pn, m);
-					l.add(c);
-				}
-				this.storeCountryAreacodes(l);
-				l.clear();
-			} catch (IOException ex) {
-				this.m_logger.log(Level.SEVERE, ex.getMessage(), ex);
-
-			}
-		}
-
-		// Read areacodes file
-		File countryDir = new File(this.getHierarchyRoot());
-		if (countryDir.exists() && countryDir.isDirectory()) {
-			File[] areacodedirs = countryDir.listFiles();
-			for (int i = 0; i < areacodedirs.length; i++) {
-				if (areacodedirs[i].isDirectory()) {
-					File areacodefile = new File(areacodedirs[i], this
-							.getDatafile());
-					if (areacodefile.exists() && areacodefile.isFile()) {
-						try {
-							Properties areaCodes = new Properties();
-							FileInputStream istream = new FileInputStream(
-									areacodefile);
-							areaCodes.load(istream);
-							this.m_logger
-									.info("Loaded area code properties file "
-											+ areacodefile.getAbsolutePath());
-							istream.close();
-
-							ICaller c = null;
-							IPhonenumber pn = null;
-							IAttributeMap m = null;
-							String key = null;
-							String value = null;
-							Enumeration e = areaCodes.keys();
-							while (e.hasMoreElements()) {
-								key = (String) e.nextElement();
-								value = areaCodes.getProperty(key);
-								pn = getRuntime().getCallerFactory()
-										.createPhonenumber(
-												areacodedirs[i].getName(), key,
-												"area");
-								m = getRuntime().getCallerFactory()
-										.createAttributeMap();
-								m.add(getRuntime().getCallerFactory()
-										.createAttribute(
-												IJAMConst.ATTRIBUTE_NAME_CITY,
-												value));
-								c = getRuntime().getCallerFactory()
-										.createCaller(
-												getRuntime().getCallerFactory()
-														.createName("", ""),
-												pn, m);
-								l.add(c);
-							}
-							
-							this.storeCountryAreacodes(l);
-							l.clear();
-							
-							if (!areacodefile.delete()) areacodefile.deleteOnExit();
-							if (!areacodedirs[i].delete()) areacodedirs[i].deleteOnExit();
-						} catch (IOException ex) {
-							this.m_logger
-									.log(Level.SEVERE, ex.getMessage(), ex);
-
-						}
-					}
-				}
-			}
-		}
-
-		if (countryFile!=null && countryFile.exists() && !countryFile.delete()) countryFile.deleteOnExit();
 		
-		if (countryFile!=null && countryDir.exists() && countryDir.isDirectory()) {
-			File[] areacodedirs = countryDir.listFiles();
-			for (int i = 0; i < areacodedirs.length; i++) {
-				if (areacodedirs[i].isDirectory()) {
-					File areacodefile = new File(areacodedirs[i], this
-							.getDatafile());
-					if (areacodefile.exists() && areacodefile.isFile()) {
-						if (!areacodefile.delete()) areacodefile.deleteOnExit();
-						if (!areacodedirs[i].delete()) areacodedirs[i].deleteOnExit();
+		File areacodeFolder = new File(PathResolver.getInstance(this.getRuntime())
+				.getDataDirectory()
+				+ File.separator + "areacodes");
+		if (!areacodeFolder.exists()) areacodeFolder.mkdirs();
+		File[] areacodeCsvs = areacodeFolder.listFiles(new FilenameFilter() {
+
+			public boolean accept(File f, String name) {
+				return name.endsWith(".areacode.csv");
+			}});
+		if (areacodeCsvs.length>0) {
+			File areacodeCsv = null;
+			ICallerList l = getRuntime().getCallerFactory().createCallerList();
+			for (int i=0;i<areacodeCsvs.length;i++) {
+				areacodeCsv = areacodeCsvs[i];
+				if (areacodeCsv.isFile() && areacodeCsv.exists()) {
+					try {
+						// structure of file
+						// #intareacode;areacode;country;city
+						InputStream content =new FileInputStream(areacodeCsv);
+						if (content!=null) {
+							BufferedReader reader = new BufferedReader(
+			                          new InputStreamReader(content, "ISO-8859-1") );
+							String[] entry = new String[4];
+							StringTokenizer st = null;
+							for ( String line; (line = reader.readLine()) != null; ) {
+								if (line.startsWith("#")) {
+									if (this.m_logger.isLoggable(Level.INFO))
+										this.m_logger.info("Skipping line from import (start comment line #): "+line);
+									continue;
+								}
+								st = new StringTokenizer(line, ";");
+								if (st.countTokens()==2) {
+									entry[0] = st.nextToken().trim();
+									entry[1] = st.nextToken().trim();
+									
+									IPhonenumber pn = getRuntime().getCallerFactory().createPhonenumber(entry[0],"","country");
+									IAttributeMap m = getRuntime().getCallerFactory().createAttributeMap();
+									if (entry[1].length()>0)
+										m.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_COUNTRY, entry[1]));
+									
+									ICaller c  = getRuntime().getCallerFactory().createCaller(getRuntime().getCallerFactory().createName("", ""), pn, m);
+									if (this.m_logger.isLoggable(Level.INFO))
+										this.m_logger.info("Adding intareacode entry: "+c);
+									l.add(c);
+								} else if (st.countTokens()==4) {
+									entry[0] = st.nextToken().trim();
+									entry[1] = st.nextToken().trim();
+									entry[2] = st.nextToken().trim();
+									entry[3] = st.nextToken().trim();
+									
+									IPhonenumber pn = getRuntime().getCallerFactory().createPhonenumber(entry[0],entry[1],(entry[1].length()==0 ? "country": "area"));
+									IAttributeMap m = getRuntime().getCallerFactory().createAttributeMap();
+									if (entry[2].length()>0)
+										m.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_COUNTRY, entry[2]));
+									if (entry[3].length()>0)
+										m.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CITY, entry[3]));
+									
+									ICaller c  = getRuntime().getCallerFactory().createCaller(getRuntime().getCallerFactory().createName("", ""), pn, m);
+									if (this.m_logger.isLoggable(Level.INFO))
+										this.m_logger.info("Adding areacode entry: "+c);
+									l.add(c);
+								} else {
+									if (this.m_logger.isLoggable(Level.INFO))
+										this.m_logger.info("Skipping line from import (invalid token count): "+line);
+								}
+							}
+							reader.close();
+						}
+						if (l.size()>0)
+							this.storeCountryAreacodes(l);
+						l.clear();
+						if (!areacodeCsv.delete()) areacodeCsv.deleteOnExit();
+					} catch (IOException e) {
+						this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 					}
 				}
 			}
+			
+		} else {
+			if (this.m_logger.isLoggable(Level.INFO))
+				this.m_logger.info("No .areacode.csv file found in path: "+areacodeFolder.getAbsolutePath());
 		}
 		this.m_isMigrating = false;
 	}
@@ -691,6 +654,14 @@ public class CountryDirectory extends AbstractReadOnlyDatabaseCallerManager {
 			throw new CallerNotFoundException(
 					"Phone number is CLIR. Identification impossible.");
 
+		while(this.m_isMigrating) {
+			this.m_logger.info("Waiting 1 sec. till update of country directory is finished.");
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+			}
+		}
+		
 		if (PhonenumberAnalyzer.getInstance(this.getRuntime()).isInternal(number)) {
 			String language = this.getRuntime().getConfigManagerFactory().getConfigManager().getProperty(IJAMConst.GLOBAL_NAMESPACE, IJAMConst.GLOBAL_LANGUAGE);
 					
@@ -726,35 +697,4 @@ public class CountryDirectory extends AbstractReadOnlyDatabaseCallerManager {
 				"No caller entry found for phonenumber : "
 						+ number.getTelephoneNumber());
 	}
-
-	private String getHierarchyRoot() {
-		if (this.m_root != null) {
-			return this.m_root;
-		}
-
-		String root = this.m_configuration.getProperty(CFG_ROOT);
-		if (root == null) {
-			root = PathResolver.getInstance(this.getRuntime())
-					.getDataDirectory()
-					+ File.separator + "areacodes";
-		}
-		root = PathResolver.getInstance(this.getRuntime()).resolve(root);
-
-		File r = new File(root);
-
-		if (!r.exists() && !r.mkdir())
-			r.mkdirs();
-
-		this.m_root = r.getAbsolutePath() + File.separator;
-		this.m_logger.info("Set country manager root directory to: " + root);
-
-		return this.m_root;
-	}
-
-	private String getDatafile() {
-		String df = this.m_configuration.getProperty(CFG_DATAFILE);
-		return (df == null ? "cdata" : df);
-	}
-
-
 }
