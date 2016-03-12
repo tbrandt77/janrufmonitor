@@ -26,5 +26,5 @@ ui.jface.configuration.pages.MailNotification\:default_mailfrom\:label\:de=Absen
 ui.jface.configuration.pages.MailNotification\:default_mailto\:label\:de=Empf\u00E4nger-Adresse: 
 ui.jface.configuration.pages.MailNotification\:default_mailtemplate\:label\:de=Mail-Vorlage: 
 ui.jface.configuration.pages.MailNotification\:templates\:label\:de=Einstellungen zur Mailgenerierung
-ui.jface.configuration.pages.MailNotification\:mail\:label\:de=MSN-spezifische Mailzuordnung: 
+ui.jface.configuration.pages.MailNotification\:mail\:label\:de=Rufnummern-spezifische Mailzuordnung: 
 ui.jface.configuration.pages.MailNotification\:test\:label\:de=Testmail versenden... 

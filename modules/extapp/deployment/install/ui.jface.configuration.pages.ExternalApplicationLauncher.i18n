@@ -1,10 +1,10 @@
 ui.jface.configuration.pages.ExternalApplicationLauncher\:title\:label\:de=Erweiterung zum Starten von Anwendungen
 ui.jface.configuration.pages.ExternalApplicationLauncher\:description\:label\:de=Die Erweiterung zum Starten von Anwendungen erm\u00F6glicht es Anwendungen zu starten und diese mit Informationen des Anrufers zu versorgen.
 ui.jface.configuration.pages.ExternalApplicationLauncher\:enabled\:label\:de=Dienst aktiviert
-ui.jface.configuration.pages.ExternalApplicationLauncher\:outgoing\:label\:de=Auch bei ausgehenden Anrufe ausführen
-ui.jface.configuration.pages.ExternalApplicationLauncher\:msn\:label\:de=MSN
-ui.jface.configuration.pages.ExternalApplicationLauncher\:add\:label\:de=hinzufügen
+ui.jface.configuration.pages.ExternalApplicationLauncher\:outgoing\:label\:de=Auch bei ausgehenden Anrufe ausf\u00FChren
+ui.jface.configuration.pages.ExternalApplicationLauncher\:msn\:label\:de=Rufnummer
+ui.jface.configuration.pages.ExternalApplicationLauncher\:add\:label\:de=hinzuf\u00FCgen
 ui.jface.configuration.pages.ExternalApplicationLauncher\:remove\:label\:de=entfernen
-ui.jface.configuration.pages.ExternalApplicationLauncher\:edit\:label\:de=ändern
+ui.jface.configuration.pages.ExternalApplicationLauncher\:edit\:label\:de=\u00E4ndern
 ui.jface.configuration.pages.ExternalApplicationLauncher\:alias\:label\:de=Anwendung
 ui.jface.configuration.pages.ExternalApplicationLauncher\:default_extapp\:label\:de=Standard-Anwendung: 

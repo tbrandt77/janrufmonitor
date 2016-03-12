@@ -1,4 +1,4 @@
-ui.jface.wizards.pages.extapp.SelectFilePage\:title\:label\:de=Anwendung wählen
-ui.jface.wizards.pages.extapp.SelectFilePage\:description\:label\:de=Wählen Sie eine Anwendung (*.exe, *.com, *.cmd) die der MSN zugewiesen werden soll.
+ui.jface.wizards.pages.extapp.SelectFilePage\:title\:label\:de=Anwendung w\u00E4hlen
+ui.jface.wizards.pages.extapp.SelectFilePage\:description\:label\:de=W\u00E4hlen Sie eine Anwendung (*.exe, *.com, *.cmd), die der Rufnummer zugewiesen werden soll.
 ui.jface.wizards.pages.extapp.SelectFilePage\:sound\:label\:de=Anwendungsdatei: 
 

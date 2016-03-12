@@ -1,5 +1,5 @@
 ui.jface.wizards.pages.notification.SelectMailTemplatePage\:title\:label\:de=Mail-Vorlage verwenden
-ui.jface.wizards.pages.notification.SelectMailTemplatePage\:description\:label\:de=Wählen Sie eine Mail-Vorlage, die zur Generierung der Email verwendet werden soll.
+ui.jface.wizards.pages.notification.SelectMailTemplatePage\:description\:label\:de=W\u00E4hlen Sie eine Mail-Vorlage, die zur Generierung der Email verwendet werden soll.
 ui.jface.wizards.pages.notification.SelectMailTemplatePage\:active\:label\:de=Mail-Vorlage verwenden 
-ui.jface.wizards.pages.notification.SelectMailTemplatePage\:templates\:label\:de=Verfügbare Vorlagen: 
+ui.jface.wizards.pages.notification.SelectMailTemplatePage\:templates\:label\:de=Verf\u00FCgbare Vorlagen: 
 

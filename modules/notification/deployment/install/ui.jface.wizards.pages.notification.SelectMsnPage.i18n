@@ -1,6 +1,6 @@
-ui.jface.wizards.pages.notification.SelectMsnPage\:title\:label\:de=MSN festlegen
-ui.jface.wizards.pages.notification.SelectMsnPage\:description\:label\:de=Wählen Sie eine MSN (Mehrfachrufnummer) für die eine Mail versendet werden soll.\nEs können nur MSNs gewählt werden, die in der MSN Verwaltung eingetragen sind.
-ui.jface.wizards.pages.notification.SelectMsnPage\:name\:label\:de=Mail-Versand auf folgende MSN festlegen: 
+ui.jface.wizards.pages.notification.SelectMsnPage\:title\:label\:de=Rufnummer festlegen
+ui.jface.wizards.pages.notification.SelectMsnPage\:description\:label\:de=W\u00E4hlen Sie eine eigene Rufnummer f\u00FCr die eine Mail versendet werden soll.\nEs k\u00F6nnen nur MSNs gew\u00E4hlt werden, die unter Eigene Rufnummern eingetragen sind.
+ui.jface.wizards.pages.notification.SelectMsnPage\:name\:label\:de=Mail-Versand auf folgende Rufnummer festlegen: 
 ui.jface.wizards.pages.notification.SelectMsnPage\:default\:label\:de=Standard
 
 

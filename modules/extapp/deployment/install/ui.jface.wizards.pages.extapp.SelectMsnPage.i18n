@@ -1,4 +1,4 @@
-ui.jface.wizards.pages.extapp.SelectMsnPage\:title\:label\:de=MSN festlegen
-ui.jface.wizards.pages.extapp.SelectMsnPage\:description\:label\:de=Wählen Sie eine MSN (Multiple Subscriber Number) für die eine Anwendung zugewiesen werden soll.\nEs können nur MSNs gewählt werden, die in der MSN Verwaltung eingetragen sind.
-ui.jface.wizards.pages.extapp.SelectMsnPage\:name\:label\:de=Anwendungsdatei auf folgende MSN zuweisen: 
+ui.jface.wizards.pages.extapp.SelectMsnPage\:title\:label\:de=Rufnummer festlegen
+ui.jface.wizards.pages.extapp.SelectMsnPage\:description\:label\:de=W\u00E4hlen Sie eine eigene Rufnummer f\u00FCr die eine Anwendung zugewiesen werden soll.\nEs k\u00F6nnen nur Rufnummern gew\u00E4hlt werden, die Eigene Rufnummern eingetragen sind.
+ui.jface.wizards.pages.extapp.SelectMsnPage\:name\:label\:de=Anwendungsdatei folgender Rufnummer zuweisen: 
 

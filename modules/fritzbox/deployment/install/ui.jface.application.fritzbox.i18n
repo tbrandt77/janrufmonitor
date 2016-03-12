@@ -7,7 +7,7 @@ ui.jface.application.fritzbox.action.ClickDialAction\:faileddial\:label\:de=Anru
 
 ui.jface.application.fritzbox.action.CallStatistic\:title\:label\:de=Statistik zur FRITZ!Box Fon-Anrufliste
 ui.jface.application.fritzbox.action.CallStatistic\:stat\:label\:de=Statistik zur FRITZ!Box Fon-Anrufliste (aktuelle Ansicht)
-ui.jface.application.fritzbox.action.CallStatistic\:stat\:description\:de=Überblick \u00FCber gef\u00FChrte Telefonate:\n\tAnzahl: {%1}\n\tDauer: {%2}\n\nTelefonate pro MSN:\n{%3}
+ui.jface.application.fritzbox.action.CallStatistic\:stat\:description\:de=\u00DCberblick \u00FCber gef\u00FChrte Telefonate:\n\tAnzahl: {%1}\n\tDauer: {%2}\n\nTelefonate pro Rufnummer:\n{%3}
 ui.jface.application.fritzbox.action.CallStatistic\:failed\:label\:de=Statistik zur FRITZ!Box Fon-Anrufliste
 ui.jface.application.fritzbox.action.CallStatistic\:failed\:description\:de=Statistik konnte nicht ermittelt werden, da die FRITZ!Box Fon-Anrufliste nicht als aktuelle Datenablage gew\u00E4hlt ist.
 

@@ -1,10 +1,10 @@
 ui.jface.configuration.pages.Sound\:title\:label\:de=Akustische Benachrichtigung
 ui.jface.configuration.pages.Sound\:description\:label\:de=Mit Hilfe der Akustischen Benachrichtigung k\u00F6nnen bei Anrufeingang Sound-Dateien (WAV/MP3-Dateien) abgespielt werden.
 ui.jface.configuration.pages.Sound\:enabled\:label\:de=Dienst aktiviert
-ui.jface.configuration.pages.Sound\:msn\:label\:de=MSN
+ui.jface.configuration.pages.Sound\:msn\:label\:de=Rufnummer
 ui.jface.configuration.pages.Sound\:add\:label\:de=hinzuf\u00FCgen
 ui.jface.configuration.pages.Sound\:remove\:label\:de=entfernen
-ui.jface.configuration.pages.Sound\:edit\:label\:de=ändern
+ui.jface.configuration.pages.Sound\:edit\:label\:de=\u00E4ndern
 ui.jface.configuration.pages.Sound\:alias\:label\:de=Sound-Datei
 ui.jface.configuration.pages.Sound\:default_soundfile\:label\:de=Standard Sound-Datei: 
 

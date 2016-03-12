@@ -1,11 +1,11 @@
 ui.jface.configuration.pages.Server\:title\:label\:de=Server Erweiterung
-ui.jface.configuration.pages.Server\:description\:label\:de=Die Server Erweiterung ermöglicht das Verbinden von Clients in einem TCP/IP-Netzwerk und bietet einen zentralen Zugriff auf die Anruferdaten.
+ui.jface.configuration.pages.Server\:description\:label\:de=Die Server Erweiterung erm\u00F6glicht das Verbinden von Clients in einem TCP/IP-Netzwerk und bietet einen zentralen Zugriff auf die Anruferdaten.
 ui.jface.configuration.pages.Server\:enabled\:label\:de=Dienst aktiviert
 ui.jface.configuration.pages.Server\:add\:label\:de=<<
 ui.jface.configuration.pages.Server\:port\:label\:de=Server-Port: 
 ui.jface.configuration.pages.Server\:remove\:label\:de=>>
 ui.jface.configuration.pages.Server\:alias\:label\:de=IP-Adresse / DNS
 ui.jface.configuration.pages.Server\:allowed\:label\:de=Erlaubte Clients: 
-ui.jface.configuration.pages.Server\:edit\:label\:de=Client hinzufügen / bearbeiten 
-ui.jface.configuration.pages.Server\:msnlimit\:label\:de=Client auf diese MSNs beschränken 
+ui.jface.configuration.pages.Server\:edit\:label\:de=Client hinzuf\u00FCgen / bearbeiten 
+ui.jface.configuration.pages.Server\:msnlimit\:label\:de=Client auf diese Rufnummern beschr\u00E4nken 
 ui.jface.configuration.pages.Server\:browser\:label\:de=Browser-Verbindungen zulassen

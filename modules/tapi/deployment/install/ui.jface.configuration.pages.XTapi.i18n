@@ -1,7 +1,7 @@
 ui.jface.configuration.pages.XTapi\:title\:label\:de=TAPI-Einstellungen
 ui.jface.configuration.pages.XTapi\:description\:label\:de=Die TAPI \u00DCberwachung nutzt die Microsoft(tm) TAPI Schnittstelle um Anrufe zu signalisieren und zu erkennen.
 ui.jface.configuration.pages.XTapi\:activemonitor\:label\:de=\u00DCberwachung aktiviert (erfordert Programmneustart)
-ui.jface.configuration.pages.XTapi\:festnetzalias\:label\:de=MSN f\u00FCr TAPI-Anrufe:
+ui.jface.configuration.pages.XTapi\:festnetzalias\:label\:de=Rufnummer f\u00FCr TAPI-Anrufe:
 ui.jface.configuration.pages.XTapi\:fbinfo\:label\:de=TAPI-Infos:
 ui.jface.configuration.pages.XTapi\:outgoing\:label\:de=Ausgehende Anrufe \u00FCberwachen
-ui.jface.configuration.pages.XTapi\:deviceid\:label\:de=Ger\u00E4te-ID als MSN verwenden
+ui.jface.configuration.pages.XTapi\:deviceid\:label\:de=Ger\u00E4te-ID als eigene Rufnummer verwenden

@@ -1,5 +1,5 @@
 ui.jface.wizards.pages.notification.SelectMailContentPage\:title\:label\:de=Mail-Inhalt festlegen
-ui.jface.wizards.pages.notification.SelectMailContentPage\:description\:label\:de=Wählen Sie den Inhalt der Mail. Im Betreff und Inhalt können Platzhalter verwendet werden.
+ui.jface.wizards.pages.notification.SelectMailContentPage\:description\:label\:de=W\u00E4hlen Sie den Inhalt der Mail. Im Betreff und Inhalt k\u00F6nnen Platzhalter verwendet werden.
 ui.jface.wizards.pages.notification.SelectMailContentPage\:format\:label\:de=Mail-Format: 
 ui.jface.wizards.pages.notification.SelectMailContentPage\:encoding\:label\:de=Zeichensatz: 
 ui.jface.wizards.pages.notification.SelectMailContentPage\:subject\:label\:de=Betreff: 

@@ -16,7 +16,7 @@ ui.jface.configuration.pages.FritzBoxVoip\:outgoing\:label\:de=Ausgehende Anrufe
 ui.jface.configuration.pages.FritzBoxVoip\:retrymax\:label\:de=Anzahl der autom. Verbindungsversuche: 
 ui.jface.configuration.pages.FritzBoxVoip\:retrytimeout\:label\:de=Wartezeit [min.] zwischen Verbindungsversuche: 
 ui.jface.configuration.pages.FritzBoxVoip\:retrytimeouts\:label\:de=Wartezeit [sek.] zwischen Verbindungsversuche: 
-ui.jface.configuration.pages.FritzBoxVoip\:festnetzalias\:label\:de=MSN f\u00FCr "Festnetz" Anrufe:
+ui.jface.configuration.pages.FritzBoxVoip\:festnetzalias\:label\:de=Rufnummer f\u00FCr "Festnetz" Anrufe:
 ui.jface.configuration.pages.FritzBoxVoip\:fbinfo\:label\:de=FRITZ!Box Fon-Infos:
 ui.jface.configuration.pages.FritzBoxVoip\:all_analog\:label\:de=Alle analogen Nebenstellen
 ui.jface.configuration.pages.FritzBoxVoip\:all_isdn\:label\:de=Alle ISDN Ger\u00E4te
@@ -28,7 +28,7 @@ ui.jface.configuration.pages.FritzBoxVoip\:openfb\:label\:de=Bevor Sie jAnrufmon
 ui.jface.configuration.pages.FritzBoxVoip\:openfb2\:label\:de=FAQ \"Wie schalte ich die AVM FRITZ!Box f\u00FCr jAnrufmonitor frei?\"
 ui.jface.configuration.pages.FritzBoxVoip\:nohttp\:label\:de=Die IP-Adresse der FRITZ!Box Fon ohne http:// angeben.
 ui.jface.configuration.pages.FritzBoxVoip\:usehttps\:label\:de=FRITZ!Box Fon per HTTPS verbinden
-ui.jface.configuration.pages.FritzBoxVoip\:usemsns\:label\:de=FRITZ!Box Fon Rufnummern in MSN Verwaltung verwenden
+ui.jface.configuration.pages.FritzBoxVoip\:usemsns\:label\:de=FRITZ!Box Fon Rufnummern in Eigene Rufnummern verwalten
 ui.jface.configuration.pages.FritzBoxVoip\:tr064off\:label\:de=FRITZ!Box Fon ohne TR-064 Protokoll nutzen
 
 ui.jface.configuration.pages.FritzBoxSynchronizer\:title\:label\:de=AVM FRITZ!Box Fon Synchronizer
