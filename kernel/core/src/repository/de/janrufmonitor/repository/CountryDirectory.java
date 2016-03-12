@@ -142,6 +142,7 @@ public class CountryDirectory extends AbstractReadOnlyDatabaseCallerManager {
 				ps.setString(2, "");
 				ps.setString(3, "country");
 				rs = ps.executeQuery();
+				
 				c = null;
 				while (rs.next()) {
 					try {
@@ -158,6 +159,20 @@ public class CountryDirectory extends AbstractReadOnlyDatabaseCallerManager {
 						this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 					}
 				}
+				if (this.m_logger.isLoggable(Level.SEVERE))
+					this.m_logger.severe("No country for int area code found: "+p.getIntAreaCode());
+				
+				IAttributeMap m = getRuntime().getCallerFactory().createAttributeMap();
+				m.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_COUNTRY, 
+						getRuntime().getI18nManagerFactory().getI18nManager().getString(NAMESPACE, "invalid_number", "label", 
+						this.getRuntime().getConfigManagerFactory().getConfigManager().getProperty(
+					IJAMConst.GLOBAL_NAMESPACE,
+					IJAMConst.GLOBAL_LANGUAGE
+				))));
+				
+				c = getRuntime().getCallerFactory().createCaller(p);
+				c.setAttributes(m);
+				return c;
 			} catch (Exception ex) {
 				this.m_logger.log(Level.SEVERE, (pnp!=null ? "Error while analyzing number ["+pnp.getTelephoneNumber() + "]: " : "") +ex.getMessage(), ex);
 			}
