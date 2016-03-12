@@ -88,3 +88,10 @@ ui.jface.application.fritzbox.action.Block\:failedblock\:label\:en=Could not add
 
 ui.jface.application.fritzbox.rendering.SpoofingNumber\:name\:label\:en=Spoofing number
 ui.jface.application.fritzbox.rendering.SpoofingNumber\:label\:label\:en=Spoofing number (FRITZ!Box Fon)
+
+# added 5.0.65
+ui.jface.application.password.PasswordCommand\:label\:label\:en=No FRITZ!Box Fon password set
+ui.jface.application.password.PasswordCommand\:dialogtitle\:label\:en=No FRITZ!Box Fon password set
+ui.jface.application.password.PasswordCommand\:dialogtitle\:description\:en=No valid FRITZ!Box Fon password set to logon. Please enter the right password now.
+ui.jface.application.password.PasswordCommand\:password\:label\:en=FRITZ!Box Fon password
+ui.jface.application.password.PasswordCommand\:user\:label\:en=FRITZ!Box Fon user: {%1}

@@ -63,6 +63,11 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
     }
     
     public boolean isLoggedIn() {
+    	if (this.m_fw==null) {
+    		System.setProperty("jam.fritzbox.session.password", "");
+        	System.setProperty("jam.fritzbox.session.counter", "0");
+        	System.setProperty("jam.fritzbox.session.ispwdialogvisible", "false");
+    	}
     	return (this.m_fw!=null);
     }
     
@@ -93,7 +98,8 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
     }
     
     public void login() throws FritzBoxLoginException {
-    	if (this.m_fw==null)
+    	if (this.m_fw==null){ 
+    		this.promptPassword();
 			try {
 				this.createFirmwareInstance();
 			} catch (FritzBoxInitializationException e) {
@@ -118,6 +124,7 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 						true));
 				throw new FritzBoxLoginException(e.getMessage());
 			}
+    	}
 		if (this.m_fw==null) throw new FritzBoxLoginException("Login failed due to invalid firmware.");
 		this.m_fw.login();
 		if (this.m_broker!=null)
@@ -394,6 +401,12 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
     	if (this.m_fw!=null) {
     		this.m_fw.destroy();
     	}
+    	
+    	System.setProperty("jam.fritzbox.session.password", "");
+    	System.setProperty("jam.fritzbox.session.counter", "0");
+    	System.setProperty("jam.fritzbox.session.ispwdialogvisible", "false");
+    	this.m_isCreatingFirmware = false;
+    	
     	this.m_fw = null;
     	this.m_isRunning = false;
     }
@@ -503,6 +516,33 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 
 	public String getSenderID() {
 		return "FirmwareManager";
+	}
+	
+	private void promptPassword() {
+		// check for password
+		String pw = this.getFritzBoxPassword();
+		if (pw.trim().length()==0) {
+			int i = Integer.parseInt(System.getProperty("jam.fritzbox.session.counter", "0"));
+			do {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+				}
+				boolean isPWDialogRunning = Boolean.parseBoolean(System.getProperty("jam.fritzbox.session.ispwdialogvisible", "false"));
+				pw = this.getFritzBoxPassword();
+				if (!isPWDialogRunning && pw.trim().length()==0) {
+					ICommand c = this.getRuntime().getCommandFactory().getCommand("PasswordDialog");
+					if (c!=null && c.isExecutable() && !c.isExecuting())
+						try {
+							c.execute();
+						} catch (Exception e) {
+								m_logger.log(Level.SEVERE, e.getMessage(), e);
+						}
+				}
+				
+				i = Integer.parseInt(System.getProperty("jam.fritzbox.session.counter", "0"));
+			} while (pw.trim().length()==0 && i < 4);
+		}
 	}
 	
     private void reconnect(long timeout) {
@@ -803,7 +843,9 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
     }
     
     private String getFritzBoxPassword() {
-    	return getRuntime().getConfigManagerFactory().getConfigManager().getProperty(FritzBoxMonitor.NAMESPACE, FritzBoxConst.CFG_PASSWORD);
+    	String pw = getRuntime().getConfigManagerFactory().getConfigManager().getProperty(FritzBoxMonitor.NAMESPACE, FritzBoxConst.CFG_PASSWORD);
+    	if (pw==null || pw.trim().length()==0) pw = System.getProperty("jam.fritzbox.session.password", "");
+    	return (pw==null ? "" : pw);
     }
     
     private String getFritzBoxPort() {

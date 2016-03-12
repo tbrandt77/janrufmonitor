@@ -90,3 +90,11 @@ ui.jface.application.fritzbox.action.Block\:failedblock\:label\:de=Die Rufnummer
 # added 5.0.58
 ui.jface.application.fritzbox.rendering.SpoofingNumber\:name\:label\:de=Spoofingrufnummer
 ui.jface.application.fritzbox.rendering.SpoofingNumber\:label\:label\:de=Spoofingrufnummer (FRITZ!Box Fon)
+
+# added 5.0.65
+ui.jface.application.password.PasswordCommand\:label\:label\:de=Kein FRITZ!Box Fon Passwort hinterlegt
+ui.jface.application.password.PasswordCommand\:dialogtitle\:label\:de=Kein FRITZ!Box Fon Passwort hinterlegt
+ui.jface.application.password.PasswordCommand\:dialogtitle\:description\:de=Um jAnrufmonitor an der FRITZ!Box Fon anzumelden, muss ein Passwort angegeben werden.\nBitte geben Sie das aktuell g\u00FCltige Passwort ein.
+ui.jface.application.password.PasswordCommand\:password\:label\:de=FRITZ!Box Fon Passwort:
+ui.jface.application.password.PasswordCommand\:user\:label\:de=FRITZ!Box Fon Benutzer: {%1}
+

@@ -78,3 +78,7 @@ ui.jface.wizards.pages.InitVariantPage\:class\:access=system
 # added 5.0.58
 ui.jface.application.RendererRegistry\:renderer_fritzboxspoofingnumber\:value=de.janrufmonitor.ui.jface.application.fritzbox.rendering.SpoofingNumber
 ui.jface.application.RendererRegistry\:renderer_fritzboxspoofingnumber\:access=system
+
+#added 5.0.65
+command.CommandFactory\:command_passwordcommand\:value=de.janrufmonitor.ui.jface.application.password.PasswordCommand
+command.CommandFactory\:command_passwordcommand\:access=system
