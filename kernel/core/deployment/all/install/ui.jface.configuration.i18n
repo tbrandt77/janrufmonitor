@@ -76,7 +76,7 @@ ui.jface.configuration.pages.Dialog\:assign\:label\:de=Namenszuweisung am Dialog
 ui.jface.configuration.pages.Dialog\:balloon\:label\:de=Dialog als Balloon darstellen
 ui.jface.configuration.pages.Dialog\:outgoing\:label\:de=Ausgehende Anrufe anzeigen
 ui.jface.configuration.pages.Dialog\:focus\:label\:de=Dialog fokussieren
-ui.jface.configuration.pages.Dialog\:usemsncolor\:label\:de=Schriftfarbe aus der Journal MSN Farbwahl \u00FCbernehmen
+ui.jface.configuration.pages.Dialog\:usemsncolor\:label\:de=Schriftfarbe aus der Journal Rufnummern Farbwahl \u00FCbernehmen
 ui.jface.configuration.pages.Dialog\:spamcolor\:label\:de=Schriftfarbe aus SPAM Farbwahl \u00FCbernehmen
 
 
@@ -136,20 +136,20 @@ ui.jface.configuration.pages.ModuleManager\:monitor\:label\:de=\u00DCberwachungs
 ui.jface.configuration.pages.ModuleManager\:addon\:label\:de=Add-on
 
 
-ui.jface.configuration.pages.MsnManager\:title\:label\:de=MSN Verwaltung
-ui.jface.configuration.pages.MsnManager\:description\:label\:de=Alle vom jAnrufmonitor zu \u00FCberwachende MSNs (Mehrfachrufnummer) k\u00F6nnen mit einem Bezeichner versehen werden, der bei der Identifizierung verwendet wird.
-ui.jface.configuration.pages.MsnManager\:detectallmsn\:label\:de=Automatische Anruferkennung auf allen MSNs
-ui.jface.configuration.pages.MsnManager\:msn\:label\:de=MSN
+ui.jface.configuration.pages.MsnManager\:title\:label\:de=Eigene Rufnummern
+ui.jface.configuration.pages.MsnManager\:description\:label\:de=Alle vom jAnrufmonitor zu \u00FCberwachende eigenen Rufnummern k\u00F6nnen mit einem Bezeichner versehen werden, der bei der Identifizierung verwendet wird.
+ui.jface.configuration.pages.MsnManager\:detectallmsn\:label\:de=Automatische Anruferkennung auf allen eigenen Rufnummern
+ui.jface.configuration.pages.MsnManager\:msn\:label\:de=Rufnummer
 ui.jface.configuration.pages.MsnManager\:alias\:label\:de=Bezeichnung
 ui.jface.configuration.pages.MsnManager\:addmsn\:label\:de=neu
 ui.jface.configuration.pages.MsnManager\:editmsn\:label\:de=\u00E4ndern
 ui.jface.configuration.pages.MsnManager\:removemsn\:label\:de=entfernen
-ui.jface.configuration.pages.MsnManager\:ctitle\:label\:de=MSN entfernen
-ui.jface.configuration.pages.MsnManager\:confirm\:label\:de=Soll die ausgew\u00E4hlte MSN wirklich entfernt werden?
+ui.jface.configuration.pages.MsnManager\:ctitle\:label\:de=Rufnummer entfernen
+ui.jface.configuration.pages.MsnManager\:confirm\:label\:de=Soll die ausgew\u00E4hlte eigene Rufnummer wirklich entfernt werden?
 
 
 ui.jface.configuration.pages.RuleAssistent\:title\:label\:de=Regel Assistent
-ui.jface.configuration.pages.RuleAssistent\:description\:label\:de=Verwalten Sie Regeln zu Diensten. Abh\u00E4ngig von MSN, Dienstmerkmal und Anrufer k\u00F6nnen Dienste ausgef\u00FChrt oder blockiert werden.
+ui.jface.configuration.pages.RuleAssistent\:description\:label\:de=Verwalten Sie Regeln zu Diensten. Abh\u00E4ngig von eigenen Rufnummern, Dienstmerkmal und Anrufer k\u00F6nnen Dienste ausgef\u00FChrt oder blockiert werden.
 ui.jface.configuration.pages.RuleAssistent\:ruledesc\:label\:de=Regelbeschreibung: 
 ui.jface.configuration.pages.RuleAssistent\:rd_1\:label\:de=Anrufe auf 
 ui.jface.configuration.pages.RuleAssistent\:rd_2\:label\:de=\ mit 
@@ -164,8 +164,8 @@ ui.jface.configuration.pages.RuleAssistent\:rd_10\:label\:de=\ bis
 ui.jface.configuration.pages.RuleAssistent\:rd_11\:label\:de=\ ausgef\u00FChrt.
 ui.jface.configuration.pages.RuleAssistent\:active\:label\:de=aktiv. 
 ui.jface.configuration.pages.RuleAssistent\:notactive\:label\:de=nicht aktiv.
-ui.jface.configuration.pages.RuleAssistent\:allmsn\:label\:de=allen MSNs
-ui.jface.configuration.pages.RuleAssistent\:singlemsn\:label\:de=MSN 
+ui.jface.configuration.pages.RuleAssistent\:allmsn\:label\:de=allen eigenen Rufnummern
+ui.jface.configuration.pages.RuleAssistent\:singlemsn\:label\:de=Rufnummer 
 ui.jface.configuration.pages.RuleAssistent\:allcip\:label\:de=beliebigen Dienstmerkmalen
 ui.jface.configuration.pages.RuleAssistent\:singlecip\:label\:de=Dienstmerkmal 
 ui.jface.configuration.pages.RuleAssistent\:allcaller\:label\:de=alle Kontakte

@@ -39,7 +39,7 @@ manager.CipManager\:28\:label\:de=Video Telefon (2. Kanal)
 manager.CipManager\:100\:label\:de=VoIP
 manager.CipManager\:999\:label\:de=unbekannter Dienst
 
-manager.MsnManager\:title\:label\:de=MSN Manager
+manager.MsnManager\:title\:label\:de=Rufnummer Manager
 
 monitor.MonitorListener\:title\:label\:de=\u00DCberwachungskomponente
 monitor.MonitorListener\:on\:label\:de=Die Anruf\u00FCberwachung wurde eingeschaltet.

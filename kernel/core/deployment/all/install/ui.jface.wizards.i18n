@@ -9,7 +9,7 @@ ui.jface.wizards.FilterWizard\:title\:label\:de=Filter anlegen/bearbeiten
 
 ui.jface.wizards.JournalCallerWizard\:title\:label\:de=Kontakt verwalten
 
-ui.jface.wizards.MsnWizard\:title\:label\:de=MSN anlegen/\u00E4ndern
+ui.jface.wizards.MsnWizard\:title\:label\:de=Eigene Rufnummer anlegen/\u00E4ndern
 
 ui.jface.wizards.RuleWizard\:title\:label\:de=Regeln anlegen/bearbeiten
 
@@ -114,10 +114,10 @@ ui.jface.wizards.pages.FilterDatePage\:30\:label\:de=letzten 30 Tage
 ui.jface.wizards.pages.FilterDatePage\:90\:label\:de=letzten 3 Monate
 ui.jface.wizards.pages.FilterDatePage\:365\:label\:de=letzten 12 Monate
 
-ui.jface.wizards.pages.FilterMsnPage\:title\:label\:de=MSN festlegen
-ui.jface.wizards.pages.FilterMsnPage\:description\:label\:de=W\u00E4hlen Sie eine MSN (Mehrfachrufnummer) f\u00FCr die dieser Filter erstellt werden soll.
-ui.jface.wizards.pages.FilterMsnPage\:name\:label\:de=Filter auf folgende MSN anwenden: 
-ui.jface.wizards.pages.FilterMsnPage\:*\:label\:de=Alle MSNs
+ui.jface.wizards.pages.FilterMsnPage\:title\:label\:de=Eigene Rufnummer festlegen
+ui.jface.wizards.pages.FilterMsnPage\:description\:label\:de=W\u00E4hlen Sie eine eigene Rufnummer f\u00FCr die dieser Filter erstellt werden soll.
+ui.jface.wizards.pages.FilterMsnPage\:name\:label\:de=Filter auf folgende eigene Rufnummer anwenden: 
+ui.jface.wizards.pages.FilterMsnPage\:*\:label\:de=Alle eigenen Rufnummern
 
 ui.jface.wizards.pages.FilterItemCountPage\:title\:label\:de=Anzahl der Eintr\u00E4ge limitieren
 ui.jface.wizards.pages.FilterItemCountPage\:description\:label\:de=W\u00E4hlen Sie die Anzahl der Eintr\u00E4ge, die maximal dargestellt werden soll.
@@ -141,11 +141,11 @@ ui.jface.wizards.pages.FilterPhonesPage\:clir\:label\:de=CLIR Anrufer
 ui.jface.wizards.pages.FilterPhonesPage\:add\:label\:de=\ > 
 ui.jface.wizards.pages.FilterPhonesPage\:remove\:label\:de=\ < 
 
-ui.jface.wizards.pages.MsnPage\:title\:label\:de=Mehrfachrufnummer (MSN)
-ui.jface.wizards.pages.MsnPage\:description\:label\:de=Geben Sie eine von Ihrem Telefonanbieter zugewiesene MSN an und legen Sie eine Bezeichnung fest.
-ui.jface.wizards.pages.MsnPage\:msnerror\:label\:de=Das Feld Mehrfachrufnummer (MSN) hat keinen g\u00FCltigen Wert.
+ui.jface.wizards.pages.MsnPage\:title\:label\:de=Eigene Rufnummer
+ui.jface.wizards.pages.MsnPage\:description\:label\:de=Geben Sie eine von Ihrem Telefonanbieter zugewiesene Rufnummer an und legen Sie eine Bezeichnung fest.
+ui.jface.wizards.pages.MsnPage\:msnerror\:label\:de=Das Feld eigene Rufnummer hat keinen g\u00FCltigen Wert.
 ui.jface.wizards.pages.MsnPage\:adderror\:label\:de=Das Feld Bezeichnung hat keinen g\u00FCltigen Wert.
-ui.jface.wizards.pages.MsnPage\:msn\:label\:de=Mehrfachrufnummer (MSN): 
+ui.jface.wizards.pages.MsnPage\:msn\:label\:de=eigene Rufnummer: 
 ui.jface.wizards.pages.MsnPage\:additional\:label\:de=Bezeichnung:  
 
 ui.jface.wizards.pages.RuleCipPage\:title\:label\:de=Dienstmerkmal (CIP) festlegen
@@ -163,10 +163,10 @@ ui.jface.wizards.pages.RuleExPhonesPage\:internal\:label\:de=interne Anlagenrufn
 ui.jface.wizards.pages.RuleExPhonesPage\:add\:label\:de=\ > 
 ui.jface.wizards.pages.RuleExPhonesPage\:remove\:label\:de=\ < 
 
-ui.jface.wizards.pages.RuleMsnPage\:title\:label\:de=MSN festlegen
-ui.jface.wizards.pages.RuleMsnPage\:description\:label\:de=W\u00E4hlen Sie eine MSN (Mehrfachrufnummer) f\u00FCr die diese Regel erstellt werden soll.
-ui.jface.wizards.pages.RuleMsnPage\:name\:label\:de=Regel auf folgende MSN anwenden: 
-ui.jface.wizards.pages.RuleMsnPage\:*\:label\:de=Alle MSNs
+ui.jface.wizards.pages.RuleMsnPage\:title\:label\:de=Eigene Rufnummer festlegen
+ui.jface.wizards.pages.RuleMsnPage\:description\:label\:de=W\u00E4hlen Sie eine eigene Rufnummer f\u00FCr die diese Regel erstellt werden soll.
+ui.jface.wizards.pages.RuleMsnPage\:name\:label\:de=Regel auf folgende eigene Rufnummer anwenden: 
+ui.jface.wizards.pages.RuleMsnPage\:*\:label\:de=Alle eigenen Rufnummern
 
 ui.jface.wizards.pages.RuleNamePage\:title\:label\:de=Regelname festlegen
 ui.jface.wizards.pages.RuleNamePage\:description\:label\:de=Legen Sie einen eindeutigen Regelnamen fest.
@@ -222,7 +222,7 @@ ui.jface.wizards.pages.UpdatesPage\:currentversion\:label\:de=installiert
 
 ui.jface.wizards.InitializerWizard\:title\:label\:de=Konfigurations-Wizard
 ui.jface.wizards.InitializerWizard\:changeudpath\:label\:de=Speicherort f\u00FCr Benuterdaten wird ge\u00E4ndert...
-ui.jface.wizards.InitializerWizard\:msnsave\:label\:de=Einstellungen zu Mehrfachrufnummern (MSN) werden gespeichert...
+ui.jface.wizards.InitializerWizard\:msnsave\:label\:de=Einstellungen zu eigenen Rufnummern werden gespeichert...
 ui.jface.wizards.InitializerWizard\:numberformat\:label\:de=Einstellungen zum Rufnummernformat werden gespeichert...
 ui.jface.wizards.InitializerWizard\:areacode\:label\:de=Einstellungen zur L\u00E4nderkennung und Vorwahl werden gespeichert...
 ui.jface.wizards.InitializerWizard\:finalize\:label\:de=Konfiguration wird gespeichert und aktiviert. Bitte etwas Geduld...
@@ -236,15 +236,15 @@ ui.jface.wizards.pages.InitDataPathPage\:message\:label\:de=W\u00E4hlen Sie eine
 ui.jface.wizards.pages.InitDataPathPage\:label\:label\:de=Ordner f\u00FCr Benutzerdaten
 ui.jface.wizards.pages.InitDataPathPage\:name\:label\:de=Ordner f\u00FCr Benutzerdaten w\u00E4hlen
 
-ui.jface.wizards.pages.InitMsnPage\:title\:label\:de=Mehrfachrufnummern (MSN) festlegen
-ui.jface.wizards.pages.InitMsnPage\:description\:label\:de=Alle vom jAnrufmonitor zu \u00FCberwachende MSNs (Mehrfachrufnummer) k\u00F6nnen mit einem Bezeichner versehen werden, der bei der Identifizierung angezeigt wird.
-ui.jface.wizards.pages.InitMsnPage\:msn\:label\:de=MSN
+ui.jface.wizards.pages.InitMsnPage\:title\:label\:de=Eigene Rufnummern festlegen
+ui.jface.wizards.pages.InitMsnPage\:description\:label\:de=Alle vom jAnrufmonitor zu \u00FCberwachende eigene Rufnummern k\u00F6nnen mit einem Bezeichner versehen werden, der bei der Identifizierung angezeigt wird.
+ui.jface.wizards.pages.InitMsnPage\:msn\:label\:de=Rufnummer
 ui.jface.wizards.pages.InitMsnPage\:alias\:label\:de=Bezeichnung
 ui.jface.wizards.pages.InitMsnPage\:addmsn\:label\:de=neu
 ui.jface.wizards.pages.InitMsnPage\:editmsn\:label\:de=\u00E4ndern
 ui.jface.wizards.pages.InitMsnPage\:removemsn\:label\:de=entfernen
-ui.jface.wizards.pages.InitMsnPage\:ctitle\:label\:de=MSN entfernen
-ui.jface.wizards.pages.InitMsnPage\:confirm\:label\:de=Soll die ausgew\u00E4hlte MSN wirklich entfernt werden?
+ui.jface.wizards.pages.InitMsnPage\:ctitle\:label\:de=Rufnummer entfernen
+ui.jface.wizards.pages.InitMsnPage\:confirm\:label\:de=Soll die ausgew\u00E4hlte eigene Rufnummer wirklich entfernt werden?
 
 ui.jface.wizards.pages.InitFinalizePage\:title\:label\:de=Konfiguration fertigstellen...
 ui.jface.wizards.pages.InitFinalizePage\:description\:label\:de=Die Konfiguration wurde vollst\u00E4ndig ermittelt.
