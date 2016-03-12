@@ -10,7 +10,7 @@ import de.janrufmonitor.ui.jface.application.AbstractAction;
 public class HelpAction extends AbstractAction {
 
 	private static String NAMESPACE = "ui.jface.application.action.HelpAction";
-	private static String helpPage = "http://www.janrufmonitor.de/documentation.html";
+	private static String helpPage = "http://www.janrufmonitor.de/dokumentation/";
 
 	private IRuntime m_runtime;
 
