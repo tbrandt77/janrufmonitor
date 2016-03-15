@@ -520,6 +520,7 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 	
 	private void promptPassword() {
 		// check for password
+		// password is mandatory
 		String pw = this.getFritzBoxPassword();
 		if (pw.trim().length()==0) {
 			int i = Integer.parseInt(System.getProperty("jam.fritzbox.session.counter", "0"));
