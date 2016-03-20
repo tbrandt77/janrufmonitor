@@ -65,5 +65,6 @@
 	<classpathentry kind="var" path="JAM_LIB/modules/mailapi.jar"/>
 	<classpathentry kind="var" path="JAM_LIB/modules/smtp.jar"/>
 	<classpathentry kind="lib" path="/jAnrufmonitor Monitor NCID/build" sourcepath="/jAnrufmonitor Monitor NCID/src"/>
+	<classpathentry kind="var" path="JAM_LIB/modules/signpost-commonshttp4.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

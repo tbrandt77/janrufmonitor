@@ -11,7 +11,8 @@
         <and>
             <available file="${jam.modules.extlib}/jwitter.jar"/>
             <available file="${jam.modules.extlib}/signpost-core-1.2.1.1.jar"/>
-            <available file="${jam.modules.extlib}/codec.jar"/>
+        	<available file="${jam.modules.extlib}/codec.jar"/>
+        	<available file="${jam.modules.extlib}/signpost-commonshttp4.jar"/>
         </and>
       </condition>
     </target>
@@ -21,7 +22,8 @@
      
      <get dest="${jam.modules.extlib}/signpost-core-1.2.1.1.jar" src="http://downloads.janrufmonitor.de/dev/5.0/lib/modules/signpost-core-1.2.1.1.jar"/>
      <get dest="${jam.modules.extlib}/jtwitter.jar" src="http://downloads.janrufmonitor.de/dev/5.0/lib/modules/jtwitter.jar"/>
-     <get dest="${jam.modules.extlib}/codec.jar" src="http://downloads.janrufmonitor.de/dev/5.0/lib/modules/codec.jar"/>
+    	<get dest="${jam.modules.extlib}/codec.jar" src="http://downloads.janrufmonitor.de/dev/5.0/lib/modules/codec.jar"/>
+    	<get dest="${jam.modules.extlib}/signpost-commonshttp4.jar" src="http://downloads.janrufmonitor.de/dev/5.0/lib/modules/signpost-commonshttp4.jar"/>
   </target>
 
     <target name="bundle_module" depends="distribute" description="bundle the module source to jam.zip archives" >
@@ -50,7 +52,8 @@
       <copy todir="${jam.modules.lib.dir}/${jam.mod.name}/lib">
         <fileset file="${jam.modules.extlib}/signpost-core-1.2.1.1.jar"/>
         <fileset file="${jam.modules.extlib}/jtwitter.jar"/>
-        <fileset file="${jam.modules.extlib}/codec.jar"/>
+      	<fileset file="${jam.modules.extlib}/codec.jar"/>
+      	<fileset file="${jam.modules.extlib}/signpost-commonshttp4.jar"/>
       </copy>
     </target>
 
