@@ -65,6 +65,12 @@ public abstract class AbstractTableApplication extends AbstractBaseApplication i
 		this.initializeProviders();
 		((TableViewer)viewer).setContentProvider(this.getContentProvider());
 	}
+	
+	private String getFilterLabel(IFilterManager fm, IFilter[] f) {
+		String name = this.getRuntime().getConfigManagerFactory().getConfigManager().getProperty(this.getNamespace(), "filtername_"+fm.getFiltersToString(f));
+		if (name!=null && name.length()>0) return name;
+		return fm.getFiltersToLabelText(f, 45);
+	}
 
 
 	public synchronized void updateViews(Object[] controllerdata, boolean reload) {
@@ -80,7 +86,7 @@ public abstract class AbstractTableApplication extends AbstractBaseApplication i
 			IFilter[] f = fm.getFiltersFromString(this
 					.getConfiguration().getProperty(CFG_FILTER, ""));
 			
-			String activeFilter = this.getFilterManager().getFiltersToLabelText(f,45);
+			String activeFilter = this.getFilterLabel(fm, f);
 			
 			// get all defined Filters from configuration
 			List l = new ArrayList();
@@ -125,7 +131,7 @@ public abstract class AbstractTableApplication extends AbstractBaseApplication i
 			int select = -1;
 			String filterAlias = null;
 			for (int i=0;i<l.size();i++) {
-				filterAlias = this.getFilterManager().getFiltersToLabelText((IFilter[]) l.get(i),45);
+				filterAlias = this.getFilterLabel(fm, (IFilter[]) l.get(i)); //this.getFilterManager().getFiltersToLabelText((IFilter[]) l.get(i),45);
 				
 				if (filterAlias.equalsIgnoreCase(activeFilter)) {
 					select=i;	
@@ -136,7 +142,7 @@ public abstract class AbstractTableApplication extends AbstractBaseApplication i
 			this.currentView.setItems(filters);
 			if (select==-1) {
 				getApplication().getConfiguration().setProperty(
-					CFG_FILTER, getFilterManager().getFiltersToString((IFilter[]) l.get(0))
+					CFG_FILTER, fm.getFiltersToString((IFilter[]) l.get(0))
 				);
 				getApplication().storeConfiguration();
 				select=0;

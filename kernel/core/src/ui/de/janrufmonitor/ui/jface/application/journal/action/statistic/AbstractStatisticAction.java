@@ -10,6 +10,7 @@ import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.ui.jface.application.AbstractAction;
 import de.janrufmonitor.ui.jface.application.IFilterManager;
+import de.janrufmonitor.ui.jface.application.journal.Journal;
 import de.janrufmonitor.ui.jface.application.journal.JournalConfigConst;
 import de.janrufmonitor.ui.jface.application.journal.JournalController;
 import de.janrufmonitor.ui.jface.application.journal.JournalFilterManager;
@@ -58,7 +59,7 @@ public abstract class AbstractStatisticAction extends AbstractAction implements 
 		IFilter[] f = fm.getFiltersFromString(this.m_app.getApplication()
 				.getConfiguration().getProperty(CFG_FILTER, ""));
 
-		String activeFilter = fm.getFiltersToLabelText(f,45);
+		String activeFilter = getFilterLabel(fm, f);
 		
 		String description = getI18nManager().getString(
 				getNamespace(),
@@ -87,7 +88,7 @@ public abstract class AbstractStatisticAction extends AbstractAction implements 
 		IFilter[] f = fm.getFiltersFromString(this.m_app.getApplication()
 				.getConfiguration().getProperty(CFG_FILTER, ""));
 
-		String activeFilter = fm.getFiltersToLabelText(f,45);
+		String activeFilter = getFilterLabel(fm, f);
 		
 		String description = getI18nManager().getString(
 				getNamespace(),
@@ -111,5 +112,11 @@ public abstract class AbstractStatisticAction extends AbstractAction implements 
 
 	public int getMaxListItemCount() {
 		return m_cl.size();
+	}
+
+	private String getFilterLabel(IFilterManager fm, IFilter[] f) {
+		String name = this.getRuntime().getConfigManagerFactory().getConfigManager().getProperty(Journal.NAMESPACE, "filtername_"+fm.getFiltersToString(f));
+		if (name!=null && name.length()>0) return name;
+		return fm.getFiltersToLabelText(f, 45);
 	}
 }

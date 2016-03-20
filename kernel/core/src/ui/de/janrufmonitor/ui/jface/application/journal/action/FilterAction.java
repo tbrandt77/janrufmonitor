@@ -33,6 +33,7 @@ import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.ui.jface.AbstractTableLabelProvider;
 import de.janrufmonitor.ui.jface.application.AbstractAction;
 import de.janrufmonitor.ui.jface.application.ApplicationImageDescriptor;
+import de.janrufmonitor.ui.jface.application.IFilterManager;
 import de.janrufmonitor.ui.jface.application.journal.Journal;
 import de.janrufmonitor.ui.jface.application.journal.JournalConfigConst;
 import de.janrufmonitor.ui.jface.application.journal.JournalFilterManager;
@@ -63,10 +64,16 @@ public class FilterAction extends AbstractAction implements JournalConfigConst {
 			IFilter[] f = (IFilter[])o;
 		    switch (column) {
 		    case 0:
-		      return new JournalFilterManager().getFiltersToLabelText(f, 45);
+		      return getFilterLabel(new JournalFilterManager(), f);
 		    }
 			return null;
 		}
+	}
+	
+	private String getFilterLabel(IFilterManager fm, IFilter[] f) {
+		String name = this.getRuntime().getConfigManagerFactory().getConfigManager().getProperty(Journal.NAMESPACE, "filtername_"+fm.getFiltersToString(f));
+		if (name!=null && name.length()>0) return name;
+		return fm.getFiltersToLabelText(f, 45);
 	}
 	
 	private class FilterDialog extends TitleAreaDialog {		

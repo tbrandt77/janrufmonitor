@@ -141,6 +141,10 @@ ui.jface.wizards.pages.FilterPhonesPage\:clir\:label\:de=CLIR Anrufer
 ui.jface.wizards.pages.FilterPhonesPage\:add\:label\:de=\ > 
 ui.jface.wizards.pages.FilterPhonesPage\:remove\:label\:de=\ < 
 
+ui.jface.wizards.pages.FilterNamePage\:title\:label\:de=Filtername festlegen
+ui.jface.wizards.pages.FilterNamePage\:description\:label\:de=Legen Sie einen eindeutigen Filternamen fest.
+ui.jface.wizards.pages.FilterNamePage\:name\:label\:de=Filtername: 
+
 ui.jface.wizards.pages.MsnPage\:title\:label\:de=Eigene Rufnummer
 ui.jface.wizards.pages.MsnPage\:description\:label\:de=Geben Sie eine von Ihrem Telefonanbieter zugewiesene Rufnummer an und legen Sie eine Bezeichnung fest.
 ui.jface.wizards.pages.MsnPage\:msnerror\:label\:de=Das Feld eigene Rufnummer hat keinen g\u00FCltigen Wert.

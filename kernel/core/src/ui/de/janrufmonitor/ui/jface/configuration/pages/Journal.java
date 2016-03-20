@@ -94,7 +94,7 @@ public class Journal extends AbstractFieldEditorConfigPage {
 		
 		String[][] filters = new String[l.size()][2];
 		for (int i=0;i<l.size();i++) {
-			filters[i][0] = jfm.getFiltersToLabelText((IFilter[]) l.get(i), 45);
+			filters[i][0] = getFilterLabel(jfm, (IFilter[]) l.get(i));
 			filters[i][1] =  jfm.getFiltersToString((IFilter[]) l.get(i));
 		}
 		
@@ -114,6 +114,12 @@ public class Journal extends AbstractFieldEditorConfigPage {
 		sfe.setTextLimit(2);
 		addField(sfe);
 		
+	}
+	
+	private String getFilterLabel(IFilterManager fm, IFilter[] f) {
+		String name = this.getRuntime().getConfigManagerFactory().getConfigManager().getProperty(this.getNamespace(), "filter_name_"+fm.getFiltersToString(f));
+		if (name!=null && name.length()>0) return name;
+		return fm.getFiltersToLabelText(f, 45);
 	}
 	
 }

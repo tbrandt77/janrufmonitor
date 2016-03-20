@@ -140,6 +140,10 @@ ui.jface.wizards.pages.FilterPhonesPage\:clir\:label\:en=CLIR caller
 ui.jface.wizards.pages.FilterPhonesPage\:add\:label\:en=\ > 
 ui.jface.wizards.pages.FilterPhonesPage\:remove\:label\:en=\ < 
 
+ui.jface.wizards.pages.FilterNamePage\:title\:label\:en=Define filter name
+ui.jface.wizards.pages.FilterNamePage\:description\:label\:en=Secify a unique filter name.
+ui.jface.wizards.pages.FilterNamePage\:name\:label\:en=Filter name: 
+
 ui.jface.wizards.pages.MsnPage\:title\:label\:en=Multiple Subscriber Number (MSN)
 ui.jface.wizards.pages.MsnPage\:description\:label\:en=enter your MSN and specify a display label.
 ui.jface.wizards.pages.MsnPage\:msnerror\:label\:en=Multiple Subscriber Number (MSN) field is invalid.

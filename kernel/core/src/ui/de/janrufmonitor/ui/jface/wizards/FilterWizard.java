@@ -18,12 +18,16 @@ import de.janrufmonitor.repository.filter.ItemCountFilter;
 import de.janrufmonitor.repository.filter.MsnFilter;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
+import de.janrufmonitor.ui.jface.application.IFilterManager;
+import de.janrufmonitor.ui.jface.application.journal.Journal;
+import de.janrufmonitor.ui.jface.application.journal.JournalFilterManager;
 import de.janrufmonitor.ui.jface.wizards.pages.AbstractPage;
 import de.janrufmonitor.ui.jface.wizards.pages.FilterCallTypePage;
 import de.janrufmonitor.ui.jface.wizards.pages.FilterCipPage;
 import de.janrufmonitor.ui.jface.wizards.pages.FilterDatePage;
 import de.janrufmonitor.ui.jface.wizards.pages.FilterItemCountPage;
 import de.janrufmonitor.ui.jface.wizards.pages.FilterMsnPage;
+import de.janrufmonitor.ui.jface.wizards.pages.FilterNamePage;
 import de.janrufmonitor.ui.jface.wizards.pages.FilterPhonesPage;
 
 public class FilterWizard extends AbstractWizard {
@@ -40,7 +44,7 @@ public class FilterWizard extends AbstractWizard {
 		
     	this.m_filters = filters;
 		
-		this.m_pages = new AbstractPage[6];
+		this.m_pages = new AbstractPage[7];
 		IFilter f = this.getMsnFilter(filters);
 		if (f!=null)
 			this.m_pages[0] = new FilterMsnPage(((MsnFilter)f).getMsn()[0]);
@@ -103,12 +107,23 @@ public class FilterWizard extends AbstractWizard {
 		} else
 			this.m_pages[5] = new FilterCallTypePage(getRuntime().getCallFactory().createAttributeMap());
 		
+		if (filters!=null) {
+			IFilterManager fm = new JournalFilterManager();
+			String name = this.getRuntime().getConfigManagerFactory().getConfigManager().getProperty(Journal.NAMESPACE, "filtername_"+fm.getFiltersToString(filters));
+			if (name!=null && name.trim().length()>0)
+				this.m_pages[6] = new FilterNamePage(name);
+			else
+				this.m_pages[6] = new FilterNamePage("");
+		} else
+			this.m_pages[6] = new FilterNamePage("");
+		
 		this.addPage(this.m_pages[0]);
 		this.addPage(this.m_pages[1]);
 		this.addPage(this.m_pages[2]);
 		this.addPage(this.m_pages[3]);
 		this.addPage(this.m_pages[4]);
 		this.addPage(this.m_pages[5]);
+		this.addPage(this.m_pages[6]);
 	}
 
 	public String getID() {
@@ -125,7 +140,8 @@ public class FilterWizard extends AbstractWizard {
 			this.m_pages[2].isPageComplete() &&
 			this.m_pages[3].isPageComplete() &&
 			this.m_pages[4].isPageComplete() &&
-			this.m_pages[5].isPageComplete()) {
+			this.m_pages[5].isPageComplete() &&
+			this.m_pages[6].isPageComplete()) {
 			
 			List filterList = new ArrayList();
 			
@@ -163,6 +179,16 @@ public class FilterWizard extends AbstractWizard {
 			this.m_filters = new IFilter[filterList.size()];
 			for (int i=0;i<filterList.size();i++) {
 				this.m_filters[i] = (IFilter)filterList.get(i);
+			}
+			
+			String name = ((FilterNamePage)this.m_pages[6]).getResult();
+			IFilterManager fm = new JournalFilterManager();
+			if (name!=null && name.trim().length()>0) {
+				this.getRuntime().getConfigManagerFactory().getConfigManager().setProperty(Journal.NAMESPACE, "filtername_"+fm.getFiltersToString(getResult()), name);
+				this.getRuntime().getConfigManagerFactory().getConfigManager().saveConfiguration();
+			} else {
+				this.getRuntime().getConfigManagerFactory().getConfigManager().removeProperty(Journal.NAMESPACE, "filtername_"+fm.getFiltersToString(getResult()));
+				this.getRuntime().getConfigManagerFactory().getConfigManager().saveConfiguration();
 			}
 			
 			return true;
