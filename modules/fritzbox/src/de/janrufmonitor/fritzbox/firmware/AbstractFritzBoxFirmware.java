@@ -134,6 +134,10 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 	public AbstractFritzBoxFirmware(String box_address, String box_port, String box_password) {
 		this(box_address, box_port, box_password, null, false);
 	}
+	
+	public boolean isPasswordValid() {
+		return true;
+	}
 
 	public void init() throws FritzBoxInitializationException, FritzBoxNotFoundException, InvalidSessionIDException {
 		try {

@@ -97,9 +97,13 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 		}
     }
     
+    public boolean isInstance(Class c) {
+    	return c.isInstance(this.m_fw);
+    }
+    
     public void login() throws FritzBoxLoginException {
-    	if (this.m_fw==null){ 
-    		this.promptPassword();
+		if (this.m_fw==null){ 
+			this.promptPassword();
 			try {
 				this.createFirmwareInstance();
 			} catch (FritzBoxInitializationException e) {
@@ -124,18 +128,14 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 						true));
 				throw new FritzBoxLoginException(e.getMessage());
 			}
-    	}
+		}
 		if (this.m_fw==null) throw new FritzBoxLoginException("Login failed due to invalid firmware.");
 		this.m_fw.login();
 		if (this.m_broker!=null)
 			this.m_broker.send(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_RECONNECTED_SUCCESS));
-    }
-    
-    public boolean isInstance(Class c) {
-    	return c.isInstance(this.m_fw);
-    }
-    
-    public String getFirmwareDescription() throws FritzBoxLoginException {
+	}
+
+	public String getFirmwareDescription() throws FritzBoxLoginException {
     	if (this.m_fw==null)
 			return "";
 		return this.m_fw.toString();
@@ -683,6 +683,7 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
     		this.m_fw = new TR064FritzBoxFirmware(getFritzBoxAddress(), getFritzBoxPort(), getFritzBoxPassword(), getFritzBoxUser());
     		try {
     			if (this.m_fw==null) throw new FritzBoxInitializationException("Instantiation of TR064 firmware instance failed.");
+    			if (!this.m_fw.isPasswordValid()) throw new InvalidSessionIDException("Invalid user/password combination: "+this.getFritzBoxUser()+"/"+this.getFritzBoxPassword());
 				this.m_fw.init();
 				if (this.m_logger.isLoggable(Level.INFO))
 					this.m_logger.info("Detected TR064 Firmware: "+this.m_fw.toString());

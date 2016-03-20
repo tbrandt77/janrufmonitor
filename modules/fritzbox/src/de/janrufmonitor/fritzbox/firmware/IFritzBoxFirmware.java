@@ -92,6 +92,8 @@ public interface IFritzBoxFirmware {
     
     public boolean isRestarted();
     
+    public boolean isPasswordValid();
+    
     public String getMSNFromSIP(String idx) throws IOException;
     
     public Map getMSNMap() throws IOException;

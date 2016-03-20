@@ -316,6 +316,22 @@ public class TR064FritzBoxFirmware implements
 		if (!this.isInitialized()) throw new FritzBoxLoginException("Could not login to FritzBox: FritzBox firmware not initialized.");
 	}
 
+	public boolean isPasswordValid() {
+		try {
+			
+			this.m_useHttp = Boolean.parseBoolean(System.getProperty("jam.fritzbox.useHttp", "false"));
+			
+			if (!FritzBoxTR064Manager.getInstance().isTR064Supported(this.m_server, FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port())) 
+				return false;
+			
+			return FritzBoxTR064Manager.getInstance().isPasswordValid(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server)), (this.m_useHttp ? "http" : "https"));
+		} catch (IOException e) {
+			if (this.m_logger.isLoggable(Level.SEVERE))
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+		}
+		return false;
+	}
+
 	public void init() throws FritzBoxInitializationException,
 			FritzBoxNotFoundException, InvalidSessionIDException {
 		try {

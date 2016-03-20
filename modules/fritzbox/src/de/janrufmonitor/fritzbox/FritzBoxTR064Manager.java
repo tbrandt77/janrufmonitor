@@ -79,6 +79,9 @@ public class FritzBoxTR064Manager {
 	// getSIPResolution
 	private final static String PATTERN_SIP_NUMBERS = "<NewNumberList>([^<]*)</NewNumberList>";
 	
+	// is PasswordValid PATTERN
+	private final static String PATTERN_VALID_PASSWORD = "<Status>([^<]*)</Status>";
+	
 	private static FritzBoxTR064Manager m_instance = null;
 	
 	private Logger m_logger;
@@ -179,6 +182,61 @@ public class FritzBoxTR064Manager {
 		String sid = find(Pattern.compile(PATTERN_SID, Pattern.UNICODE_CASE), response);
 		
 		return (sid!=null && sid.length()>0 ? sid : null);
+    }
+    
+    public boolean isPasswordValid(String usr, String passwd) throws IOException {
+    	return this.isPasswordValid(usr, passwd, this.getDefaultFritzBoxDNS(), this.getDefaultFritzBoxTR064SecurePort(), "https");
+    }
+    
+    public boolean isPasswordValid(String usr, String passwd, String server) throws IOException {
+    	return this.isPasswordValid(usr, passwd, server, this.getDefaultFritzBoxTR064SecurePort(server), "https");
+    }
+    
+    public boolean isPasswordValid(String usr, String passwd, String server, String port, String protocol) throws IOException {
+    	if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info("Entering isPasswordValid(String usr, String passwd, String server, String port, String protocol)");
+    	String user = new String(usr.getBytes("utf-8"));
+		
+    	StringBuffer content = new StringBuffer();
+		content.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+		content.append("<s:Envelope s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"");
+		content.append("xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" >");
+		content.append("<s:Header><h:InitChallenge xmlns:h=\"http://soap-authentication.org/digest/2001/10/\" s:mustUnderstand=\"1\">");
+		content.append("<UserID>"+user+"</UserID>");
+		content.append("</h:InitChallenge></s:Header><s:Body><u:X_AVM-DE_CreateUrlSID xmlns:u=\"urn:dslforum-org:service:DeviceConfig:1\">");
+		content.append("</u:X_AVM-DE_CreateUrlSID></s:Body></s:Envelope>");
+
+		StringBuffer response = doHttpCall(protocol+"://"+server+":"+port+"/upnp/control/deviceconfig", "POST", content.toString(), new String[][] { 
+			{"Content-Type", "text/xml; charset=\"utf-8\""}, {"Content-Length", Integer.toString(content.length())}, {"SOAPACTION", "\"urn:dslforum-org:service:DeviceConfig:1#X_AVM-DE_CreateUrlSID\""}, {"User-Agent", USER_AGENT}})
+		;
+		
+		String nonce = find(Pattern.compile(PATTERN_DETECT_NONCE, Pattern.UNICODE_CASE), response);
+		String realm = find(Pattern.compile(PATTERN_DETECT_REALM, Pattern.UNICODE_CASE), response);
+		
+		String auth = FritzBoxMD5Handler.getTR064Auth(usr, passwd, realm, nonce);
+		
+		content = new StringBuffer();
+		content.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+		content.append("<s:Envelope s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"");
+		content.append("xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" >");
+		content.append("<s:Header><h:ClientAuth xmlns:h=\"http://soap-authentication.org/digest/2001/10/\" s:mustUnderstand=\"1\">");
+		content.append("<Nonce>"+nonce+"</Nonce>");
+		content.append("<Auth>"+auth+"</Auth>");
+		content.append("<UserID>"+user+"</UserID>");
+		content.append("<Realm>"+realm+"</Realm>");
+		content.append("</h:ClientAuth></s:Header>");
+		content.append("<s:Body><u:X_AVM-DE_CreateUrlSID xmlns:u=\"urn:dslforum-org:service:DeviceConfig:1\">");
+		content.append("</u:X_AVM-DE_CreateUrlSID></s:Body></s:Envelope>");
+		
+		response = doHttpCall(protocol+"://"+server+":"+port+"/upnp/control/deviceconfig", "POST", content.toString(), new String[][] { 
+			{"Content-Type", "text/xml; charset=\"utf-8\""}, {"Content-Length", Integer.toString(content.length())}, {"SOAPACTION", "\"urn:dslforum-org:service:DeviceConfig:1#X_AVM-DE_CreateUrlSID\""}, {"User-Agent", USER_AGENT}});
+		
+		String sid = find(Pattern.compile(PATTERN_VALID_PASSWORD, Pattern.UNICODE_CASE), response);
+		
+		if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info("Password validation: "+sid);
+		
+		return (sid!=null && sid.trim().equalsIgnoreCase("authenticated") ? true : false);
     }
     
     public void _hangup(String usr, String passwd, String server, String port, String protocol) throws IOException {
@@ -1145,7 +1203,7 @@ public class FritzBoxTR064Manager {
 			//System.out.print(FritzBoxTR064Manager.getInstance().getPhonebook("thilo.brandt", "Tb2743507", "fritz.box", "49443", "https", "0"));
 			//System.out.println(FritzBoxTR064Manager.getInstance().getPhonebookHash("admin", "Tb2743507", "fritz.box", "0"));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort());
-			System.out.print(FritzBoxTR064Manager.getInstance().getSIPResolution("thilo.brandt", "Tb2743507"));
+			System.out.print(FritzBoxTR064Manager.getInstance().getSID("thilo.brandt", "Tb274350"));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getTelephoneAnsweringMachineMessageList("thilo.brandt", "xxxx","fritz.box", "49000", "http", "0"));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getDescription("thilo.brandt", "Tb2743507","fritz.box"));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getPhonePorts("thilo.brandt", "Tb2743507","fritz.box", "49443", "https"));
