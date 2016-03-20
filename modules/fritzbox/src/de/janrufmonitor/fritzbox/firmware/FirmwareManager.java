@@ -683,6 +683,7 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
     		this.m_fw = new TR064FritzBoxFirmware(getFritzBoxAddress(), getFritzBoxPort(), getFritzBoxPassword(), getFritzBoxUser());
     		try {
     			if (this.m_fw==null) throw new FritzBoxInitializationException("Instantiation of TR064 firmware instance failed.");
+    			if (!((TR064FritzBoxFirmware)this.m_fw).isTR064Enabled()) throw new FritzBoxInitializationException("TR064 is not supported or TR064 support disabled by this FRITZ!Box "+this.getFritzBoxAddress()); 
     			if (!this.m_fw.isPasswordValid()) throw new InvalidSessionIDException("Invalid user/password combination: "+this.getFritzBoxUser()+"/"+this.getFritzBoxPassword());
 				this.m_fw.init();
 				if (this.m_logger.isLoggable(Level.INFO))

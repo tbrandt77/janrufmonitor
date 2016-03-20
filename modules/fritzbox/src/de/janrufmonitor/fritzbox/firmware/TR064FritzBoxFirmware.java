@@ -297,6 +297,8 @@ public class TR064FritzBoxFirmware implements
 	private boolean m_useHttp;
 	
 	protected long m_loginUptime = -1L;
+	protected boolean m_hasTR064Checkpassed;
+	protected boolean m_isTR064;
 	
 	protected FirmwareData m_firmware;
 	
@@ -315,16 +317,41 @@ public class TR064FritzBoxFirmware implements
 	public void login() throws FritzBoxLoginException {
 		if (!this.isInitialized()) throw new FritzBoxLoginException("Could not login to FritzBox: FritzBox firmware not initialized.");
 	}
+	
+	public boolean isTR064Enabled() {
+		if (this.m_hasTR064Checkpassed) {
+			if (this.m_logger.isLoggable(Level.INFO))
+				this.m_logger.info("TR064 check already done. TR064 is "+(this.m_isTR064 ? "enabled" : "disabled")+".");
+			return this.m_isTR064;
+		}
+		
+		if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info("TR064 check not yet done.");
+		
+		try {
+			this.m_hasTR064Checkpassed = true;
+			this.m_isTR064 = FritzBoxTR064Manager.getInstance().isTR064Supported(this.m_server, FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port());
+			if (this.m_logger.isLoggable(Level.INFO))
+				this.m_logger.info("TR064 is "+(this.m_isTR064 ? "enabled" : "disabled")+".");
+			return this.m_isTR064;
+		} catch (IOException e) {
+			if (this.m_logger.isLoggable(Level.SEVERE))
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+		}
+		if (this.m_logger.isLoggable(Level.WARNING))
+			this.m_logger.warning("FRITZ!Box "+this.m_server+" does not support TR064 or TR064 is disabled.");
+		this.m_isTR064 = false;
+		return this.m_isTR064;
+	}
 
 	public boolean isPasswordValid() {
-		try {
-			
-			this.m_useHttp = Boolean.parseBoolean(System.getProperty("jam.fritzbox.useHttp", "false"));
-			
-			if (!FritzBoxTR064Manager.getInstance().isTR064Supported(this.m_server, FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port())) 
-				return false;
-			
-			return FritzBoxTR064Manager.getInstance().isPasswordValid(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server)), (this.m_useHttp ? "http" : "https"));
+		try {			
+			if (this.isTR064Enabled()) {
+				this.m_useHttp = Boolean.parseBoolean(System.getProperty("jam.fritzbox.useHttp", "false"));	
+				return FritzBoxTR064Manager.getInstance().isPasswordValid(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server)), (this.m_useHttp ? "http" : "https"));
+			}
+			if (this.m_logger.isLoggable(Level.WARNING))
+				this.m_logger.warning("FRITZ!Box "+this.m_server+" does not support TR064 or TR064 is disabled.");
 		} catch (IOException e) {
 			if (this.m_logger.isLoggable(Level.SEVERE))
 				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
@@ -335,11 +362,10 @@ public class TR064FritzBoxFirmware implements
 	public void init() throws FritzBoxInitializationException,
 			FritzBoxNotFoundException, InvalidSessionIDException {
 		try {
+			if (!this.isTR064Enabled()) 
+				throw new FritzBoxInitializationException("FRITZ!Box "+this.m_server+" does not support TR064 or TR064 is disabled.");
 			
 			this.m_useHttp = Boolean.parseBoolean(System.getProperty("jam.fritzbox.useHttp", "false"));
-			
-			if (!FritzBoxTR064Manager.getInstance().isTR064Supported(this.m_server, FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port())) 
-				throw new FritzBoxInitializationException("FritzBox "+this.m_server+" does not support TR064.");
 			
 			String version = FritzBoxTR064Manager.getInstance().getFirmwareVersion(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server)), (this.m_useHttp ? "http" : "https"));
 			
@@ -390,6 +416,8 @@ public class TR064FritzBoxFirmware implements
 		this.m_firmware = null;
 		this.m_msnSipMapping = null;
 		this.m_loginUptime = -1L;
+		this.m_hasTR064Checkpassed = false;
+		this.m_isTR064 = false;
 	}
 
 	public boolean isInitialized() {
