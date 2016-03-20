@@ -138,6 +138,7 @@ ui.jface.wizards.pages.FilterPhonesPage\:selectedphones\:label\:de=Filter bei di
 ui.jface.wizards.pages.FilterPhonesPage\:allphones\:label\:de=Verf\u00FCgbare Rufnummern: 
 ui.jface.wizards.pages.FilterPhonesPage\:*\:label\:de=Filter auf alle Rufnummern anwenden
 ui.jface.wizards.pages.FilterPhonesPage\:clir\:label\:de=CLIR Anrufer
+ui.jface.wizards.pages.FilterPhonesPage\:internal\:label\:de=interne Anlagenrufnummern
 ui.jface.wizards.pages.FilterPhonesPage\:add\:label\:de=\ > 
 ui.jface.wizards.pages.FilterPhonesPage\:remove\:label\:de=\ < 
 
