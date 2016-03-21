@@ -118,11 +118,12 @@ public abstract class AbstractTableApplication extends AbstractBaseApplication i
 
 				public int compare(Object f1, Object f2) {
 					if (f1!=null && f2!=null && f1 instanceof IFilter[] && f2 instanceof IFilter[]) {
-						if (((IFilter[])f1).length==((IFilter[])f2).length) {
-							return (((IFilter[])f2)[0].toString().compareTo(((IFilter[])f1)[0].toString()));
-						}
-						if (((IFilter[])f1).length<((IFilter[])f2).length) return -1;
-						return 1;
+						return getFilterLabel(getFilterManager(), ((IFilter[])f1)).toLowerCase().compareTo(getFilterLabel(getFilterManager(), ((IFilter[])f2)).toLowerCase());
+//						if (((IFilter[])f1).length==((IFilter[])f2).length) {
+//							return (((IFilter[])f2)[0].toString().compareTo(((IFilter[])f1)[0].toString()));
+//						}
+//						if (((IFilter[])f1).length<((IFilter[])f2).length) return -1;
+//						return 1;
 					}
 					return 0;
 				}});
