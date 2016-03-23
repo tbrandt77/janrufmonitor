@@ -154,6 +154,13 @@ public class MacAddressBookManager extends AbstractReadWriteCallerManager implem
 			Thread t = new Thread() {
 				public void run() {
 					try {
+						do {
+							try {
+								Thread.sleep(2000);
+							} catch (InterruptedException e) {
+							}
+						} while(getRuntime().getCallerManagerFactory().getCallerManager("CountryDirectory")==null);
+
 						// update database
 						getProxy().preload();
 					} catch (MacAddressBookProxyException e) {
