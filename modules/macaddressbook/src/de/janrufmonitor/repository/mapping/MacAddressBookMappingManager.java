@@ -237,10 +237,15 @@ public class MacAddressBookMappingManager {
 			if (oCaller.containsKey(IMacAddressBookConst.PARENT_GROUPS)) {
 				List categories = (List) oCaller.get(IMacAddressBookConst.PARENT_GROUPS);
 				if (categories.size()>0) {
-					a = createAttribute(IJAMConst.ATTRIBUTE_NAME_CATEGORY,
-							MacAddressBookProxy.getInstance().getCategory((String) categories.get(0)));
+					for (int i=0;i<categories.size();i++) {
+						a = createAttribute(IJAMConst.ATTRIBUTE_NAME_CATEGORY,
+							MacAddressBookProxy.getInstance().getCategory((String) categories.get(i)));
 
-					if (a!=null) m.add(a);
+						if (a!=null) {
+							m.add(a);
+							break;
+						}
+					}
 				}
 			}
 
