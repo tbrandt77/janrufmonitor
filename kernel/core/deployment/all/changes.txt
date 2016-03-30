@@ -1,10 +1,10 @@
-﻿===
+===
 
 jAnrufmonitor 5.0.65 (01.04.2016)
 ---------------------------------
 Neu:
 - Ländercode und Vorwahlverzeichnis: CSV Import zum Aktualisieren von Ländercodes und Städtevorwahlen
-- Ländercode und Vorwahlverzeichnis: Neue CSV-basierten Ländercode Module(Europa, Nordamerika, Asien, Afrika)
+- Ländercode und Vorwahlverzeichnis: Neue CSV-basierten Ländercode Module (Europa, Nordamerika, Asien, Afrika)
 - Ländercode und Vorwahlverzeichnis: Erkennung von ungültigen Ländercodes und Vorwahlen
 - Umbenennung von MSN in eigene Rufnummer
 - MSN Verwaltung in "Eigene Rufnummern" umbenannt
@@ -15,7 +15,7 @@ Bugfix:
 - Link auf neue Hilfe-Seite geändert
 
 Module:
-- FRITZ!Box-Überwachung: Nebenstellemauswahl im Wähldialog hinzugefügt
+- FRITZ!Box-Überwachung: Nebenstellenauswahl im Wähldialog hinzugefügt
 - FRITZ!Box-Überwachung: Import von "Eigene Rufnummern" der FRITZ!Box Oberfläche
 - FRITZ!Box-Überwachung: Session-Passwort Unterstützung
 - FRITZ!Box-Überwachung: Login ohne Passwort entfernt
@@ -27,7 +27,7 @@ Module:
 - Akustische Benachrichtigung: Umbenennung von MSN in eigene Rufnummer
 - Server Erweiterung: Umbenennung von MSN in eigene Rufnummer
 - Erweiterung zum Starten von Anwendungen: Umbenennung von MSN in eigene Rufnummer
-- Anrufsimulator: : Umbenennung von MSN in eigene Rufnummer
+- Anrufsimulator: Umbenennung von MSN in eigene Rufnummer
 - Twitter Benachrichtigung: neue PIN Abfrage-URL hinzugefügt                
 - Apple Mac Adressbuch: Ergänzung des Ortes über das Ländercode und Vorwahlverzeichnis
 - Apple Mac Adressbuch: Bugfix bei der Kategorie-Erkennung
@@ -35,7 +35,7 @@ Module:
 ===
 
 jAnrufmonitor 5.0.64 (01.03.2016)
----------------------------------Windows 7Windows 7Windows 7Windows 7Windows 7Windows 7Windows 7Windows 7Windows 7Windows 7
+---------------------------------
 Bugfix:
 - Journal: Doppelte Leerzeile bei Formatierung zwischen Adresse und Land entfernt
 
