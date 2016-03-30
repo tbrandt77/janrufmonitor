@@ -33,6 +33,7 @@ import de.janrufmonitor.fritzbox.firmware.exception.GetCallerListException;
 import de.janrufmonitor.fritzbox.firmware.exception.InvalidSessionIDException;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
+import de.janrufmonitor.ui.swt.SWTExecuter;
 
 public class FirmwareManager implements IEventReceiver, IEventSender {
 
@@ -120,13 +121,21 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 				throw new FritzBoxLoginException(e.getMessage());
 			} catch (InvalidSessionIDException e) {
 				this.m_fw = null;
+				if (e.getMessage().indexOf("user/password combination")>0) {
+					System.setProperty("jam.fritzbox.session.password", "");
+					if (this.getFritzBoxPassword().trim().length()==0) {
+						this.login();
+						return;
+					}
+				}
 				PropagationFactory.getInstance().fire(
 						new Message(Message.ERROR,
 						"fritzbox.firmware.login",
 						"loginfailed",	
 						e,
 						true));
-				throw new FritzBoxLoginException(e.getMessage());
+				throw new FritzBoxLoginException(e.getMessage()); 
+				
 			}
 		}
 		if (this.m_fw==null) throw new FritzBoxLoginException("Login failed due to invalid firmware.");
@@ -518,7 +527,7 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 		return "FirmwareManager";
 	}
 	
-	private void promptPassword() {
+	private void promptPassword() throws FritzBoxLoginException {
 		// check for password
 		// password is mandatory
 		String pw = this.getFritzBoxPassword();
@@ -531,18 +540,31 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 				}
 				boolean isPWDialogRunning = Boolean.parseBoolean(System.getProperty("jam.fritzbox.session.ispwdialogvisible", "false"));
 				pw = this.getFritzBoxPassword();
-				if (!isPWDialogRunning && pw.trim().length()==0) {
-					ICommand c = this.getRuntime().getCommandFactory().getCommand("PasswordDialog");
+				if (!isPWDialogRunning && pw.trim().length()==0 && i < 4) {
+					final ICommand c = this.getRuntime().getCommandFactory().getCommand("PasswordDialog");
 					if (c!=null && c.isExecutable() && !c.isExecuting())
-						try {
-							c.execute();
-						} catch (Exception e) {
-								m_logger.log(Level.SEVERE, e.getMessage(), e);
-						}
+						new SWTExecuter() {
+							protected void execute() {
+								try {
+									c.execute();
+								} catch (Exception e) {
+									m_logger.log(Level.SEVERE, e.getMessage(), e);
+								}
+							}}
+						.start();
 				}
 				
 				i = Integer.parseInt(System.getProperty("jam.fritzbox.session.counter", "0"));
 			} while (pw.trim().length()==0 && i < 4);
+			if (i>=4) {
+				PropagationFactory.getInstance().fire(
+						new Message(Message.ERROR,
+						"fritzbox.firmware.login",
+						"loginfailed",	
+						new Exception("No password set for login."),
+						true));
+				throw new FritzBoxLoginException("No password set for login.");
+			}
 		}
 	}
 	
