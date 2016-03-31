@@ -340,6 +340,7 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 			do {
 				try {
 					counter ++;
+					FirmwareManager.getInstance().startup();
 					FirmwareManager.getInstance().login();
 					m_loggedin = true;
 				} catch (FritzBoxLoginException e) {

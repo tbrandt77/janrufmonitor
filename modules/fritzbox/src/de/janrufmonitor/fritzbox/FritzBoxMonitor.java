@@ -230,6 +230,7 @@ public class FritzBoxMonitor implements IMonitor, IConfigurable, FritzBoxConst {
 			};
 			try {
 				FirmwareManager.getInstance().startup();
+				FirmwareManager.getInstance().login();
 				String firmware = FirmwareManager.getInstance().getFirmwareDescription();
 				String[] fw  = firmware.split(IJAMConst.CRLF);
 				if (fw.length>1) {

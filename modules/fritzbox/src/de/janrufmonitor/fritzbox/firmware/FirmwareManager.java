@@ -33,7 +33,6 @@ import de.janrufmonitor.fritzbox.firmware.exception.GetCallerListException;
 import de.janrufmonitor.fritzbox.firmware.exception.InvalidSessionIDException;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
-import de.janrufmonitor.ui.swt.SWTExecuter;
 
 public class FirmwareManager implements IEventReceiver, IEventSender {
 
@@ -49,6 +48,7 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 	private boolean m_isReconnecting = false;
 	private boolean m_isRunning = false;
 	private boolean m_isCreatingFirmware = false;
+	private boolean m_isLoggingIn = false;
 	private int m_retryCount = 0;
     
     private FirmwareManager() {
@@ -87,15 +87,8 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 			this.m_broker.register(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_UNSUPPORTED));
 			this.m_broker.register(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_REFUSED));
 		}
-   		try {   			
-			this.login();
-			this.m_isRunning = true;
-		} catch (FritzBoxLoginException e) {
-			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-			this.m_fw = null;
-			this.m_isRunning = false;
-			this.m_isCreatingFirmware = false;
-		}
+
+		this.m_isRunning = true;
     }
     
     public boolean isInstance(Class c) {
@@ -103,6 +96,13 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
     }
     
     public void login() throws FritzBoxLoginException {
+    	while (this.m_isLoggingIn) {
+    		try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+			}
+    	}
+    	this.m_isLoggingIn = true;
 		if (this.m_fw==null){ 
 			this.promptPassword();
 			try {
@@ -135,9 +135,11 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 						e,
 						true));
 				throw new FritzBoxLoginException(e.getMessage()); 
-				
+			} finally {
+				this.m_isLoggingIn = false;
 			}
 		}
+		this.m_isLoggingIn = false;
 		if (this.m_fw==null) throw new FritzBoxLoginException("Login failed due to invalid firmware.");
 		this.m_fw.login();
 		if (this.m_broker!=null)
@@ -543,15 +545,11 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 				if (!isPWDialogRunning && pw.trim().length()==0 && i < 4) {
 					final ICommand c = this.getRuntime().getCommandFactory().getCommand("PasswordDialog");
 					if (c!=null && c.isExecutable() && !c.isExecuting())
-						new SWTExecuter() {
-							protected void execute() {
-								try {
-									c.execute();
-								} catch (Exception e) {
-									m_logger.log(Level.SEVERE, e.getMessage(), e);
-								}
-							}}
-						.start();
+						try {
+							c.execute();
+						} catch (Exception e) {
+							m_logger.log(Level.SEVERE, e.getMessage(), e);
+						}		
 				}
 				
 				i = Integer.parseInt(System.getProperty("jam.fritzbox.session.counter", "0"));

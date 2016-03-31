@@ -36,6 +36,8 @@ import org.xml.sax.helpers.DefaultHandler;
 import de.janrufmonitor.exception.Message;
 import de.janrufmonitor.exception.PropagationFactory;
 import de.janrufmonitor.framework.IJAMConst;
+import de.janrufmonitor.fritzbox.FritzBoxConst;
+import de.janrufmonitor.fritzbox.FritzBoxMonitor;
 import de.janrufmonitor.fritzbox.FritzBoxTR064Manager;
 import de.janrufmonitor.fritzbox.IPhonebookEntry;
 import de.janrufmonitor.fritzbox.firmware.exception.DeleteCallListException;
@@ -49,6 +51,7 @@ import de.janrufmonitor.fritzbox.firmware.exception.GetBlockedListException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallListException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallerListException;
 import de.janrufmonitor.fritzbox.firmware.exception.InvalidSessionIDException;
+import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.util.io.Base64Encoder;
 import de.janrufmonitor.util.io.OSUtils;
 import de.janrufmonitor.util.io.Stream;
@@ -103,8 +106,7 @@ public class TR064FritzBoxFirmware implements
 			return this.m;
 		}
 	}
-	
-	
+		
 	private class XMLSipMsnHandler extends DefaultHandler {
 		private Map m;
 		
@@ -328,6 +330,15 @@ public class TR064FritzBoxFirmware implements
 		if (this.m_logger.isLoggable(Level.INFO))
 			this.m_logger.info("TR064 check not yet done.");
 		
+	    
+	    if (PIMRuntime.getInstance().getConfigManagerFactory().getConfigManager().getProperty(FritzBoxMonitor.NAMESPACE, FritzBoxConst.CFG_TR064_OFF).equalsIgnoreCase("true")) {
+	    	if (this.m_logger.isLoggable(Level.INFO))
+				this.m_logger.info("TR064 is switched off by user (application wise).");
+	    	this.m_hasTR064Checkpassed = true;
+	    	this.m_isTR064 = false;
+	    	return this.m_isTR064;
+	    }
+	   
 		try {
 			this.m_hasTR064Checkpassed = true;
 			this.m_isTR064 = FritzBoxTR064Manager.getInstance().isTR064Supported(this.m_server, FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port());
