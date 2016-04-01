@@ -23,7 +23,8 @@ public class QuickDialer implements FritzBoxConst {
 	//	FritzBox m_fb = new FritzBox(config.getProperty(CFG_IP, "fritz.box"), config.getProperty(CFG_PASSWORD, ""), config.getProperty(CFG_PORT, "80"));
 		FirmwareManager fwm = FirmwareManager.getInstance();
 		try {
-			fwm.login();
+			if (!fwm.isLoggedIn())
+				fwm.login();
 			
 			fwm.doCall(dial + "#", config.getProperty(CFG_CLICKDIAL, "50"));
 		} catch (IOException e) {

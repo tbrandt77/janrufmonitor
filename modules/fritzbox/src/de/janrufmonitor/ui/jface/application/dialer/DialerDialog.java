@@ -97,6 +97,7 @@ public class DialerDialog extends TitleAreaDialog implements FritzBoxConst {
 		String clickdial = getRuntime().getConfigManagerFactory().getConfigManager().getProperty(FritzBoxMonitor.NAMESPACE, CFG_CLICKDIAL);
 		if (clickdial!=null && (clickdial.equalsIgnoreCase("50") || clickdial.equalsIgnoreCase("9"))) {
 			String[] pfs = {
+					"Alle ISDN Ger\u00E4te",
 					"FON 1", "FON 2", "FON 3",
 					"ISDN 1", "ISDN 2", "ISDN 3", "ISDN 4", "ISDN 5", "ISDN 6", "ISDN 7", "ISDN 8", "ISDN 9",
 					"DECT 610", "DECT 611", "DECT 612", "DECT 613", "DECT 614", "DECT 615"
@@ -225,6 +226,7 @@ public class DialerDialog extends TitleAreaDialog implements FritzBoxConst {
 						if (clickDial.getText().equalsIgnoreCase("FON 1")) clickdial = "1";
 						if (clickDial.getText().equalsIgnoreCase("FON 2")) clickdial = "2";
 						if (clickDial.getText().equalsIgnoreCase("FON 3")) clickdial = "3";
+						if (clickDial.getText().equalsIgnoreCase("Alle ISDN Ger\u00E4te")) clickdial = "50";
 						if (clickDial.getText().equalsIgnoreCase("ISDN 1")) clickdial = "51";
 						if (clickDial.getText().equalsIgnoreCase("ISDN 2")) clickdial = "52";
 						if (clickDial.getText().equalsIgnoreCase("ISDN 3")) clickdial = "53";
@@ -252,7 +254,8 @@ public class DialerDialog extends TitleAreaDialog implements FritzBoxConst {
 
 					FirmwareManager fwm = FirmwareManager.getInstance();
 					try {
-						fwm.login();
+						if (!fwm.isLoggedIn())
+							fwm.login();
 						
 						fwm.doCall(dial + "#", clickdial);
 				

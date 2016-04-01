@@ -60,7 +60,8 @@ public class FritzBoxDialogPlugin extends AbstractDialogPlugin implements FritzB
 					
 					FirmwareManager fwm = FirmwareManager.getInstance();
 					try {
-						fwm.login();
+						if (!fwm.isLoggedIn())
+							fwm.login();
 						
 						fwm.doCall(dial, config.getProperty(CFG_CLICKDIAL, "50"));
 							text = getI18nManager()

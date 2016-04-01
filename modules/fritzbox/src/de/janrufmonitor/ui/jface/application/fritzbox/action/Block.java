@@ -115,7 +115,8 @@ public class Block extends AbstractAction implements FritzBoxConst {
 
 			FirmwareManager fwm = FirmwareManager.getInstance();
 			try {
-				fwm.login();							
+				if (!fwm.isLoggedIn())
+					fwm.login();						
 				fwm.doBlock(dial);	
 				FritzBoxBlockedListManager.invalidate();
 			} catch (IOException e) {

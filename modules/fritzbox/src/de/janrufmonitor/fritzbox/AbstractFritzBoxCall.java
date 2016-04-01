@@ -100,9 +100,10 @@ public abstract class AbstractFritzBoxCall implements IFritzBoxCall, FritzBoxCon
 	protected int getOutgoingState() {
 		if (this.m_outgoingState == -1) {
 			this.m_outgoingState = 4;
-			if (FirmwareManager.getInstance().isInstance(UnitymediaFirmware.class)) this.m_outgoingState = 3;
-			if (FirmwareManager.getInstance().isInstance(SessionIDFritzBoxFirmware.class)) this.m_outgoingState = 3;
-			if (FirmwareManager.getInstance().isInstance(PasswordFritzBoxFirmware.class)) this.m_outgoingState = 3;
+			FirmwareManager fwm = FirmwareManager.getInstance();
+			if (fwm.isInstance(UnitymediaFirmware.class)) this.m_outgoingState = 3;
+			if (fwm.isInstance(SessionIDFritzBoxFirmware.class)) this.m_outgoingState = 3;
+			if (fwm.isInstance(PasswordFritzBoxFirmware.class)) this.m_outgoingState = 3;
 		}
 		return this.m_outgoingState;
 	}

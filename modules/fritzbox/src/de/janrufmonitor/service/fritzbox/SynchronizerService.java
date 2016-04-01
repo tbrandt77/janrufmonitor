@@ -128,9 +128,7 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 						} catch (InterruptedException e) {
 						}
 						new SWTExecuter() {
-							protected void execute() {	
-								FirmwareManager.getInstance().startup();
-								
+							protected void execute() {
 								synchronize(false);
 							}}
 						.start();
@@ -165,7 +163,8 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 		
 		if (event.getType() == IEventConst.EVENT_TYPE_RETURNED_HIBERNATE) {
 			this.cancelingTimebasedSyncing();
-			FirmwareManager.getInstance().shutdown();
+			FirmwareManager fwm = FirmwareManager.getInstance();
+			fwm.shutdown();
 			
 			int counter = 0;
 			do {
@@ -173,9 +172,16 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 					Thread.sleep(5000);
 				} catch (InterruptedException e) {	}
 				
-				FirmwareManager.getInstance().startup();
+				fwm.startup();
+				if (!fwm.isLoggedIn())
+					try {
+						fwm.login();
+					} catch (FritzBoxLoginException e) {
+						this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+					}
+				
 				counter ++;
-			} while (!FirmwareManager.getInstance().isLoggedIn() && counter<getRetryMaxValue());
+			} while (!fwm.isLoggedIn() && counter<getRetryMaxValue());
 			
 			if (counter == getRetryMaxValue()) {
 				this.m_logger.severe("FritzBox Syncronizer stopped. Could not get a connection after "+counter+" re-connects try outs to FritzBox.");
@@ -291,8 +297,10 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 		}
 		
 		FirmwareManager fwm = FirmwareManager.getInstance();
+		//fwm.startup();
 		try {
-			fwm.login();
+			if (!fwm.isLoggedIn())
+				fwm.login();
 			
 			if (progressMonitor!=null)
 				progressMonitor.setTaskName(getI18nManager()

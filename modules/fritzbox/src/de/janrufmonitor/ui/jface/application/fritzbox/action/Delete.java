@@ -79,7 +79,8 @@ public class Delete extends AbstractAction implements FritzBoxConst {
 									getLanguage()));
 					FirmwareManager fwm = FirmwareManager.getInstance();
 					try {
-						fwm.login();
+						if (!fwm.isLoggedIn())
+							fwm.login();
 						
 						progressMonitor.setTaskName(getI18nManager()
 								.getString(getNamespace(),

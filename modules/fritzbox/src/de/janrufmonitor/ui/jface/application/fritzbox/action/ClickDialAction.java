@@ -124,7 +124,8 @@ public class ClickDialAction extends AbstractAction implements FritzBoxConst {
 							
 							FirmwareManager fwm = FirmwareManager.getInstance();
 							try {
-								fwm.login();
+								if (!fwm.isLoggedIn())
+									fwm.login();
 								
 								fwm.doCall(dial + "#", config.getProperty(CFG_CLICKDIAL, "50"));
 								try {

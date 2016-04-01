@@ -6,6 +6,8 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Label;
 
+import de.janrufmonitor.fritzbox.FritzBoxConst;
+import de.janrufmonitor.fritzbox.FritzBoxMonitor;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.ui.jface.configuration.AbstractServiceFieldEditorConfigPage;
@@ -47,8 +49,23 @@ public class FritzBoxSynchronizer extends AbstractServiceFieldEditorConfigPage {
 	}
 	
 	protected void createFieldEditors() {
-		super.createFieldEditors();
-	
+		//super.createFieldEditors();
+		new Label(this.getFieldEditorParent(), SWT.NULL);
+		
+		String label = this.m_i18n.getString(this.getNamespace(), "enabled", "label", this.m_language);
+		if (label.length()<150)
+			for (int i=150;i>label.length();i--){
+				label += " ";
+			}
+		
+		BooleanFieldEditor bfe = new BooleanFieldEditor(
+			this.getConfigNamespace()+SEPARATOR+"enabled",
+			label,
+			this.getFieldEditorParent()
+		);
+		bfe.setEnabled(this.isFritzBoxPasswordSet(), this.getFieldEditorParent());
+		addField(bfe);
+		
 		new Label(this.getFieldEditorParent(), SWT.NULL);new Label(this.getFieldEditorParent(), SWT.NULL);
 		
 		Label l = new Label(this.getFieldEditorParent(), SWT.NULL);
@@ -132,4 +149,9 @@ public class FritzBoxSynchronizer extends AbstractServiceFieldEditorConfigPage {
 		}
 	}
 
+    private boolean isFritzBoxPasswordSet() {
+    	String pw = getRuntime().getConfigManagerFactory().getConfigManager().getProperty(FritzBoxMonitor.NAMESPACE, FritzBoxConst.CFG_PASSWORD);
+    	return (pw!=null && pw.trim().length()>0);
+    }
+	
 }

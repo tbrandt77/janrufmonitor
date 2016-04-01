@@ -228,10 +228,15 @@ public class FritzBoxMonitor implements IMonitor, IConfigurable, FritzBoxConst {
 			String[] description = new String[] {
 					"AVM FRITZ!Box Fon Modul f\u00FCr jAnrufmonitor","Keine Verbindung zur AVM FRITZ!Box","","",""
 			};
+			
+			FirmwareManager fwm = FirmwareManager.getInstance();
+			
 			try {
-				FirmwareManager.getInstance().startup();
-				FirmwareManager.getInstance().login();
-				String firmware = FirmwareManager.getInstance().getFirmwareDescription();
+				fwm.startup();
+				
+				if (!fwm.isLoggedIn())
+					fwm.login();
+				String firmware = fwm.getFirmwareDescription();
 				String[] fw  = firmware.split(IJAMConst.CRLF);
 				if (fw.length>1) {
 					description[1] = fw[0];
@@ -353,8 +358,10 @@ public class FritzBoxMonitor implements IMonitor, IConfigurable, FritzBoxConst {
 		}
 		this.cmnThread = null;
 		
-		if (FirmwareManager.getInstance().isLoggedIn())
-			FirmwareManager.getInstance().shutdown();
+		FirmwareManager fwm = FirmwareManager.getInstance();
+		
+		if (fwm.isLoggedIn())
+			fwm.shutdown();
 		
 		this.m_logger.info("FritzBoxMonitor released FritzBox.");
 	}

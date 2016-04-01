@@ -209,12 +209,15 @@ public class FritzBoxVoip extends AbstractFieldEditorConfigPage {
 		status_observer.setText(this.m_i18n.getString(this.getNamespace(), "statuso", "label", this.m_language)+((fbMonitor!=null && fbMonitor.isStarted()) ? "OK" : "---"));
 		new Label(this.getFieldEditorParent(), SWT.NULL);
 		
-		if (FirmwareManager.getInstance().isLoggedIn() && !FirmwareManager.getInstance().isInstance(TR064FritzBoxFirmware.class)) {
+		FirmwareManager fwm = FirmwareManager.getInstance();
+		fwm.startup();
+		
+		if (fwm.isLoggedIn() && !fwm.isInstance(TR064FritzBoxFirmware.class)) {
 			Label status_sync = new Label(this.getFieldEditorParent(), SWT.NULL);
-			status_sync.setText(this.m_i18n.getString(this.getNamespace(), "statuss", "label", this.m_language)+(FirmwareManager.getInstance().isLoggedIn() ? "OK" : "---"));
+			status_sync.setText(this.m_i18n.getString(this.getNamespace(), "statuss", "label", this.m_language)+(fwm.isLoggedIn() ? "OK" : "---"));
 			new Label(this.getFieldEditorParent(), SWT.NULL);
 			
-			if (fbMonitor!=null && fbMonitor.isStarted() && FirmwareManager.getInstance().isLoggedIn()) {
+			if (fbMonitor!=null && fbMonitor.isStarted() && fwm.isLoggedIn()) {
 				// set icon to colored
 				IService tray = this.getRuntime().getServiceFactory().getService("TrayIcon");
 				try {
@@ -226,7 +229,7 @@ public class FritzBoxVoip extends AbstractFieldEditorConfigPage {
 				}
 			}
 			
-			if ((fbMonitor==null || !fbMonitor.isStarted()) && !FirmwareManager.getInstance().isLoggedIn()) {
+			if ((fbMonitor==null || !fbMonitor.isStarted()) && !fwm.isLoggedIn()) {
 				// set icon to colored
 				IService tray = this.getRuntime().getServiceFactory().getService("TrayIcon");
 				try {

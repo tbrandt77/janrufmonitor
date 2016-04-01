@@ -174,10 +174,13 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 				ICallerList cl = getRuntime().getCallerFactory().createCallerList();
 				
 				FirmwareManager fwm = FirmwareManager.getInstance();
+				fwm.startup();
 				try {
+					if (!fwm.isLoggedIn())
+						fwm.login();
+					
 					if (this.m_logger.isLoggable(Level.INFO))
 						this.m_logger.info("FritzBox Firmware created.");
-					fwm.login();
 					
 					if (this.m_logger.isLoggable(Level.INFO))
 						this.m_logger.info("Login to FritzBox successfull.");
@@ -189,7 +192,7 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 					int id = Integer.parseInt(abId);
 					String name = null;
 					try {
-						Map abs = FirmwareManager.getInstance().getAddressbooks();
+						Map abs = fwm.getAddressbooks();
 						if (abs.containsKey(Integer.parseInt(abId))) {
 							name = (String) abs.get(Integer.parseInt(abId));
 							if (this.m_logger.isLoggable(Level.INFO))
@@ -340,8 +343,10 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 			do {
 				try {
 					counter ++;
-					FirmwareManager.getInstance().startup();
-					FirmwareManager.getInstance().login();
+					FirmwareManager fwm = FirmwareManager.getInstance();
+					fwm.startup();
+					if (!fwm.isLoggedIn())
+						fwm.login();
 					m_loggedin = true;
 				} catch (FritzBoxLoginException e) {
 					this.m_logger.log(Level.SEVERE, "Login to fritzbox trial #"+counter+ " failed. Retrying.", e);
@@ -375,7 +380,7 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 								if (this.m_logger.isLoggable(Level.INFO))
 									this.m_logger.info("Getting FritzBox phonebook ID: #"+abId);
 								int id = Integer.parseInt(abId);
-								String newAbHash = FirmwareManager.getInstance().getAddressbookModificationHash(id);
+								String newAbHash = fwm.getAddressbookModificationHash(id);
 								if (newAbHash!=null && !newAbHash.equals(m_lastAbHash)) {
 									m_lastAbHash = newAbHash;
 									createCallerListFromFritzBoxPhonebook();

@@ -48,7 +48,8 @@ public class FritzBoxBlockedListManager {
     private void _init() {
     	FirmwareManager fwm = FirmwareManager.getInstance();
 		try {
-			fwm.login();							
+			if (!fwm.isLoggedIn())
+				fwm.login();						
 			this.m_blockedPhones.addAll(fwm.getBlockedList());						
 		} catch (IOException e) {
 			this.m_logger.log(Level.SEVERE, e.getMessage(), e);

@@ -13,6 +13,7 @@ import de.janrufmonitor.fritzbox.firmware.FritzOSFirmware;
 import de.janrufmonitor.fritzbox.firmware.SessionIDFritzBoxFirmware;
 import de.janrufmonitor.fritzbox.firmware.TR064FritzBoxFirmware;
 import de.janrufmonitor.fritzbox.firmware.UnitymediaFirmware;
+import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxLoginException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetAddressbooksException;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
@@ -54,6 +55,7 @@ public class FritzBoxPhonebookManager extends AbstractServiceFieldEditorConfigPa
 	}
 	
 	protected void createFieldEditors() {
+		FirmwareManager fwm = FirmwareManager.getInstance();
 		String label = this.m_i18n.getString(this.getNamespace(), "enabled", "label", this.m_language);
 		if (label.length()<150)
 			for (int i=150;i>label.length();i--){
@@ -65,12 +67,15 @@ public class FritzBoxPhonebookManager extends AbstractServiceFieldEditorConfigPa
 			label,
 			this.getFieldEditorParent()
 		);		
-		bfe.setEnabled((FirmwareManager.getInstance().isInstance(UnitymediaFirmware.class)||FirmwareManager.getInstance().isInstance(SessionIDFritzBoxFirmware.class)||FirmwareManager.getInstance().isInstance(FritzOSFirmware.class)||FirmwareManager.getInstance().isInstance(FritzOS559Firmware.class)||FirmwareManager.getInstance().isInstance(TR064FritzBoxFirmware.class)), this.getFieldEditorParent());
+		bfe.setEnabled((fwm.isInstance(UnitymediaFirmware.class)||fwm.isInstance(SessionIDFritzBoxFirmware.class)||fwm.isInstance(FritzOSFirmware.class)||fwm.isInstance(FritzOS559Firmware.class)||fwm.isInstance(TR064FritzBoxFirmware.class)), this.getFieldEditorParent());
 		addField(bfe);
 		
-		if (FirmwareManager.getInstance().isInstance(FritzOSFirmware.class)||FirmwareManager.getInstance().isInstance(FritzOS559Firmware.class)||FirmwareManager.getInstance().isInstance(TR064FritzBoxFirmware.class)) {
+		if (fwm.isInstance(FritzOSFirmware.class)||fwm.isInstance(FritzOS559Firmware.class)||fwm.isInstance(TR064FritzBoxFirmware.class)) {
 			try {
-				Map adb = FirmwareManager.getInstance().getAddressbooks();
+				if (!fwm.isLoggedIn())
+					fwm.login();
+				
+				Map adb = fwm.getAddressbooks();
 				String[][] list = new String[adb.size()][2];
 				Iterator i = adb.keySet().iterator();
 				int c = 0;
@@ -90,6 +95,8 @@ public class FritzBoxPhonebookManager extends AbstractServiceFieldEditorConfigPa
 			} catch (GetAddressbooksException e) {
 				this.m_logger.severe(e.getMessage());
 			} catch (IOException e) {
+				this.m_logger.severe(e.getMessage());
+			} catch (FritzBoxLoginException e) {
 				this.m_logger.severe(e.getMessage());
 			}
 		}
