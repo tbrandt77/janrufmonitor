@@ -25,6 +25,7 @@ import de.janrufmonitor.framework.command.ICommand;
 import de.janrufmonitor.framework.monitor.IMonitor;
 import de.janrufmonitor.fritzbox.FritzBoxMonitor;
 import de.janrufmonitor.fritzbox.firmware.FirmwareManager;
+import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxLoginException;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.ui.jface.application.controls.HyperLink;
@@ -268,10 +269,15 @@ public class InitFritzBoxVariantPage extends InitVariantPage {
 		}
 		
 		// save MSN settings
-		FirmwareManager.getInstance().startup();
-		if (m_usemsns && FirmwareManager.getInstance().isLoggedIn()) {
+		if (m_usemsns) {
+			FirmwareManager fwm = FirmwareManager.getInstance();
+			fwm.startup();
+
 			try {
-				Map msns = FirmwareManager.getInstance().getMSNMap();
+				if (!fwm.isLoggedIn()) 
+					fwm.login();
+				
+				Map msns = fwm.getMSNMap();
 				if (msns!=null && msns.size()>0) {
 					StringBuffer list = new StringBuffer();
 					Iterator i = msns.keySet().iterator();
@@ -286,6 +292,8 @@ public class InitFritzBoxVariantPage extends InitVariantPage {
 					getRuntime().getConfigManagerFactory().getConfigManager().saveConfiguration();
 				}
 			} catch (IOException e) {
+				m_logger.log(Level.SEVERE, e.toString(), e);
+			} catch (FritzBoxLoginException e) {
 				m_logger.log(Level.SEVERE, e.toString(), e);
 			}
 			

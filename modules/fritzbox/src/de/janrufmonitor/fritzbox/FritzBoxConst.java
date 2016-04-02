@@ -27,7 +27,7 @@ public interface FritzBoxConst {
 	public String CFG_REFRESH_AFTER_CALLEND = "race";
 	public String CFG_AUTO_RECONNECT_SESSIONID = "autoreconnect";
 	public String CFG_CONNECTION_LOST_CHECKTIME = "connectionlostchecktime";
-	public String CFG_USE_HTTPS = "usehttps";
+	public String CFG_USE_HTTPS = "usehttps"; // old only for non-TR064 firmwares
 	public String CFG_TR064_OFF = "tr064off";
 	
 }
