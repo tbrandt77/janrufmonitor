@@ -99,6 +99,7 @@ public class PasswordDialog extends TitleAreaDialog implements FritzBoxConst {
 		c++;
 		System.setProperty("jam.fritzbox.session.counter", Integer.toString(c));
 		System.setProperty("jam.fritzbox.session.ispwdialogvisible", "false");
+		System.setProperty("jam.fritzbox.session.donotlogin", "true");
 		super.cancelPressed();
 	}
 

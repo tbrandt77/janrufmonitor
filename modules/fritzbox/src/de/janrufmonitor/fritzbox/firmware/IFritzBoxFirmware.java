@@ -92,7 +92,7 @@ public interface IFritzBoxFirmware {
     
     public boolean isRestarted();
     
-    public boolean isPasswordValid();
+    public boolean isPasswordValid() throws FritzBoxInitializationException;
     
     public String getMSNFromSIP(String idx) throws IOException;
     

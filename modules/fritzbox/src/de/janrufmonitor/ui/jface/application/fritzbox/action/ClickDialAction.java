@@ -94,8 +94,10 @@ public class ClickDialAction extends AbstractAction implements FritzBoxConst {
 					}
 					if (!dial.startsWith("0")) dial = "0"+dial;
 					
+					Properties config = this.getRuntime().getConfigManagerFactory().getConfigManager().getProperties(FritzBoxMonitor.NAMESPACE);
+					
 					String prefixes = getRuntime().getConfigManagerFactory().getConfigManager().getProperty(FritzBoxMonitor.NAMESPACE, "dialprefixes");
-					if (prefixes!=null && prefixes.length()>0) {
+					if ((prefixes!=null && prefixes.length()>0) || config.getProperty(CFG_CLICKDIAL, "50").equalsIgnoreCase("0")) {
 						DialerDialog id = new DialerDialog(new Shell(DisplayManager.getDefaultDisplay()), dial);
 						id.open();
 					} else {					
@@ -120,8 +122,6 @@ public class ClickDialAction extends AbstractAction implements FritzBoxConst {
 								text)
 							) {
 	
-							Properties config = this.getRuntime().getConfigManagerFactory().getConfigManager().getProperties(FritzBoxMonitor.NAMESPACE);
-							
 							FirmwareManager fwm = FirmwareManager.getInstance();
 							try {
 								if (!fwm.isLoggedIn())

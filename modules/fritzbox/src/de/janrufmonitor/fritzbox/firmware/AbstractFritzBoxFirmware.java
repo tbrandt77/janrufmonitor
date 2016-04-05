@@ -135,7 +135,7 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 		this(box_address, box_port, box_password, null, false);
 	}
 	
-	public boolean isPasswordValid() {
+	public boolean isPasswordValid() throws FritzBoxInitializationException {
 		return true;
 	}
 

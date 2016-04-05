@@ -355,7 +355,7 @@ public class TR064FritzBoxFirmware implements
 		return this.m_isTR064;
 	}
 
-	public boolean isPasswordValid() {
+	public boolean isPasswordValid() throws FritzBoxInitializationException {
 		try {			
 			if (this.isTR064Enabled()) {
 				this.m_useHttp = Boolean.parseBoolean(System.getProperty("jam.fritzbox.useHttp", "false"));	
@@ -366,8 +366,9 @@ public class TR064FritzBoxFirmware implements
 		} catch (IOException e) {
 			if (this.m_logger.isLoggable(Level.SEVERE))
 				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			throw new FritzBoxInitializationException(e.getMessage(), e);
 		}
-		return false;
+		throw new FritzBoxInitializationException("FRITZ!Box "+this.m_server+" does not support TR064 or TR064 is disabled.");
 	}
 
 	public void init() throws FritzBoxInitializationException,

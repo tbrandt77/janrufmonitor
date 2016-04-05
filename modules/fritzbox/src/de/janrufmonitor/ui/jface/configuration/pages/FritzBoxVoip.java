@@ -148,6 +148,7 @@ public class FritzBoxVoip extends AbstractFieldEditorConfigPage {
 					getConfigNamespace()+SEPARATOR+"boxclickdial",
 					this.m_i18n.getString(this.getNamespace(), "boxclickdial", "label", this.m_language),
 					new String[][] { 
+						{this.m_i18n.getString(this.getNamespace(), "manual", "label", this.m_language), "0"}, 
 						{this.m_i18n.getString(this.getNamespace(), "all_analog", "label", this.m_language), "9"}, 
 						{this.m_i18n.getString(this.getNamespace(), "all_isdn", "label", this.m_language), "50"},
 						{"FON 1", "1"}, 

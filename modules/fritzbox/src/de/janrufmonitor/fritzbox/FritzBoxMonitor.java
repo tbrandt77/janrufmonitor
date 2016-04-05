@@ -359,9 +359,7 @@ public class FritzBoxMonitor implements IMonitor, IConfigurable, FritzBoxConst {
 		this.cmnThread = null;
 		
 		FirmwareManager fwm = FirmwareManager.getInstance();
-		
-		if (fwm.isLoggedIn())
-			fwm.shutdown();
+		fwm.shutdown();
 		
 		this.m_logger.info("FritzBoxMonitor released FritzBox.");
 	}

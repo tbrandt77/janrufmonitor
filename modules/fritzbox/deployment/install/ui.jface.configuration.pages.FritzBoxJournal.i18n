@@ -18,6 +18,7 @@ ui.jface.configuration.pages.FritzBoxVoip\:retrytimeout\:label\:de=Wartezeit [mi
 ui.jface.configuration.pages.FritzBoxVoip\:retrytimeouts\:label\:de=Wartezeit [sek.] zwischen Verbindungsversuche: 
 ui.jface.configuration.pages.FritzBoxVoip\:festnetzalias\:label\:de=Rufnummer f\u00FCr "Festnetz" Anrufe:
 ui.jface.configuration.pages.FritzBoxVoip\:fbinfo\:label\:de=FRITZ!Box Fon-Infos:
+ui.jface.configuration.pages.FritzBoxVoip\:manual\:label\:de=(nicht vorbelegt)
 ui.jface.configuration.pages.FritzBoxVoip\:all_analog\:label\:de=Alle analogen Nebenstellen
 ui.jface.configuration.pages.FritzBoxVoip\:all_isdn\:label\:de=Alle ISDN Ger\u00E4te
 ui.jface.configuration.pages.FritzBoxVoip\:dialprefixes\:label\:de=W\u00E4hlpr\u00E4fixe festlegen:\n(Komma-separiert, ohne Leerzeichen)

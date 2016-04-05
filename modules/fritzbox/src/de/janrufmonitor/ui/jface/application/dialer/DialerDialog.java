@@ -95,7 +95,7 @@ public class DialerDialog extends TitleAreaDialog implements FritzBoxConst {
 		composite.setLayoutData(gd);
 		
 		String clickdial = getRuntime().getConfigManagerFactory().getConfigManager().getProperty(FritzBoxMonitor.NAMESPACE, CFG_CLICKDIAL);
-		if (clickdial!=null && (clickdial.equalsIgnoreCase("50") || clickdial.equalsIgnoreCase("9"))) {
+		if (clickdial!=null && clickdial.equalsIgnoreCase("0")) {
 			String[] pfs = {
 					"Alle ISDN Ger\u00E4te",
 					"FON 1", "FON 2", "FON 3",
