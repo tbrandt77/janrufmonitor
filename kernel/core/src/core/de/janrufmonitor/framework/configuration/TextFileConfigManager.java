@@ -7,6 +7,7 @@ import de.janrufmonitor.util.io.PathResolver;
 import de.janrufmonitor.util.io.Stream;
 import de.janrufmonitor.framework.IJAMConst;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
@@ -790,6 +791,16 @@ public class TextFileConfigManager implements IConfigManager {
 			} catch (IOException e) {
 				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 			}
+		} else {
+			File backupFolder = new File(usrConfigFile.getParent()+File.separator+"~backup"); backupFolder.mkdirs();
+			String ext = "." + new SimpleDateFormat("yyyyMMdd").format(new Date());
+			try {
+				Stream.copy(new FileInputStream(usrConfigFile), new FileOutputStream(backupFolder.getAbsolutePath() + File.separator + usrConfigFile.getName() + ext), true);
+			} catch (FileNotFoundException e) {
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			} catch (IOException e) {
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			}
 		}
 		File sysConfigFile = new File(this.m_pathToSystemConfiguration);
 		if (!sysConfigFile.exists()) {
@@ -797,6 +808,16 @@ public class TextFileConfigManager implements IConfigManager {
 			InputStream zerofile = new ByteArrayInputStream(new String("").getBytes());
 			try {
 				Stream.copy(zerofile, new FileOutputStream(sysConfigFile), true);
+			} catch (FileNotFoundException e) {
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			} catch (IOException e) {
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			}
+		} else {
+			File backupFolder = new File(sysConfigFile.getParent()+File.separator+"~backup"); backupFolder.mkdirs();
+			String ext = "." + new SimpleDateFormat("yyyyMMdd").format(new Date());
+			try {
+				Stream.copy(new FileInputStream(sysConfigFile), new FileOutputStream(backupFolder.getAbsolutePath() + File.separator + sysConfigFile.getName() + ext), true);
 			} catch (FileNotFoundException e) {
 				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 			} catch (IOException e) {
