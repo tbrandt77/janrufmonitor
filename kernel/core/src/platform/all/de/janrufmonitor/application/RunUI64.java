@@ -290,7 +290,8 @@ public class RunUI64 {
     		try {
 				Class clazz = Class.forName("de.janrufmonitor.ui.swt.DisplayManager");
 				Method m = clazz.getDeclaredMethod("getDefaultDisplay");
-				m.invoke(null);
+				if (m!=null)
+					m.invoke(null);
 			} catch (ClassNotFoundException e) {
 				System.exit(0);
 			} catch (SecurityException e) {
