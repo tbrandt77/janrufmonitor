@@ -1,13 +1,9 @@
 package de.janrufmonitor.repository;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -15,34 +11,34 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-import de.janrufmonitor.framework.IAttributeMap;
 import de.janrufmonitor.framework.ICaller;
 import de.janrufmonitor.framework.ICallerList;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.fritzbox.IPhonebookEntry;
 import de.janrufmonitor.fritzbox.firmware.FirmwareManager;
+import de.janrufmonitor.fritzbox.firmware.TR064FritzBoxFirmware;
+import de.janrufmonitor.fritzbox.firmware.exception.DeleteCallerException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxLoginException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetAddressbooksException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallerListException;
+import de.janrufmonitor.fritzbox.firmware.exception.SetCallerException;
+import de.janrufmonitor.fritzbox.mapping.FritzBoxMappingManager;
 import de.janrufmonitor.repository.db.ICallerDatabaseHandler;
 import de.janrufmonitor.repository.db.hsqldb.HsqldbMultiPhoneCallerDatabaseHandler;
 import de.janrufmonitor.repository.filter.IFilter;
-import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
-import de.janrufmonitor.repository.types.IReadCallerRepository;
 import de.janrufmonitor.repository.types.IRemoteRepository;
+import de.janrufmonitor.repository.types.IWriteCallerRepository;
 import de.janrufmonitor.repository.zip.ZipArchive;
 import de.janrufmonitor.repository.zip.ZipArchiveException;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
-import de.janrufmonitor.util.io.Base64Decoder;
 import de.janrufmonitor.util.io.PathResolver;
-import de.janrufmonitor.util.io.Stream;
-import de.janrufmonitor.util.string.StringEscapeUtils;
 import de.janrufmonitor.util.string.StringUtils;
 
-public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
-		implements IRemoteRepository, IReadCallerRepository {
+public class FritzBoxPhonebookManager extends AbstractReadWriteCallerManager
+		implements IRemoteRepository {
+
 
 	public static String ID = "FritzBoxPhonebookManager";
 
@@ -94,15 +90,32 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 					throw new SQLException(e.getMessage());
 				}
 
-			PreparedStatement ps = m_con
-					.prepareStatement("DELETE FROM attributes;");
-			ps.execute();
-
-			ps = m_con.prepareStatement("DELETE FROM callers;");
-			ps.execute();
-
-			ps = m_con.prepareStatement("DELETE FROM phones;");
-			ps.execute();
+			if (cl!=null && cl.size()>0) {
+				ICaller c = null;
+				for (int i=0;i<cl.size();i++) {
+					c = cl.get(i);
+					PreparedStatement ps = m_con.prepareStatement("DELETE FROM attributes WHERE ref=?;");
+					ps.setString(1, c.getUUID());
+					ps.execute();
+			
+					ps = m_con.prepareStatement("DELETE FROM callers WHERE uuid=?;");
+					ps.setString(1, c.getUUID());
+					ps.execute();
+			
+					ps = m_con.prepareStatement("DELETE FROM phones WHERE ref=?;");
+					ps.setString(1, c.getUUID());
+					ps.execute();
+				}
+			} else {
+				PreparedStatement ps = m_con.prepareStatement("DELETE FROM attributes;");
+				ps.execute();
+		
+				ps = m_con.prepareStatement("DELETE FROM callers;");
+				ps.execute();
+		
+				ps = m_con.prepareStatement("DELETE FROM phones;");
+				ps.execute();
+			}
 		}
 
 		public String getImageProviderID() {
@@ -228,76 +241,8 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 						return;
 					}
 
-					List phones = null;
-					IAttributeMap attributes = null;
-					IPhonebookEntry  pe = null;
-					for (int i=0,j=callers.size();i<j;i++) {
-						pe = (IPhonebookEntry) callers.get(i);
-						if (this.m_logger.isLoggable(Level.INFO))
-							this.m_logger.info("Processing FritzBox phonebook caller: "+pe.toString());
-						attributes = getRuntime().getCallerFactory().createAttributeMap();
-						phones = new ArrayList(3);
-						attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CALLERMANAGER, FritzBoxPhonebookManager.ID));
-						if (pe.getAddressbook()!=null && pe.getAddressbook().length()>0)
-							attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CATEGORY, pe.getAddressbook()));
-						try {
-							attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_LASTNAME, StringEscapeUtils.unescapeHtml(pe.getName())));
-						} catch (Exception ex) {
-							this.m_logger.log(Level.WARNING, ex.getMessage(), ex);
-							attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_LASTNAME, pe.getName()));
-						}
-						if (pe.getEmail()!=null && pe.getEmail().length()>0) {
-							attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_EMAIL, pe.getEmail()));
-						}
-						
-						Map phs = pe.getPhones();
-						Iterator entries = phs.keySet().iterator();
-						String key = null;
-						IPhonenumber phone = null;
-						while (entries.hasNext()) {
-							key = (String) entries.next();
-							
-							// added 2016/01/19: remove internal FB AB numbers from contact list.
-							if (key!=null && key.startsWith("**")) continue;
-							
-							if (key !=null && !PhonenumberAnalyzer.getInstance(getRuntime()).isInternal(key) && !PhonenumberAnalyzer.getInstance(getRuntime()).isClired(key)) {
-							
-								if (this.m_logger.isLoggable(Level.INFO)) {
-									this.m_logger.info("FritzBoxPhonebookManager raw number: "+key);
-								}
-								phone = PhonenumberAnalyzer.getInstance(getRuntime()).toIdentifiedPhonenumber(key);
-								if (this.m_logger.isLoggable(Level.INFO)) {
-									this.m_logger.info("FritzBoxPhonebookManager identified number: "+phone);
-								}
-								if (phone!=null) {
-									phones.add(phone);
-									attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_NUMBER_TYPE+phone.getTelephoneNumber(), (String) phs.get(key)));
-								}
-							}
-							if (PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).isInternal((key.trim()))) {
-								phone = PhonenumberAnalyzer.getInstance(getRuntime()).toInternalPhonenumber(key);
-								if (phone!=null) {
-									phones.add(phone);
-									attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_NUMBER_TYPE+phone.getTelephoneNumber(), (String) phs.get(key)));
-								}
-							}
-						}
-						if (phones.size()==0) continue;
-						
-						String img = pe.getImageBase64();
-						if (img!=null) {
-							// 2015/11/06: added image support in FB phonebook
-							ByteArrayInputStream in = new ByteArrayInputStream(Base64Decoder.decode(img).getBytes("iso-8859-1"));
-							File photoDir = new File(PathResolver.getInstance().getPhotoDirectory());
-							if (!photoDir.exists())
-								photoDir.mkdirs();
-							FileOutputStream out = new FileOutputStream(new File(photoDir, ((IPhonenumber)phones.get(0)).getTelephoneNumber()+".png"));
-							Stream.copy(in, out, true);
-							attributes.add(getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_IMAGEPATH, new File(PathResolver.getInstance().getPhotoDirectory(), ((IPhonenumber)phones.get(0)).getTelephoneNumber()+".png").getAbsolutePath()));
-						}
-						
-						cl.add(getRuntime().getCallerFactory().createCaller(null, phones, attributes));						
-					}
+					cl.add(FritzBoxMappingManager.getInstance().toCallerList(callers));
+					
 				} catch (FritzBoxLoginException e2) {
 					this.m_logger.log(Level.SEVERE, e2.getMessage(), e2);
 				} catch (GetCallerListException e) {
@@ -442,6 +387,96 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 		return this.getRuntime().getCallerFactory().createCallerList();
 	}
 	
+	public void setCaller(ICaller caller) {
+		FirmwareManager fwm = FirmwareManager.getInstance();
+		fwm.startup();
+		try {
+			if (!fwm.isLoggedIn())
+				fwm.login();
+			
+			// check if phonebook is configured
+			String abId = getConfiguration().getProperty(CFG_ADDRESSBOOK, "0");
+			if (this.m_logger.isLoggable(Level.INFO))
+				this.m_logger.info("Getting FritzBox phonebook ID: #"+abId);
+			int id = Integer.parseInt(abId);
+			
+			IPhonebookEntry pe = FritzBoxMappingManager.getInstance().mapJamCallerToFritzBox(caller);
+			
+			fwm.setCaller(id, pe);
+			
+			ICallerList cl = getRuntime().getCallerFactory().createCallerList(1);
+			cl.add(caller);
+			try {
+				getDatabaseHandler().insertOrUpdateCallerList(cl);
+				getDatabaseHandler().commit();
+			} catch (SQLException e) {
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+				try {
+					getDatabaseHandler().rollback();
+				} catch (SQLException e1) {
+					this.m_logger.log(Level.SEVERE, e1.getMessage(), e1);
+				}
+			}
+			
+		} catch (FritzBoxLoginException e) {
+			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+		} catch (IOException e) {
+			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+		} catch (SetCallerException e) {
+			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+		} 
+		if (!this.isSyncing) this.createCallerListFromFritzBoxPhonebook();
+	}
+
+	public void removeCaller(ICaller caller) {
+		FirmwareManager fwm = FirmwareManager.getInstance();
+		fwm.startup();
+		try {
+			if (!fwm.isLoggedIn())
+				fwm.login();
+			
+			// check if phonebook is configured
+			String abId = getConfiguration().getProperty(CFG_ADDRESSBOOK, "0");
+			if (this.m_logger.isLoggable(Level.INFO))
+				this.m_logger.info("Getting FritzBox phonebook ID: #"+abId);
+			int id = Integer.parseInt(abId);
+			
+			IPhonebookEntry pe = FritzBoxMappingManager.getInstance().mapJamCallerToFritzBox(caller);
+			
+			fwm.deleteCaller(id, pe);
+			
+			ICallerList cl = getRuntime().getCallerFactory().createCallerList(1);
+			cl.add(caller);
+			try {
+				getDatabaseHandler().deleteCallerList(cl);
+				getDatabaseHandler().commit();
+			} catch (SQLException e) {
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+				try {
+					getDatabaseHandler().rollback();
+				} catch (SQLException e1) {
+					this.m_logger.log(Level.SEVERE, e1.getMessage(), e1);
+				}
+			}
+			
+		} catch (FritzBoxLoginException e) {
+			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+		} catch (IOException e) {
+			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+		} catch (DeleteCallerException e) {
+			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+		} 
+		if (!this.isSyncing) this.createCallerListFromFritzBoxPhonebook();
+	}
+	
+	@Override
+	public boolean isSupported(Class c) {
+		if (c.equals(IWriteCallerRepository.class)) {
+			return FirmwareManager.getInstance().isInstance(TR064FritzBoxFirmware.class);
+		}
+		return super.isSupported(c);
+	}
+	
 	private Properties getConfiguration() {
 		return this.m_configuration;
 	}
@@ -486,4 +521,5 @@ public class FritzBoxPhonebookManager extends AbstractReadOnlyCallerManager
 		}
 		return this.m_dbh;
 	}
+
 }

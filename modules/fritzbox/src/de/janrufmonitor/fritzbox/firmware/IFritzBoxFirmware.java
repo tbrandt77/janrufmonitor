@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import de.janrufmonitor.fritzbox.IPhonebookEntry;
 import de.janrufmonitor.fritzbox.firmware.exception.DeleteCallListException;
+import de.janrufmonitor.fritzbox.firmware.exception.DeleteCallerException;
 import de.janrufmonitor.fritzbox.firmware.exception.DoBlockException;
 import de.janrufmonitor.fritzbox.firmware.exception.DoCallException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxInitializationException;
@@ -13,8 +15,10 @@ import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxNotFoundException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetAddressbooksException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetBlockedListException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallListException;
+import de.janrufmonitor.fritzbox.firmware.exception.GetCallerImageException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallerListException;
 import de.janrufmonitor.fritzbox.firmware.exception.InvalidSessionIDException;
+import de.janrufmonitor.fritzbox.firmware.exception.SetCallerException;
 
 public interface IFritzBoxFirmware {
 	
@@ -105,6 +109,14 @@ public interface IFritzBoxFirmware {
     public List getCallerList() throws GetCallerListException, IOException;
     
     public List getCallerList(int addressbookId, String addressbookName) throws GetCallerListException, IOException;
+    
+    public void setCaller(int addressbookId, IPhonebookEntry pe) throws SetCallerException, IOException;
+    
+    public void deleteCaller(int addressbookId, IPhonebookEntry pe) throws DeleteCallerException, IOException;
+    
+    public void deleteCaller(int addressbookId, String entryID) throws DeleteCallerException, IOException;
+    
+    public String getCallerImage(String path) throws GetCallerImageException, IOException;
     
     public Map getAddressbooks() throws GetAddressbooksException, IOException;
     

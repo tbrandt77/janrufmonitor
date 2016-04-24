@@ -51,6 +51,8 @@ public class FritzBoxTR064Manager {
 	private final static String PATTERN_PHONEBOOK_LIST = "<NewPhonebookList>([^<]*)</NewPhonebookList>";
 	private final static String PATTERN_PHONEBOOK_NAME = "<NewPhonebookName>([^<]*)</NewPhonebookName>";
 	private final static String PATTERN_PHONEBOOK_URL = "<NewPhonebookURL>([^<]*)</NewPhonebookURL>";
+	private final static String PATTERN_PHONEBOOK_ENTRY_DATA = "<NewPhonebookEntryData>([^<]*)</NewPhonebookEntryData>";
+	private final static String PATTERN_PHONEBOOK_SIZE = "<!-- number of contacts ([^<]*) -->";
 	
 	// getTAM PATTERN
 	private final static String PATTERN_TAM_NAME = "<NewName>([^<]*)</NewName>";
@@ -542,7 +544,231 @@ public class FritzBoxTR064Manager {
 			}
 		return (xml!=null && xml.length()>0 ? xml : null);
     }
+    
+    public String getPhonebookEntry(String usr, String passwd, String id, String entryId) throws IOException {
+    	return this.getPhonebookEntry(usr, passwd, this.getDefaultFritzBoxDNS(), this.getDefaultFritzBoxTR064SecurePort(), "https", id, entryId);
+    }
+    
+    public String getPhonebookEntry(String usr, String passwd, String server, String id, String entryId) throws IOException {
+    	return this.getPhonebookEntry(usr, passwd, server, this.getDefaultFritzBoxTR064SecurePort(server), "https", id, entryId);
+    }
+    
+    public String getPhonebookEntry(String usr, String passwd, String server, String port, String protocol, String id, String entryId) throws IOException {
+    	if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info("Entering getPhonebookEntry(String usr, String passwd, String server, String port, String protocol, String id, String entryID)");
+    	String user = new String(usr.getBytes("utf-8"));
+    	
+    	long start = System.currentTimeMillis();
+		this.m_logger.info("Starting retrieving phonebook entry...");
+		
+    	StringBuffer content = new StringBuffer();
+		content.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+		content.append("<s:Envelope s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"");
+		content.append("xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" >");
+		content.append("<s:Header><h:InitChallenge xmlns:h=\"http://soap-authentication.org/digest/2001/10/\" s:mustUnderstand=\"1\">");
+		content.append("<UserID>"+user+"</UserID>");
+		content.append("</h:InitChallenge></s:Header><s:Body><u:GetPhonebookList xmlns:u=\"urn:dslforum-org:service:X_AVM-DE_OnTel:1\">");
+		content.append("</u:GetPhonebookList></s:Body></s:Envelope>");
 
+		StringBuffer response = doHttpCall(protocol+"://"+server+":"+port+"/upnp/control/x_contact", "POST", content.toString(), new String[][] { 
+			{"Content-Type", "text/xml; charset=\"utf-8\""}, {"Content-Length", Integer.toString(content.length())}, {"SOAPACTION", "\"urn:dslforum-org:service:X_AVM-DE_OnTel:1#GetPhonebookList\""}, {"User-Agent", USER_AGENT}})
+		;
+		
+		String nonce = find(Pattern.compile(PATTERN_DETECT_NONCE, Pattern.UNICODE_CASE), response);
+		String realm = find(Pattern.compile(PATTERN_DETECT_REALM, Pattern.UNICODE_CASE), response);
+		
+		String auth = FritzBoxMD5Handler.getTR064Auth(usr, passwd, realm, nonce);
+    	
+		content = new StringBuffer();
+		content.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+		content.append("<s:Envelope s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"");
+		content.append("xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" >");
+		content.append("<s:Header><h:ClientAuth xmlns:h=\"http://soap-authentication.org/digest/2001/10/\" s:mustUnderstand=\"1\">");
+		content.append("<Nonce>"+nonce+"</Nonce>");
+		content.append("<Auth>"+auth+"</Auth>");
+		content.append("<UserID>"+user+"</UserID>");
+		content.append("<Realm>"+realm+"</Realm>");
+		content.append("</h:ClientAuth></s:Header>");
+		content.append("<s:Body><u:GetPhonebookEntry xmlns:u=\"urn:dslforum-org:service:X_AVM-DE_OnTel:1\"><NewPhonebookID>"+id+"</NewPhonebookID><NewPhonebookEntryID>"+entryId+"</NewPhonebookEntryID></u:GetPhonebookEntry></s:Body>");
+		content.append("</s:Envelope>");
+		
+		try {
+			response = doHttpCall(protocol+"://"+server+":"+port+"/upnp/control/x_contact", "POST", content.toString(), new String[][] { 
+				{"Content-Type", "text/xml; charset=\"utf-8\""}, {"Content-Length", Integer.toString(content.length())}, {"SOAPACTION", "\"urn:dslforum-org:service:X_AVM-DE_OnTel:1#GetPhonebookEntry\""}, {"User-Agent", USER_AGENT}});
+			
+			String xml_url = find(Pattern.compile(PATTERN_PHONEBOOK_ENTRY_DATA, Pattern.UNICODE_CASE), response);
+			if (xml_url!=null && xml_url.length()>0) {
+				this.m_logger.info("Finished retrieving phonebook entry took "+(System.currentTimeMillis()-start)+"ms");
+				
+					return StringEscapeUtils.unescapeHtml(xml_url);
+				
+			} 
+		} catch (Exception e) {
+		}
+		return null;
+    }
+    
+    public int getPhonebookSize(String usr, String passwd, String id) throws IOException {
+    	return this.getPhonebookSize(usr, passwd, this.getDefaultFritzBoxDNS(), this.getDefaultFritzBoxTR064SecurePort(), "https", id);
+    }
+    
+    public int getPhonebookSize(String usr, String passwd, String server, String id) throws IOException {
+    	return this.getPhonebookSize(usr, passwd, server, this.getDefaultFritzBoxTR064SecurePort(server), "https", id);
+    }
+    
+    public int getPhonebookSize(String usr, String passwd, String server, String port, String protocol, String id) throws IOException {
+    	if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info("Entering getPhonebookSize(String usr, String passwd, String server, String port, String protocol, String id)");
+    	String user = new String(usr.getBytes("utf-8"));
+
+		this.m_logger.info("Starting determining phonebook size...");
+		
+    	StringBuffer content = new StringBuffer();
+		content.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+		content.append("<s:Envelope s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"");
+		content.append("xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" >");
+		content.append("<s:Header><h:InitChallenge xmlns:h=\"http://soap-authentication.org/digest/2001/10/\" s:mustUnderstand=\"1\">");
+		content.append("<UserID>"+user+"</UserID>");
+		content.append("</h:InitChallenge></s:Header><s:Body><u:GetPhonebookList xmlns:u=\"urn:dslforum-org:service:X_AVM-DE_OnTel:1\">");
+		content.append("</u:GetPhonebookList></s:Body></s:Envelope>");
+
+		StringBuffer response = doHttpCall(protocol+"://"+server+":"+port+"/upnp/control/x_contact", "POST", content.toString(), new String[][] { 
+			{"Content-Type", "text/xml; charset=\"utf-8\""}, {"Content-Length", Integer.toString(content.length())}, {"SOAPACTION", "\"urn:dslforum-org:service:X_AVM-DE_OnTel:1#GetPhonebookList\""}, {"User-Agent", USER_AGENT}})
+		;
+		
+		String nonce = find(Pattern.compile(PATTERN_DETECT_NONCE, Pattern.UNICODE_CASE), response);
+		String realm = find(Pattern.compile(PATTERN_DETECT_REALM, Pattern.UNICODE_CASE), response);
+		
+		String auth = FritzBoxMD5Handler.getTR064Auth(usr, passwd, realm, nonce);
+    	
+		content = new StringBuffer();
+		content.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+		content.append("<s:Envelope s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"");
+		content.append("xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" >");
+		content.append("<s:Header><h:ClientAuth xmlns:h=\"http://soap-authentication.org/digest/2001/10/\" s:mustUnderstand=\"1\">");
+		content.append("<Nonce>"+nonce+"</Nonce>");
+		content.append("<Auth>"+auth+"</Auth>");
+		content.append("<UserID>"+user+"</UserID>");
+		content.append("<Realm>"+realm+"</Realm>");
+		content.append("</h:ClientAuth></s:Header>");
+		content.append("<s:Body><u:GetPhonebook xmlns:u=\"urn:dslforum-org:service:X_AVM-DE_OnTel:1\"><NewPhonebookID>"+id+"</NewPhonebookID></u:GetPhonebook></s:Body>");
+		content.append("</s:Envelope>");
+		
+		response = doHttpCall(protocol+"://"+server+":"+port+"/upnp/control/x_contact", "POST", content.toString(), new String[][] { 
+			{"Content-Type", "text/xml; charset=\"utf-8\""}, {"Content-Length", Integer.toString(content.length())}, {"SOAPACTION", "\"urn:dslforum-org:service:X_AVM-DE_OnTel:1#GetPhonebook\""}, {"User-Agent", USER_AGENT}});
+		
+		String xml_url = find(Pattern.compile(PATTERN_PHONEBOOK_URL, Pattern.UNICODE_CASE), response);
+		if (xml_url!=null && xml_url.length()>0) {
+			response = doHttpCall(xml_url, "GET", null, "iso-8859-1", new String[][] {{"Content-Type", "text/plain"}, {"User-Agent", USER_AGENT}});
+			String size = find(Pattern.compile(PATTERN_PHONEBOOK_SIZE, Pattern.UNICODE_CASE), response);
+			if (size!=null && size.length()>0)
+				return Integer.parseInt(size);
+		} 
+		return 0;
+    }
+    
+    public void setPhonebookEntry(String usr, String passwd, String id, String data) throws IOException {
+    	 this.setPhonebookEntry(usr, passwd, this.getDefaultFritzBoxDNS(), this.getDefaultFritzBoxTR064SecurePort(), "https", id, data);
+    }
+    
+    public void setPhonebookEntry(String usr, String passwd, String server, String id, String data) throws IOException {
+    	 this.setPhonebookEntry(usr, passwd, server, this.getDefaultFritzBoxTR064SecurePort(server), "https", id, data);
+    }
+    
+    public void setPhonebookEntry(String usr, String passwd, String server, String port, String protocol, String id, String data) throws IOException {
+    	if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info("Entering setPhonebookEntry(String usr, String passwd, String server, String port, String protocol, String id, String data)");
+    	String user = new String(usr.getBytes("utf-8"));
+    
+		this.m_logger.info("Starting retrieving phonebook entry...");
+		
+    	StringBuffer content = new StringBuffer();
+		content.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+		content.append("<s:Envelope s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"");
+		content.append("xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" >");
+		content.append("<s:Header><h:InitChallenge xmlns:h=\"http://soap-authentication.org/digest/2001/10/\" s:mustUnderstand=\"1\">");
+		content.append("<UserID>"+user+"</UserID>");
+		content.append("</h:InitChallenge></s:Header><s:Body><u:GetPhonebookList xmlns:u=\"urn:dslforum-org:service:X_AVM-DE_OnTel:1\">");
+		content.append("</u:GetPhonebookList></s:Body></s:Envelope>");
+
+		StringBuffer response = doHttpCall(protocol+"://"+server+":"+port+"/upnp/control/x_contact", "POST", content.toString(), new String[][] { 
+			{"Content-Type", "text/xml; charset=\"utf-8\""}, {"Content-Length", Integer.toString(content.length())}, {"SOAPACTION", "\"urn:dslforum-org:service:X_AVM-DE_OnTel:1#GetPhonebookList\""}, {"User-Agent", USER_AGENT}})
+		;
+		
+		String nonce = find(Pattern.compile(PATTERN_DETECT_NONCE, Pattern.UNICODE_CASE), response);
+		String realm = find(Pattern.compile(PATTERN_DETECT_REALM, Pattern.UNICODE_CASE), response);
+		
+		String auth = FritzBoxMD5Handler.getTR064Auth(usr, passwd, realm, nonce);
+    	
+		content = new StringBuffer();
+		content.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+		content.append("<s:Envelope s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"");
+		content.append("xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" >");
+		content.append("<s:Header><h:ClientAuth xmlns:h=\"http://soap-authentication.org/digest/2001/10/\" s:mustUnderstand=\"1\">");
+		content.append("<Nonce>"+nonce+"</Nonce>");
+		content.append("<Auth>"+auth+"</Auth>");
+		content.append("<UserID>"+user+"</UserID>");
+		content.append("<Realm>"+realm+"</Realm>");
+		content.append("</h:ClientAuth></s:Header>");
+		content.append("<s:Body><u:SetPhonebookEntry xmlns:u=\"urn:dslforum-org:service:X_AVM-DE_OnTel:1\"><NewPhonebookID>"+id+"</NewPhonebookID><NewPhonebookEntryID></NewPhonebookEntryID><NewPhonebookEntryData>"+data+"</NewPhonebookEntryData></u:SetPhonebookEntry></s:Body>");
+		content.append("</s:Envelope>");
+		
+		response = doHttpCall(protocol+"://"+server+":"+port+"/upnp/control/x_contact", "POST", content.toString(), new String[][] { 
+			{"Content-Type", "text/xml; charset=\"utf-8\""}, {"Content-Length", Integer.toString(content.length())}, {"SOAPACTION", "\"urn:dslforum-org:service:X_AVM-DE_OnTel:1#SetPhonebookEntry\""}, {"User-Agent", USER_AGENT}});
+		return;
+    }
+
+    public void deletePhonebookEntry(String usr, String passwd, String id, String entryID) throws IOException {
+   	 	this.deletePhonebookEntry(usr, passwd, this.getDefaultFritzBoxDNS(), this.getDefaultFritzBoxTR064SecurePort(), "https", id, entryID);
+    }
+   
+    public void deletePhonebookEntry(String usr, String passwd, String server, String id, String entryID) throws IOException {
+   	 	this.deletePhonebookEntry(usr, passwd, server, this.getDefaultFritzBoxTR064SecurePort(server), "https", id, entryID);
+    }
+   
+    public void deletePhonebookEntry(String usr, String passwd, String server, String port, String protocol, String id, String entryID) throws IOException {
+    	if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info("Entering deletePhonebookEntry(String usr, String passwd, String server, String port, String protocol, String id, String entryID)");
+    	String user = new String(usr.getBytes("utf-8"));
+    
+		this.m_logger.info("Starting retrieving phonebook entry...");
+		
+    	StringBuffer content = new StringBuffer();
+		content.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+		content.append("<s:Envelope s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"");
+		content.append("xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" >");
+		content.append("<s:Header><h:InitChallenge xmlns:h=\"http://soap-authentication.org/digest/2001/10/\" s:mustUnderstand=\"1\">");
+		content.append("<UserID>"+user+"</UserID>");
+		content.append("</h:InitChallenge></s:Header><s:Body><u:GetPhonebookList xmlns:u=\"urn:dslforum-org:service:X_AVM-DE_OnTel:1\">");
+		content.append("</u:GetPhonebookList></s:Body></s:Envelope>");
+
+		StringBuffer response = doHttpCall(protocol+"://"+server+":"+port+"/upnp/control/x_contact", "POST", content.toString(), new String[][] { 
+			{"Content-Type", "text/xml; charset=\"utf-8\""}, {"Content-Length", Integer.toString(content.length())}, {"SOAPACTION", "\"urn:dslforum-org:service:X_AVM-DE_OnTel:1#GetPhonebookList\""}, {"User-Agent", USER_AGENT}})
+		;
+		
+		String nonce = find(Pattern.compile(PATTERN_DETECT_NONCE, Pattern.UNICODE_CASE), response);
+		String realm = find(Pattern.compile(PATTERN_DETECT_REALM, Pattern.UNICODE_CASE), response);
+		
+		String auth = FritzBoxMD5Handler.getTR064Auth(usr, passwd, realm, nonce);
+    	
+		content = new StringBuffer();
+		content.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+		content.append("<s:Envelope s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"");
+		content.append("xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" >");
+		content.append("<s:Header><h:ClientAuth xmlns:h=\"http://soap-authentication.org/digest/2001/10/\" s:mustUnderstand=\"1\">");
+		content.append("<Nonce>"+nonce+"</Nonce>");
+		content.append("<Auth>"+auth+"</Auth>");
+		content.append("<UserID>"+user+"</UserID>");
+		content.append("<Realm>"+realm+"</Realm>");
+		content.append("</h:ClientAuth></s:Header>");
+		content.append("<s:Body><u:DeletePhonebookEntry xmlns:u=\"urn:dslforum-org:service:X_AVM-DE_OnTel:1\"><NewPhonebookID>"+id+"</NewPhonebookID><NewPhonebookEntryID>"+entryID+"</NewPhonebookEntryID></u:DeletePhonebookEntry></s:Body>");
+		content.append("</s:Envelope>");
+		
+		response = doHttpCall(protocol+"://"+server+":"+port+"/upnp/control/x_contact", "POST", content.toString(), new String[][] { 
+			{"Content-Type", "text/xml; charset=\"utf-8\""}, {"Content-Length", Integer.toString(content.length())}, {"SOAPACTION", "\"urn:dslforum-org:service:X_AVM-DE_OnTel:1#DeletePhonebookEntry\""}, {"User-Agent", USER_AGENT}});
+		return;
+    }
+    
     public InputStream getPhonebook(String usr, String passwd, String id) throws IOException {
     	return this.getPhonebook(usr, passwd, this.getDefaultFritzBoxDNS(), this.getDefaultFritzBoxTR064SecurePort(), "https", id);
     }
@@ -1200,14 +1426,39 @@ public class FritzBoxTR064Manager {
 			LoggingInitializer.run();
 			//System.out.print(FritzBoxTR064Manager.getInstance().getCallList("thilo.brandt", "Tb2743507", "fritz.box", "49000", "http", -1));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getPhonebookList("thilo.brandt", "Tb2743507", "fritz.box", "49000"));
+//			BufferedReader r = new BufferedReader(new InputStreamReader(FritzBoxTR064Manager.getInstance().getPhonebook("thilo.brandt", "Tb2743507", "fritz.box", "49443", "https", "0")));
+//			while (r.ready())
+//				System.out.println(r.readLine());
+			
+			
+//			FritzBoxTR064Manager.getInstance().setPhonebookEntry("thilo.brandt", "Tb2743507", "fritz.box", "49443", "https", "0", 
+//					StringEscapeUtils.escapeHtml("<?xml version\"1.0\" encoding=\"utf-8\"?><contact><category>0</category><person><realName>Thilo &amp; Brandt</realName></person><telephony nid=\"1\"><number type=\"mobile\">0160889640117</number></telephony><services /><setup /><mod_time>1461363051</mod_time><uniqueid></uniqueid><myfield>testthewest</myfield></contact>")
+//			);
+//			
+//			System.out.println(FritzBoxTR064Manager.getInstance().getPhonebookEntry("thilo.brandt", "Tb2743507", "fritz.box", "49443", "https", "0", "3"));
+//			
+			int size = FritzBoxTR064Manager.getInstance().getPhonebookSize("thilo.brandt", "Tb2743507", "fritz.box", "49443", "https", "1");
+			size -= 10;
+			System.out.println(size);
+			
+			for (int i = 0;i<size; i++) {
+				System.out.println(i);
+				System.out.println();
+				System.out.println(FritzBoxTR064Manager.getInstance().getPhonebookEntry("thilo.brandt", "Tb2743507", "fritz.box", "49443", "https", "1", Integer.toString(i)));
+			}
+			
+			FritzBoxTR064Manager.getInstance().deletePhonebookEntry("thilo.brandt", "Tb2743507", "fritz.box", "49443", "https", "1", "20");
+			
 			//System.out.print(FritzBoxTR064Manager.getInstance().getPhonebook("thilo.brandt", "Tb2743507", "fritz.box", "49443", "https", "0"));
 			//System.out.println(FritzBoxTR064Manager.getInstance().getPhonebookHash("admin", "Tb2743507", "fritz.box", "0"));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort());
-			System.out.print(FritzBoxTR064Manager.getInstance().getSID("thilo.brandt", "Tb274350"));
+			//System.out.print(FritzBoxTR064Manager.getInstance().getSID("thilo.brandt", "Tb274350"));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getTelephoneAnsweringMachineMessageList("thilo.brandt", "xxxx","fritz.box", "49000", "http", "0"));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getDescription("thilo.brandt", "Tb2743507","fritz.box"));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getPhonePorts("thilo.brandt", "Tb2743507","fritz.box", "49443", "https"));
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}	
 	}

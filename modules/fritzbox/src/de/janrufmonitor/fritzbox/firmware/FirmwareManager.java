@@ -20,7 +20,9 @@ import de.janrufmonitor.framework.event.IEventSender;
 import de.janrufmonitor.framework.monitor.IMonitorListener;
 import de.janrufmonitor.fritzbox.FritzBoxConst;
 import de.janrufmonitor.fritzbox.FritzBoxMonitor;
+import de.janrufmonitor.fritzbox.IPhonebookEntry;
 import de.janrufmonitor.fritzbox.firmware.exception.DeleteCallListException;
+import de.janrufmonitor.fritzbox.firmware.exception.DeleteCallerException;
 import de.janrufmonitor.fritzbox.firmware.exception.DoBlockException;
 import de.janrufmonitor.fritzbox.firmware.exception.DoCallException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxInitializationException;
@@ -29,8 +31,10 @@ import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxNotFoundException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetAddressbooksException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetBlockedListException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallListException;
+import de.janrufmonitor.fritzbox.firmware.exception.GetCallerImageException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallerListException;
 import de.janrufmonitor.fritzbox.firmware.exception.InvalidSessionIDException;
+import de.janrufmonitor.fritzbox.firmware.exception.SetCallerException;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 
@@ -215,6 +219,94 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 				throw new GetCallListException(e.getMessage());
 			}
 		return this.m_fw.getCallList(lastSyncTimestamp);
+    }
+    
+    public void deleteCaller(int id, String entryID) throws DeleteCallerException, IOException {
+    	if (this.m_fw==null)
+			try {
+				this.createFirmwareInstance();
+			} catch (FritzBoxInitializationException e) {
+				throw new DeleteCallerException(e.getMessage());
+			} catch (FritzBoxNotFoundException e) {
+				if (this.m_broker!=null)
+					this.m_broker.send(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_UNKNOWN_HOST));
+				throw new DeleteCallerException(e.getMessage());
+			} catch (InvalidSessionIDException e) {
+				PropagationFactory.getInstance().fire(
+						new Message(Message.ERROR,
+						"fritzbox.firmware.login",
+						"loginfailed",	
+						e,
+						true));
+				throw new DeleteCallerException(e.getMessage());
+			}
+		this.m_fw.deleteCaller(id, entryID);
+    }
+    
+    public void deleteCaller(int id, IPhonebookEntry pe) throws DeleteCallerException, IOException {
+    	if (this.m_fw==null)
+			try {
+				this.createFirmwareInstance();
+			} catch (FritzBoxInitializationException e) {
+				throw new DeleteCallerException(e.getMessage());
+			} catch (FritzBoxNotFoundException e) {
+				if (this.m_broker!=null)
+					this.m_broker.send(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_UNKNOWN_HOST));
+				throw new DeleteCallerException(e.getMessage());
+			} catch (InvalidSessionIDException e) {
+				PropagationFactory.getInstance().fire(
+						new Message(Message.ERROR,
+						"fritzbox.firmware.login",
+						"loginfailed",	
+						e,
+						true));
+				throw new DeleteCallerException(e.getMessage());
+			}
+		this.m_fw.deleteCaller(id, pe);
+    }
+    
+    public void setCaller(int id, IPhonebookEntry pe) throws SetCallerException, IOException {
+    	if (this.m_fw==null)
+			try {
+				this.createFirmwareInstance();
+			} catch (FritzBoxInitializationException e) {
+				throw new SetCallerException(e.getMessage());
+			} catch (FritzBoxNotFoundException e) {
+				if (this.m_broker!=null)
+					this.m_broker.send(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_UNKNOWN_HOST));
+				throw new SetCallerException(e.getMessage());
+			} catch (InvalidSessionIDException e) {
+				PropagationFactory.getInstance().fire(
+						new Message(Message.ERROR,
+						"fritzbox.firmware.login",
+						"loginfailed",	
+						e,
+						true));
+				throw new SetCallerException(e.getMessage());
+			}
+		this.m_fw.setCaller(id, pe);
+    }
+    
+    public String getCallerImage(String path) throws GetCallerImageException, IOException {
+    	if (this.m_fw==null)
+			try {
+				this.createFirmwareInstance();
+			} catch (FritzBoxInitializationException e) {
+				throw new GetCallerImageException(e.getMessage());
+			} catch (FritzBoxNotFoundException e) {
+				if (this.m_broker!=null)
+					this.m_broker.send(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_UNKNOWN_HOST));
+				throw new GetCallerImageException(e.getMessage());
+			} catch (InvalidSessionIDException e) {
+				PropagationFactory.getInstance().fire(
+						new Message(Message.ERROR,
+						"fritzbox.firmware.login",
+						"loginfailed",	
+						e,
+						true));
+				throw new GetCallerImageException(e.getMessage());
+			}
+		return this.m_fw.getCallerImage(path);
     }
     
     public List getCallerList() throws GetCallerListException, IOException {

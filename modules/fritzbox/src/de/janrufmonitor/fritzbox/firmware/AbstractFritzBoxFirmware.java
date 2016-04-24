@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.fritzbox.IPhonebookEntry;
 import de.janrufmonitor.fritzbox.firmware.exception.DeleteCallListException;
+import de.janrufmonitor.fritzbox.firmware.exception.DeleteCallerException;
 import de.janrufmonitor.fritzbox.firmware.exception.DoBlockException;
 import de.janrufmonitor.fritzbox.firmware.exception.DoCallException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxDetectFirmwareException;
@@ -35,8 +36,10 @@ import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxNotFoundException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetAddressbooksException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetBlockedListException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallListException;
+import de.janrufmonitor.fritzbox.firmware.exception.GetCallerImageException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallerListException;
 import de.janrufmonitor.fritzbox.firmware.exception.InvalidSessionIDException;
+import de.janrufmonitor.fritzbox.firmware.exception.SetCallerException;
 import de.janrufmonitor.util.io.Stream;
 
 public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
@@ -91,6 +94,93 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 		}
 
 		public String getImageBase64() {
+			return null;
+		}
+
+		public void setCategory(String cat) {
+
+		}
+
+		public String getCatergory() {
+			return null;
+		}
+
+		public void setImageURL(String url) {
+
+		}
+
+		public String getImageURL() {
+			return null;
+		}
+
+		public void setModTime(String t) {
+			
+		}
+
+		public String getModTime() {
+			return null;
+		}
+
+		public void addNumberType(String n, String type) {
+	
+		}
+
+		public void addNumberPrio(String n, String prio) {
+
+		}
+
+		public void addNumberID(String n, String id) {
+
+		}
+
+		public void addNumberQuickDial(String n, String qd) {
+
+		}
+
+		public void addNumberVanity(String n, String van) {
+
+		}
+
+		public String getNumberType(String n) {
+			return null;
+		}
+
+		public String getNumberPrio(String n) {
+			return null;
+		}
+
+		public String getNumberID(String n) {
+			return null;
+		}
+
+		public String getNumberQuickDial(String n) {
+			return null;
+		}
+
+		public String getNumberVanity(String n) {
+			return null;
+		}
+
+		public void setUniqueID(String uid) {
+	
+		}
+
+		public String getUniqueID() {
+			return null;
+		}
+
+		public void setEntryID(String eid) {
+
+		}
+
+		public String getEntryID() {
+			return null;
+		}
+
+		public void addJamInfo(String key, String value) {
+		}
+
+		public String getJamInfo(String key) {
 			return null;
 		}
 	}
@@ -248,6 +338,26 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 		return this.getCallList();
 	}
 
+	public String getCallerImage(String path) throws GetCallerImageException,
+			IOException {
+		return null;
+	}
+
+	public void setCaller(int addressbookId, IPhonebookEntry pe)
+			throws SetCallerException, IOException {
+	
+	}
+
+	public void deleteCaller(int addressbookId, IPhonebookEntry pe)
+			throws DeleteCallerException, IOException {
+		 this.deleteCaller(addressbookId, pe.getEntryID());
+	}
+
+	public void deleteCaller(int addressbookId, String entryID)
+			throws DeleteCallerException, IOException {
+
+	}
+
 	public List getCallList() throws GetCallListException, IOException{
 		if (!this.isInitialized()) throw new GetCallListException("Could not get call list from FritzBox: FritzBox firmware not initialized.");
 		InputStream in = null;
@@ -383,7 +493,8 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 
 	public String getAddressbookModificationHash(int addressbookId)
 			throws GetAddressbooksException, IOException {
-		return null;
+		
+		return Double.toString((Math.random()*100)+1);
 	}
 	
 	public String getMSNFromSIP(String idx) throws IOException {

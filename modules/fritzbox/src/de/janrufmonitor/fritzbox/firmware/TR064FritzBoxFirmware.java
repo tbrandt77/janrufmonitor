@@ -41,6 +41,7 @@ import de.janrufmonitor.fritzbox.FritzBoxMonitor;
 import de.janrufmonitor.fritzbox.FritzBoxTR064Manager;
 import de.janrufmonitor.fritzbox.IPhonebookEntry;
 import de.janrufmonitor.fritzbox.firmware.exception.DeleteCallListException;
+import de.janrufmonitor.fritzbox.firmware.exception.DeleteCallerException;
 import de.janrufmonitor.fritzbox.firmware.exception.DoBlockException;
 import de.janrufmonitor.fritzbox.firmware.exception.DoCallException;
 import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxInitializationException;
@@ -49,8 +50,11 @@ import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxNotFoundException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetAddressbooksException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetBlockedListException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallListException;
+import de.janrufmonitor.fritzbox.firmware.exception.GetCallerImageException;
 import de.janrufmonitor.fritzbox.firmware.exception.GetCallerListException;
 import de.janrufmonitor.fritzbox.firmware.exception.InvalidSessionIDException;
+import de.janrufmonitor.fritzbox.firmware.exception.SetCallerException;
+import de.janrufmonitor.fritzbox.mapping.FritzBoxMappingManager;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.util.io.Base64Encoder;
 import de.janrufmonitor.util.io.OSUtils;
@@ -151,139 +155,6 @@ public class TR064FritzBoxFirmware implements
 		
 		public Map getMap() {
 			return this.m;
-		}
-	}
-	
-	private class XMLPeHandler extends DefaultHandler {
-		private List contacts = new ArrayList();;
-		private PhonebookEntry currentPe;
-		
-		private String currentValue; 
-		private String[] currentNumber;
-		private String m_ab;
-		
-		public XMLPeHandler(String ab) {
-			this.m_ab = ab;
-		}
-		
-		public void characters(char[] ch, int start, int length)
-	      throws SAXException {
-			currentValue = new String(ch, start, length);
-		}
-		
-		public void startElement(String uri, String name, String qname, Attributes attributes)
-		throws SAXException {
-			if (qname.equalsIgnoreCase("contact")) {
-				currentPe = new PhonebookEntry(); 
-			}
-			if (qname.equalsIgnoreCase("number")) {
-				currentNumber = new String[2];
-				currentNumber[0] = attributes.getValue("type");
-				if (currentNumber[0].equalsIgnoreCase("home")) {
-					currentNumber[0] = IJAMConst.ATTRIBUTE_VALUE_LANDLINE_TYPE;
-				}
-				if (currentNumber[0].equalsIgnoreCase("work")) {
-					currentNumber[0] = IJAMConst.ATTRIBUTE_VALUE_LANDLINE_TYPE;
-				}
-				if (currentNumber[0].equalsIgnoreCase("mobile")) {
-					currentNumber[0] = IJAMConst.ATTRIBUTE_VALUE_MOBILE_TYPE;
-				}
-				if (currentNumber[0].equalsIgnoreCase("fax_work")) {
-					currentNumber[0] = IJAMConst.ATTRIBUTE_VALUE_FAX_TYPE;
-				}
-				if (currentNumber[0].equalsIgnoreCase("work_fax")) {
-					currentNumber[0] = IJAMConst.ATTRIBUTE_VALUE_FAX_TYPE;
-				}
-			}
-		}
-		
-		public void endElement(String uri, String name, String qname)
-		throws SAXException {
-			if (qname.equalsIgnoreCase("realname") && currentPe!=null) {
-				currentPe.setName(currentValue);
-			}
-			
-			if (qname.equalsIgnoreCase("number") && currentNumber!=null && currentPe!=null) {
-				currentNumber[1] = currentValue;
-				currentPe.addNumber(currentNumber[1], currentNumber[0]);
-				currentNumber = null;
-			}
-			
-			if (qname.equalsIgnoreCase("contact") && currentPe!=null) {
-				currentPe.setAddressbook(m_ab);
-				contacts.add(currentPe);
-				currentPe = null;
-			}
-			
-			if (qname.equalsIgnoreCase("email") && currentPe!=null) {
-				currentPe.setEmail(currentValue);
-			}
-			
-			if (qname.equalsIgnoreCase("imageURL") && currentPe!=null) {
-				String img = createBase64Image(currentValue);
-				currentPe.setImageBase64(img);
-			}
-
-		}
-		
-		public List getList() {
-			return contacts;
-		}
-	}
-	
-	public class PhonebookEntry implements IPhonebookEntry {
-		
-		String m_name;
-		String m_ab;
-		Map m_phones;
-		String m_email;
-		String m_image;
-		
-		public PhonebookEntry() {
-			m_phones = new HashMap(3);
-		}
-		
-		public void setName(String name) {
-			this.m_name = name;
-		}
-		
-		public void setAddressbook(String ab) {
-			this.m_ab = ab;
-		}
-		
-		public void setEmail(String e) {
-			this.m_email = e;
-		}
-		
-		public void addNumber(String n, String type) {
-			m_phones.put(n, type);
-		}
-		
-		public String getName() {
-			return this.m_name;
-		}
-		
-		public String getEmail() {
-			return this.m_email;
-		}
-		
-		public String getAddressbook() {
-			return this.m_ab;
-		}
-		
-		public Map getPhones() {
-			return m_phones;
-		}
-		public String toString() {
-			return this.m_name + ";" + this.m_phones;
-		}
-
-		public void setImageBase64(String b64) {
-			this.m_image = b64;
-		}
-
-		public String getImageBase64() {
-			return this.m_image;
 		}
 	}
 	
@@ -521,36 +392,90 @@ public class TR064FritzBoxFirmware implements
 	public List getCallerList(int addressbookId, String addressbookName)
 			throws GetCallerListException, IOException {
 		if (!this.isInitialized()) throw new GetCallerListException("Could not get phone book from FritzBox: FritzBox firmware not initialized.");
-		InputStream in = null;
+	
+		int size = 0;
+		
 		try {
-			in = FritzBoxTR064Manager.getInstance().getPhonebook(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server)), (this.m_useHttp ? "http" : "https"), Integer.toString(addressbookId));
+			size = FritzBoxTR064Manager.getInstance().getPhonebookSize(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server)), (this.m_useHttp ? "http" : "https"), Integer.toString(addressbookId));
+			if (this.m_logger.isLoggable(Level.INFO))
+				this.m_logger.info("Pre-calculated list size from FritzBox: "+size);
 		} catch (IOException e) {
 			throw new GetCallerListException(e.getMessage());
 		}
-		if (in==null) return new ArrayList(0);
 		
 		List result = new ArrayList();
-		StringBuffer xml = new StringBuffer();
-		String encoding = "utf-8";
-		InputStreamReader inr = new InputStreamReader(in, encoding);
-		BufferedReader bufReader = new BufferedReader(inr);
 		
-		String line = bufReader.readLine(); // drop header
-
-		while (bufReader.ready()) {
-			line = bufReader.readLine();
-			xml.append(line+" ");
+		for (int i=0;i<size;i++) {
+			String xml = null;
+			try {
+				xml = FritzBoxTR064Manager.getInstance().getPhonebookEntry(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server)), (this.m_useHttp ? "http" : "https"), Integer.toString(addressbookId), Integer.toString(i));
+			} catch (IOException e) {
+				xml = null;
+			}
+			if (xml==null) {
+				if (this.m_logger.isLoggable(Level.INFO))
+					this.m_logger.info("No more data found in list. Break at list position: "+i);
+				break;
+			}
+			
+			List<IPhonebookEntry> oneResult = FritzBoxMappingManager.getInstance().parseXmltoFritzBoxCallerList(new StringBuffer(xml), addressbookName);
+			if (oneResult.size()==1){
+				oneResult.get(0).setEntryID(Integer.toString(i));
+			}			
+			result.addAll(oneResult);
 		}
-		bufReader.close();
-		in.close();
-		
-		result.addAll(parseXML(xml, addressbookName));
-		
+
 		if (this.m_logger.isLoggable(Level.INFO))
 			this.m_logger.info("Phonebook from FritzBox succuessfully fetched. List size: "+result.size());
 		
+		if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info("Final result list elements {IPhonebookEntry}: "+result.toString());
+		
 		return result;
 	}
+	
+	public void setCaller(int addressbookId, IPhonebookEntry pe)
+			throws SetCallerException, IOException {
+		if (!this.isInitialized()) throw new SetCallerException("Could not set caller from FritzBox: FritzBox firmware not initialized.");
+		
+		if (pe==null) return;
+		
+		if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info("Set IPhonebookEntry to FritzBox phonebook ID: "+addressbookId+", data: "+pe.toString());
+		
+		FritzBoxTR064Manager.getInstance().setPhonebookEntry(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server)), (this.m_useHttp ? "http" : "https"), Integer.toString(addressbookId), pe.toString());
+	}
+
+	public void deleteCaller(int addressbookId, IPhonebookEntry pe)
+			throws DeleteCallerException, IOException {
+		this.deleteCaller(addressbookId, pe.getEntryID());
+	}
+
+	public void deleteCaller(int addressbookId, String entryID)
+			throws DeleteCallerException, IOException {
+		if (!this.isInitialized()) throw new DeleteCallerException("Could not delete caller from FritzBox: FritzBox firmware not initialized.");
+		
+		if (entryID==null || entryID.length()==0) return;
+		
+		FritzBoxTR064Manager.getInstance().deletePhonebookEntry(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server)), (this.m_useHttp ? "http" : "https"), Integer.toString(addressbookId), entryID);
+	}
+
+	public String getCallerImage(String path) throws GetCallerImageException,
+			IOException {
+		if (!this.isInitialized()) throw new GetCallerImageException("Could not get caller image from FritzBox: FritzBox firmware not initialized.");
+		if (path==null) return null;
+
+		try {
+			String u = (this.m_useHttp ? "http://" : "https://")+this.m_server+":"+(this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server))+path+"&sid="+FritzBoxTR064Manager.getInstance().getSID(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server)), (this.m_useHttp ? "http" : "https"));
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("requesting URL: "+u);
+			return doHttpCall(u, "GET", null, new String[][] {  }, true).toString();
+		} catch (IOException e) {
+			this.m_logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+		}
+		return null;
+	}
+
 
 	public Map getAddressbooks() throws GetAddressbooksException, IOException {
 		if (!this.isInitialized()) throw new GetAddressbooksException("Could not get address book list from FritzBox: FritzBox firmware not initialized.");
@@ -792,31 +717,7 @@ public class TR064FritzBoxFirmware implements
 		
 		return response;
 	}
-	
-	private List parseXML(StringBuffer xml, String ab) {
-		try {
-			XMLPeHandler handler = new XMLPeHandler(ab);
-			SAXParser p = SAXParserFactory.newInstance().newSAXParser();
-			String encoding = "utf-8";
-			ByteArrayInputStream in = new ByteArrayInputStream(xml.toString().getBytes(encoding));
-			InputSource is = new InputSource(in);
-			is.setEncoding(encoding);
-			p.parse(is, handler);
-			return handler.getList();
-		} catch (SAXException e) {
-			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-		} catch (ParserConfigurationException e) {
-			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-		} catch (UnsupportedEncodingException e) {
-			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-		} catch (IOException e) {
-			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-		} catch (Throwable e) {
-			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-		}
-		return null;
-	}
-	
+		
 	private Map parseMsnMapXML(String xml) {
 		try {
 			XMLMsnMapHandler handler = new XMLMsnMapHandler();
@@ -864,39 +765,4 @@ public class TR064FritzBoxFirmware implements
 		}
 		return null;
 	}
-
-	private String createBase64Image(String path) {
-		if (path==null) return null;
-		
-//		// 2015/11/08: Check for inline URLs and URLEncode
-//		if (path!=null && path.indexOf("path=http")>0) {
-//			String url_enc_part = path.substring(path.indexOf("path=")+5, path.length());
-//			if (this.m_logger.isLoggable(Level.INFO)) 
-//				this.m_logger.info("URL to be encoded: "+path);
-//			if (this.m_logger.isLoggable(Level.INFO)) 
-//				this.m_logger.info("Encodeding part: "+url_enc_part);
-//			try {
-//				url_enc_part = URLEncoder.encode(url_enc_part, "utf-8");
-//				path = path.substring(0, path.indexOf("path=")+5) + url_enc_part;
-//				if (this.m_logger.isLoggable(Level.INFO)) 
-//					this.m_logger.info("URL encoded: "+path);
-//			} catch (UnsupportedEncodingException e) {
-//				this.m_logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-//			}
-//		}
-		try {
-			String u = (this.m_useHttp ? "http://" : "https://")+this.m_server+":"+(this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server))+path+"&sid="+FritzBoxTR064Manager.getInstance().getSID(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server)), (this.m_useHttp ? "http" : "https"));
-			if (this.m_logger.isLoggable(Level.INFO)) 
-				this.m_logger.info("requesting URL: "+u);
-			return doHttpCall(u, "GET", null, new String[][] {  }, true).toString();
-		} catch (IOException e) {
-			this.m_logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-		}
-		return null;
-	}
-
-
-
-
-
 }
