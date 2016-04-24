@@ -254,7 +254,7 @@ public class FritzBoxPhonebookManager extends AbstractReadWriteCallerManager
 				}
 
 				try {
-					getDatabaseHandler().deleteCallerList(cl);
+					getDatabaseHandler().deleteCallerList(getRuntime().getCallerFactory().createCallerList());
 					getDatabaseHandler().insertOrUpdateCallerList(cl);
 					getDatabaseHandler().commit();
 				} catch (SQLException e) {
