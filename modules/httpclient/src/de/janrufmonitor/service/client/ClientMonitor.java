@@ -161,6 +161,26 @@ public class ClientMonitor implements IMonitor, IClientStateMonitor,
 		if (state==SERVER_SHUTDOWN) {
 			DisplayManager.getDefaultDisplay().asyncExec(new Reconnector());
 		}		
+		
+		if (state==SERVER_NOT_FOUND) {
+			boolean autoReConnect = "true".equalsIgnoreCase(getRuntime().getConfigManagerFactory().getConfigManager().getProperty(
+					"service.Client",
+					"autoreconnect"
+				));
+			if (autoReConnect) {
+				Runnable r = new Runnable() {
+					public void run() {
+						try {
+							Thread.sleep(30000);
+						} catch (InterruptedException e) {
+						}
+						ClientMonitor.this.start();
+					}};
+				Thread t = new Thread(r);
+				t.setName("ClientMonitor-HeadlessReconnector");
+				t.start();
+			}
+		}
 	}
 
 	public String getConfigurableID() {

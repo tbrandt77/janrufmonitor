@@ -69,12 +69,19 @@ public class Popup implements IClientStateMonitor {
 					)); 
 				break;
 			case IClientStateMonitor.SERVER_NOT_FOUND: 
-				DisplayManager.getDefaultDisplay().asyncExec(
-					new DefaultPopupThread(
-						SWT.ICON_ERROR,
-						this.m_i18n.getString(NAMESPACE, "error", "label", this.m_language),
-						this.m_i18n.getString(NAMESPACE, "servernotfound", "label", this.m_language) + message
-					)); 
+				boolean autoReConnect = "true".equalsIgnoreCase(PIMRuntime.getInstance().getConfigManagerFactory().getConfigManager().getProperty(
+						"service.Client",
+						"autoreconnect"
+					));
+				if (!autoReConnect) {
+					DisplayManager.getDefaultDisplay().asyncExec(
+							new DefaultPopupThread(
+								SWT.ICON_ERROR,
+								this.m_i18n.getString(NAMESPACE, "error", "label", this.m_language),
+								this.m_i18n.getString(NAMESPACE, "servernotfound", "label", this.m_language) + message
+							)); 
+				}
+				
 				break;
 			case IClientStateMonitor.SERVER_NOT_AUTHORIZED: 
 				DisplayManager.getDefaultDisplay().asyncExec(
