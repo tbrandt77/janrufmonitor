@@ -80,6 +80,14 @@ public class Popup implements IClientStateMonitor {
 								this.m_i18n.getString(NAMESPACE, "error", "label", this.m_language),
 								this.m_i18n.getString(NAMESPACE, "servernotfound", "label", this.m_language) + message
 							)); 
+				} else {
+					PropagationFactory.getInstance().fire(
+							new Message(Message.ERROR,
+									NAMESPACE,
+							"servernotfound",	
+							new Exception(message),
+							false),
+						"Tray");
 				}
 				
 				break;

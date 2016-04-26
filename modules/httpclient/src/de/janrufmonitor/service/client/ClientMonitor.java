@@ -55,7 +55,7 @@ public class ClientMonitor implements IMonitor, IClientStateMonitor,
 				}
 			} else {
 				try {
-					Thread.sleep(30000);
+					Thread.sleep(60000);
 				} catch (InterruptedException e) {
 					m_logger.severe(e.toString());
 				}
@@ -171,7 +171,7 @@ public class ClientMonitor implements IMonitor, IClientStateMonitor,
 				Runnable r = new Runnable() {
 					public void run() {
 						try {
-							Thread.sleep(30000);
+							Thread.sleep(60000);
 						} catch (InterruptedException e) {
 						}
 						ClientMonitor.this.start();
