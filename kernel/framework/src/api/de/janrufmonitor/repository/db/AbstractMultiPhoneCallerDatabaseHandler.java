@@ -389,43 +389,43 @@ public abstract class AbstractMultiPhoneCallerDatabaseHandler extends
 				throw new SQLException(e.getMessage());
 			}
 
-			PreparedStatement ps = this.getStatement("DELETE_CALLER");
-			PreparedStatement psa = this.getStatement("DELETE_ATTRIBUTE");
-			PreparedStatement psp = this.getStatement("DELETE_PHONE");
-			ps.clearBatch();
-			psa.clearBatch();
-			psp.clearBatch();
-			
-			ICaller c = null;
-			for (int i=0, j=cl.size();i<j;i++) {
-				c = cl.get(i);
-				internalDelete(c);
-				ps.setString(1, c.getUUID());
-				ps.addBatch();
-				psa.setString(1, c.getUUID());
-				psa.addBatch();
-				psp.setString(1, c.getUUID());
-				psp.addBatch();				
-				if (i % this.commit_count == 0) {
-					ps.executeBatch();
-					ps.clearBatch();
-					this.m_logger.info("Executed prepared statement: "+ps.toString());
-					psa.executeBatch();
-					psa.clearBatch();
-					this.m_logger.info("Executed prepared statement: "+psa.toString());
-					psp.executeBatch();
-					psp.clearBatch();
-					this.m_logger.info("Executed prepared statement: "+psp.toString());
-				}
+		PreparedStatement ps = this.getStatement("DELETE_CALLER");
+		PreparedStatement psa = this.getStatement("DELETE_ATTRIBUTE");
+		PreparedStatement psp = this.getStatement("DELETE_PHONE");
+		ps.clearBatch();
+		psa.clearBatch();
+		psp.clearBatch();
+		
+		ICaller c = null;
+		for (int i=0, j=cl.size();i<j;i++) {
+			c = cl.get(i);
+			internalDelete(c);
+			ps.setString(1, c.getUUID());
+			ps.addBatch();
+			psa.setString(1, c.getUUID());
+			psa.addBatch();
+			psp.setString(1, c.getUUID());
+			psp.addBatch();				
+			if (i % this.commit_count == 0) {
+				ps.executeBatch();
+				ps.clearBatch();
+				this.m_logger.info("Executed prepared statement: "+ps.toString());
+				psa.executeBatch();
+				psa.clearBatch();
+				this.m_logger.info("Executed prepared statement: "+psa.toString());
+				psp.executeBatch();
+				psp.clearBatch();
+				this.m_logger.info("Executed prepared statement: "+psp.toString());
 			}
-			// execute the rest batch content
-			ps.executeBatch();
-			psa.executeBatch();
-			psp.executeBatch();
-			
-			ps.clearBatch();
-			psa.clearBatch();
-			psp.clearBatch();
+		}
+		// execute the rest batch content
+		ps.executeBatch();
+		psa.executeBatch();
+		psp.executeBatch();
+		
+		ps.clearBatch();
+		psa.clearBatch();
+		psp.clearBatch();
 	}
 
 	/**

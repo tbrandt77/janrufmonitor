@@ -80,6 +80,34 @@ public class MultiPhoneCaller extends Caller implements IMultiPhoneCaller {
 		
 		return cloneCaller;
 	}
+	
+	public boolean equals(Object c) {
+		if (c instanceof MultiPhoneCaller) {
+			if (((MultiPhoneCaller)c).getName().equals(this.getName()) &&
+					((MultiPhoneCaller)c).getPhonenumbers().hashCode() == this.getPhonenumbers().hashCode() && 
+					((MultiPhoneCaller)c).getAttributes().hashCode() == this.getAttributes().hashCode() && 
+					((MultiPhoneCaller)c).getUUID().equals(this.getUUID())
+				) {
+					return true;
+				}
+		}
+		return false;
+	}
+
+	public int hashCode() {
+		return this.getPhonenumbers().hashCode() + this.getName().hashCode() + this.getAttributes().hashCode() + this.getUUID().hashCode();
+	}
+
+	public String toString() {
+		StringBuffer callerToString = new StringBuffer();
+		callerToString.append("{CALLER: ");
+		callerToString.append("[UUID: " + this.getUUID() + "]");
+		callerToString.append("[Name: " + this.getName() + "]");
+		callerToString.append("[Phonenumbers: " + this.getPhonenumbers() + "]");
+		callerToString.append(this.getAttributes().toString());       
+		callerToString.append("}");
+		return callerToString.toString();
+	}
 
 
 }
