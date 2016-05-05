@@ -11,11 +11,11 @@ Bugfix:
 
 Module:
 - FRITZ!Box-Überwachung: automatischer Login beim Übertragen der eigenen Rufnummern
-- FRITZ!Box-Überwachung: Blockierende Situation beim PAsswort-Dialog behoben
-- FRITZ!Box-Überwachung: Nebenstelle Auswlahl beim Wählen vereinfacht
+- FRITZ!Box-Überwachung: Blockierende Situation beim Passwort-Dialog behoben
+- FRITZ!Box-Überwachung: Nebenstelle Auswahl beim Wählen vereinfacht
 - FRITZ!Box-Überwachung: FRITZ!Box Telefonbuch mit Lese-/Schreibzugriff versehen (nur mit TR-064)
 - FRITZ!Box-Überwachung: FRITZ!Box Telefonbuch-Cache bereinigt
-- FRITZ!Box-Überwachung: Ünterstützung für HTTP Fallback bei MacOS X Zugriff mit TR-064 über SSL
+- FRITZ!Box-Überwachung: Unterstützung für HTTP Fallback bei MacOS X Zugriff mit TR-064 über SSL
 
 ===
 
