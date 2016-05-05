@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import de.janrufmonitor.framework.ICall;
+import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.fritzbox.firmware.FirmwareManager;
 import de.janrufmonitor.fritzbox.firmware.PasswordFritzBoxFirmware;
 import de.janrufmonitor.fritzbox.firmware.SessionIDFritzBoxFirmware;
@@ -39,11 +40,22 @@ public abstract class AbstractFritzBoxCall implements IFritzBoxCall, FritzBoxCon
 	}
 	
 	protected String getCallByCall(String call) {
-		if (call.startsWith("0100")) {
-			return call.substring(0, "0100yy".length());
+		String intareaCode = PIMRuntime.getInstance().getConfigManagerFactory().getConfigManager().getProperty(IJAMConst.GLOBAL_NAMESPACE, IJAMConst.GLOBAL_INTAREA);
+		if (intareaCode!=null && intareaCode.equalsIgnoreCase("41")) {
+			if (call.startsWith("107")) {
+				return call.substring(0, "107xy".length());
+			}
+			if (call.startsWith("108")) {
+				return call.substring(0, "108xy".length());
+			}
 		}
-		if (call.startsWith("010")) {
-			return call.substring(0, "010xy".length());
+		if (intareaCode!=null && intareaCode.equalsIgnoreCase("49")) {
+			if (call.startsWith("0100")) {
+				return call.substring(0, "0100yy".length());
+			}
+			if (call.startsWith("010")) {
+				return call.substring(0, "010xy".length());
+			}
 		}
 		return null;
 	}
