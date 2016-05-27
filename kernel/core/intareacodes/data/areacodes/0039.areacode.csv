@@ -1,261 +1,261 @@
 39;;Italien;
-39;380;Italien;Blu
-39;389;Italien;Blu
-39;388;Italien;Blu
-39;390;Italien;H3G
-39;391;Italien;H3G
-39;392;Italien;H3G
-39;393;Italien;H3G
-39;330;Italien;TIM
-39;333;Italien;TIM
-39;334;Italien;TIM
-39;335;Italien;TIM
-39;336;Italien;TIM
-39;337;Italien;TIM
-39;338;Italien;TIM
-39;339;Italien;TIM
-39;360;Italien;TIM
-39;363;Italien;TIM
-39;366;Italien;TIM
-39;368;Italien;TIM
-39;340;Italien;Vodafone-Omnitel
-39;343;Italien;Vodafone-Omnitel
-39;347;Italien;Vodafone-Omnitel
-39;348;Italien;Vodafone-Omnitel
-39;349;Italien;Vodafone-Omnitel
-39;320;Italien;Wind
-39;323;Italien;Wind
-39;328;Italien;Wind
-39;329;Italien;Wind
-39;10;Italien;Genova 
-39;11;Italien;Torino 
-39;121;Italien;Pinerolo 
-39;122;Italien;Susa 
-39;123;Italien;Lanzo Torinese 
-39;124;Italien;Rivarolo Canavese 
-39;125;Italien;Ivrea 
-39;131;Italien;Alessandria 
-39;141;Italien;Asti 
-39;142;Italien;Casale Monferrato 
-39;143;Italien;Novi Ligure 
-39;144;Italien;Acqui Terme 
-39;15;Italien;Biella 
-39;161;Italien;Vercelli 
-39;163;Italien;Borgosesia 
-39;165;Italien;Aosta 
-39;166;Italien;St.Vincent 
-39;171;Italien;Cuneo 
-39;172;Italien;Savigliano 
-39;173;Italien;Alba 
-39;174;Italien;Mondovì 
-39;175;Italien;Saluzzo 
-39;182;Italien;Albenga 
-39;183;Italien;Imperia 
-39;184;Italien;San Remo 
-39;185;Italien;Rapallo 
-39;187;Italien;La Spezia 
-39;19;Italien;Savona 
-39;2;Italien;Milano 
-39;30;Italien;Brescia 
-39;31;Italien;Como 
-39;321;Italien;Novara 
-39;322;Italien;Arona 
-39;323;Italien;Baveno 
-39;324;Italien;Domodossola 
-39;331;Italien;Busto Arsizio 
-39;332;Italien;Varese 
-39;341;Italien;Lecco 
-39;342;Italien;Sondrio 
-39;343;Italien;Chiavenna 
-39;344;Italien;Menaggio 
-39;345;Italien;S.Pellegrino Terme 
-39;346;Italien;Clusone 
-39;35;Italien;Bergamo 
-39;362;Italien;Seregno 
-39;363;Italien;Treviglio 
-39;364;Italien;Breno 
-39;365;Italien;Salò 
-39;371;Italien;Lodi 
-39;372;Italien;Cremona 
-39;373;Italien;Crema 
-39;374;Italien;Soresina 
-39;375;Italien;Casalmaggiore 
-39;376;Italien;Mantova 
-39;377;Italien;Codogno 
-39;381;Italien;Vigevano 
-39;382;Italien;Pavia 
-39;383;Italien;Voghera 
-39;384;Italien;Mortara 
-39;385;Italien;Stradella 
-39;386;Italien;Ostiglia 
-39;39;Italien;Monza 
-39;40;Italien;Trieste 
-39;41;Italien;Venezia (Mestre) 
-39;421;Italien;S.Donà di Piave 
-39;422;Italien;Treviso 
-39;423;Italien;Montebelluna 
-39;424;Italien;Bassano del Grappa 
-39;425;Italien;Rovigo 
-39;426;Italien;Adria 
-39;427;Italien;Spilimbergo 
-39;428;Italien;Tarvisio 
-39;429;Italien;Este 
-39;431;Italien;Cervignano del Friuli 
-39;432;Italien;Udine 
-39;433;Italien;Tolmezzo 
-39;434;Italien;Pordenone 
-39;435;Italien;Pieve di Cadore 
-39;436;Italien;Cortina d'Ampezzo 
-39;437;Italien;Belluno 
-39;438;Italien;Conegliano 
-39;439;Italien;Feltre 
-39;442;Italien;Legnago 
-39;444;Italien;Vicenza 
-39;445;Italien;Schio 
-39;45;Italien;Verona 
-39;461;Italien;Trento 
-39;462;Italien;Cavalese 
-39;463;Italien;Cles 
-39;464;Italien;Rovereto 
-39;465;Italien;Tione di Trento 
-39;471;Italien;Bolzano 
-39;472;Italien;Bressanone 
-39;473;Italien;Merano 
-39;474;Italien;Brunico 
-39;481;Italien;Gorizia 
-39;49;Italien;Padova 
-39;50;Italien;Pisa 
-39;51;Italien;Bologna 
-39;521;Italien;Parma 
-39;522;Italien;Reggio nell'Emilia 
-39;523;Italien;Piacenza 
-39;524;Italien;Fidenza 
-39;525;Italien;Fornovo di Taro 
-39;532;Italien;Ferrara 
-39;533;Italien;Comacchio 
-39;534;Italien;Porretta Terme 
-39;535;Italien;Mirandola 
-39;536;Italien;Sassuolo 
-39;541;Italien;Rimini 
-39;542;Italien;Imola 
-39;543;Italien;Forlì 
-39;544;Italien;Ravenna 
-39;545;Italien;Lugo 
-39;546;Italien;Faenza 
-39;547;Italien;Cesena 
-39;549;Italien;S.Marino (Rep. di) 
-39;55;Italien;Firenze 
-39;564;Italien;Grosseto 
-39;565;Italien;Piombino 
-39;566;Italien;Follonica 
-39;571;Italien;Empoli 
-39;572;Italien;Montecatini Terme 
-39;573;Italien;Pistoia 
-39;574;Italien;Prato 
-39;575;Italien;Arezzo 
-39;577;Italien;Siena 
-39;578;Italien;Chianciano Terme 
-39;583;Italien;Lucca 
-39;584;Italien;Viareggio 
-39;585;Italien;Massa 
-39;586;Italien;Livorno 
-39;587;Italien;Pontedera 
-39;588;Italien;Volterra 
-39;59;Italien;Modena 
-39;6;Italien;Roma 
-39;70;Italien;Cagliari 
-39;71;Italien;Ancona 
-39;721;Italien;Pesaro 
-39;722;Italien;Urbino 
-39;731;Italien;Jesi 
-39;732;Italien;Fabriano 
-39;733;Italien;Macerata 
-39;734;Italien;Fermo 
-39;735;Italien;S.Benedetto del Tronto 
-39;736;Italien;Ascoli Piceno 
-39;737;Italien;Camerino 
-39;742;Italien;Foligno 
-39;743;Italien;Spoleto 
-39;744;Italien;Terni 
-39;746;Italien;Rieti 
-39;75;Italien;Perugia 
-39;761;Italien;Viterbo 
-39;763;Italien;Orvieto 
-39;765;Italien;Poggio Mirteto 
-39;766;Italien;Civitavecchia 
-39;771;Italien;Formia 
-39;773;Italien;Latina 
-39;774;Italien;Tivoli 
-39;775;Italien;Frosinone 
-39;776;Italien;Cassino 
-39;781;Italien;Iglesias 
-39;782;Italien;Lanusei 
-39;783;Italien;Oristano 
-39;784;Italien;Nuoro 
-39;785;Italien;Macomer 
-39;789;Italien;Olbia 
-39;79;Italien;Sassari 
-39;80;Italien;Bari 
-39;81;Italien;Napoli 
-39;823;Italien;Caserta 
-39;824;Italien;Benevento 
-39;825;Italien;Avellino 
-39;827;Italien;S.Angelo dei Lombardi 
-39;828;Italien;Battipaglia 
-39;831;Italien;Brindisi 
-39;832;Italien;Lecce 
-39;833;Italien;Gallipoli 
-39;835;Italien;Matera 
-39;836;Italien;Maglie 
-39;85;Italien;Pescara 
-39;861;Italien;Teramo 
-39;862;Italien;L'Aquila 
-39;863;Italien;Avezzano 
-39;864;Italien;Sulmona 
-39;865;Italien;Isernia 
-39;871;Italien;Chieti 
-39;872;Italien;Lanciano 
-39;873;Italien;Vasto 
-39;874;Italien;Campobasso 
-39;875;Italien;Termoli 
-39;881;Italien;Foggia 
-39;882;Italien;San Severo 
-39;883;Italien;Andria 
-39;884;Italien;Manfredonia 
-39;885;Italien;Cerignola 
-39;89;Italien;Salerno 
-39;90;Italien;Messina 
-39;91;Italien;Palermo 
-39;921;Italien;Cefalù 
-39;922;Italien;Agrigento 
-39;923;Italien;Trapani 
-39;924;Italien;Alcamo 
-39;925;Italien;Sciacca 
-39;931;Italien;Siracusa 
-39;932;Italien;Ragusa 
-39;933;Italien;Caltagirone 
-39;934;Italien;Caltanissetta 
-39;935;Italien;Enna 
-39;941;Italien;Patti 
-39;942;Italien;Taormina 
-39;95;Italien;Catania 
-39;961;Italien;Catanzaro 
-39;962;Italien;Crotone 
-39;963;Italien;Vibo Valentia 
-39;964;Italien;Locri 
-39;965;Italien;Reggio di Calabria 
-39;966;Italien;Palmi 
-39;967;Italien;Soverato 
-39;968;Italien;Lamezia Terme 
-39;971;Italien;Potenza 
-39;972;Italien;Melfi 
-39;973;Italien;Lagonegro 
-39;974;Italien;Vallo della Lucania 
-39;975;Italien;Sala Consilina 
-39;976;Italien;Muro Lucano 
-39;981;Italien;Castrovillari 
-39;982;Italien;Paola 
-39;983;Italien;Rossano 
-39;984;Italien;Cosenza 
-39;985;Italien;Scalea 
-39;99;Italien;Taranto
+39;0380;Italien;Blu
+39;0389;Italien;Blu
+39;0388;Italien;Blu
+39;0390;Italien;H3G
+39;0391;Italien;H3G
+39;0392;Italien;H3G
+39;0393;Italien;H3G
+39;0330;Italien;TIM
+39;0333;Italien;TIM
+39;0334;Italien;TIM
+39;0335;Italien;TIM
+39;0336;Italien;TIM
+39;0337;Italien;TIM
+39;0338;Italien;TIM
+39;0339;Italien;TIM
+39;0360;Italien;TIM
+39;0363;Italien;TIM
+39;0366;Italien;TIM
+39;0368;Italien;TIM
+39;0340;Italien;Vodafone-Omnitel
+39;0343;Italien;Vodafone-Omnitel
+39;0347;Italien;Vodafone-Omnitel
+39;0348;Italien;Vodafone-Omnitel
+39;0349;Italien;Vodafone-Omnitel
+39;0320;Italien;Wind
+39;0323;Italien;Wind
+39;0328;Italien;Wind
+39;0329;Italien;Wind
+39;010;Italien;Genova 
+39;011;Italien;Torino 
+39;0121;Italien;Pinerolo 
+39;0122;Italien;Susa 
+39;0123;Italien;Lanzo Torinese 
+39;0124;Italien;Rivarolo Canavese 
+39;0125;Italien;Ivrea 
+39;0131;Italien;Alessandria 
+39;0141;Italien;Asti 
+39;0142;Italien;Casale Monferrato 
+39;0143;Italien;Novi Ligure 
+39;0144;Italien;Acqui Terme 
+39;015;Italien;Biella 
+39;0161;Italien;Vercelli 
+39;0163;Italien;Borgosesia 
+39;0165;Italien;Aosta 
+39;0166;Italien;St.Vincent 
+39;0171;Italien;Cuneo 
+39;0172;Italien;Savigliano 
+39;0173;Italien;Alba 
+39;0174;Italien;Mondovì 
+39;0175;Italien;Saluzzo 
+39;0182;Italien;Albenga 
+39;0183;Italien;Imperia 
+39;0184;Italien;San Remo 
+39;0185;Italien;Rapallo 
+39;0187;Italien;La Spezia 
+39;019;Italien;Savona 
+39;02;Italien;Milano 
+39;030;Italien;Brescia 
+39;031;Italien;Como 
+39;0321;Italien;Novara 
+39;0322;Italien;Arona 
+39;0323;Italien;Baveno 
+39;0324;Italien;Domodossola 
+39;0331;Italien;Busto Arsizio 
+39;0332;Italien;Varese 
+39;0341;Italien;Lecco 
+39;0342;Italien;Sondrio 
+39;0343;Italien;Chiavenna 
+39;0344;Italien;Menaggio 
+39;0345;Italien;S.Pellegrino Terme 
+39;0346;Italien;Clusone 
+39;035;Italien;Bergamo 
+39;0362;Italien;Seregno 
+39;0363;Italien;Treviglio 
+39;0364;Italien;Breno 
+39;0365;Italien;Salò 
+39;0371;Italien;Lodi 
+39;0372;Italien;Cremona 
+39;0373;Italien;Crema 
+39;0374;Italien;Soresina 
+39;0375;Italien;Casalmaggiore 
+39;0376;Italien;Mantova 
+39;0377;Italien;Codogno 
+39;0381;Italien;Vigevano 
+39;0382;Italien;Pavia 
+39;0383;Italien;Voghera 
+39;0384;Italien;Mortara 
+39;0385;Italien;Stradella 
+39;0386;Italien;Ostiglia 
+39;039;Italien;Monza 
+39;040;Italien;Trieste 
+39;041;Italien;Venezia (Mestre) 
+39;0421;Italien;S.Donà di Piave 
+39;0422;Italien;Treviso 
+39;0423;Italien;Montebelluna 
+39;0424;Italien;Bassano del Grappa 
+39;0425;Italien;Rovigo 
+39;0426;Italien;Adria 
+39;0427;Italien;Spilimbergo 
+39;0428;Italien;Tarvisio 
+39;0429;Italien;Este 
+39;0431;Italien;Cervignano del Friuli 
+39;0432;Italien;Udine 
+39;0433;Italien;Tolmezzo 
+39;0434;Italien;Pordenone 
+39;0435;Italien;Pieve di Cadore 
+39;0436;Italien;Cortina d'Ampezzo 
+39;0437;Italien;Belluno 
+39;0438;Italien;Conegliano 
+39;0439;Italien;Feltre 
+39;0442;Italien;Legnago 
+39;0444;Italien;Vicenza 
+39;0445;Italien;Schio 
+39;045;Italien;Verona 
+39;0461;Italien;Trento 
+39;0462;Italien;Cavalese 
+39;0463;Italien;Cles 
+39;0464;Italien;Rovereto 
+39;0465;Italien;Tione di Trento 
+39;0471;Italien;Bolzano 
+39;0472;Italien;Bressanone 
+39;0473;Italien;Merano 
+39;0474;Italien;Brunico 
+39;0481;Italien;Gorizia 
+39;049;Italien;Padova 
+39;050;Italien;Pisa 
+39;051;Italien;Bologna 
+39;0521;Italien;Parma 
+39;0522;Italien;Reggio nell'Emilia 
+39;0523;Italien;Piacenza 
+39;0524;Italien;Fidenza 
+39;0525;Italien;Fornovo di Taro 
+39;0532;Italien;Ferrara 
+39;0533;Italien;Comacchio 
+39;0534;Italien;Porretta Terme 
+39;0535;Italien;Mirandola 
+39;0536;Italien;Sassuolo 
+39;0541;Italien;Rimini 
+39;0542;Italien;Imola 
+39;0543;Italien;Forlì 
+39;0544;Italien;Ravenna 
+39;0545;Italien;Lugo 
+39;0546;Italien;Faenza 
+39;0547;Italien;Cesena 
+39;0549;Italien;S.Marino (Rep. di) 
+39;055;Italien;Firenze 
+39;0564;Italien;Grosseto 
+39;0565;Italien;Piombino 
+39;0566;Italien;Follonica 
+39;0571;Italien;Empoli 
+39;0572;Italien;Montecatini Terme 
+39;0573;Italien;Pistoia 
+39;0574;Italien;Prato 
+39;0575;Italien;Arezzo 
+39;0577;Italien;Siena 
+39;0578;Italien;Chianciano Terme 
+39;0583;Italien;Lucca 
+39;0584;Italien;Viareggio 
+39;0585;Italien;Massa 
+39;0586;Italien;Livorno 
+39;0587;Italien;Pontedera 
+39;0588;Italien;Volterra 
+39;059;Italien;Modena 
+39;06;Italien;Roma 
+39;070;Italien;Cagliari 
+39;071;Italien;Ancona 
+39;0721;Italien;Pesaro 
+39;0722;Italien;Urbino 
+39;0731;Italien;Jesi 
+39;0732;Italien;Fabriano 
+39;0733;Italien;Macerata 
+39;0734;Italien;Fermo 
+39;0735;Italien;S.Benedetto del Tronto 
+39;0736;Italien;Ascoli Piceno 
+39;0737;Italien;Camerino 
+39;0742;Italien;Foligno 
+39;0743;Italien;Spoleto 
+39;0744;Italien;Terni 
+39;0746;Italien;Rieti 
+39;075;Italien;Perugia 
+39;0761;Italien;Viterbo 
+39;0763;Italien;Orvieto 
+39;0765;Italien;Poggio Mirteto 
+39;0766;Italien;Civitavecchia 
+39;0771;Italien;Formia 
+39;0773;Italien;Latina 
+39;0774;Italien;Tivoli 
+39;0775;Italien;Frosinone 
+39;0776;Italien;Cassino 
+39;0781;Italien;Iglesias 
+39;0782;Italien;Lanusei 
+39;0783;Italien;Oristano 
+39;0784;Italien;Nuoro 
+39;0785;Italien;Macomer 
+39;0789;Italien;Olbia 
+39;079;Italien;Sassari 
+39;080;Italien;Bari 
+39;081;Italien;Napoli 
+39;0823;Italien;Caserta 
+39;0824;Italien;Benevento 
+39;0825;Italien;Avellino 
+39;0827;Italien;S.Angelo dei Lombardi 
+39;0828;Italien;Battipaglia 
+39;0831;Italien;Brindisi 
+39;0832;Italien;Lecce 
+39;0833;Italien;Gallipoli 
+39;0835;Italien;Matera 
+39;0836;Italien;Maglie 
+39;085;Italien;Pescara 
+39;0861;Italien;Teramo 
+39;0862;Italien;L'Aquila 
+39;0863;Italien;Avezzano 
+39;0864;Italien;Sulmona 
+39;0865;Italien;Isernia 
+39;0871;Italien;Chieti 
+39;0872;Italien;Lanciano 
+39;0873;Italien;Vasto 
+39;0874;Italien;Campobasso 
+39;0875;Italien;Termoli 
+39;0881;Italien;Foggia 
+39;0882;Italien;San Severo 
+39;0883;Italien;Andria 
+39;0884;Italien;Manfredonia 
+39;0885;Italien;Cerignola 
+39;089;Italien;Salerno 
+39;090;Italien;Messina 
+39;091;Italien;Palermo 
+39;0921;Italien;Cefalù 
+39;0922;Italien;Agrigento 
+39;0923;Italien;Trapani 
+39;0924;Italien;Alcamo 
+39;0925;Italien;Sciacca 
+39;0931;Italien;Siracusa 
+39;0932;Italien;Ragusa 
+39;0933;Italien;Caltagirone 
+39;0934;Italien;Caltanissetta 
+39;0935;Italien;Enna 
+39;0941;Italien;Patti 
+39;0942;Italien;Taormina 
+39;095;Italien;Catania 
+39;0961;Italien;Catanzaro 
+39;0962;Italien;Crotone 
+39;0963;Italien;Vibo Valentia 
+39;0964;Italien;Locri 
+39;0965;Italien;Reggio di Calabria 
+39;0966;Italien;Palmi 
+39;0967;Italien;Soverato 
+39;0968;Italien;Lamezia Terme 
+39;0971;Italien;Potenza 
+39;0972;Italien;Melfi 
+39;0973;Italien;Lagonegro 
+39;0974;Italien;Vallo della Lucania 
+39;0975;Italien;Sala Consilina 
+39;0976;Italien;Muro Lucano 
+39;0981;Italien;Castrovillari 
+39;0982;Italien;Paola 
+39;0983;Italien;Rossano 
+39;0984;Italien;Cosenza 
+39;0985;Italien;Scalea 
+39;099;Italien;Taranto

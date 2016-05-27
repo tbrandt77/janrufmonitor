@@ -108,6 +108,7 @@ public class Caller implements ICaller, Serializable {
 	public boolean equals(Object c) {
 		if (c instanceof Caller) {
 			if (((Caller)c).getName().equals(this.getName()) &&
+				((Caller)c).getUUID().hashCode() == this.m_uuid.hashCode() &&
 				((Caller)c).getPhoneNumber().equals(this.getPhoneNumber())
 				) {
 					return true;
@@ -117,7 +118,7 @@ public class Caller implements ICaller, Serializable {
 	}
 
 	public int hashCode() {
-		return this.getPhoneNumber().hashCode() + this.getName().hashCode();
+		return this.getPhoneNumber().hashCode() + this.getName().hashCode() + this.m_uuid.hashCode();
 	}
 
 	public String toString() {
