@@ -479,7 +479,7 @@
 	</target>
     
     <target name="bundle_macosx64" depends="init_bundle,macosx64_distribution" description="create macosx64 bundles" if="is.macosx">
-      <taskdef name="jarbundler" classname="net.sourceforge.jarbundler.JarBundler" classpath="./ant/lib/jarbundler-2.1.0.jar"/>
+      <taskdef name="jarbundler" classname="net.sourceforge.jarbundler.JarBundler" classpath="./ant/lib/jarbundler-2.3.1.jar"/>
 
       <echo message="Publishing macosx64 fritzbox version..." />
       <copy todir="${jam.dist.dir}/jam50-macosx64-fritzbox">
@@ -532,6 +532,7 @@
               build="${jam.version}"
               bundleid="de.janrufmonitor.core" 
               startOnMainThread="true"
+              isAgent="yes"
               developmentregion="German"
               vmoptions="-Djam.ui.toplevel=false -Djam.ui.trayitem=true -Xms16m -Xmx256m"> 
                 
@@ -613,6 +614,7 @@
               build="${jam.version}"
               bundleid="de.janrufmonitor.core" 
               startOnMainThread="true"
+              isAgent="yes"
               developmentregion="German"
               vmoptions="-Djam.ui.toplevel=false -Djam.ui.trayitem=true -Xms16m -Xmx256m"> 
                 
@@ -694,6 +696,7 @@
               build="${jam.version}"
               bundleid="de.janrufmonitor.core" 
               startOnMainThread="true"
+              isAgent="yes"
               developmentregion="German"
               vmoptions="-Djam.ui.toplevel=false -Djam.ui.trayitem=true -Xms16m -Xmx256m"> 
                 
