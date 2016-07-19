@@ -101,7 +101,7 @@ public class FritzBoxCallCsv extends AbstractFritzBoxCall {
 					int state = Integer.parseInt(call[0]);
 					
 					if (logger!=null && logger.isLoggable(Level.INFO))
-						logger.info("State set to: "+call.length);
+						logger.info("State set to: "+state);
 					
 					// added 2016/01/26: ignore incoming active (5) and outgoung active calls (6)
 					if (state==5 || state == 6) {

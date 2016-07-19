@@ -480,6 +480,7 @@ public class TR064FritzBoxFirmware implements
 			IOException {
 		if (!this.isInitialized()) throw new GetCallerImageException("Could not get caller image from FritzBox: FritzBox firmware not initialized.");
 		if (path==null) return null;
+		if (!path.startsWith("/")) path = "/" + path;
 
 		try {
 			String u = (this.m_useHttp ? "http://" : "https://")+this.m_server+":"+(this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server))+path+"&sid="+FritzBoxTR064Manager.getInstance().getSID(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server)), (this.m_useHttp ? "http" : "https"));
