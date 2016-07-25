@@ -1,5 +1,20 @@
 ===
 
+jAnrufmonitor 5.0.67 (01.08.2016)
+---------------------------------
+Neu:
+- Gleichzeitiges Löschen von Kontakten mit gleicher Kontakt-ID
+
+Bugfix:
+- Programmicon von Mac OSX Dock entfernt
+
+Module:
+- FRITZ!Box-Überwachung: Erkennung von schweizer Call-by-Call Providern
+- Client Erweiterung: Automatisches Wiederverbinden, wenn Server nicht verfügar war
+- Client Erweiterung: TrayIcon Benachrichtigung
+
+===
+
 jAnrufmonitor 5.0.66 (01.05.2016)
 ---------------------------------
 Neu:
