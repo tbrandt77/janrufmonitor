@@ -6,11 +6,11 @@ Neu:
 - Gleichzeitiges Löschen von Kontakten mit gleicher Kontakt-ID
 
 Bugfix:
-- Programmicon von Mac OSX Dock entfernt
+- Programmicon von MacOS X Dock entfernt
 
 Module:
 - FRITZ!Box-Überwachung: Erkennung von schweizer Call-by-Call Providern
-- Client Erweiterung: Automatisches Wiederverbinden, wenn Server nicht verfügar war
+- Client Erweiterung: Automatisches Wiederverbinden, wenn Server nicht verfügbar war
 - Client Erweiterung: TrayIcon Benachrichtigung
 
 ===
@@ -18,7 +18,7 @@ Module:
 jAnrufmonitor 5.0.66 (01.05.2016)
 ---------------------------------
 Neu:
-- Konfiguartion: tägliches Backup der Einstellungen
+- Konfiguration: tägliches Backup der Einstellungen
 - Linux Startkommando erweitert
 
 Bugfix:
