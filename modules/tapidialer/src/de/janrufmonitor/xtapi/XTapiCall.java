@@ -23,13 +23,19 @@ public class XTapiCall {
 	private String m_number;
 	private String m_msn;
 	private ICall m_call;
+	private String m_name;
 	
-	public XTapiCall(int device, int instance, String number, String callednumber, Properties config) {
+	public XTapiCall(int device, int instance, String number, String callednumber, String name, Properties config) {
 		this.m_config = config;
 		this.m_device = device;
 		this.m_instance = instance;
 		this.m_number = number;
 		this.m_msn = callednumber;
+		this.m_name = name;
+	}
+	
+	public XTapiCall(int device, int instance, String number, String callednumber, Properties config) {
+		this(device, instance, number, callednumber, null, config);
 	}
 	
 	public XTapiCall(int device, int instance, String number, Properties config) {
@@ -64,6 +70,10 @@ public class XTapiCall {
 			}
 			
 			msn.setAdditional(r.getMsnManager().getMsnLabel(msn));
+			
+			if (this.m_name!=null && this.m_name.length() > 0) {
+				c.setName(r.getCallerFactory().createName("", this.m_name));
+			}
 			
 			ICip cip = r.getCallFactory().createCip(getDefaultCip(), "");
 			cip.setAdditional(r.getCipManager().getCipLabel(cip, ""));
