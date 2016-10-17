@@ -570,6 +570,7 @@ public abstract class AbstractMultiPhoneCallerDatabaseHandler extends
 		}
 		
 		PreparedStatement ps2 = this.getStatement("SELECT_PHONE_REF_COUNT");
+		if (ps2 == null) return null;
 		boolean multiprocess = false;
 		
 		for (int i=0;i<p.length()-maxLength;i++) {	
