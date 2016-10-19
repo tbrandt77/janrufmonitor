@@ -143,7 +143,7 @@ public class Reject extends AbstractReceiverConfigurableService implements IEven
 			return;
 		}
 		
-		if (this.isRejectNumber(incommingCall.getCaller().getPhoneNumber().getIntAreaCode() + incommingCall.getCaller().getPhoneNumber().getAreaCode() + incommingCall.getCaller().getPhoneNumber().getCallNumber())) {
+		if (this.isRejectNumber(Formatter.getInstance(getRuntime()).parse(IJAMConst.GLOBAL_VARIABLE_CALLERNUMBER, incommingCall.getCaller()))) {
 			incommingCall.setAttribute(this.getRuntime().getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CALLSTATUS, IJAMConst.ATTRIBUTE_VALUE_REJECTED));
 			eventBroker.send(this, eventBroker.createEvent(IEventConst.EVENT_TYPE_CALLREJECTED, incommingCall));
 			this.m_logger.info("Call automatically rejected by a blocked configured number.");
@@ -176,9 +176,10 @@ public class Reject extends AbstractReceiverConfigurableService implements IEven
 			StringTokenizer st = new StringTokenizer(this.m_configuration.getProperty(CONFIG_REJECT_AREACODES, ""), SEPARATOR);
 			this.m_rejectNumbers = new ArrayList(st.countTokens());
 			while (st.hasMoreTokens()) {
-				this.m_rejectNumbers.add(PhonenumberAnalyzer.getInstance(getRuntime()).normalize(st.nextToken().trim()));	
+				this.m_rejectNumbers.add(st.nextToken().trim());	
 			}
 		}
+		number = PhonenumberAnalyzer.getInstance(getRuntime()).normalize(number);
 		if (this.m_rejectNumbers.contains(number)) return true;
 		
 		if (number.length()<=1) return false;
