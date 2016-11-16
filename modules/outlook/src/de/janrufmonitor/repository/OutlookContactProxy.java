@@ -94,11 +94,11 @@ public class OutlookContactProxy implements OutlookContactConst {
 							outlook = new Dispatch("Outlook.Application");
 							Variant mapiVariant = new Variant("MAPI");
 							mapiNS = Dispatch.call(outlook, "GetNameSpace", mapiVariant).toDispatch();
-							mapiVariant.release();
+							mapiVariant.safeRelease();
 							
 							Variant contactsVariant = new Variant(10);
 							contactsFolder = Dispatch.call(mapiNS, "GetDefaultFolder", contactsVariant).toDispatch();
-							contactsVariant.release();
+							contactsVariant.safeRelease();
 							
 							// getting configured subfolders
 							List subfolders = new ArrayList();
@@ -178,22 +178,22 @@ public class OutlookContactProxy implements OutlookContactConst {
 						} finally {
 							// added 2006/02/05: clean outlook references
 							if (contact!=null)
-								contact.release();
+								contact.safeRelease();
 							
 							if (items!=null)
-								items.release();
+								items.safeRelease();
 							
 							if (contactsFolder!=null)
-								contactsFolder.release();
+								contactsFolder.safeRelease();
 							
 							if (contactsSubFolder!=null)
-								contactsSubFolder.release();
+								contactsSubFolder.safeRelease();
 							
 							if (mapiNS!=null)
-								mapiNS.release();
+								mapiNS.safeRelease();
 							
 							if (outlook!=null)
-								outlook.release();
+								outlook.safeRelease();
 							ComThread.Release();
 						}						
 					}
@@ -248,11 +248,11 @@ public class OutlookContactProxy implements OutlookContactConst {
 			outlook = new Dispatch("Outlook.Application");
 			Variant mapiVariant = new Variant("MAPI");
 			mapiNS = Dispatch.call(outlook, "GetNameSpace", mapiVariant).toDispatch();
-			mapiVariant.release();
+			mapiVariant.safeRelease();
 			
 			Variant contactsVariant = new Variant(10);
 			contactsFolder = Dispatch.call(mapiNS, "GetDefaultFolder", contactsVariant).toDispatch();
-			contactsVariant.release();
+			contactsVariant.safeRelease();
 			
 			// getting configured subfolders
 			List subfolders = new ArrayList();
@@ -287,7 +287,7 @@ public class OutlookContactProxy implements OutlookContactConst {
 								callers.add(cl);
 							}
 							if (aContact!=null)
-								aContact.release();
+								aContact.safeRelease();
 
 							aContact = Dispatch.call(items, "FindNext").toDispatch();
 						} while(aContact!=null && aContact.m_pDispatch>0);
@@ -307,19 +307,19 @@ public class OutlookContactProxy implements OutlookContactConst {
 		} finally {
 			// added 2006/02/05: clean outlook references
 			if (items!=null)
-				items.release();
+				items.safeRelease();
 			
 			if (contactsFolder!=null)
-				contactsFolder.release();
+				contactsFolder.safeRelease();
 			
 			if (contactsSubFolder!=null)
-				contactsSubFolder.release();
+				contactsSubFolder.safeRelease();
 			
 			if (mapiNS!=null)
-				mapiNS.release();
+				mapiNS.safeRelease();
 			
 			if (outlook!=null)
-				outlook.release();
+				outlook.safeRelease();
 			ComThread.Release();
 		}
 
@@ -344,11 +344,11 @@ public class OutlookContactProxy implements OutlookContactConst {
 			outlook = new Dispatch("Outlook.Application");
 			Variant mapiVariant = new Variant("MAPI");
 			mapiNS = Dispatch.call(outlook, "GetNameSpace", mapiVariant).toDispatch();
-			mapiVariant.release();
+			mapiVariant.safeRelease();
 			
 			Variant contactsVariant = new Variant(10);
 			contactsFolder = Dispatch.call(mapiNS, "GetDefaultFolder", contactsVariant).toDispatch();
-			contactsVariant.release();
+			contactsVariant.safeRelease();
 			
 			// getting configured subfolders
 			List subfolders = new ArrayList();
@@ -389,7 +389,7 @@ public class OutlookContactProxy implements OutlookContactConst {
 						}
 
 						if (contact!=null)
-							contact.release();
+							contact.safeRelease();
 						
 					} catch (ComFailException ex) {
 						this.m_logger.warning("1 item (e.g. distribution list) was ignored on loading.");
@@ -400,7 +400,7 @@ public class OutlookContactProxy implements OutlookContactConst {
 							this.m_logger.warning(ex.getMessage() + ", " + ex.getSource());
 					}
 					if (item!=null)
-						item.release();
+						item.safeRelease();
 					
 					item = Dispatch.call(items, "GetNext");
 				}
@@ -419,19 +419,19 @@ public class OutlookContactProxy implements OutlookContactConst {
 		} finally {
 			// added 2006/02/05: clean outlook references
 			if (items!=null)
-				items.release();
+				items.safeRelease();
 			
 			if (contactsFolder!=null)
-				contactsFolder.release();
+				contactsFolder.safeRelease();
 			
 			if (contactsSubFolder!=null)
-				contactsSubFolder.release();
+				contactsSubFolder.safeRelease();
 			
 			if (mapiNS!=null)
-				mapiNS.release();
+				mapiNS.safeRelease();
 			
 			if (outlook!=null)
-				outlook.release();
+				outlook.safeRelease();
 			ComThread.Release();
 		}
 
@@ -451,11 +451,11 @@ public class OutlookContactProxy implements OutlookContactConst {
 			outlook = new Dispatch("Outlook.Application");
 			Variant mapiVariant = new Variant("MAPI");
 			mapiNS = Dispatch.call(outlook, "GetNameSpace", mapiVariant).toDispatch();
-			mapiVariant.release();
+			mapiVariant.safeRelease();
 			
 			Variant contactsVariant = new Variant(10);
 			contactsFolder = Dispatch.call(mapiNS, "GetDefaultFolder", contactsVariant).toDispatch();
-			contactsVariant.release();
+			contactsVariant.safeRelease();
 			
 			// getting configured subfolders
 			List subfolders = new ArrayList();
@@ -488,19 +488,19 @@ public class OutlookContactProxy implements OutlookContactConst {
 		} finally {
 			// added 2006/02/05: clean outlook references
 			if (items!=null)
-				items.release();
+				items.safeRelease();
 			
 			if (contactsFolder!=null)
-				contactsFolder.release();
+				contactsFolder.safeRelease();
 			
 			if (contactsSubFolder!=null)
-				contactsSubFolder.release();
+				contactsSubFolder.safeRelease();
 			
 			if (mapiNS!=null)
-				mapiNS.release();
+				mapiNS.safeRelease();
 			
 			if (outlook!=null)
-				outlook.release();
+				outlook.safeRelease();
 			ComThread.Release();
 		}
 		return false;
@@ -524,11 +524,11 @@ public class OutlookContactProxy implements OutlookContactConst {
 			outlook = new Dispatch("Outlook.Application");
 			Variant mapiVariant = new Variant("MAPI");
 			mapiNS = Dispatch.call(outlook, "GetNameSpace", mapiVariant).toDispatch();
-			mapiVariant.release();
+			mapiVariant.safeRelease();
 			
 			Variant contactsVariant = new Variant(10);
 			contactsFolder = Dispatch.call(mapiNS, "GetDefaultFolder", contactsVariant).toDispatch();
-			contactsVariant.release();
+			contactsVariant.safeRelease();
 			
 			// getting configured subfolders
 			List subfolders = new ArrayList();
@@ -564,7 +564,7 @@ public class OutlookContactProxy implements OutlookContactConst {
 						}
 
 						if (aContact!=null)
-							aContact.release();
+							aContact.safeRelease();
 						
 						aContact = Dispatch.call(items, "FindNext").toDispatch();
 					} while(aContact!=null && aContact.m_pDispatch>0);
@@ -585,19 +585,19 @@ public class OutlookContactProxy implements OutlookContactConst {
 		} finally {
 			// added 2006/02/05: clean outlook references
 			if (items!=null)
-				items.release();
+				items.safeRelease();
 			
 			if (contactsFolder!=null)
-				contactsFolder.release();
+				contactsFolder.safeRelease();
 			
 			if (contactsSubFolder!=null)
-				contactsSubFolder.release();
+				contactsSubFolder.safeRelease();
 			
 			if (mapiNS!=null)
-				mapiNS.release();
+				mapiNS.safeRelease();
 			
 			if (outlook!=null)
-				outlook.release();
+				outlook.safeRelease();
 			ComThread.Release();
 		}
 
@@ -617,11 +617,11 @@ public class OutlookContactProxy implements OutlookContactConst {
 			outlook = new Dispatch("Outlook.Application");
 			Variant mapiVariant = new Variant("MAPI");
 			mapiNS = Dispatch.call(outlook, "GetNameSpace", mapiVariant).toDispatch();
-			mapiVariant.release();
+			mapiVariant.safeRelease();
 			
 			Variant contactsVariant = new Variant(10);
 			contactsFolder = Dispatch.call(mapiNS, "GetDefaultFolder", contactsVariant).toDispatch();
-			contactsVariant.release();
+			contactsVariant.safeRelease();
 			
 			// getting configured subfolders
 			List subfolders = new ArrayList();
@@ -658,19 +658,19 @@ public class OutlookContactProxy implements OutlookContactConst {
 		} finally {
 			// added 2006/02/05: clean outlook references
 			if (items!=null)
-				items.release();
+				items.safeRelease();
 			
 			if (contactsFolder!=null)
-				contactsFolder.release();
+				contactsFolder.safeRelease();
 			
 			if (contactsSubFolder!=null)
-				contactsSubFolder.release();
+				contactsSubFolder.safeRelease();
 			
 			if (mapiNS!=null)
-				mapiNS.release();
+				mapiNS.safeRelease();
 			
 			if (outlook!=null)
-				outlook.release();
+				outlook.safeRelease();
 			ComThread.Release();
 		}
 	}
@@ -686,11 +686,11 @@ public class OutlookContactProxy implements OutlookContactConst {
 			outlook = new Dispatch("Outlook.Application");
 			Variant mapiVariant = new Variant("MAPI");
 			mapiNS = Dispatch.call(outlook, "GetNameSpace", mapiVariant).toDispatch();
-			mapiVariant.release();
+			mapiVariant.safeRelease();
 			
 			Variant contactsVariant = new Variant(10);
 			contactsFolder = Dispatch.call(mapiNS, "GetDefaultFolder", contactsVariant).toDispatch();
-			contactsVariant.release();
+			contactsVariant.safeRelease();
 			
 			String folder = this.getAttribute(c.getAttribute(IJAMConst.ATTRIBUTE_NAME_CATEGORY));
 
@@ -703,7 +703,7 @@ public class OutlookContactProxy implements OutlookContactConst {
 			this.setContactData(newContact, c, business);
 			
 			if (newContact!=null)
-				newContact.release();
+				newContact.safeRelease();
 			
 			if (this.m_logger.isLoggable(Level.INFO)) {
 				this.m_logger.info("Added new outlook contact in folder "+(folder.length()>0 ? folder : "<root>")+": "+c);
@@ -715,19 +715,19 @@ public class OutlookContactProxy implements OutlookContactConst {
 		} finally {
 			// added 2006/02/05: clean outlook references
 			if (items!=null)
-				items.release();
+				items.safeRelease();
 			
 			if (contactsFolder!=null)
-				contactsFolder.release();
+				contactsFolder.safeRelease();
 			
 			if (contactsSubFolder!=null)
-				contactsSubFolder.release();
+				contactsSubFolder.safeRelease();
 			
 			if (mapiNS!=null)
-				mapiNS.release();
+				mapiNS.safeRelease();
 			
 			if (outlook!=null)
-				outlook.release();
+				outlook.safeRelease();
 			ComThread.Release();
 		}
 	}
@@ -744,11 +744,11 @@ public class OutlookContactProxy implements OutlookContactConst {
 			outlook = new Dispatch("Outlook.Application");
 			Variant mapiVariant = new Variant("MAPI");
 			mapiNS = Dispatch.call(outlook, "GetNameSpace", mapiVariant).toDispatch();
-			mapiVariant.release();
+			mapiVariant.safeRelease();
 			
 			Variant contactsVariant = new Variant(10);
 			contactsFolder = Dispatch.call(mapiNS, "GetDefaultFolder", contactsVariant).toDispatch();
-			contactsVariant.release();
+			contactsVariant.safeRelease();
 			
 			String folder = this.getAttribute(c.getAttribute(IJAMConst.ATTRIBUTE_NAME_CATEGORY));
 
@@ -825,7 +825,7 @@ public class OutlookContactProxy implements OutlookContactConst {
 				}
 			}
 			if (oldContact!=null)
-				oldContact.release();
+				oldContact.safeRelease();
 		} catch (ComFailException ex) {
 			throw new OutlookContactProxyException("Error in Application Outlook.", ex);
 		} catch (Exception ex) {
@@ -841,19 +841,19 @@ public class OutlookContactProxy implements OutlookContactConst {
 			
 			// added 2006/02/05: clean outlook references
 			if (items!=null)
-				items.release();
+				items.safeRelease();
 			
 			if (contactsFolder!=null)
-				contactsFolder.release();
+				contactsFolder.safeRelease();
 			
 			if (contactsSubFolder!=null)
-				contactsSubFolder.release();
+				contactsSubFolder.safeRelease();
 			
 			if (mapiNS!=null)
-				mapiNS.release();
+				mapiNS.safeRelease();
 			
 			if (outlook!=null)
-				outlook.release();
+				outlook.safeRelease();
 			ComThread.Release();
 		}
 		return processed;
@@ -871,11 +871,11 @@ public class OutlookContactProxy implements OutlookContactConst {
 			outlook = new Dispatch("Outlook.Application");
 			Variant mapiVariant = new Variant("MAPI");
 			mapiNS = Dispatch.call(outlook, "GetNameSpace", mapiVariant).toDispatch();
-			mapiVariant.release();
+			mapiVariant.safeRelease();
 			
 			Variant contactsVariant = new Variant(10);
 			contactsFolder = Dispatch.call(mapiNS, "GetDefaultFolder", contactsVariant).toDispatch();
-			contactsVariant.release();
+			contactsVariant.safeRelease();
 			
 			String folder = null;
 			List subfolders = new ArrayList();
@@ -901,7 +901,7 @@ public class OutlookContactProxy implements OutlookContactConst {
 					}
 				}
 				if (aContact!=null)
-					aContact.release();
+					aContact.safeRelease();
 			}
 		} catch (ComFailException ex) {
 			throw new OutlookContactProxyException("Error in Application Outlook.", ex);
@@ -910,19 +910,19 @@ public class OutlookContactProxy implements OutlookContactConst {
 		} finally {
 			// added 2006/02/05: clean outlook references
 			if (items!=null)
-				items.release();
+				items.safeRelease();
 			
 			if (contactsFolder!=null)
-				contactsFolder.release();
+				contactsFolder.safeRelease();
 			
 			if (contactsSubFolder!=null)
-				contactsSubFolder.release();
+				contactsSubFolder.safeRelease();
 			
 			if (mapiNS!=null)
-				mapiNS.release();
+				mapiNS.safeRelease();
 			
 			if (outlook!=null)
-				outlook.release();
+				outlook.safeRelease();
 			ComThread.Release();
 		}
 	}
@@ -939,11 +939,11 @@ public class OutlookContactProxy implements OutlookContactConst {
 			outlook = new Dispatch("Outlook.Application");
 			Variant mapiVariant = new Variant("MAPI");
 			mapiNS = Dispatch.call(outlook, "GetNameSpace", mapiVariant).toDispatch();
-			mapiVariant.release();
+			mapiVariant.safeRelease();
 			
 			Variant contactsVariant = new Variant(10);
 			contactsFolder = Dispatch.call(mapiNS, "GetDefaultFolder", contactsVariant).toDispatch();
-			contactsVariant.release();
+			contactsVariant.safeRelease();
 			
 			// getting configured subfolders
 			List subfolders = new ArrayList();
@@ -975,19 +975,19 @@ public class OutlookContactProxy implements OutlookContactConst {
 		} finally {
 			// added 2006/02/05: clean outlook references
 			if (items!=null)
-				items.release();
+				items.safeRelease();
 			
 			if (contactsFolder!=null)
-				contactsFolder.release();
+				contactsFolder.safeRelease();
 			
 			if (contactsSubFolder!=null)
-				contactsSubFolder.release();
+				contactsSubFolder.safeRelease();
 			
 			if (mapiNS!=null)
-				mapiNS.release();
+				mapiNS.safeRelease();
 			
 			if (outlook!=null)
-				outlook.release();
+				outlook.safeRelease();
 			ComThread.Release();
 		}
 		return count;
@@ -1005,7 +1005,7 @@ public class OutlookContactProxy implements OutlookContactConst {
 			outlook = new Dispatch("Outlook.Application");
 			Variant mapiVariant = new Variant("MAPI");
 			mapiNS = Dispatch.call(outlook, "GetNameSpace", mapiVariant).toDispatch();
-			mapiVariant.release();
+			mapiVariant.safeRelease();
 			
 			Variant contactsVariant = new Variant(10);
 			contactsFolder = Dispatch.call(mapiNS, "GetDefaultFolder", contactsVariant).toDispatch();
@@ -1031,19 +1031,19 @@ public class OutlookContactProxy implements OutlookContactConst {
 		} finally {
 			// added 2006/02/05: clean outlook references
 			if (items!=null)
-				items.release();
+				items.safeRelease();
 			
 			if (contactsFolder!=null)
-				contactsFolder.release();
+				contactsFolder.safeRelease();
 			
 			if (contactsSubFolder!=null)
-				contactsSubFolder.release();
+				contactsSubFolder.safeRelease();
 			
 			if (mapiNS!=null)
-				mapiNS.release();
+				mapiNS.safeRelease();
 			
 			if (outlook!=null)
-				outlook.release();
+				outlook.safeRelease();
 			ComThread.Release();
 		}
 
@@ -1071,7 +1071,7 @@ public class OutlookContactProxy implements OutlookContactConst {
 			outlook = new Dispatch("Outlook.Application");
 			Variant mapiVariant = new Variant("MAPI");
 			mapiNS = Dispatch.call(outlook, "GetNameSpace", mapiVariant).toDispatch();
-			mapiVariant.release();
+			mapiVariant.safeRelease();
 			
 			Variant contactsVariant = new Variant(10);
 			contactsFolder = Dispatch.call(mapiNS, "GetDefaultFolder", contactsVariant).toDispatch();
@@ -1087,11 +1087,11 @@ public class OutlookContactProxy implements OutlookContactConst {
 				subfolders.add(Dispatch.get(f, "Name").toString());					
 				itemf = Dispatch.call(items, "GetNext");
 			}
-			if (f!=null) f.release();
-			if (itemf!=null) itemf.release();
+			if (f!=null) f.safeRelease();
+			if (itemf!=null) itemf.safeRelease();
 			if (this.m_logger.isLoggable(Level.INFO)) 
 				this.m_logger.info("List of including outlook contact subfolders: "+subfolders);
-			contactsVariant.release();
+			contactsVariant.safeRelease();
 		} catch (ComFailException ex) {
 			this.m_logger.warning("1 item (e.g. distribution list) was ignored on loading.");
 			if (ex.toString().indexOf("Can't get object clsid from progid")>-1) {
@@ -1105,19 +1105,19 @@ public class OutlookContactProxy implements OutlookContactConst {
 		} finally {
 			// added 2006/02/05: clean outlook references
 			if (items!=null)
-				items.release();
+				items.safeRelease();
 			
 			if (contactsFolder!=null)
-				contactsFolder.release();
+				contactsFolder.safeRelease();
 			
 			if (contactsSubFolder!=null)
-				contactsSubFolder.release();
+				contactsSubFolder.safeRelease();
 			
 			if (mapiNS!=null)
-				mapiNS.release();
+				mapiNS.safeRelease();
 			
 			if (outlook!=null)
-				outlook.release();
+				outlook.safeRelease();
 			ComThread.Release();
 		}
 		
@@ -1431,7 +1431,7 @@ public class OutlookContactProxy implements OutlookContactConst {
 		} finally {
 			// added 2006/02/05: clean outlook references
 			if (contact!=null)
-				contact.release();
+				contact.safeRelease();
 		}
 
 		return callers;

@@ -393,7 +393,7 @@ public class OutlookTransformer {
 		} finally {
 			// added 2006/02/05: clean outlook references
 			if (contact!=null)
-				contact.release();
+				contact.safeRelease();
 		}
 
 		return callers;
@@ -411,7 +411,7 @@ public class OutlookTransformer {
 			outlook = new Dispatch("Outlook.Application");
 			Variant mapiVariant = new Variant("MAPI");
 			mapiNS = Dispatch.call(outlook, "GetNameSpace", mapiVariant).toDispatch();
-			mapiVariant.release();
+			mapiVariant.safeRelease();
 			
 			Variant contactsVariant = new Variant(10);
 			contactsFolder = Dispatch.call(mapiNS, "GetDefaultFolder", contactsVariant).toDispatch();
@@ -434,19 +434,19 @@ public class OutlookTransformer {
 		} finally {
 			// added 2006/02/05: clean outlook references
 			if (items!=null)
-				items.release();
+				items.safeRelease();
 			
 			if (contactsFolder!=null)
-				contactsFolder.release();
+				contactsFolder.safeRelease();
 			
 			if (contactsSubFolder!=null)
-				contactsSubFolder.release();
+				contactsSubFolder.safeRelease();
 			
 			if (mapiNS!=null)
-				mapiNS.release();
+				mapiNS.safeRelease();
 			
 			if (outlook!=null)
-				outlook.release();
+				outlook.safeRelease();
 			ComThread.Release();
 		}
 
@@ -481,7 +481,7 @@ public class OutlookTransformer {
 			outlook = new Dispatch("Outlook.Application");
 			Variant mapiVariant = new Variant("MAPI");
 			mapiNS = Dispatch.call(outlook, "GetNameSpace", mapiVariant).toDispatch();
-			mapiVariant.release();
+			mapiVariant.safeRelease();
 			
 			Variant contactsVariant = new Variant(10);
 			contactsFolder = Dispatch.call(mapiNS, "GetDefaultFolder", contactsVariant).toDispatch();
@@ -496,10 +496,10 @@ public class OutlookTransformer {
 				subfolders.add(Dispatch.get(f, "Name").toString());					
 				itemf = Dispatch.call(items, "GetNext");
 			}
-			if (f!=null) f.release();
-			if (itemf!=null) itemf.release();
+			if (f!=null) f.safeRelease();
+			if (itemf!=null) itemf.safeRelease();
 			this.m_logger.info("List of including outlook contact subfolders: "+subfolders);
-			contactsVariant.release();
+			contactsVariant.safeRelease();
 
 		} catch (ComFailException ex) {
 			this.m_logger.warning("1 item (e.g. distribution list) was ignored on loading.");
@@ -514,19 +514,19 @@ public class OutlookTransformer {
 		} finally {
 			// added 2006/02/05: clean outlook references
 			if (items!=null)
-				items.release();
+				items.safeRelease();
 			
 			if (contactsFolder!=null)
-				contactsFolder.release();
+				contactsFolder.safeRelease();
 			
 			if (contactsSubFolder!=null)
-				contactsSubFolder.release();
+				contactsSubFolder.safeRelease();
 			
 			if (mapiNS!=null)
-				mapiNS.release();
+				mapiNS.safeRelease();
 			
 			if (outlook!=null)
-				outlook.release();
+				outlook.safeRelease();
 			ComThread.Release();
 		}
 		
@@ -552,11 +552,11 @@ public class OutlookTransformer {
 			outlook = new Dispatch("Outlook.Application");
 			Variant mapiVariant = new Variant("MAPI");
 			mapiNS = Dispatch.call(outlook, "GetNameSpace", mapiVariant).toDispatch();
-			mapiVariant.release();
+			mapiVariant.safeRelease();
 			
 			Variant contactsVariant = new Variant(10);
 			contactsFolder = Dispatch.call(mapiNS, "GetDefaultFolder", contactsVariant).toDispatch();
-			contactsVariant.release();
+			contactsVariant.safeRelease();
 			
 			// getting configured subfolders
 			List subfolders = new ArrayList();
@@ -597,7 +597,7 @@ public class OutlookTransformer {
 						}
 
 						if (contact!=null)
-							contact.release();
+							contact.safeRelease();
 						
 					} catch (ComFailException ex) {
 						this.m_logger.warning("1 item (e.g. distribution list) was ignored on loading.");
@@ -608,7 +608,7 @@ public class OutlookTransformer {
 							this.m_logger.warning(ex.getMessage() + ", " + ex.getSource());
 					}
 					if (item!=null)
-						item.release();
+						item.safeRelease();
 					
 					item = Dispatch.call(items, "GetNext");
 				}
@@ -628,19 +628,19 @@ public class OutlookTransformer {
 		} finally {
 			// added 2006/02/05: clean outlook references
 			if (items!=null)
-				items.release();
+				items.safeRelease();
 			
 			if (contactsFolder!=null)
-				contactsFolder.release();
+				contactsFolder.safeRelease();
 			
 			if (contactsSubFolder!=null)
-				contactsSubFolder.release();
+				contactsSubFolder.safeRelease();
 			
 			if (mapiNS!=null)
-				mapiNS.release();
+				mapiNS.safeRelease();
 			
 			if (outlook!=null)
-				outlook.release();
+				outlook.safeRelease();
 			ComThread.Release();
 		}
 

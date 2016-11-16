@@ -372,10 +372,10 @@ public class OutlookMappingManager {
 							}
 						}
 						if (item!=null)
-							item.release();
+							item.safeRelease();
 					}
 					if (items!=null)
-						items.release();
+						items.safeRelease();
 				}
 				IAttribute img = getRuntime().getCallerFactory().createAttribute(
 					IJAMConst.ATTRIBUTE_NAME_IMAGEPATH,
