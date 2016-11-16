@@ -20,10 +20,10 @@
     <target name="sync_extlib" depends="check_extlib" unless="do.sync.extlib">
      <mkdir dir="${jam.modules.extlib}"/>
      
-     <get dest="${jam.modules.extlib}/gdata-core-1.0.jar" src="http://downloads.janrufmonitor.de/dev/5.0/lib/modules/gdata-core-1.0.jar"/>
-     <get dest="${jam.modules.extlib}/gdata-client-1.0.jar" src="http://downloads.janrufmonitor.de/dev/5.0/lib/modules/gdata-client-1.0.jar"/>
-     <get dest="${jam.modules.extlib}/gdata-contacts-3.0.jar" src="http://downloads.janrufmonitor.de/dev/5.0/lib/modules/gdata-contacts-3.0.jar"/>
-     <get dest="${jam.modules.extlib}/google-collect-1.0.jar" src="http://downloads.janrufmonitor.de/dev/5.0/lib/modules/google-collect-1.0.jar"/>
+     <get dest="${jam.modules.extlib}/gdata-core-1.0.jar" src="https://downloads.janrufmonitor.de/dev/5.0/lib/modules/gdata-core-1.0.jar"/>
+     <get dest="${jam.modules.extlib}/gdata-client-1.0.jar" src="https://downloads.janrufmonitor.de/dev/5.0/lib/modules/gdata-client-1.0.jar"/>
+     <get dest="${jam.modules.extlib}/gdata-contacts-3.0.jar" src="https://downloads.janrufmonitor.de/dev/5.0/lib/modules/gdata-contacts-3.0.jar"/>
+     <get dest="${jam.modules.extlib}/google-collect-1.0.jar" src="https://downloads.janrufmonitor.de/dev/5.0/lib/modules/google-collect-1.0.jar"/>
   </target>
 
     <target name="bundle_module" depends="distribute" description="bundle the module source to jam.zip archives" >

@@ -24,7 +24,7 @@ public class Unregister {
 				Stream.copy(in, out, true);
 				String key = out.toString();
 				System.out.println("Unregistering installation with key "+key);
-				URL url = new URL("http://downloads.janrufmonitor.de/registry/unregister.php?k="+key);
+				URL url = new URL("https://downloads.janrufmonitor.de/registry/unregister.php?k="+key);
 				URLConnection c = url.openConnection();
 				c.connect();
 				c.getContent();

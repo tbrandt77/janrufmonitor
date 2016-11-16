@@ -138,7 +138,7 @@ ui.jface.application.journal.Journal\:entry_warning\:value=false
 ui.jface.application.journal.Journal\:entry_warning\:type=boolean
 ui.jface.application.journal.Journal\:grid\:value=true
 ui.jface.application.journal.Journal\:grid\:type=boolean
-ui.jface.application.journal.Journal\:web_query\:value=http://www.google.de/search?q=
+ui.jface.application.journal.Journal\:web_query\:value=https://www.google.de/search?q=
 ui.jface.application.journal.Journal\:oldjournal\:value=ajournal.dat
 ui.jface.application.journal.Journal\:olddate\:value=dd.MM.yyyy HH:mm:ss
 ui.jface.application.journal.Journal\:menu_actions\:value=

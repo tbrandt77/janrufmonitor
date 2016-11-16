@@ -22,7 +22,7 @@
       <os arch="amd64"/>
   </condition>
   
-  <property name="jam.download.server" value="http://downloads.janrufmonitor.de/released/5.0/"/>
+  <property name="jam.download.server" value="https://downloads.janrufmonitor.de/released/5.0/"/>
   <property name="jam.updates.server" value="${jam.download.server}descriptors/"/>
 
   <property name="jam.modules.extlib" value="${jam.extlib.root}/modules"/>

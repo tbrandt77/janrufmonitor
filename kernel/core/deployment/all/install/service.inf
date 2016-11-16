@@ -18,7 +18,7 @@ service.ServiceFactory\:service_quickidentify\:access=system
 command.CommandFactory\:command_activator\:value=de.janrufmonitor.service.trayicon.Activator
 command.CommandFactory\:command_activator\:access=system
 
-service.update.UpdateManager\:url\:value=http://downloads.janrufmonitor.de/released/5.0/descriptors/
+service.update.UpdateManager\:url\:value=https://downloads.janrufmonitor.de/released/5.0/descriptors/
 service.update.UpdateManager\:url\:access=system
 service.AutoUpdateService\:priority\:value=999
 service.AutoUpdateService\:priority\:type=integer
@@ -28,7 +28,7 @@ service.ServiceFactory\:service_autoupdate\:value=de.janrufmonitor.service.updat
 service.ServiceFactory\:service_autoupdate\:access=system
 
 #added 5.0.14
-service.update.UpdateManager\:registry\:value=http://downloads.janrufmonitor.de/registry
+service.update.UpdateManager\:registry\:value=https://downloads.janrufmonitor.de/registry
 service.update.UpdateManager\:registry\:access=system
 
 #added 5.0.19

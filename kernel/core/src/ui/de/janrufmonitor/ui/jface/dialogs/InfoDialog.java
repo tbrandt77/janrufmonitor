@@ -173,7 +173,7 @@ public class InfoDialog extends TitleAreaDialog {
 			new MouseAdapter() {
 				public void mouseDown(MouseEvent e) {
 					if (e.button==1)
-					Program.launch("http://www.janrufmonitor.de/registry.php?k="+rkey);
+					Program.launch("https://www.janrufmonitor.de/registry.php?k="+rkey);
 				}
 			}
 		);
@@ -193,12 +193,12 @@ public class InfoDialog extends TitleAreaDialog {
 		l.setFont(font);
 		
 		hl = new HyperLink(composite, SWT.NONE);
-		hl.setText("http://www.janrufmonitor.de/");
+		hl.setText("https://www.janrufmonitor.de/");
 		hl.addMouseListener( 
 			new MouseAdapter() {
 				public void mouseDown(MouseEvent e) {
 					if (e.button==1)
-					Program.launch("http://www.janrufmonitor.de/");
+					Program.launch("https://www.janrufmonitor.de/");
 				}
 			}
 		);
@@ -220,7 +220,7 @@ public class InfoDialog extends TitleAreaDialog {
 			new MouseAdapter() {
 				public void mouseDown(MouseEvent e) {
 					if (e.button==1)
-					Program.launch("http://www.janrufmonitor.de/support/");
+					Program.launch("https://www.janrufmonitor.de/support/");
 				}
 			}
 		);		
@@ -237,12 +237,12 @@ public class InfoDialog extends TitleAreaDialog {
 		l.setFont(font);
 		
 		hl = new HyperLink(composite, SWT.NONE);
-		hl.setText("http://www.janrufmonitor.de/donation/");
+		hl.setText("https://www.janrufmonitor.de/donation/");
 		hl.addMouseListener( 
 			new MouseAdapter() {
 				public void mouseDown(MouseEvent e) {
 					if (e.button==1)
-					Program.launch("http://www.janrufmonitor.de/donation/");
+					Program.launch("https://www.janrufmonitor.de/ihre-unterstuetzung/");
 				}
 			}
 		);	

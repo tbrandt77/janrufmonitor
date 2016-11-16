@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -22,6 +23,8 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import de.janrufmonitor.exception.Message;
 import de.janrufmonitor.exception.PropagationFactory;
@@ -121,7 +124,7 @@ public class UpdateManager {
 			do {
 				// added 2009/06/26: Registry call
 				// added 2010/01/08: timer, only trigger registry call once a update request
-				if (m_registry.length()>0 && m_registry.startsWith("http://") && (System.currentTimeMillis()-m_firstUpdateCallTimestamp)>10000) {
+				if (m_registry!=null && m_registry.length()>0 && (m_registry.startsWith("http://") || m_registry.startsWith("https://")) && (System.currentTimeMillis()-m_firstUpdateCallTimestamp)>10000) {
 					String key = getRuntime().getConfigManagerFactory().getConfigManager().getProperty(getNamespace(), "regkey");
 					if (key==null || key.length()==0 || retry) {
 						key = new UUID().toString();
@@ -179,8 +182,20 @@ public class UpdateManager {
 			
 			try {
 				URL url = new URL(this.url);
-				URLConnection c = url.openConnection();
-				c.setDoInput(true);
+				URLConnection c = null;
+				
+				if (url.getProtocol().equalsIgnoreCase("https")) {
+					c = (HttpsURLConnection) url.openConnection();
+					((HttpsURLConnection)c).setRequestMethod("GET");
+				} else {
+					c = (HttpURLConnection) url.openConnection();
+					((HttpURLConnection)c).setRequestMethod("GET");
+				}
+				
+				c.setDoInput( true );
+				c.setDoOutput( true );
+				c.setUseCaches( false );
+				
 				c.setRequestProperty("User-Agent", agent.toString());
 				c.connect();
 				
@@ -221,8 +236,21 @@ public class UpdateManager {
 			URL url = new URL(reg.toString());
 			if (m_logger.isLoggable(Level.INFO))
 				this.m_logger.info("Registry call: "+reg.toString());
-			URLConnection c = url.openConnection();
-			c.setDoInput(true);
+			
+			URLConnection c = null;
+			
+			if (url.getProtocol().equalsIgnoreCase("https")) {
+				c = (HttpsURLConnection) url.openConnection();
+				((HttpsURLConnection)c).setRequestMethod("GET");
+			} else {
+				c = (HttpURLConnection) url.openConnection();
+				((HttpURLConnection)c).setRequestMethod("GET");
+			}
+			
+			c.setDoInput( true );
+			c.setDoOutput( true );
+			c.setUseCaches( false );
+			
 			c.setRequestProperty("User-Agent", agent.toString());
 			c.setRequestProperty("X-JAM-ModuleCount", Integer.toString(InstallerEngine.getInstance().getModuleList().size()));
 			c.setRequestProperty("X-JAM-Action", action);

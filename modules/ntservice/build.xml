@@ -18,7 +18,7 @@
     <target name="sync_extlib" depends="check_extlib" unless="do.sync.extlib">
      <mkdir dir="${jam.modules.extlib}"/>
      
-     <get dest="${jam.modules.extlib}/wrapper.jar" src="http://downloads.janrufmonitor.de/dev/5.0/lib/modules/wrapper.jar"/>
+     <get dest="${jam.modules.extlib}/wrapper.jar" src="https://downloads.janrufmonitor.de/dev/5.0/lib/modules/wrapper.jar"/>
   </target>
 
     <target name="bundle_module" depends="module_compile" description="bundle the module source to jam.zip archives" >

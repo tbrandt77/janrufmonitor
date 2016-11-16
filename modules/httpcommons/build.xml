@@ -18,8 +18,8 @@
     <target name="sync_extlib" depends="check_extlib" unless="do.sync.extlib">
      <mkdir dir="${jam.modules.extlib}"/>
      
-     <get dest="${jam.modules.extlib}/simpleweb.jar" src="http://downloads.janrufmonitor.de/dev/5.0/lib/modules/simpleweb.jar"/>
-     <get dest="${jam.modules.extlib}/httpclient.jar" src="http://downloads.janrufmonitor.de/dev/5.0/lib/modules/httpclient.jar"/>
+     <get dest="${jam.modules.extlib}/simpleweb.jar" src="https://downloads.janrufmonitor.de/dev/5.0/lib/modules/simpleweb.jar"/>
+     <get dest="${jam.modules.extlib}/httpclient.jar" src="https://downloads.janrufmonitor.de/dev/5.0/lib/modules/httpclient.jar"/>
   </target>
 
 <target name="bundle_module" />

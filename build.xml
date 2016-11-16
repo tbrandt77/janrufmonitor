@@ -39,7 +39,7 @@
       <os arch="amd64"/>
   </condition>
   
-    <property name="jam.download.server" value="http://downloads.janrufmonitor.de/released/5.0/"/>
+    <property name="jam.download.server" value="https://downloads.janrufmonitor.de/released/5.0/"/>
     <property name="jam.updates.server" value="${jam.download.server}descriptors/"/>
 
     <property name="jam.kernel.extlib" value="${jam.extlib.root}/kernel"/>
@@ -120,7 +120,7 @@
         <echo message="Create win32 distribution..." />
         <mkdir dir="${jam.kernel.extlib}/win/32"/>
         <get dest="${jam.kernel.extlib}/win/32">
-            <url url="http://downloads.janrufmonitor.de/dev/5.0/lib/win/32/swt.jar"/> 
+            <url url="https://downloads.janrufmonitor.de/dev/5.0/lib/win/32/swt.jar"/> 
         </get>
         <create-bundle os="win" arch="32"/>
     </target>
@@ -129,7 +129,7 @@
         <echo message="Create win64 distribution..." />
         <mkdir dir="${jam.kernel.extlib}/win/64"/>
         <get dest="${jam.kernel.extlib}/win/64">
-            <url url="http://downloads.janrufmonitor.de/dev/5.0/lib/win/64/swt.jar"/> 
+            <url url="https://downloads.janrufmonitor.de/dev/5.0/lib/win/64/swt.jar"/> 
         </get>
         <create-bundle os="win" arch="64"/>
     </target>
@@ -138,7 +138,7 @@
         <echo message="Create linux32 distribution..." />
         <mkdir dir="${jam.kernel.extlib}/linux/32"/>
         <get dest="${jam.kernel.extlib}/linux/32">
-            <url url="http://downloads.janrufmonitor.de/dev/5.0/lib/linux/32/swt.jar"/> 
+            <url url="https://downloads.janrufmonitor.de/dev/5.0/lib/linux/32/swt.jar"/> 
         </get>
         <create-bundle os="linux" arch="32"/>
     </target>
@@ -147,7 +147,7 @@
         <echo message="Create linux64 distribution..." />
         <mkdir dir="${jam.kernel.extlib}/linux/64"/>
         <get dest="${jam.kernel.extlib}/linux/64">
-            <url url="http://downloads.janrufmonitor.de/dev/5.0/lib/linux/64/swt.jar"/> 
+            <url url="https://downloads.janrufmonitor.de/dev/5.0/lib/linux/64/swt.jar"/> 
         </get>
         <create-bundle os="linux" arch="64"/>
     </target>
@@ -156,7 +156,7 @@
         <echo message="Create macosx64 distribution..." />
         <mkdir dir="${jam.kernel.extlib}/macosx/64"/>
         <get dest="${jam.kernel.extlib}/macosx/64">
-            <url url="http://downloads.janrufmonitor.de/dev/5.0/lib/macosx/64/swt.jar"/> 
+            <url url="https://downloads.janrufmonitor.de/dev/5.0/lib/macosx/64/swt.jar"/> 
         </get>
         <create-bundle os="macosx" arch="64"/>
     </target>

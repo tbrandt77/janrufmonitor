@@ -21,7 +21,7 @@
      <mkdir dir="${jam.kernel.extlib.osdepend}"/>
      
      <get dest="${jam.kernel.extlib.osdepend}">
-        <url url="http://downloads.janrufmonitor.de/dev/5.0/lib/${os}/${os.arch}/swt.jar"/> 
+        <url url="https://downloads.janrufmonitor.de/dev/5.0/lib/${os}/${os.arch}/swt.jar"/> 
      </get>
      -->
   </target>

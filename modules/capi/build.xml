@@ -17,7 +17,7 @@
     <target name="sync_extlib" depends="check_extlib" unless="do.sync.extlib">
      <mkdir dir="${jam.modules.extlib}"/>
      
-     <get dest="${jam.modules.extlib}/capi20.jar" src="http://downloads.janrufmonitor.de/dev/5.0/lib/modules/capi20.jar"/>
+     <get dest="${jam.modules.extlib}/capi20.jar" src="https://downloads.janrufmonitor.de/dev/5.0/lib/modules/capi20.jar"/>
   </target>
 
     <target name="bundle_module" depends="distribute" description="bundle the module source to jam.zip archives" >

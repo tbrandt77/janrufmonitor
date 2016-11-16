@@ -12,7 +12,7 @@ import de.janrufmonitor.runtime.PIMRuntime;
 public class WebHelpCommand extends AbstractCommand implements IConfigurable {
 
 	private static String NAMESPACE = "ui.jface.application.help.WebHelpCommand";
-	private static String helpPage = "http://www.janrufmonitor.de/documentation.html";
+	private static String helpPage = "https://www.janrufmonitor.de/documentation.html";
 
 	private IRuntime m_runtime;
 	private boolean isExecuting;
