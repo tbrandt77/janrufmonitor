@@ -1,5 +1,23 @@
 ===
 
+jAnrufmonitor 5.0.68 (17.11.2016)
+---------------------------------
+Neu:
+- Update Manager: Unterstützung für 2048-bit SSL Zertifikat
+- Länder- und Vorwahlverzeichnis: 00800 Freecall Nummer hinzugefügt
+- Batch-Datei zum Setzen der Java Umgebungsvariablen hinzugefügt
+
+Bugfix:
+- Verbesserte Fehlermeldung bei fehlender 64-bit Java
+- Adressbuch: NullPointerException bei Kontaktsuche behoben
+
+Module:
+- FRITZ!Box-Überwachung: Neuer SSL TrustManager für 2048-bit Zertifikate hinzugefügt
+- Microsoft Outlook Kontaktverzeichnis: Unterstützung für 64-bit Microsoft Office Versionen hinzugefügt
+- Abweisungsdienst: Regel zum Abweisen von internationales Rufnummern hinzugefügt
+
+===
+
 jAnrufmonitor 5.0.67 (01.08.2016)
 ---------------------------------
 Neu:
