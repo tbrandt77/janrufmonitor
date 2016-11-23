@@ -43,7 +43,7 @@
         Remove comment if a 3rd party lib has to be bundled, e.g., java mail etc...
       
       -->
-      <copy todir="${jam.modules.lib.dir}/${jam.mod.name}/lib">
+      <copy todir="${jam.modules.lib.dir}/${jam.mod.name}">
         <fileset file="${jam.modules.extlib}/jacob.jar"/>
       </copy>
     </target>

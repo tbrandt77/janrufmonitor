@@ -9,8 +9,8 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import com.jacob.activeX.ActiveXComponent;
 import com.jacob.com.ComFailException;
-import com.jacob.com.ComThread;
 import com.jacob.com.Dispatch;
 import com.jacob.com.Variant;
 
@@ -219,14 +219,14 @@ public class OutlookTransformer {
 				String imagepath = MSO_IMAGE_CACHE_PATH +outlookCaller.getUUID() + ".jpg";
 				if (!new File(imagepath).exists()) {
 					Dispatch items = Dispatch.get(contact, "Attachments").toDispatch();
-					int count = Dispatch.get(items, "Count").toInt();
+					int count = Integer.valueOf(Dispatch.get(items, "Count").toString()).intValue();
 					if (count > 1)
 						this.m_logger.info("Found "+count+" attachments for outlook contact "+outlookCaller.toString());
 					
 					for (int i=1; i<=count; i++) {
 						Dispatch item = Dispatch.call(items, "Item", new Integer(i)).toDispatch();
 						
-						int type = Dispatch.get(item, "Type").toInt();
+						int type = Integer.valueOf(Dispatch.get(item, "Type").toString()).intValue();
 						// type 1 olAttachmentType = olByValue
 						if (type==1) {
 							try {
@@ -401,20 +401,28 @@ public class OutlookTransformer {
 	
 	public int getContactCount(String folder) {
 		int count = 0;
-		Dispatch outlook = null;
+		
+		ActiveXComponent outlook = new ActiveXComponent("Outlook.Application");
 		Dispatch mapiNS = null;
 		Dispatch contactsFolder = null;
 		Dispatch contactsSubFolder = null;
 		Dispatch items = null;
+
 		try {
-			ComThread.InitSTA();
-			outlook = new Dispatch("Outlook.Application");
-			Variant mapiVariant = new Variant("MAPI");
-			mapiNS = Dispatch.call(outlook, "GetNameSpace", mapiVariant).toDispatch();
-			mapiVariant.safeRelease();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("created Outlook.Application dispatch");
+			
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook version: "+Dispatch.get(outlook.getObject(), "Version"));
+			
+			mapiNS = outlook.getProperty("Session").toDispatch();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook namespace: "+mapiNS);
 			
 			Variant contactsVariant = new Variant(10);
 			contactsFolder = Dispatch.call(mapiNS, "GetDefaultFolder", contactsVariant).toDispatch();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook folder: "+contactsFolder);
 	
 			// searching subfolders
 			this.m_logger.info("Includig outlook contact subfolders");
@@ -447,7 +455,8 @@ public class OutlookTransformer {
 			
 			if (outlook!=null)
 				outlook.safeRelease();
-			ComThread.Release();
+			
+			
 		}
 
 		return count;
@@ -471,20 +480,28 @@ public class OutlookTransformer {
 	public List getAllContactFolders() {
 		List subfolders = new ArrayList();
 		
-		Dispatch outlook = null;
+		
+		ActiveXComponent outlook = new ActiveXComponent("Outlook.Application");
 		Dispatch mapiNS = null;
 		Dispatch contactsFolder = null;
 		Dispatch contactsSubFolder = null;
 		Dispatch items = null;
+
 		try {
-			ComThread.InitSTA();
-			outlook = new Dispatch("Outlook.Application");
-			Variant mapiVariant = new Variant("MAPI");
-			mapiNS = Dispatch.call(outlook, "GetNameSpace", mapiVariant).toDispatch();
-			mapiVariant.safeRelease();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("created Outlook.Application dispatch");
+			
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook version: "+Dispatch.get(outlook.getObject(), "Version"));
+			
+			mapiNS = outlook.getProperty("Session").toDispatch();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook namespace: "+mapiNS);
 			
 			Variant contactsVariant = new Variant(10);
 			contactsFolder = Dispatch.call(mapiNS, "GetDefaultFolder", contactsVariant).toDispatch();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook folder: "+contactsFolder);
 	
 			// searching subfolders
 			this.m_logger.info("Includig outlook contact subfolders");
@@ -527,7 +544,8 @@ public class OutlookTransformer {
 			
 			if (outlook!=null)
 				outlook.safeRelease();
-			ComThread.Release();
+			
+			
 		}
 		
 		return subfolders;
@@ -542,20 +560,28 @@ public class OutlookTransformer {
 		
 		long outlookItemsCount = 0;
 		
-		Dispatch outlook = null;
+		
+		ActiveXComponent outlook = new ActiveXComponent("Outlook.Application");
 		Dispatch mapiNS = null;
 		Dispatch contactsFolder = null;
 		Dispatch contactsSubFolder = null;
 		Dispatch items = null;
+
 		try {
-			ComThread.InitSTA();
-			outlook = new Dispatch("Outlook.Application");
-			Variant mapiVariant = new Variant("MAPI");
-			mapiNS = Dispatch.call(outlook, "GetNameSpace", mapiVariant).toDispatch();
-			mapiVariant.safeRelease();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("created Outlook.Application dispatch");
+			
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook version: "+Dispatch.get(outlook.getObject(), "Version"));
+			
+			mapiNS = outlook.getProperty("Session").toDispatch();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook namespace: "+mapiNS);
 			
 			Variant contactsVariant = new Variant(10);
 			contactsFolder = Dispatch.call(mapiNS, "GetDefaultFolder", contactsVariant).toDispatch();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook folder: "+contactsFolder);
 			contactsVariant.safeRelease();
 			
 			// getting configured subfolders
@@ -641,7 +667,8 @@ public class OutlookTransformer {
 			
 			if (outlook!=null)
 				outlook.safeRelease();
-			ComThread.Release();
+			
+			
 		}
 
 		this.m_logger.info(outlookItemsCount + " Outlook contacts found and " + callers.size() + " numbers available.");

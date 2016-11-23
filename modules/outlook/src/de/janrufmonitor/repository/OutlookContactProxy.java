@@ -11,8 +11,8 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import com.jacob.activeX.ActiveXComponent;
 import com.jacob.com.ComFailException;
-import com.jacob.com.ComThread;
 import com.jacob.com.Dispatch;
 import com.jacob.com.Variant;
 
@@ -83,21 +83,28 @@ public class OutlookContactProxy implements OutlookContactConst {
 					for (int k=0;k<uuids.size();k++) {
 						uuid = (String) uuids.get(k);
 						
-						Dispatch outlook = null;
+						
+						ActiveXComponent outlook = new ActiveXComponent("Outlook.Application");
 						Dispatch mapiNS = null;
 						Dispatch contactsFolder = null;
 						Dispatch contactsSubFolder = null;
 						Dispatch items = null;
 						Dispatch contact = null;
 						try {
-							ComThread.InitSTA();
-							outlook = new Dispatch("Outlook.Application");
-							Variant mapiVariant = new Variant("MAPI");
-							mapiNS = Dispatch.call(outlook, "GetNameSpace", mapiVariant).toDispatch();
-							mapiVariant.safeRelease();
+							if (this.m_logger.isLoggable(Level.INFO)) 
+								this.m_logger.info("created Outlook.Application dispatch");
+							
+							if (this.m_logger.isLoggable(Level.INFO)) 
+								this.m_logger.info("Microsoft Outlook version: "+Dispatch.get(outlook.getObject(), "Version"));
+							
+							mapiNS = outlook.getProperty("Session").toDispatch();
+							if (this.m_logger.isLoggable(Level.INFO)) 
+								this.m_logger.info("Microsoft Outlook namespace: "+mapiNS);
 							
 							Variant contactsVariant = new Variant(10);
 							contactsFolder = Dispatch.call(mapiNS, "GetDefaultFolder", contactsVariant).toDispatch();
+							if (this.m_logger.isLoggable(Level.INFO)) 
+								this.m_logger.info("Microsoft Outlook folder: "+contactsFolder);
 							contactsVariant.safeRelease();
 							
 							// getting configured subfolders
@@ -194,7 +201,8 @@ public class OutlookContactProxy implements OutlookContactConst {
 							
 							if (outlook!=null)
 								outlook.safeRelease();
-							ComThread.Release();
+							
+							
 						}						
 					}
 				} else {
@@ -238,20 +246,26 @@ public class OutlookContactProxy implements OutlookContactConst {
 	public synchronized ICallerList getModifiedContacts(long timestamp) throws OutlookContactProxyException {
 		ICallerList callers = getRuntime().getCallerFactory().createCallerList();
 
-		Dispatch outlook = null;
+		ActiveXComponent outlook = new ActiveXComponent("Outlook.Application");
 		Dispatch mapiNS = null;
 		Dispatch contactsFolder = null;
 		Dispatch contactsSubFolder = null;
 		Dispatch items = null;
 		try {
-			ComThread.InitSTA();
-			outlook = new Dispatch("Outlook.Application");
-			Variant mapiVariant = new Variant("MAPI");
-			mapiNS = Dispatch.call(outlook, "GetNameSpace", mapiVariant).toDispatch();
-			mapiVariant.safeRelease();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("created Outlook.Application dispatch");
+			
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook version: "+Dispatch.get(outlook.getObject(), "Version"));
+			
+			mapiNS = outlook.getProperty("Session").toDispatch();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook namespace: "+mapiNS);
 			
 			Variant contactsVariant = new Variant(10);
 			contactsFolder = Dispatch.call(mapiNS, "GetDefaultFolder", contactsVariant).toDispatch();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook folder: "+contactsFolder);
 			contactsVariant.safeRelease();
 			
 			// getting configured subfolders
@@ -320,7 +334,8 @@ public class OutlookContactProxy implements OutlookContactConst {
 			
 			if (outlook!=null)
 				outlook.safeRelease();
-			ComThread.Release();
+			
+			
 		}
 
 		return callers;
@@ -334,20 +349,27 @@ public class OutlookContactProxy implements OutlookContactConst {
 		this.m_current = 0;
 		this.m_total = (f==null ? this.countAllContact(): this.countContacts(f));
 		
-		Dispatch outlook = null;
+		
+		ActiveXComponent outlook = new ActiveXComponent("Outlook.Application");
 		Dispatch mapiNS = null;
 		Dispatch contactsFolder = null;
 		Dispatch contactsSubFolder = null;
 		Dispatch items = null;
 		try {
-			ComThread.InitSTA();
-			outlook = new Dispatch("Outlook.Application");
-			Variant mapiVariant = new Variant("MAPI");
-			mapiNS = Dispatch.call(outlook, "GetNameSpace", mapiVariant).toDispatch();
-			mapiVariant.safeRelease();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("created Outlook.Application dispatch");
+			
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook version: "+Dispatch.get(outlook.getObject(), "Version"));
+			
+			mapiNS = outlook.getProperty("Session").toDispatch();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook namespace: "+mapiNS);
 			
 			Variant contactsVariant = new Variant(10);
 			contactsFolder = Dispatch.call(mapiNS, "GetDefaultFolder", contactsVariant).toDispatch();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook folder: "+contactsFolder);
 			contactsVariant.safeRelease();
 			
 			// getting configured subfolders
@@ -432,7 +454,8 @@ public class OutlookContactProxy implements OutlookContactConst {
 			
 			if (outlook!=null)
 				outlook.safeRelease();
-			ComThread.Release();
+			
+			
 		}
 
 		this.m_logger.info(outlookItemsCount + " Outlook contacts found and " + callers.size() + " numbers available.");
@@ -441,20 +464,27 @@ public class OutlookContactProxy implements OutlookContactConst {
 	}
 	
 	public synchronized boolean existsContact(String uuid) throws OutlookContactProxyException {
-		Dispatch outlook = null;
+		
+		ActiveXComponent outlook = new ActiveXComponent("Outlook.Application");
 		Dispatch mapiNS = null;
 		Dispatch contactsFolder = null;
 		Dispatch contactsSubFolder = null;
 		Dispatch items = null;
 		try {
-			ComThread.InitSTA();
-			outlook = new Dispatch("Outlook.Application");
-			Variant mapiVariant = new Variant("MAPI");
-			mapiNS = Dispatch.call(outlook, "GetNameSpace", mapiVariant).toDispatch();
-			mapiVariant.safeRelease();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("created Outlook.Application dispatch");
+			
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook version: "+Dispatch.get(outlook.getObject(), "Version"));
+			
+			mapiNS = outlook.getProperty("Session").toDispatch();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook namespace: "+mapiNS);
 			
 			Variant contactsVariant = new Variant(10);
 			contactsFolder = Dispatch.call(mapiNS, "GetDefaultFolder", contactsVariant).toDispatch();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook folder: "+contactsFolder);
 			contactsVariant.safeRelease();
 			
 			// getting configured subfolders
@@ -500,8 +530,9 @@ public class OutlookContactProxy implements OutlookContactConst {
 				mapiNS.safeRelease();
 			
 			if (outlook!=null)
-				outlook.safeRelease();
-			ComThread.Release();
+												outlook.safeRelease();
+							
+							
 		}
 		return false;
 	}
@@ -514,20 +545,27 @@ public class OutlookContactProxy implements OutlookContactConst {
 		this.m_current = 0;
 		this.m_total = this.countAllContact();
 		
-		Dispatch outlook = null;
+		
+		ActiveXComponent outlook = new ActiveXComponent("Outlook.Application");
 		Dispatch mapiNS = null;
 		Dispatch contactsFolder = null;
 		Dispatch contactsSubFolder = null;
 		Dispatch items = null;
 		try {
-			ComThread.InitSTA();
-			outlook = new Dispatch("Outlook.Application");
-			Variant mapiVariant = new Variant("MAPI");
-			mapiNS = Dispatch.call(outlook, "GetNameSpace", mapiVariant).toDispatch();
-			mapiVariant.safeRelease();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("created Outlook.Application dispatch");
+			
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook version: "+Dispatch.get(outlook.getObject(), "Version"));
+			
+			mapiNS = outlook.getProperty("Session").toDispatch();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook namespace: "+mapiNS);
 			
 			Variant contactsVariant = new Variant(10);
 			contactsFolder = Dispatch.call(mapiNS, "GetDefaultFolder", contactsVariant).toDispatch();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook folder: "+contactsFolder);
 			contactsVariant.safeRelease();
 			
 			// getting configured subfolders
@@ -597,8 +635,9 @@ public class OutlookContactProxy implements OutlookContactConst {
 				mapiNS.safeRelease();
 			
 			if (outlook!=null)
-				outlook.safeRelease();
-			ComThread.Release();
+												outlook.safeRelease();
+							
+							
 		}
 
 		this.m_logger.info(outlookItemsCount + " Outlook contacts found and " + callers.size() + " numbers available.");
@@ -607,20 +646,27 @@ public class OutlookContactProxy implements OutlookContactConst {
 	}
 
 	public synchronized void openContact(ICaller c) throws OutlookContactProxyException {
-		Dispatch outlook = null;
+		
+		ActiveXComponent outlook = new ActiveXComponent("Outlook.Application");
 		Dispatch mapiNS = null;
 		Dispatch contactsFolder = null;
 		Dispatch contactsSubFolder = null;
 		Dispatch items = null;
 		try {
-			ComThread.InitSTA();
-			outlook = new Dispatch("Outlook.Application");
-			Variant mapiVariant = new Variant("MAPI");
-			mapiNS = Dispatch.call(outlook, "GetNameSpace", mapiVariant).toDispatch();
-			mapiVariant.safeRelease();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("created Outlook.Application dispatch");
+			
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook version: "+Dispatch.get(outlook.getObject(), "Version"));
+			
+			mapiNS = outlook.getProperty("Session").toDispatch();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook namespace: "+mapiNS);
 			
 			Variant contactsVariant = new Variant(10);
 			contactsFolder = Dispatch.call(mapiNS, "GetDefaultFolder", contactsVariant).toDispatch();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook folder: "+contactsFolder);
 			contactsVariant.safeRelease();
 			
 			// getting configured subfolders
@@ -670,26 +716,34 @@ public class OutlookContactProxy implements OutlookContactConst {
 				mapiNS.safeRelease();
 			
 			if (outlook!=null)
-				outlook.safeRelease();
-			ComThread.Release();
+												outlook.safeRelease();
+							
+							
 		}
 	}
 	
 	public synchronized void createContact(ICaller c) throws OutlookContactProxyException {
-		Dispatch outlook = null;
+		
+		ActiveXComponent outlook = new ActiveXComponent("Outlook.Application");
 		Dispatch mapiNS = null;
 		Dispatch contactsFolder = null;
 		Dispatch contactsSubFolder = null;
 		Dispatch items = null;
 		try {
-			ComThread.InitSTA();
-			outlook = new Dispatch("Outlook.Application");
-			Variant mapiVariant = new Variant("MAPI");
-			mapiNS = Dispatch.call(outlook, "GetNameSpace", mapiVariant).toDispatch();
-			mapiVariant.safeRelease();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("created Outlook.Application dispatch");
+			
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook version: "+Dispatch.get(outlook.getObject(), "Version"));
+			
+			mapiNS = outlook.getProperty("Session").toDispatch();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook namespace: "+mapiNS);
 			
 			Variant contactsVariant = new Variant(10);
 			contactsFolder = Dispatch.call(mapiNS, "GetDefaultFolder", contactsVariant).toDispatch();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook folder: "+contactsFolder);
 			contactsVariant.safeRelease();
 			
 			String folder = this.getAttribute(c.getAttribute(IJAMConst.ATTRIBUTE_NAME_CATEGORY));
@@ -727,27 +781,35 @@ public class OutlookContactProxy implements OutlookContactConst {
 				mapiNS.safeRelease();
 			
 			if (outlook!=null)
-				outlook.safeRelease();
-			ComThread.Release();
+												outlook.safeRelease();
+							
+							
 		}
 	}
 	
 	public synchronized boolean updateContact(ICaller c) throws OutlookContactProxyException{
 		boolean processed = false;
-		Dispatch outlook = null;
+		
+		ActiveXComponent outlook = new ActiveXComponent("Outlook.Application");
 		Dispatch mapiNS = null;
 		Dispatch contactsFolder = null;
 		Dispatch contactsSubFolder = null;
 		Dispatch items = null;
 		try {
-			ComThread.InitSTA();
-			outlook = new Dispatch("Outlook.Application");
-			Variant mapiVariant = new Variant("MAPI");
-			mapiNS = Dispatch.call(outlook, "GetNameSpace", mapiVariant).toDispatch();
-			mapiVariant.safeRelease();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("created Outlook.Application dispatch");
+			
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook version: "+Dispatch.get(outlook.getObject(), "Version"));
+			
+			mapiNS = outlook.getProperty("Session").toDispatch();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook namespace: "+mapiNS);
 			
 			Variant contactsVariant = new Variant(10);
 			contactsFolder = Dispatch.call(mapiNS, "GetDefaultFolder", contactsVariant).toDispatch();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook folder: "+contactsFolder);
 			contactsVariant.safeRelease();
 			
 			String folder = this.getAttribute(c.getAttribute(IJAMConst.ATTRIBUTE_NAME_CATEGORY));
@@ -853,28 +915,36 @@ public class OutlookContactProxy implements OutlookContactConst {
 				mapiNS.safeRelease();
 			
 			if (outlook!=null)
-				outlook.safeRelease();
-			ComThread.Release();
+												outlook.safeRelease();
+							
+							
 		}
 		return processed;
 	}
 
 
 	public synchronized void removeContact(ICaller c) throws OutlookContactProxyException{
-		Dispatch outlook = null;
+		
+		ActiveXComponent outlook = new ActiveXComponent("Outlook.Application");
 		Dispatch mapiNS = null;
 		Dispatch contactsFolder = null;
 		Dispatch contactsSubFolder = null;
 		Dispatch items = null;
 		try {
-			ComThread.InitSTA();
-			outlook = new Dispatch("Outlook.Application");
-			Variant mapiVariant = new Variant("MAPI");
-			mapiNS = Dispatch.call(outlook, "GetNameSpace", mapiVariant).toDispatch();
-			mapiVariant.safeRelease();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("created Outlook.Application dispatch");
+			
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook version: "+Dispatch.get(outlook.getObject(), "Version"));
+			
+			mapiNS = outlook.getProperty("Session").toDispatch();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook namespace: "+mapiNS);
 			
 			Variant contactsVariant = new Variant(10);
 			contactsFolder = Dispatch.call(mapiNS, "GetDefaultFolder", contactsVariant).toDispatch();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook folder: "+contactsFolder);
 			contactsVariant.safeRelease();
 			
 			String folder = null;
@@ -922,27 +992,34 @@ public class OutlookContactProxy implements OutlookContactConst {
 				mapiNS.safeRelease();
 			
 			if (outlook!=null)
-				outlook.safeRelease();
-			ComThread.Release();
+												outlook.safeRelease();
+							
+							
 		}
 	}
 	
 	private int countAllContact() throws OutlookContactProxyException {
 		int count = 0;
-		Dispatch outlook = null;
+		ActiveXComponent outlook = new ActiveXComponent("Outlook.Application");
 		Dispatch mapiNS = null;
 		Dispatch contactsFolder = null;
 		Dispatch contactsSubFolder = null;
 		Dispatch items = null;
 		try {
-			ComThread.InitSTA();
-			outlook = new Dispatch("Outlook.Application");
-			Variant mapiVariant = new Variant("MAPI");
-			mapiNS = Dispatch.call(outlook, "GetNameSpace", mapiVariant).toDispatch();
-			mapiVariant.safeRelease();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("created Outlook.Application dispatch");
+			
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook version: "+Dispatch.get(outlook.getObject(), "Version"));
+			
+			mapiNS = outlook.getProperty("Session").toDispatch();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook namespace: "+mapiNS);
 			
 			Variant contactsVariant = new Variant(10);
 			contactsFolder = Dispatch.call(mapiNS, "GetDefaultFolder", contactsVariant).toDispatch();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook folder: "+contactsFolder);
 			contactsVariant.safeRelease();
 			
 			// getting configured subfolders
@@ -987,28 +1064,38 @@ public class OutlookContactProxy implements OutlookContactConst {
 				mapiNS.safeRelease();
 			
 			if (outlook!=null)
-				outlook.safeRelease();
-			ComThread.Release();
+												outlook.safeRelease();
+							
+							
 		}
 		return count;
 	}
 
 	public synchronized int countContacts(String folder) {
 		int count = 0;
-		Dispatch outlook = null;
+		
+		ActiveXComponent outlook = new ActiveXComponent("Outlook.Application");
 		Dispatch mapiNS = null;
 		Dispatch contactsFolder = null;
 		Dispatch contactsSubFolder = null;
 		Dispatch items = null;
+
 		try {
-			ComThread.InitSTA();
-			outlook = new Dispatch("Outlook.Application");
-			Variant mapiVariant = new Variant("MAPI");
-			mapiNS = Dispatch.call(outlook, "GetNameSpace", mapiVariant).toDispatch();
-			mapiVariant.safeRelease();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("created Outlook.Application dispatch");
+			
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook version: "+Dispatch.get(outlook.getObject(), "Version"));
+			
+			mapiNS = outlook.getProperty("Session").toDispatch();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook namespace: "+mapiNS);
 			
 			Variant contactsVariant = new Variant(10);
 			contactsFolder = Dispatch.call(mapiNS, "GetDefaultFolder", contactsVariant).toDispatch();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook folder: "+contactsFolder);
+
 	
 			// searching subfolders
 			this.m_logger.info("Includig outlook contact subfolders");
@@ -1043,8 +1130,9 @@ public class OutlookContactProxy implements OutlookContactConst {
 				mapiNS.safeRelease();
 			
 			if (outlook!=null)
-				outlook.safeRelease();
-			ComThread.Release();
+												outlook.safeRelease();
+							
+							
 		}
 
 		return count;
@@ -1061,20 +1149,29 @@ public class OutlookContactProxy implements OutlookContactConst {
 	public synchronized List getAllContactFolders() {
 		List subfolders = new ArrayList();
 		
-		Dispatch outlook = null;
+		
+		ActiveXComponent outlook = new ActiveXComponent("Outlook.Application");
 		Dispatch mapiNS = null;
 		Dispatch contactsFolder = null;
 		Dispatch contactsSubFolder = null;
 		Dispatch items = null;
+
 		try {
-			ComThread.InitSTA();
-			outlook = new Dispatch("Outlook.Application");
-			Variant mapiVariant = new Variant("MAPI");
-			mapiNS = Dispatch.call(outlook, "GetNameSpace", mapiVariant).toDispatch();
-			mapiVariant.safeRelease();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("created Outlook.Application dispatch");
+			
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook version: "+Dispatch.get(outlook.getObject(), "Version"));
+			
+			mapiNS = outlook.getProperty("Session").toDispatch();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook namespace: "+mapiNS);
 			
 			Variant contactsVariant = new Variant(10);
 			contactsFolder = Dispatch.call(mapiNS, "GetDefaultFolder", contactsVariant).toDispatch();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook folder: "+contactsFolder);
+	
 	
 			// searching subfolders
 			if (this.m_logger.isLoggable(Level.INFO)) 
@@ -1117,8 +1214,9 @@ public class OutlookContactProxy implements OutlookContactConst {
 				mapiNS.safeRelease();
 			
 			if (outlook!=null)
-				outlook.safeRelease();
-			ComThread.Release();
+												outlook.safeRelease();
+							
+							
 		}
 		
 		// 2009/01/09: removed
@@ -1179,24 +1277,7 @@ public class OutlookContactProxy implements OutlookContactConst {
 		// check UUID in User1 attribute		
 		String user1Field = Dispatch.get(contact, "User1").toString();
 		
-		if (user1Field.trim().length()==0){ // || !user1Field.trim().toLowerCase().equalsIgnoreCase(uuid.toString().toLowerCase())) {
-			/**
-			StringBuffer uuid = new StringBuffer(32);
-			String name = Dispatch.get(contact, "Lastname").toString();
-			if (name.length()>3)
-				uuid.append(name.toLowerCase().substring(0,3));
-			else
-				uuid.append(name.toLowerCase());
-			
-			name = Dispatch.get(contact, "Firstname").toString();
-			if (name.length()>3)
-				uuid.append(name.toLowerCase().substring(0,3));
-			else
-				uuid.append(name.toLowerCase());
-			uuid.append(StringUtils.replaceString(StringUtils.replaceString(StringUtils.replaceString(StringUtils.replaceString(Dispatch.get(contact, "CreationTime").toString(), ":", ""), " ", ""), ".", ""), "/", ""));
-			
-			Dispatch.put(contact, "User1", uuid.toString());
-			*/
+		if (user1Field.trim().length()==0){ 
 			Dispatch.put(contact, "User1", new UUID().toString());
 			Dispatch.call(contact, "Save");							
 		}
