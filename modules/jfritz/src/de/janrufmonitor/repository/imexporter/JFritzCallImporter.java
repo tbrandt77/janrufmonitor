@@ -34,8 +34,8 @@ public class JFritzCallImporter implements ICallImporter {
 
 		/**
 		 * "CallType";"Date";"Time";"Number";"Route";"Port";"Duration";"Name";"Address";"City";"CallByCall";"Comment"
-		 * "Outgoing";"27.03.2008";"09:43";"+491608896404";"Festnetz";"Büro";"60";"Brandt, Thilo";"Kelterwiesen 31";"74889 Sinsheim-Dühren";"01055";""
-		 * "Outgoing";"27.03.2008";"09:41";"+496227763614";"4063123@1und1.de";"Büro";"60";"Brandt, Thilo";"Kelterwiesen 31";"74889 Sinsheim-Dühren";"";""
+		 * "Outgoing";"27.03.2008";"09:43";"+491608896404";"Festnetz";"Bro";"60";"Brandt, Thilo";"Kelterwiesen 31";"74889 Sinsheim-Dhren";"01055";""
+		 * "Outgoing";"27.03.2008";"09:41";"+496227763614";"4063123@1und1.de";"Bro";"60";"Brandt, Thilo";"Kelterwiesen 31";"74889 Sinsheim-Dhren";"";""
 		 * 
 		 */
 		

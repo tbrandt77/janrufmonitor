@@ -262,7 +262,7 @@ public class EditorController implements IApplicationController,
 		if (s.equalsIgnoreCase(")")) return true;
 		if (s.equalsIgnoreCase("\\")) return true;
 		if (s.equalsIgnoreCase("$")) return true;
-		if (s.equalsIgnoreCase("¤")) return true;
+		if (s.equalsIgnoreCase("\u00A7")) return true;
 		if (s.equalsIgnoreCase("!")) return true;
 		if (s.equalsIgnoreCase("&")) return true;
 		if (s.equalsIgnoreCase("\"")) return true;

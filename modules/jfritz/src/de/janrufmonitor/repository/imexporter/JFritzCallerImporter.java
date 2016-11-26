@@ -35,10 +35,10 @@ public class JFritzCallerImporter implements ICallerImporter {
 
 		/**
 		 * "Private";"Last Name";"First Name";"Company";"Street";"ZIP Code";"City";"E-Mail";"Home";"Mobile";"Homezone";"Business";"Other";"Fax";"Sip";"Main"
-		 * "NO";"Bartholomä";"Dieter";"";"Wittumstr. 11";"74889";"Sinsheim-Eschelbach";"";"+497265315";"";"";"";"";"";"";""
-		 * "NO";"Baumgärtner";"Bianca";"";"Rathausstr. 1";"74934";"Reichartshausen";"";"";"+491786011100";"";"";"";"";"";""
-		 * "NO";"Baumgärtner";"Hilde";"";"Ringstr. 7";"74934";"Reichartshausen";"";"+4962626007";"";"";"";"";"";"";""
-		 * "NO";"Baumgärtner";"Steffen";"";"Ringstr. 7";"74934";"Reichartshausen, Baden-Württemberg";"";"+49626295470";"+491777569679";"";"";"";"";"";""
+		 * "NO";"Bartholom";"Dieter";"";"Wittumstr. 11";"74889";"Sinsheim-Eschelbach";"";"+497265315";"";"";"";"";"";"";""
+		 * "NO";"Baumgrtner";"Bianca";"";"Rathausstr. 1";"74934";"Reichartshausen";"";"";"+491786011100";"";"";"";"";"";""
+		 * "NO";"Baumgrtner";"Hilde";"";"Ringstr. 7";"74934";"Reichartshausen";"";"+4962626007";"";"";"";"";"";"";""
+		 * "NO";"Baumrtner";"Steffen";"";"Ringstr. 7";"74934";"Reichartshausen, Baden-Wrttemberg";"";"+49626295470";"+491777569679";"";"";"";"";"";""
 		 * 
 		 */
 		
@@ -230,11 +230,7 @@ public class JFritzCallerImporter implements ICallerImporter {
 
 		/**
 		 * "Private";"Last Name";"First Name";"Company";"Street";"ZIP Code";"City";"E-Mail";"Picture";"Home";"Mobile";"Homezone";"Business";"Other";"Fax";"Sip";"Main"
-		 * "NO";"Bartholomä";"Dieter";"";"Wittumstr. 11";"74889";"Sinsheim-Eschelbach";"";"";"+497265315";"";"";"";"";"";"";""
-		 * "NO";"Baumgärtner";"Bianca";"";"Rathausstr. 1";"74934";"Reichartshausen";"";"";"";"+491786011100";"";"";"";"";"";""
-		 * "NO";"Baumgärtner";"Hilde";"";"Ringstr. 7";"74934";"Reichartshausen";"";"";"+4962626007";"";"";"";"";"";"";""
-		 * "NO";"Baumgärtner";"Steffen";"";"Ringstr. 7";"74934";"Reichartshausen, Baden-Württemberg";"";"";"+49626295470";"+491777569679";"";"";"";"";"";""
-		 * 
+		 * "NO";"Bartholom";"Dieter";"";"Wittumstr. 11";"74889";"Sinsheim-Eschelbach";"";"";"+497265315";"";"";"";"";"";"";""
 		 */
 		
 		private ICallerList m_cl;

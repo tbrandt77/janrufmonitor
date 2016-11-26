@@ -1000,8 +1000,6 @@ public class GoogleContactsProxy implements IGoogleContactsConst {
 		String name = e.getTitle().getPlainText();
 		// test name splitting
 		String[] tmp = name.split(" ");
-		// case: Müller
-		// case: Spandauer Holzwaren KG
 		if (tmp.length==1 || tmp.length>2)  {
 			m.add(getRuntime().getCallerFactory().createAttribute(
 					IJAMConst.ATTRIBUTE_NAME_LASTNAME,

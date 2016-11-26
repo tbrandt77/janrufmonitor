@@ -49,12 +49,12 @@ public class LaunchDial {
 
 					Object o = c.getContent();
 					if (o instanceof InputStream) {
-						JOptionPane.showMessageDialog(null, "Ein Anruf zur Rufnummer "+number+" wird hergestellt.\nBitte nehmen Sie den Hörer an Ihrem Telefon jetzt ab...");  
+						JOptionPane.showMessageDialog(null, "Ein Anruf zur Rufnummer "+number+" wird hergestellt.\nBitte nehmen Sie den H\u00F6rer an Ihrem Telefon jetzt ab...");  
 					}				
 				} catch (MalformedURLException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
-					JOptionPane.showMessageDialog(null, "Der Anruf zur Rufnummer "+number+" konnte nicht hergestellt werden.\nEntweder ist der jAnrufmonitor Server nicht gestartet oder vorübergehend nicht erreichbar.");  
+					JOptionPane.showMessageDialog(null, "Der Anruf zur Rufnummer "+number+" konnte nicht hergestellt werden.\nEntweder ist der jAnrufmonitor Server nicht gestartet oder vor\u00FCbergehend nicht erreichbar.");  
 				} 
 			} else {
 				JOptionPane.showMessageDialog(null, "Das Programm kann ohne Rufnummer nicht gestartet werden.\n Starten Sie mit \"callto.exe callto:<rufnummer>[+gateway=<server>:<port>]\".");  
