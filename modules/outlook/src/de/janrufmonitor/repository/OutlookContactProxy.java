@@ -59,6 +59,128 @@ public class OutlookContactProxy implements OutlookContactConst {
 		if (!cache.exists()) cache.mkdirs();
 	}
 	
+	public synchronized ICallerList findContacts(String searchTerm, String f) throws OutlookContactProxyException {
+		if (searchTerm==null || searchTerm.trim().length()==0) return this.getContacts(f);
+		
+		ICallerList callers = getRuntime().getCallerFactory().createCallerList();
+		ActiveXComponent outlook = new ActiveXComponent("Outlook.Application");
+		Dispatch mapiNS = null;
+		Dispatch contactsFolder = null;
+		Dispatch contactsSubFolder = null;
+		Dispatch items = null;
+		try {
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("created Outlook.Application dispatch");
+			
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook version: "+Dispatch.get(outlook.getObject(), "Version"));
+			
+			mapiNS = outlook.getProperty("Session").toDispatch();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook namespace: "+mapiNS);
+			
+			Variant contactsVariant = new Variant(10);
+			contactsFolder = Dispatch.call(mapiNS, "GetDefaultFolder", contactsVariant).toDispatch();
+			if (this.m_logger.isLoggable(Level.INFO)) 
+				this.m_logger.info("Microsoft Outlook folder: "+contactsFolder);
+			contactsVariant.safeRelease();
+			
+			// getting configured subfolders
+			List subfolders = new ArrayList();
+			if (f!=null) {
+				subfolders.add(f);
+			} else {
+				subfolders.add("");
+				subfolders.addAll(getAllContactFolders());
+			}
+			
+			String folder = null;
+			for (int i=0,j=subfolders.size();i<j;i++) {
+				folder = (String) subfolders.get(i);
+
+				items = Dispatch.get(contactsFolder, "items").toDispatch();
+				if (items==null) continue;
+				
+				String[] filters = {OutlookContactConst.LastName, OutlookContactConst.FirstName, OutlookContactConst.BusinessAddressCity, OutlookContactConst.BusinessAddressStreet, OutlookContactConst.BusinessAddressPostalCode, OutlookContactConst.BusinessAddressCountry, OutlookContactConst.BusinessTelephoneNumber, OutlookContactConst.Business2TelephoneNumber, OutlookContactConst.BusinessFaxNumber, OutlookContactConst.Home2TelephoneNumber, OutlookContactConst.HomeAddressCity, OutlookContactConst.HomeAddressCountry, OutlookContactConst.HomeAddressPostalCode, OutlookContactConst.HomeAddressStreet, OutlookContactConst.HomeFaxNumber, OutlookContactConst.HomeTelephoneNumber, OutlookContactConst.MobileTelephoneNumber};
+				
+				for (int z=0; z<filters.length;z++) {
+					String filter = String.format("["+filters[z]+"] = '%s'", searchTerm);
+					Variant item = Dispatch.call(items, "find", filter);
+	
+					ICallerList cl = null;
+					while ((item != null) && (!item.isNull())) {
+						try {
+							Dispatch contact = item.toDispatch();	
+							
+							// check UUID in User1 attribute						
+							this.checkContactUUID(contact);
+							
+							cl = getCallerListFromSingleContact(contact);
+							if (cl.size()>0) {
+								if (folder.trim().length()>0) {								
+									IAttribute category = getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CATEGORY, folder);
+									for (int l=0,m=cl.size();l<m;l++) { 
+										cl.get(l).setAttribute(category);
+									}
+								}
+								for (int k=0;k<cl.size();k++) {
+									if (!callers.contains(cl.get(k))) 
+										callers.add(cl.get(k));
+								}
+								
+							}
+	
+							if (contact!=null)
+								contact.safeRelease();
+
+						} catch (ComFailException ex) {
+							this.m_logger.warning("1 item (e.g. distribution list) was ignored on loading.");
+							if (ex.toString().indexOf("Can't get object clsid from progid")>-1) {
+								this.m_logger.log(Level.SEVERE, ex.toString(), ex);
+								PropagationFactory.getInstance().fire(new Message(Message.ERROR, getNamespace(), "olstarterror", ex));
+							} else
+								this.m_logger.warning(ex.getMessage() + ", " + ex.getSource());
+						}
+						if (item!=null)
+							item.safeRelease();
+						
+						item = Dispatch.call(items, "findNext");
+					}
+				}
+			}
+
+		} catch (ComFailException ex) {
+			this.m_logger.warning("1 item (e.g. distribution list) was ignored on loading.");
+			if (ex.toString().indexOf("Can't get object clsid from progid")>-1) {
+				this.m_logger.log(Level.SEVERE, ex.toString(), ex);
+				PropagationFactory.getInstance().fire(new Message(Message.ERROR, getNamespace(), "olstarterror", ex));
+			} else
+				this.m_logger.warning(ex.getMessage() + ", " + ex.getSource());
+
+		} catch (Exception ex) {
+			throw new OutlookContactProxyException("Error in Application Outlook.", ex);
+		} finally {
+			// added 2006/02/05: clean outlook references
+			if (items!=null)
+				items.safeRelease();
+			
+			if (contactsFolder!=null)
+				contactsFolder.safeRelease();
+			
+			if (contactsSubFolder!=null)
+				contactsSubFolder.safeRelease();
+			
+			if (mapiNS!=null)
+				mapiNS.safeRelease();
+			
+			if (outlook!=null)
+				outlook.safeRelease();
+			
+			
+		}
+		return callers;
+	}
+	
 	public synchronized ICaller findContact(IPhonenumber pn) throws OutlookContactProxyException {
 		ICaller c = Identifier.identifyDefault(getRuntime(), pn);
 

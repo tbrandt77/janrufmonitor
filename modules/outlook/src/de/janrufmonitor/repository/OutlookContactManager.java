@@ -13,14 +13,16 @@ import de.janrufmonitor.repository.filter.FilterType;
 import de.janrufmonitor.repository.filter.IFilter;
 import de.janrufmonitor.repository.filter.PhonenumberFilter;
 import de.janrufmonitor.repository.imexport.ITracker;
+import de.janrufmonitor.repository.search.ISearchTerm;
 import de.janrufmonitor.repository.types.IIdentifyCallerRepository;
 import de.janrufmonitor.repository.types.IReadCallerRepository;
 import de.janrufmonitor.repository.types.IRemoteRepository;
+//import de.janrufmonitor.repository.types.ISearchableCallerRepository;
 import de.janrufmonitor.repository.types.IWriteCallerRepository;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 
-public class OutlookContactManager extends AbstractReadWriteCallerManager implements IRemoteRepository, ITracker {
+public class OutlookContactManager extends AbstractReadWriteCallerManager implements IRemoteRepository, ITracker { //, ISearchableCallerRepository {
 
 	private static String ID = "OutlookCallerManager";
 	public static String NAMESPACE = "repository.OutlookCallerManager";
@@ -126,6 +128,29 @@ public class OutlookContactManager extends AbstractReadWriteCallerManager implem
 		} catch (OutlookContactProxyException e) {
 			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 		}
+	}
+	
+
+	public ICallerList getCallers(IFilter[] filters, ISearchTerm[] searchTerms) {
+		try {
+			String searchTerm = "";
+			if (searchTerms != null) {
+				for (int i=0;i<searchTerms.length;i++) {
+					searchTerm +=" "+searchTerms[i].getSearchTerm();
+				}
+			}
+			if (filters!=null && filters[0]!=null && filters[0].getType().equals(FilterType.ATTRIBUTE)) {
+				IAttributeMap m = ((AttributeFilter)filters[0]).getAttributeMap();
+				if (m.contains(IJAMConst.ATTRIBUTE_NAME_CATEGORY)) {
+					IAttribute a = m.get(IJAMConst.ATTRIBUTE_NAME_CATEGORY);
+					return getProxy().findContacts(searchTerm.trim(), a.getValue());
+				}				
+			}
+			return getProxy().findContacts(searchTerm.trim(), null);
+		} catch (OutlookContactProxyException e) {
+			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+		}
+		return getRuntime().getCallerFactory().createCallerList();
 	}
 		
 	private OutlookContactProxy getProxy() {
@@ -241,4 +266,5 @@ public class OutlookContactManager extends AbstractReadWriteCallerManager implem
 		long t = Long.parseLong(m_configuration.getProperty(CFG_INDEX, "5"));
 		return (t * 60 * 1000);
 	}
+
 }
