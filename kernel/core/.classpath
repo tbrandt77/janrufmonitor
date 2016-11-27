@@ -6,70 +6,70 @@
 	<classpathentry kind="src" path="src/repository"/>
 	<classpathentry kind="src" path="src/service"/>
 	<classpathentry kind="src" path="src/ui"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="var" path="JAM_LIB/kernel/all/hsqldb.jar"/>
-	<classpathentry kind="var" path="JAM_LIB/kernel/allui/commands.jar"/>
-	<classpathentry kind="var" path="JAM_LIB/kernel/allui/i18n.jar"/>
-	<classpathentry kind="var" path="JAM_LIB/kernel/allui/jface.jar"/>
-	<classpathentry kind="var" path="JAM_LIB/kernel/allui/osgi.jar"/>
-	<classpathentry kind="var" path="JAM_LIB/kernel/allui/runtime.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/jAnrufmonitor Kernel Framework"/>
-	<classpathentry kind="var" path="JAM_OSDEPENDEND_LIB/swt.jar"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module Call Simulator/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module Comment/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module Email Notification/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module External Application Launcher/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module Filter CSV/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module Filter Excel XLS/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module Filter Fritz!X/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module Filter Heuers ISDN Monitor/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module Filter JFritz/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module Filter Moony/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module Filter PDF/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module Generic Online Information Creator/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module Generic WebCommand Creator/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module Google Contacts/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module Google Maps/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module Hibernate Detector/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module HTML CallManager/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module HTTP Client/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module HTTP Commons/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module HTTP Server/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module IconBlinker/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module iMac Address Book/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module LDAP/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module Microsoft Outlook Contacts/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module MySQL/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module MySQL Logger/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module Reject/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module Sound Notification/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module Textfile CallManager/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module Thunderbird/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module Twitter Notification/build" sourcepath="/jAnrufmonitor Module Twitter Notification/src"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module Windows Service/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Monitor AVM Fritz!Box Fon/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Monitor CAPI/build"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Monitor TAPI/build"/>
-	<classpathentry kind="var" path="JAM_LIB/modules/mysql.jar"/>
-	<classpathentry kind="var" path="JAM_LIB/modules/itext.jar"/>
-	<classpathentry kind="var" path="JAM_LIB/modules/jmork.jar"/>
-	<classpathentry kind="var" path="JAM_LIB/modules/codec.jar"/>
-	<classpathentry kind="var" path="JAM_LIB/modules/gdata-client-1.0.jar"/>
-	<classpathentry kind="var" path="JAM_LIB/modules/gdata-core-1.0.jar"/>
-	<classpathentry kind="var" path="JAM_LIB/modules/signpost-core-1.2.1.1.jar"/>
-	<classpathentry kind="var" path="JAM_LIB/modules/jtwitter.jar"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Module Tellows/build"/>
-	<classpathentry kind="var" path="JAM_LIB/modules/gdata-contacts-3.0.jar"/>
-	<classpathentry kind="var" path="JAM_LIB/modules/google-collect-1.0.jar"/>
-	<classpathentry kind="var" path="JAM_LIB/modules/ldap.jar"/>
-	<classpathentry kind="var" path="JAM_LIB/modules/mailapi.jar"/>
-	<classpathentry kind="var" path="JAM_LIB/modules/smtp.jar"/>
-	<classpathentry kind="lib" path="/jAnrufmonitor Monitor NCID/build" sourcepath="/jAnrufmonitor Monitor NCID/src"/>
-	<classpathentry kind="var" path="JAM_LIB/modules/signpost-commonshttp4.jar"/>
-	<classpathentry kind="var" path="JAM_LIB/modules/simpleweb.jar"/>
-	<classpathentry kind="var" path="JAM_LIB/modules/http-commons.jar"/>
-	<classpathentry kind="var" path="JAM_LIB/modules/httpclient.jar"/>
-	<classpathentry kind="var" path="JAM_LIB/modules/log-api.jar"/>
-	<classpathentry kind="var" path="JAM_LIB/modules/log.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="var" path="JAM_LIB/kernel/all/hsqldb.jar"/>
+	<classpathentry exported="true" kind="var" path="JAM_LIB/kernel/allui/commands.jar"/>
+	<classpathentry exported="true" kind="var" path="JAM_LIB/kernel/allui/i18n.jar"/>
+	<classpathentry exported="true" kind="var" path="JAM_LIB/kernel/allui/jface.jar"/>
+	<classpathentry exported="true" kind="var" path="JAM_LIB/kernel/allui/osgi.jar"/>
+	<classpathentry exported="true" kind="var" path="JAM_LIB/kernel/allui/runtime.jar"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/jAnrufmonitor Kernel Framework"/>
+	<classpathentry exported="true" kind="var" path="JAM_OSDEPENDEND_LIB/swt.jar"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module Call Simulator/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module Comment/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module Email Notification/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module External Application Launcher/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module Filter CSV/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module Filter Excel XLS/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module Filter Fritz!X/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module Filter Heuers ISDN Monitor/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module Filter JFritz/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module Filter Moony/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module Filter PDF/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module Generic Online Information Creator/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module Generic WebCommand Creator/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module Google Contacts/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module Google Maps/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module Hibernate Detector/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module HTML CallManager/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module HTTP Client/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module HTTP Commons/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module HTTP Server/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module IconBlinker/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module iMac Address Book/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module LDAP/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module Microsoft Outlook Contacts/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module MySQL/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module MySQL Logger/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module Reject/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module Sound Notification/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module Textfile CallManager/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module Thunderbird/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module Twitter Notification/build" sourcepath="/jAnrufmonitor Module Twitter Notification/src"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module Windows Service/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Monitor AVM Fritz!Box Fon/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Monitor CAPI/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Monitor TAPI/build"/>
+	<classpathentry exported="true" kind="var" path="JAM_LIB/modules/mysql.jar"/>
+	<classpathentry exported="true" kind="var" path="JAM_LIB/modules/itext.jar"/>
+	<classpathentry exported="true" kind="var" path="JAM_LIB/modules/jmork.jar"/>
+	<classpathentry exported="true" kind="var" path="JAM_LIB/modules/codec.jar"/>
+	<classpathentry exported="true" kind="var" path="JAM_LIB/modules/gdata-client-1.0.jar"/>
+	<classpathentry exported="true" kind="var" path="JAM_LIB/modules/gdata-core-1.0.jar"/>
+	<classpathentry exported="true" kind="var" path="JAM_LIB/modules/signpost-core-1.2.1.1.jar"/>
+	<classpathentry exported="true" kind="var" path="JAM_LIB/modules/jtwitter.jar"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module Tellows/build"/>
+	<classpathentry exported="true" kind="var" path="JAM_LIB/modules/gdata-contacts-3.0.jar"/>
+	<classpathentry exported="true" kind="var" path="JAM_LIB/modules/google-collect-1.0.jar"/>
+	<classpathentry exported="true" kind="var" path="JAM_LIB/modules/ldap.jar"/>
+	<classpathentry exported="true" kind="var" path="JAM_LIB/modules/mailapi.jar"/>
+	<classpathentry exported="true" kind="var" path="JAM_LIB/modules/smtp.jar"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Monitor NCID/build" sourcepath="/jAnrufmonitor Monitor NCID/src"/>
+	<classpathentry exported="true" kind="var" path="JAM_LIB/modules/signpost-commonshttp4.jar"/>
+	<classpathentry exported="true" kind="var" path="JAM_LIB/modules/simpleweb.jar"/>
+	<classpathentry exported="true" kind="var" path="JAM_LIB/modules/http-commons.jar"/>
+	<classpathentry exported="true" kind="var" path="JAM_LIB/modules/httpclient.jar"/>
+	<classpathentry exported="true" kind="var" path="JAM_LIB/modules/log-api.jar"/>
+	<classpathentry exported="true" kind="var" path="JAM_LIB/modules/log.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

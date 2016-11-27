@@ -440,6 +440,9 @@
         <fileset dir="${jam.build.dir}/lib/modules/mod-mon-fritzbox" includes="**/*.jar" />
         <fileset dir="${jam.build.dir}/lib/modules/mod-rep-macab" includes="**/*.jar" />
       </copy>
+
+	<delete file="${jam.dist.dir}/jam50-macosx64-fritzbox/structure.zip" />
+	<zip zipfile="${jam.dist.dir}/jam50-macosx64-fritzbox/structure.zip" basedir="${jam.dist.dir}/jam50-macosx64-fritzbox" excludes="*.jar,structure.zip"/> 
       
       <loadfile srcFile="./kernel/core/deployment/all/~meta-inf/descriptor.properties" property="jam.version">
 		<filterchain>
@@ -453,8 +456,8 @@
 		</filterchain>
 	  </loadfile>
       
-      <mkdir dir="${jam.dist.dir}/jarbundler/jam50-fritzbox/"/>
-	  <appbundler outputdirectory="${jam.dist.dir}/jarbundler/jam50-fritzbox/"
+      <mkdir dir="${jam.dist.dir}/appbundler/jam50-fritzbox/"/>
+	  <appbundler outputdirectory="${jam.dist.dir}/appbundler/jam50-fritzbox/"
         name="jAnrufmonitor - AVM FRITZ!Box Edition"
         displayname="jAnrufmonitor - AVM FRITZ!Box Edition"
         identifier="de.janrufmonitor.core"
@@ -464,17 +467,24 @@
         mainclassname="de/janrufmonitor/application/RunUI64">
 		<runtime dir="${env.JAVA_HOME}" />
 		<classpath dir="${jam.dist.dir}/jam50-macosx64-fritzbox" >
-            <include name="*.jar" />
-			<include name="lib/*.jar" />
+            <include name="**/*.jar" />
+	    <include name="structure.zip" />
         </classpath>
-        <option value="-Djam.ui.toplevel=false -Djam.ui.trayitem=true -Xms16m -Xmx256m -Dapple.laf.useScreenMenuBar=true -Dapple.awt.brushMetal=true -Dapple.awt.showGrowBox=false"/>
+        <option value="-XstartOnFirstThread"/>
+<option value="-Djam.ui.toplevel=false"/>
+<option value="-Djam.ui.trayitem=true"/>
+<option value="-Xms16m"/>
+<option value="-Xmx256m"/>
+<option value="-Dapple.laf.useScreenMenuBar=true"/>
+<option value="-Dapple.awt.brushMetal=true"/>
+<option value="-Dapple.awt.showGrowBox=false"/>
       </appbundler>
 
-       <delete file="${jam.pub.dir}/jam50-macosx-fritzbox.dmg" />
+       <delete file="${jam.pub.dir}/jam50-macosx-fritzbox-oracle.dmg" />
       
       <exec dir="." os="Mac OS X" executable="/bin/sh">
         <arg value="-c"/>
-        <arg value="./mkdmg.sh /Users/brandtt/git/janrufmonitor/ ./${jam.dist.dir}/jarbundler/jam50-fritzbox/ ./${jam.pub.dir}/ jam50-macosx-fritzbox"/>
+        <arg value="./mkdmg.sh /Users/brandtt/git/janrufmonitor/ ./${jam.dist.dir}/appbundler/jam50-fritzbox/ ./${jam.pub.dir}/ jam50-macosx-fritzbox-oracle"/>
       </exec>
 	</target>
     
@@ -528,7 +538,7 @@
               icon="./kernel/core/deployment/macosx64/images/jam.icns"
               jvmversion="1.6+"
               version="${jam.version}"
-              infostring="jAnrufmonitor 5.0, copyright 2008 - 2014"
+              infostring="jAnrufmonitor 5.0, copyright 2008 - 2016"
               build="${jam.version}"
               bundleid="de.janrufmonitor.core" 
               startOnMainThread="true"
@@ -610,7 +620,7 @@
               icon="./kernel/core/deployment/macosx64/images/jam.icns"
               jvmversion="1.6+"
               version="${jam.version}"
-              infostring="jAnrufmonitor 5.0, copyright 2008 - 2014"
+              infostring="jAnrufmonitor 5.0, copyright 2008 - 2016"
               build="${jam.version}"
               bundleid="de.janrufmonitor.core" 
               startOnMainThread="true"
@@ -692,7 +702,7 @@
               icon="./kernel/core/deployment/macosx64/images/jam.icns"
               jvmversion="1.6+"
               version="${jam.version}"
-              infostring="jAnrufmonitor 5.0, copyright 2008 - 2014"
+              infostring="jAnrufmonitor 5.0, copyright 2008 - 2016"
               build="${jam.version}"
               bundleid="de.janrufmonitor.core" 
               startOnMainThread="true"
@@ -893,7 +903,7 @@
     <target name="publish_javadoc" description="publish javadoc">
         <javadoc overview="${jam.kernel.root}/framework/src/api/overview.html" packagenames="de.janrufmonitor.*" sourcepath="${jam.kernel.root}/framework/src/api" defaultexcludes="yes" destdir="${jam.doc.root}/javadoc" author="true" version="true" use="true" windowtitle="jAnrufmonitor Framework 5.0"> 
             <doctitle><![CDATA[<h1>jAnrufmonitor Framework 5.0</h1>]]></doctitle>
-            <bottom><![CDATA[<i>Copyright &#169; 2008 - 2014 by Thilo Brandt. All Rights Reserved.</i>]]></bottom> 
+            <bottom><![CDATA[<i>Copyright &#169; 2008 - 2016 by Thilo Brandt. All Rights Reserved.</i>]]></bottom> 
             <group title="Framework" packages="de.janrufmonitor.framework:de.janrufmonitor.framework.*"/>
             <group title="Runtime Environment" packages="de.janrufmonitor.runtime:de.janrufmonitor.runtime.*"/> 
             <group title="Services" packages="de.janrufmonitor.service"/> 

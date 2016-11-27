@@ -3,12 +3,15 @@ package de.janrufmonitor.application;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
@@ -17,6 +20,8 @@ import org.eclipse.swt.widgets.Shell;
 
 import de.janrufmonitor.util.io.OSUtils;
 import de.janrufmonitor.util.io.PathResolver;
+import de.janrufmonitor.util.io.Stream;
+import de.janrufmonitor.util.string.StringUtils;
 import de.janrufmonitor.classloader.JamCacheMasterClassLoader;
 import de.janrufmonitor.exception.Message;
 import de.janrufmonitor.exception.PropagationFactory;
@@ -55,6 +60,111 @@ public class RunUI64 {
     	}    	
     }
     
+    private static class Extractor {
+    	private static final String JAR_FILE_PREFIX = "jar:file:";
+    	private static final String FILE_PREFIX = "file:";
+    	
+    	public static void prepareFilesystem() {
+    		if (!OSUtils.isMacOSX() || System.getProperty("java.specification.version").compareTo("1.8")<0) return;
+    		
+    		File workingDir = null;
+    		
+    		try {
+    			String className = Extractor.class.getName().replace('.', File.separatorChar) + ".class";
+    			ClassLoader classLoader = Extractor.class.getClassLoader();
+    			String url = classLoader.getResource(className).toString();
+
+    			
+    			// remove encoding
+    			url = StringUtils.replaceString(url, "%20", " ");
+
+    			if (url.startsWith(JAR_FILE_PREFIX)) {
+    				url = url.substring(JAR_FILE_PREFIX.length(), url.length() - className.length() - 2);
+    				String temp = url.substring(0, url.lastIndexOf(File.separator) + 1);
+    				if (temp.length() < 1) {
+    					temp = url.substring(0, url.lastIndexOf("\\") + 1);
+    				}
+    				if (!temp.endsWith(File.separator)) {
+    					temp += File.separator;
+    				}
+
+    				workingDir = new File(temp);
+    			}
+    			if (url.startsWith(FILE_PREFIX)) {
+    				String cp = url.substring(FILE_PREFIX.length(), url.length() - className.length());
+    				if (!cp.endsWith(File.separator)) {
+    					cp += File.separator;
+    				}
+                    
+    				workingDir = new File(cp);
+    			}
+    		} catch (Exception e) {
+    			System.out.println(e);
+    			return;
+    		}
+    		
+    		// extract structure.zip if existing
+    		try {
+	    		if (workingDir!=null && workingDir.exists() && workingDir.isDirectory()) {
+	    			File structureZip = new File(workingDir, "structure.zip");
+	    			if (structureZip.exists() && structureZip.isFile()) {
+	    				ZipFile szip = new ZipFile(structureZip);
+	    				ZipEntry z = null;
+	    				String entryname = null;
+	    				File newfile = null;
+	    				for (Enumeration e = szip.entries();e.hasMoreElements();) {
+	    					try {
+	    						z = (ZipEntry)e.nextElement();
+	    						entryname =  z.getName();
+	    						if (z.isDirectory()) {
+	    							new File(workingDir, entryname).mkdir();
+	    							newfile = null;
+	    						} else {
+	    							newfile = new File(workingDir, entryname);
+	    							newfile.getParentFile().mkdirs();
+	    						}
+	    						if (newfile!=null) {
+	    							InputStream in = szip.getInputStream(z);
+	    							if (in!=null) {
+	    								Stream.copy(in, new FileOutputStream(newfile), true);
+	    							}
+	    						}
+	    					} catch (Throwable ex) {
+	    						System.out.println(ex);
+	    					}
+	    				}
+	    				szip.close();
+	    				if (!structureZip.delete()) structureZip.deleteOnExit();
+	    			}
+	    		}
+    		} catch (Exception e) {
+    			System.out.println(e);
+    			return;
+    		}
+    		
+    		// copy /lib content to install dir
+    		File lib = new File(PathResolver.getInstance().getLibDirectory());
+    		if (lib!=null && lib.exists() && lib.isDirectory()) {
+    			File [] files = lib.listFiles(new FilenameFilter() {
+
+					@Override
+					public boolean accept(File f, String name) {
+						return name.endsWith(".jar");
+					}});
+    			for (int i=0;i<files.length;i++) {
+    				try {
+    					if (files[i]!=null && files[i].exists() && files[i].isFile()) {
+    						Stream.copy(new FileInputStream(files[i]), new FileOutputStream(new File(PathResolver.getInstance().getInstallDirectory(), files[i].getName())), true);
+    						if (!files[i].delete()) files[i].deleteOnExit();
+    					}
+    				} catch (Exception e) {
+    					System.out.println(e);
+    				}
+    			}
+    		}	
+    	}
+    }
+    
     public static void go() {
 		try {
 			RunUI64.m_logger = LogManager.getLogManager().getLogger(IJAMConst.DEFAULT_LOGGER);
@@ -68,6 +178,7 @@ public class RunUI64 {
 				RunUI64.m_logger.fine("Reading Java runtime environment...");
 				while (iter.hasNext()) {
 					key = (String) iter.next();
+					System.out.println(key + " = "+env.getProperty(key));
 					RunUI64.m_logger.fine(key + " = "+env.getProperty(key));
 				}
 			}
@@ -242,7 +353,10 @@ public class RunUI64 {
 
     public static void main(String[] args) { 
     	// added 2016/01/05: Display under Cocoa must be initialized with main-Thread
-    	if (OSUtils.isMacOSX()) Display.getDefault();
+    	if (OSUtils.isMacOSX()) {
+    		Display.getDefault();
+			Extractor.prepareFilesystem();
+    	}
     	
     	final Runnable error = new Runnable () {
 			public void run () {

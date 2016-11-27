@@ -2,13 +2,13 @@
 <classpath>
 	<classpathentry kind="src" path="src/api"/>
 	<classpathentry kind="src" path="src/ui"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="var" path="JAM_LIB/kernel/allui/commands.jar"/>
-	<classpathentry kind="var" path="JAM_LIB/kernel/allui/i18n.jar"/>
-	<classpathentry kind="var" path="JAM_LIB/kernel/allui/jface.jar"/>
-	<classpathentry kind="var" path="JAM_LIB/kernel/allui/osgi.jar"/>
-	<classpathentry kind="var" path="JAM_LIB/kernel/allui/runtime.jar"/>
-	<classpathentry kind="var" path="JAM_LIB/kernel/all/hsqldb.jar"/>
-	<classpathentry kind="var" path="JAM_OSDEPENDEND_LIB/swt.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="var" path="JAM_LIB/kernel/allui/commands.jar"/>
+	<classpathentry exported="true" kind="var" path="JAM_LIB/kernel/allui/i18n.jar"/>
+	<classpathentry exported="true" kind="var" path="JAM_LIB/kernel/allui/jface.jar"/>
+	<classpathentry exported="true" kind="var" path="JAM_LIB/kernel/allui/osgi.jar"/>
+	<classpathentry exported="true" kind="var" path="JAM_LIB/kernel/allui/runtime.jar"/>
+	<classpathentry exported="true" kind="var" path="JAM_LIB/kernel/all/hsqldb.jar"/>
+	<classpathentry exported="true" kind="var" path="JAM_OSDEPENDEND_LIB/swt.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

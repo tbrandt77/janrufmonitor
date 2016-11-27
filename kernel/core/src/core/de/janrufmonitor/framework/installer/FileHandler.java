@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.runtime.PIMRuntime;
+import de.janrufmonitor.util.io.OSUtils;
 import de.janrufmonitor.util.io.PathResolver;
 import de.janrufmonitor.util.io.Stream;
 
@@ -23,6 +24,10 @@ public class FileHandler {
 	}
 
 	public void addFile(InputStream in, String path) {
+		// special handling for lib/*.jar files on MacOS with Oracle JVM 8+
+		if (OSUtils.isMacOSX() && System.getProperty("java.specification.version").compareTo("1.8")>=0) {
+			if (path!=null && path.startsWith("lib") && path.endsWith(".jar")) path = path.substring(3);
+		}
 		if (path.startsWith("%")) {
 			path = PathResolver.getInstance(PIMRuntime.getInstance()).resolve(path);
 		} else {
@@ -41,6 +46,9 @@ public class FileHandler {
 	}
 
 	public void removeFile(String path) {
+		if (OSUtils.isMacOSX() && System.getProperty("java.specification.version").compareTo("1.8")>=0) {
+			if (path!=null && path.startsWith("lib") && path.endsWith(".jar")) path = path.substring(3);
+		}
 		if (path.startsWith("%")) {
 			path = PathResolver.getInstance(PIMRuntime.getInstance()).resolve(path);
 		} else {
@@ -51,7 +59,7 @@ public class FileHandler {
 			this.m_logger.info("Deleting "+file.getAbsolutePath()+"...");
 		if (file.exists()) 
 			if (!file.delete()) {
-				this.m_logger.info("Deleting "+file.getAbsolutePath()+" during application run failed. Delete on exit is triggered,");
+				this.m_logger.info("Deleting "+file.getAbsolutePath()+" during application run failed. Delete on exit is triggered.");
 				file.deleteOnExit();
 			}
 	}

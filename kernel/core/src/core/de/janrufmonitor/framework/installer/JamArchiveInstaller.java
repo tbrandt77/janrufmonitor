@@ -157,11 +157,18 @@ public class JamArchiveInstaller extends AbstractInstaller {
 			l = p.getLibFiles();
 			if (l.size()>0)
 				this.handleAddLib(p, l);
+
+			// copy jnilib files to MacOS location for Orcale Javav 8+ and MacOS X
+			if (OSUtils.isMacOSX() && System.getProperty("java.specification.version").compareTo("1.8")>=0) {
+				l = p.getJniLibFiles();
+				if (l.size()>0)
+					this.handleAddJniLib(p, l);
+			}
 			
 			l = p.getOtherFiles();
 			if (l.size()>0)
 				this.handleAddFiles(p, l);
-
+			
 			p.close();
 		} catch (JamArchiveException e) {
 			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
@@ -221,10 +228,17 @@ public class JamArchiveInstaller extends AbstractInstaller {
 					
 					l = p.getLibFiles();
 					this.handleRemoveLib(p, l);
+
+					// copy jnilib files to MacOS location for Orcale Javav 8+ and MacOS X
+					if (OSUtils.isMacOSX() && System.getProperty("java.specification.version").compareTo("1.8")>=0) {
+						l = p.getJniLibFiles();
+						if (l.size()>0)
+							this.handleRemoveJniLib(p, l);
+					}
 					
 					l = p.getOtherFiles();
 					this.handleRemoveFiles(p, l);
-
+					
 					p.close();
 				} catch (JamArchiveException e) {
 					this.m_logger.warning(e.getMessage());
@@ -271,6 +285,38 @@ public class JamArchiveInstaller extends AbstractInstaller {
 				content = p.getStream(entry);
 				if (content!=null)
 					fh.addFile(content, entry);
+			} catch (JamArchiveException e) {
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			}
+		}	
+	}
+	
+	private void handleAddJniLib(JamArchive p, List l) {
+		String entry = null;
+		InputStream content = null;
+		JniLibHandler fh = new JniLibHandler();
+		for (int i=0,j=l.size();i<j;i++) {
+			entry = (String) l.get(i);
+			try {
+				content = p.getStream(entry);
+				if (content!=null)
+					fh.addJniLib(content, entry);
+			} catch (JamArchiveException e) {
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			}
+		}	
+	}
+	
+	private void handleRemoveJniLib(JamArchive p, List l) {
+		String entry = null;
+		InputStream content = null;
+		JniLibHandler fh = new JniLibHandler();
+		for (int i=0,j=l.size();i<j;i++) {
+			entry = (String) l.get(i);
+			try {
+				content = p.getStream(entry);
+				if (content!=null)
+					fh.removeJniLib(entry);
 			} catch (JamArchiveException e) {
 				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 			}
