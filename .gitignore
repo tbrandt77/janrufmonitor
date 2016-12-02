@@ -14,3 +14,6 @@ docs/**/*
 kernel/**/build/*
 modules/**/build/*
 modules/**/src_lib/*
+.recommenders
+.recommenders/
+.recommenders/**/*

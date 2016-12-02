@@ -346,6 +346,7 @@ public class OutlookMappingManager {
 		return getRuntime().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_NUMBER_TYPE+pn.getTelephoneNumber(), om.mapToJamNumberType(outlookNumberType));
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void setPictureAttribute(ICaller outlookCaller, Dispatch contact) {
 		try {			
 			if (Dispatch.get(contact, "HasPicture").getBoolean()) {		

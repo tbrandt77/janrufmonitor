@@ -15,6 +15,7 @@ public class SoundFile {
     String filename;
     AudioFormat audioFormat;
     Logger m_logger;
+	private AudioInputStream audioInputStream;
     
     public SoundFile(String filename) {
     	this.m_logger = LogManager.getLogManager().getLogger(IJAMConst.DEFAULT_LOGGER);
@@ -39,11 +40,10 @@ public class SoundFile {
                     int cnt;
 
                     AudioFormat audioFormat =  getAudioFormat();
-                    AudioInputStream audioInputStream =
-                        new AudioInputStream(is,
-                                             audioFormat,
-                                             is.available()/audioFormat.
-                                             getFrameSize());
+                    audioInputStream = new AudioInputStream(is,
+					                     audioFormat,
+					                     is.available()/audioFormat.
+					                     getFrameSize());
                     DataLine.Info dataLineInfo =
                         new DataLine.Info(SourceDataLine.class,
                                           audioFormat);

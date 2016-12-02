@@ -31,6 +31,8 @@ public class Base64Decoder extends FilterInputStream {
   private int charCount;
   private int carryOver;
 
+private static Base64Decoder in;
+
   /**
    * Constructs a new Base64 decoder that reads input from the given
    * InputStream.
@@ -141,7 +143,7 @@ public class Base64Decoder extends FilterInputStream {
     catch (UnsupportedEncodingException ex) {
     }
 
-    Base64Decoder in = new Base64Decoder(
+    in = new Base64Decoder(
       new ByteArrayInputStream(bytes));
 
     ByteArrayOutputStream out =

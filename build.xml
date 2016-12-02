@@ -538,7 +538,7 @@
               icon="./kernel/core/deployment/macosx64/images/jam.icns"
               jvmversion="1.6+"
               version="${jam.version}"
-              infostring="jAnrufmonitor 5.0, copyright 2008 - 2016"
+              infostring="jAnrufmonitor 5.0, copyright 2008 - 2017"
               build="${jam.version}"
               bundleid="de.janrufmonitor.core" 
               startOnMainThread="true"
@@ -620,7 +620,7 @@
               icon="./kernel/core/deployment/macosx64/images/jam.icns"
               jvmversion="1.6+"
               version="${jam.version}"
-              infostring="jAnrufmonitor 5.0, copyright 2008 - 2016"
+              infostring="jAnrufmonitor 5.0, copyright 2008 - 2017"
               build="${jam.version}"
               bundleid="de.janrufmonitor.core" 
               startOnMainThread="true"
@@ -702,7 +702,7 @@
               icon="./kernel/core/deployment/macosx64/images/jam.icns"
               jvmversion="1.6+"
               version="${jam.version}"
-              infostring="jAnrufmonitor 5.0, copyright 2008 - 2016"
+              infostring="jAnrufmonitor 5.0, copyright 2008 - 2017"
               build="${jam.version}"
               bundleid="de.janrufmonitor.core" 
               startOnMainThread="true"
@@ -903,7 +903,7 @@
     <target name="publish_javadoc" description="publish javadoc">
         <javadoc overview="${jam.kernel.root}/framework/src/api/overview.html" packagenames="de.janrufmonitor.*" sourcepath="${jam.kernel.root}/framework/src/api" defaultexcludes="yes" destdir="${jam.doc.root}/javadoc" author="true" version="true" use="true" windowtitle="jAnrufmonitor Framework 5.0"> 
             <doctitle><![CDATA[<h1>jAnrufmonitor Framework 5.0</h1>]]></doctitle>
-            <bottom><![CDATA[<i>Copyright &#169; 2008 - 2016 by Thilo Brandt. All Rights Reserved.</i>]]></bottom> 
+            <bottom><![CDATA[<i>Copyright &#169; 2008 - 2017 by Thilo Brandt. All Rights Reserved.</i>]]></bottom> 
             <group title="Framework" packages="de.janrufmonitor.framework:de.janrufmonitor.framework.*"/>
             <group title="Runtime Environment" packages="de.janrufmonitor.runtime:de.janrufmonitor.runtime.*"/> 
             <group title="Services" packages="de.janrufmonitor.service"/> 

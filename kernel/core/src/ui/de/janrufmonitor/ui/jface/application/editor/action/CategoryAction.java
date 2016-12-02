@@ -317,6 +317,7 @@ public class CategoryAction extends AbstractAction implements EditorConfigConst 
 								    		f_l.add(cat);
 									}
 								}
+								br.close();
 								Collections.sort(f_l);
 								tv.setInput(f_l);
 							} catch (FileNotFoundException ex) {

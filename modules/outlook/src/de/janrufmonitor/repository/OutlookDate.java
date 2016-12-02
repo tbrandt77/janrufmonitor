@@ -22,11 +22,11 @@ public class OutlookDate extends java.util.Date {
 	// Half a second, expressed in days
 	static double HALF_SECOND = (1.0 / 172800.0);
 
+	@SuppressWarnings("deprecation")
 	public void setDate(double dtSrc) {
 
 		// source code copied from MFC 4.21 and modified
 
-		long nDays; // Number of days since Dec. 30, 1899
 		long nDaysAbsolute; // Number of days since 1/1/0
 		long nSecsInDay; // Time in seconds since midnight
 		long nMinutesInDay; // Minutes in day
@@ -45,13 +45,7 @@ public class OutlookDate extends java.util.Date {
 		int tm_mday;
 		int tm_mon;
 		int tm_year;
-		int tm_wday;
-		int tm_yday;
-
 		double dblDate = dtSrc; // temporary serial date
-
-		// If a valid date, then this conversion should not overflow
-		nDays = (long) dblDate;
 
 		// Round to the second
 		dblDate += ((dtSrc > 0.0) ? HALF_SECOND : -HALF_SECOND);
@@ -148,6 +142,7 @@ public class OutlookDate extends java.util.Date {
 	static int rgMonthDays[] = { 0, 31, 59, 90, 120, 151, 181, 212, 243, 273,
 			304, 334, 365 };
 
+	@SuppressWarnings("deprecation")
 	public double toDouble() {
 		// source code copied from MFC 4.21 and modified.
 
@@ -162,8 +157,8 @@ public class OutlookDate extends java.util.Date {
 		boolean bLeapYear = ((wYear & 3) == 0)
 				&& ((wYear % 100) != 0 || (wYear % 400) == 0);
 
-		int nDaysInMonth = rgMonthDays[wMonth] - rgMonthDays[wMonth - 1]
-				+ ((bLeapYear && wDay == 29 && wMonth == 2) ? 1 : 0);
+		//int nDaysInMonth = rgMonthDays[wMonth] - rgMonthDays[wMonth - 1]
+		//		+ ((bLeapYear && wDay == 29 && wMonth == 2) ? 1 : 0);
 
 		// Cache the date in days and time in fractional days
 		long nDate;
