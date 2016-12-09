@@ -27,12 +27,14 @@ set JDK_HOME=
  echo Java Runtime environment found setting JAVA_HOME and JAVA_JRE to "%JRE_HOME%"
  setx JAVA_HOME "%JRE_HOME%"
  setx JAVA_JRE "%JRE_HOME%"
+ setx PATH "%JRE_HOME%\bin;%PATH%"
  )
 
  rem If a Java JDK environment is located then set JAVA_HOME system environment variables
  if not "%JDK_HOME%"=="" (
  echo Java JDK environment found setting JAVA_HOME "%JDK_HOME%"
  setx JAVA_HOME "%JDK_HOME%"
+ setx PATH "%JDK_HOME%\bin;%PATH%"
  )
 
  goto end
