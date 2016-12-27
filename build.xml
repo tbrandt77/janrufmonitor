@@ -301,7 +301,6 @@
       </copy>
       <zip zipfile="${jam.pub.dir}/jam50-win64-ncid.zip" basedir="${jam.dist.dir}/jam50-win64-ncid"/>  
 
-
       <echo message="Publishing win64 client version..." />
       <copy todir="${jam.dist.dir}/jam50-win64-client">
           <fileset dir="${jam.dist.dir}/jam50-win64"/>
@@ -409,7 +408,7 @@
      
     </target>
 
-	<target name="bundle_macosx64_oracle" depends="init_bundle,macosx64_distribution" description="create macosx64 bundles" if="is.macosx">
+  <target name="bundle_macosx64_oracle" depends="init_bundle,build_modules,macosx64_distribution" description="create macosx64 bundles" if="is.macosx">
 	  <property environment="env"/>
 
 	  <!-- Define the appbundler task -->
@@ -461,11 +460,11 @@
         name="jAnrufmonitor - AVM FRITZ!Box Edition"
         displayname="jAnrufmonitor - AVM FRITZ!Box Edition"
         identifier="de.janrufmonitor.core"
+                copyright="jAnrufmonitor 5.0, copyright 2008 - 2017"
         icon="./kernel/core/deployment/macosx64/images/jam.icns" 
         shortversion="${jam.version}"
         applicationCategory="public.app-category.productivity"
         mainclassname="de/janrufmonitor/application/RunUI64">
-		<runtime dir="${env.JAVA_HOME}" />
 		<classpath dir="${jam.dist.dir}/jam50-macosx64-fritzbox" >
             <include name="**/*.jar" />
 	    <include name="structure.zip" />
@@ -484,12 +483,12 @@
       
       <exec dir="." os="Mac OS X" executable="/bin/sh">
         <arg value="-c"/>
-        <arg value="./mkdmg.sh /Users/brandtt/git/janrufmonitor/ ./${jam.dist.dir}/appbundler/jam50-fritzbox/ ./${jam.pub.dir}/ jam50-macosx-fritzbox-oracle"/>
+      <arg value="./mkdmg.sh ./${jam.dist.dir}/appbundler/jam50-fritzbox/ ./${jam.pub.dir}/ jam50-macosx-fritzbox-oracle"/>
       </exec>
 	</target>
     
-    <target name="bundle_macosx64" depends="init_bundle,macosx64_distribution" description="create macosx64 bundles" if="is.macosx">
-      <taskdef name="jarbundler" classname="net.sourceforge.jarbundler.JarBundler" classpath="./ant/lib/jarbundler-2.3.1.jar"/>
+  <target name="bundle_macosx64" depends="init_bundle,build_modules,macosx64_distribution" description="create macosx64 bundles" if="is.macosx">
+    <taskdef name="jarbundler" classname="com.ultramixer.jarbundler.JarBundler" classpath="./ant/lib/jarbundler-core-3.3.0.jar"/>
 
       <echo message="Publishing macosx64 fritzbox version..." />
       <copy todir="${jam.dist.dir}/jam50-macosx64-fritzbox">
@@ -538,12 +537,13 @@
               icon="./kernel/core/deployment/macosx64/images/jam.icns"
               jvmversion="1.6+"
               version="${jam.version}"
-              infostring="jAnrufmonitor 5.0, copyright 2008 - 2017"
+              copyright="jAnrufmonitor 5.0, copyright 2008 - 2017"
               build="${jam.version}"
               bundleid="de.janrufmonitor.core" 
               startOnMainThread="true"
               isAgent="yes"
               developmentregion="German"
+              allowmixedlocalizations="true"
               vmoptions="-Djam.ui.toplevel=false -Djam.ui.trayitem=true -Xms16m -Xmx256m"> 
                 
         <!-- Adjust the look, feel and behavior -->
@@ -569,7 +569,7 @@
       
       <exec dir="." os="Mac OS X" executable="/bin/sh">
         <arg value="-c"/>
-        <arg value="./mkdmg.sh /Users/brandtt/git/janrufmonitor/ ./${jam.dist.dir}/jarbundler/jam50-fritzbox/ ./${jam.pub.dir}/ jam50-macosx-fritzbox"/>
+      <arg value="./mkdmg.sh ./${jam.dist.dir}/jarbundler/jam50-fritzbox/ ./${jam.pub.dir}/ jam50-macosx-fritzbox"/>
       </exec>
       
 
@@ -620,11 +620,12 @@
               icon="./kernel/core/deployment/macosx64/images/jam.icns"
               jvmversion="1.6+"
               version="${jam.version}"
-              infostring="jAnrufmonitor 5.0, copyright 2008 - 2017"
+              copyright="jAnrufmonitor 5.0, copyright 2008 - 2017"
               build="${jam.version}"
               bundleid="de.janrufmonitor.core" 
               startOnMainThread="true"
               isAgent="yes"
+              allowmixedlocalizations="true"
               developmentregion="German"
               vmoptions="-Djam.ui.toplevel=false -Djam.ui.trayitem=true -Xms16m -Xmx256m"> 
                 
@@ -651,7 +652,7 @@
       
       <exec dir="." os="Mac OS X" executable="/bin/sh">
         <arg value="-c"/>
-        <arg value="./mkdmg.sh /Users/brandtt/git/janrufmonitor/ ./${jam.dist.dir}/jarbundler/jam50-ncid/ ./${jam.pub.dir}/ jam50-macosx-ncid"/>
+      <arg value="./mkdmg.sh ./${jam.dist.dir}/jarbundler/jam50-ncid/ ./${jam.pub.dir}/ jam50-macosx-ncid"/>
       </exec>
 
       
@@ -702,11 +703,12 @@
               icon="./kernel/core/deployment/macosx64/images/jam.icns"
               jvmversion="1.6+"
               version="${jam.version}"
-              infostring="jAnrufmonitor 5.0, copyright 2008 - 2017"
+              copyright="jAnrufmonitor 5.0, copyright 2008 - 2017"
               build="${jam.version}"
               bundleid="de.janrufmonitor.core" 
               startOnMainThread="true"
               isAgent="yes"
+              allowmixedlocalizations="true"
               developmentregion="German"
               vmoptions="-Djam.ui.toplevel=false -Djam.ui.trayitem=true -Xms16m -Xmx256m"> 
                 
@@ -733,7 +735,7 @@
       
       <exec dir="." os="Mac OS X" executable="/bin/sh">
         <arg value="-c"/>
-        <arg value="./mkdmg.sh /Users/brandtt/git/janrufmonitor/ ./${jam.dist.dir}/jarbundler/jam50-client/ ./${jam.pub.dir}/ jam50-macosx-client"/>
+      <arg value="./mkdmg.sh ./${jam.dist.dir}/jarbundler/jam50-client/ ./${jam.pub.dir}/ jam50-macosx-client"/>
       </exec>
     </target>
     
@@ -927,17 +929,6 @@
         <delete dir="${jam.build.root}" />
         <delete dir="${jam.dist.root}" />
     </target>   
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
 <macrodef name="create-bundle">
