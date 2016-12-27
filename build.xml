@@ -483,7 +483,7 @@
       
       <exec dir="." os="Mac OS X" executable="/bin/sh">
         <arg value="-c"/>
-      <arg value="./mkdmg.sh /${jam.dist.dir}/appbundler/jam50-fritzbox/ ./${jam.pub.dir}/ jam50-macosx-fritzbox-oracle"/>
+      <arg value="./mkdmg.sh ./${jam.dist.dir}/appbundler/jam50-fritzbox/ ./${jam.pub.dir}/ jam50-macosx-fritzbox-oracle"/>
       </exec>
 	</target>
     
