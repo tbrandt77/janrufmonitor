@@ -613,10 +613,14 @@ public class PathResolver {
 	 */
 	public String getLogDirectory() {
 		if (this.logPath==null) {
-			this.logPath = new File(this.getInstallDirectory(), "logs");
-			
-			if (OSUtils.isMultiuserEnabled()) {
-				this.logPath = new File(this.getInstallDirectory(), "users"+File.separator+OSUtils.getLoggedInUser()+File.separator+"logs");
+			if (OSUtils.isMacOSX()) {
+				this.logPath = new File(this.getUserhomeDirectory(), "Library"+File.pathSeparator+"Logs"+File.pathSeparator+"jAnrufmonitor");
+			} else {
+				this.logPath = new File(this.getInstallDirectory(), "logs");
+				
+				if (OSUtils.isMultiuserEnabled()) {
+					this.logPath = new File(this.getInstallDirectory(), "users"+File.separator+OSUtils.getLoggedInUser()+File.separator+"logs");
+				}
 			}
 		}
 		return this.logPath.getAbsolutePath() + File.separator;
