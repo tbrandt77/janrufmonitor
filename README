@@ -1,22 +1,22 @@
 ------------------------------------------------------
 jAnrufmonitor 5.0
 
-Website: http://www.janrufmonitor.de
+Website: https://www.janrufmonitor.de
 Author: Thilo Brandt (mail@thilo-brandt.de)
 ------------------------------------------------------
 
-This github repository contains the source files and build infrastructure of jAnrufmonitor 5.0 (Patch 30+). This software was originally developed as freeware and is now under social coding.
+This GitHub repository contains the source files and build infrastructure of jAnrufmonitor 5.0 (Patch 30+). This software was originally developed as freeware and is now under social coding.
 
 For any commercial usage of this source, the author must be notified and referenced by the commercial product or company.
 
-Please refer also to the software licence agreement located in the Github repository under ./kernel/core/deployment/all/license.txt.
+Please refer also to the software license agreement located in the GitHub repository under ./kernel/core/deployment/all/license.txt.
 
 -----
 Required Software for building/compiling jAnrufmonitor 5.0:
 
 Java JDK 1.6+ (http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 
-Apache Ant 1.8+ (http://ant.apache.org/bindownload.cgi) 
+Apache Ant 1.9+ (http://ant.apache.org/bindownload.cgi) 
 
 -----
 Build process:

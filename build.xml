@@ -850,7 +850,7 @@
     <target name="publish_console" depends="bundle_console" description="publishes console bundle" >
     </target>
     
-    <target name="publish_macosx64" depends="bundle_macosx64" description="publishes macosx64 bundle" >
+    <target name="publish_macosx64" depends="bundle_macosx64,bundle_macosx64_oracle" description="publishes macosx64 bundle" >
       <mkdir dir="${jam.pub.dir}/core.${jam.version}.macosx.64.jam"/>
       <copy todir="${jam.pub.dir}/core.${jam.version}.macosx.64.jam">
         <fileset file="${jam.kernel.lib}/jam.jar"/>
