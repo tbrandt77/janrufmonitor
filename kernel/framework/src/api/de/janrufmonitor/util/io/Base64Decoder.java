@@ -31,7 +31,7 @@ public class Base64Decoder extends FilterInputStream {
   private int charCount;
   private int carryOver;
 
-private static Base64Decoder in;
+private static Base64Decoder instance;
 
   /**
    * Constructs a new Base64 decoder that reads input from the given
@@ -143,7 +143,7 @@ private static Base64Decoder in;
     catch (UnsupportedEncodingException ex) {
     }
 
-    in = new Base64Decoder(
+    instance = new Base64Decoder(
       new ByteArrayInputStream(bytes));
 
     ByteArrayOutputStream out =
@@ -152,7 +152,7 @@ private static Base64Decoder in;
     try {
       byte[] buf = new byte[4 * 1024];// 4K buffer
       int bytesRead;
-      while ((bytesRead = in.read(buf)) != -1) {
+      while ((bytesRead = instance.read(buf)) != -1) {
         out.write(buf, 0, bytesRead);
       }
       out.close();
