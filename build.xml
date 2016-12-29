@@ -408,11 +408,11 @@
      
     </target>
 
-  <target name="bundle_macosx64_oracle" depends="init_bundle,build_modules,macosx64_distribution" description="create macosx64 bundles" if="is.macosx">
+  <target name="bundle_macosx64" depends="init_bundle,build_modules,macosx64_distribution" description="create macosx64 bundles" if="is.macosx">
 	  <property environment="env"/>
 
 	  <!-- Define the appbundler task -->
-	  <taskdef name="appbundler" classname="com.oracle.appbundler.AppBundlerTask" classpath="./ant/lib/appbundler-1.0.jar"/>
+	  <taskdef name="appbundler" classname="com.oracle.appbundler.AppBundlerTask" classpath="./ant/lib/appbundler-1.0ea.jar"/>
   
       <echo message="Publishing macosx64 fritzbox version..." />
       <copy todir="${jam.dist.dir}/jam50-macosx64-fritzbox">
@@ -462,6 +462,7 @@
         identifier="de.janrufmonitor.core"
                 copyright="jAnrufmonitor 5.0, copyright 2008 - 2017"
         icon="./kernel/core/deployment/macosx64/images/jam.icns" 
+	  	hidedockicon="true" 
         shortversion="${jam.version}"
         applicationCategory="public.app-category.productivity"
         mainclassname="de/janrufmonitor/application/RunUI64">
@@ -469,25 +470,182 @@
             <include name="**/*.jar" />
 	    <include name="structure.zip" />
         </classpath>
-        <option value="-XstartOnFirstThread"/>
-<option value="-Djam.ui.toplevel=false"/>
-<option value="-Djam.ui.trayitem=true"/>
-<option value="-Xms16m"/>
-<option value="-Xmx256m"/>
-<option value="-Dapple.laf.useScreenMenuBar=true"/>
-<option value="-Dapple.awt.brushMetal=true"/>
-<option value="-Dapple.awt.showGrowBox=false"/>
+	  	<option value="-XstartOnFirstThread"/>
+	  	<!-- option value="-Djam.multiuser=true"/ -->
+		<option value="-Djam.ui.toplevel=false"/>
+		<option value="-Djam.ui.trayitem=true"/>
+		<option value="-Xms16m"/>
+		<option value="-Xmx256m"/>
+		<option value="-Dapple.laf.useScreenMenuBar=true"/>
+		<option value="-Dapple.awt.brushMetal=true"/>
+		<option value="-Dapple.awt.showGrowBox=false"/>
       </appbundler>
 
-       <delete file="${jam.pub.dir}/jam50-macosx-fritzbox-oracle.dmg" />
+       <delete file="${jam.pub.dir}/jam50-macosx-fritzbox.dmg" />
       
       <exec dir="." os="Mac OS X" executable="/bin/sh">
         <arg value="-c"/>
-      <arg value="./mkdmg.sh ./${jam.dist.dir}/appbundler/jam50-fritzbox/ ./${jam.pub.dir}/ jam50-macosx-fritzbox-oracle"/>
+      <arg value="./mkdmg.sh ./${jam.dist.dir}/appbundler/jam50-fritzbox/ ./${jam.pub.dir}/ jam50-macosx-fritzbox"/>
       </exec>
+  	
+  	
+    <echo message="Publishing macosx64 NCID version..." />
+        <copy todir="${jam.dist.dir}/jam50-macosx64-ncid">
+            <fileset dir="${jam.dist.dir}/jam50-macosx64"/>
+        </copy>
+        
+        <delete file="${jam.dist.dir}/jam50-macosx64-ncid/lib/osgi.jar" />
+        <delete file="${jam.dist.dir}/jam50-macosx64-ncid/lib/runtime.jar" />
+        <delete file="${jam.dist.dir}/jam50-macosx64-ncid/lib/jface.jar" />
+        <delete file="${jam.dist.dir}/jam50-macosx64-ncid/lib/i18n.jar" />
+        <delete file="${jam.dist.dir}/jam50-macosx64-ncid/lib/commands.jar" />
+        
+        <copy todir="${jam.dist.dir}/jam50-macosx64-ncid">
+            <fileset dir="${jam.dist.dir}/jam50-macosx64/lib"/>
+        </copy>
+        
+        <delete file="${jam.dist.dir}/jam50-macosx64-ncid/jamui.jar" />
+        
+        <copy todir="${jam.dist.dir}/jam50-macosx64-ncid/install">
+            <fileset dir="${jam.dist.dir}/modules" includes="*ncid*.jam.zip"/>
+            <fileset dir="${jam.dist.dir}/modules" includes="*macab*.jam.zip"/>
+        </copy>
+        <copy todir="${jam.dist.dir}/jam50-macosx64-ncid">
+          <fileset dir="${jam.build.dir}/lib/modules/mod-mon-ncid" includes="**/*.jar" />
+          <fileset dir="${jam.build.dir}/lib/modules/mod-rep-macab" includes="**/*.jar" />
+        </copy>
+
+  	<delete file="${jam.dist.dir}/jam50-macosx64-ncid/structure.zip" />
+  	<zip zipfile="${jam.dist.dir}/jam50-macosx64-ncid/structure.zip" basedir="${jam.dist.dir}/jam50-macosx64-ncid" excludes="*.jar,structure.zip"/> 
+        
+        <loadfile srcFile="./kernel/core/deployment/all/~meta-inf/descriptor.properties" property="jam.version">
+  		<filterchain>
+  			<linecontains>
+  			  	<contains value="jam.mod.version="/>	
+  			</linecontains>
+  			<tokenfilter>
+  		    	<replacestring from="jam.mod.version="/>
+  			</tokenfilter>
+  			<striplinebreaks/>					
+  		</filterchain>
+  	  </loadfile>
+        
+        <mkdir dir="${jam.dist.dir}/appbundler/jam50-ncid/"/>
+  	  <appbundler outputdirectory="${jam.dist.dir}/appbundler/jam50-ncid/"
+          name="jAnrufmonitor - NCID Server Edition"
+          displayname="jAnrufmonitor - NCID Server Edition"
+          identifier="de.janrufmonitor.core"
+                  copyright="jAnrufmonitor 5.0, copyright 2008 - 2017"
+          icon="./kernel/core/deployment/macosx64/images/jam.icns" 
+  		  hidedockicon="true" 
+          shortversion="${jam.version}"
+          applicationCategory="public.app-category.productivity"
+          mainclassname="de/janrufmonitor/application/RunUI64">
+  		<classpath dir="${jam.dist.dir}/jam50-macosx64-ncid" >
+              <include name="**/*.jar" />
+  	    <include name="structure.zip" />
+          </classpath>
+	  	<option value="-XstartOnFirstThread"/>
+  	  <!-- option value="-Djam.multiuser=true"/ -->
+		<option value="-Djam.ui.toplevel=false"/>
+		<option value="-Djam.ui.trayitem=true"/>
+		<option value="-Xms16m"/>
+		<option value="-Xmx256m"/>
+		<option value="-Dapple.laf.useScreenMenuBar=true"/>
+		<option value="-Dapple.awt.brushMetal=true"/>
+		<option value="-Dapple.awt.showGrowBox=false"/>
+        </appbundler>
+
+         <delete file="${jam.pub.dir}/jam50-macosx-ncid.dmg" />
+        
+        <exec dir="." os="Mac OS X" executable="/bin/sh">
+          <arg value="-c"/>
+        <arg value="./mkdmg.sh ./${jam.dist.dir}/appbundler/jam50-ncid/ ./${jam.pub.dir}/ jam50-macosx-ncid"/>
+        </exec>
+  	
+  	
+
+    <echo message="Publishing macosx64 Client version..." />
+        <copy todir="${jam.dist.dir}/jam50-macosx64-client">
+            <fileset dir="${jam.dist.dir}/jam50-macosx64"/>
+        </copy>
+        
+        <delete file="${jam.dist.dir}/jam50-macosx64-client/lib/osgi.jar" />
+        <delete file="${jam.dist.dir}/jam50-macosx64-client/lib/runtime.jar" />
+        <delete file="${jam.dist.dir}/jam50-macosx64-client/lib/jface.jar" />
+        <delete file="${jam.dist.dir}/jam50-macosx64-client/lib/i18n.jar" />
+        <delete file="${jam.dist.dir}/jam50-macosx64-client/lib/commands.jar" />
+        
+        <copy todir="${jam.dist.dir}/jam50-macosx64-client">
+            <fileset dir="${jam.dist.dir}/jam50-macosx64/lib"/>
+        </copy>
+        
+        <delete file="${jam.dist.dir}/jam50-macosx64-client/jamui.jar" />
+        
+        <copy todir="${jam.dist.dir}/jam50-macosx64-client/install">
+            <fileset dir="${jam.dist.dir}/modules" includes="*client*.jam.zip"/>
+            <fileset dir="${jam.dist.dir}/modules" includes="*macab*.jam.zip"/>
+        </copy>
+        <copy todir="${jam.dist.dir}/jam50-macosx64-client">
+          <fileset dir="${jam.build.dir}/lib/modules/mod-srv-client" includes="**/*.jar" />
+          <fileset dir="${jam.build.dir}/lib/modules/mod-rep-macab" includes="**/*.jar" />
+        </copy>
+
+  	<delete file="${jam.dist.dir}/jam50-macosx64-client/structure.zip" />
+  	<zip zipfile="${jam.dist.dir}/jam50-macosx64-client/structure.zip" basedir="${jam.dist.dir}/jam50-macosx64-client" excludes="*.jar,structure.zip"/> 
+        
+        <loadfile srcFile="./kernel/core/deployment/all/~meta-inf/descriptor.properties" property="jam.version">
+  		<filterchain>
+  			<linecontains>
+  			  	<contains value="jam.mod.version="/>	
+  			</linecontains>
+  			<tokenfilter>
+  		    	<replacestring from="jam.mod.version="/>
+  			</tokenfilter>
+  			<striplinebreaks/>					
+  		</filterchain>
+  	  </loadfile>
+        
+        <mkdir dir="${jam.dist.dir}/appbundler/jam50-client/"/>
+  	  <appbundler outputdirectory="${jam.dist.dir}/appbundler/jam50-client/"
+          name="jAnrufmonitor - Client Edition"
+          displayname="jAnrufmonitor - Client Edition"
+          identifier="de.janrufmonitor.core"
+                  copyright="jAnrufmonitor 5.0, copyright 2008 - 2017"
+          icon="./kernel/core/deployment/macosx64/images/jam.icns" 
+  	      hidedockicon="true" 
+          shortversion="${jam.version}"
+          applicationCategory="public.app-category.productivity"
+          mainclassname="de/janrufmonitor/application/RunUI64">
+  		<classpath dir="${jam.dist.dir}/jam50-macosx64-client" >
+              <include name="**/*.jar" />
+  	    <include name="structure.zip" />
+          </classpath>
+	  	<option value="-XstartOnFirstThread"/>
+	  	<!-- option value="-Djam.multiuser=true"/ -->
+		<option value="-Djam.ui.toplevel=false"/>
+		<option value="-Djam.ui.trayitem=true"/>
+		<option value="-Xms16m"/>
+		<option value="-Xmx256m"/>
+		<option value="-Dapple.laf.useScreenMenuBar=true"/>
+		<option value="-Dapple.awt.brushMetal=true"/>
+		<option value="-Dapple.awt.showGrowBox=false"/>
+        </appbundler>
+
+         <delete file="${jam.pub.dir}/jam50-macosx-client.dmg" />
+        
+        <exec dir="." os="Mac OS X" executable="/bin/sh">
+          <arg value="-c"/>
+        <arg value="./mkdmg.sh ./${jam.dist.dir}/appbundler/jam50-ncid/ ./${jam.pub.dir}/ jam50-macosx-client"/>
+        </exec>
 	</target>
     
-  <target name="bundle_macosx64" depends="init_bundle,build_modules,macosx64_distribution" description="create macosx64 bundles" if="is.macosx">
+	
+	
+	
+	
+	
+  <target name="bundle_macosx64_apple_java" depends="init_bundle,build_modules,macosx64_distribution" description="create macosx64 bundles" if="is.macosx">
     <taskdef name="jarbundler" classname="com.ultramixer.jarbundler.JarBundler" classpath="./ant/lib/jarbundler-core-3.3.0.jar"/>
 
       <echo message="Publishing macosx64 fritzbox version..." />
@@ -850,7 +1008,7 @@
     <target name="publish_console" depends="bundle_console" description="publishes console bundle" >
     </target>
     
-    <target name="publish_macosx64" depends="bundle_macosx64,bundle_macosx64_oracle" description="publishes macosx64 bundle" >
+    <target name="publish_macosx64" depends="bundle_macosx64" description="publishes macosx64 bundle" >
       <mkdir dir="${jam.pub.dir}/core.${jam.version}.macosx.64.jam"/>
       <copy todir="${jam.pub.dir}/core.${jam.version}.macosx.64.jam">
         <fileset file="${jam.kernel.lib}/jam.jar"/>
@@ -948,8 +1106,14 @@
     <mkdir dir="${jam.dist.os.dir}/install"/>
 
     <copy todir="${jam.dist.os.dir}">
-      <fileset dir="${jam.kernel.config.all}" includes="*.*, images/**, config/**"/>
-    </copy>
+      <fileset dir="${jam.kernel.config.all}" >
+	<include name="*.*" />
+	<include name="images/**" />
+	<include name="config/**" />
+	<include name="data/**" />
+      </fileset>
+     </copy>
+
     <copy todir="${jam.dist.os.dir}">
       <fileset dir="${jam.kernel.config}/${jam.bundle.os}${jam.bundle.osarch}" includes="*.*"/>
     </copy>
@@ -1009,7 +1173,12 @@
 	<echo file="${jam.dist.updates.dir}/updates" append="true">${jam.kernel.namespace}.${jam.kernel.version}.${jam.bundle.os}.${jam.bundle.osarch}=${jam.updates.server}${jam.kernel.namespace}.${jam.kernel.version}.${jam.bundle.os}.${jam.bundle.osarch}.properties${line.separator}</echo>
 	
     <zip destfile="${jam.dist.os.dir}/install/coreconfig.init.jam.zip" excludes="*.*">
-      <fileset dir="${jam.kernel.config.all}" excludes="*.*, images/**, config/**"/>
+       <fileset dir="${jam.kernel.config.all}" >
+	<exclude name="*.*" />
+	<exclude name="images/**" />
+	<exclude name="config/**" />
+	<exclude name="data/**" />
+      </fileset>
       <fileset dir="${jam.kernel.config}/${jam.bundle.os}${jam.bundle.osarch}" excludes="*.*"/>
     </zip>
 	</sequential>
