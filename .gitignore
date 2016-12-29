@@ -3,8 +3,6 @@
 .metadata
 .metadata/
 .metadata/**/*
-.recommenders
-.recommenders/**/*
 build/**/*
 *build/*
 extlib/**/*
@@ -16,6 +14,9 @@ docs/**/*
 kernel/**/build/*
 modules/**/build/*
 modules/**/src_lib/*
+.recommenders
+.recommenders/
+.recommenders/**/*
 /.idea
-
 *.gen
+*.iml
