@@ -145,7 +145,7 @@ public class ConsoleLauncher implements ILauncher, IConfigurable {
 	}
 	
 	private List getFileContent() throws IOException {
-		File configFile = new File(PathResolver.getInstance(PIMRuntime.getInstance()).getInstallDirectory() + this.getFileName());
+		File configFile = new File(PathResolver.getInstance(PIMRuntime.getInstance()).getAppRoot() + this.getFileName());
 		FileReader configReader = new FileReader(configFile);
 		BufferedReader bufReader = new BufferedReader(configReader);
 		List cfg = new ArrayList();
@@ -161,7 +161,7 @@ public class ConsoleLauncher implements ILauncher, IConfigurable {
 	}
 	
 	private void setFileContent(List cfg) throws IOException {
-		File configFile = new File(PathResolver.getInstance(PIMRuntime.getInstance()).getInstallDirectory() + this.getFileName());
+		File configFile = new File(PathResolver.getInstance(PIMRuntime.getInstance()).getAppRoot() + this.getFileName());
 		FileWriter configWriter = new FileWriter(configFile);
 		BufferedWriter bufWriter = new BufferedWriter(configWriter);
 		for (int i = 0; i < cfg.size(); i++) {

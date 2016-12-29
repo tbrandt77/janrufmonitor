@@ -162,7 +162,7 @@ public class Win32Launcher implements ILauncher, IConfigurable {
 	}
 	
 	private List getFileContent() throws IOException {
-		File configFile = new File(PathResolver.getInstance(PIMRuntime.getInstance()).getInstallDirectory() + File.separator + this.getFileName());
+		File configFile = new File(PathResolver.getInstance(PIMRuntime.getInstance()).getAppRoot() + File.separator + this.getFileName());
 		FileReader configReader = new FileReader(configFile);
 		BufferedReader bufReader = new BufferedReader(configReader);
 		List cfg = new ArrayList();
@@ -227,7 +227,7 @@ public class Win32Launcher implements ILauncher, IConfigurable {
 	}
 	
 	private void setFileContent(List cfg) throws IOException {
-		File configFile = new File(PathResolver.getInstance(PIMRuntime.getInstance()).getInstallDirectory() + File.separator + this.getFileName());
+		File configFile = new File(PathResolver.getInstance(PIMRuntime.getInstance()).getAppRoot() + File.separator + this.getFileName());
 		FileWriter configWriter = new FileWriter(configFile);
 		BufferedWriter bufWriter = new BufferedWriter(configWriter);
 		for (int i = 0; i < cfg.size(); i++) {

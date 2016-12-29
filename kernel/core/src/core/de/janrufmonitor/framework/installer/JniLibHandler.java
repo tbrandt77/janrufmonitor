@@ -23,7 +23,7 @@ public class JniLibHandler {
 	}
 
 	public void addJniLib(InputStream in, String path) {
-		File file = new File(new File(PathResolver.getInstance(PIMRuntime.getInstance()).getInstallDirectory()).getParentFile(), "MacOS"+File.separator+path);
+		File file = new File(new File(PathResolver.getInstance(PIMRuntime.getInstance()).getAppRoot()).getParentFile(), "MacOS"+File.separator+path);
 		file.getParentFile().mkdirs();
 		try {
 			Stream.copy(in, new FileOutputStream(file), true);
@@ -35,7 +35,7 @@ public class JniLibHandler {
 	}
 
 	public void removeJniLib(String path) {
-		File file = new File(new File(PathResolver.getInstance(PIMRuntime.getInstance()).getInstallDirectory()).getParentFile(), "MacOS"+File.separator+path);
+		File file = new File(new File(PathResolver.getInstance(PIMRuntime.getInstance()).getAppRoot()).getParentFile(), "MacOS"+File.separator+path);
 		if (this.m_logger.isLoggable(Level.INFO))
 			this.m_logger.info("Deleting "+file.getAbsolutePath()+"...");
 		if (file.exists()) 
