@@ -476,6 +476,7 @@ public abstract class AbstractMultiPhoneCallerDatabaseHandler extends
 	}
 
 
+	@SuppressWarnings("resource")
 	public ICaller getCaller(IPhonenumber pn) throws SQLException {
 		if (!isConnected())
 			try {

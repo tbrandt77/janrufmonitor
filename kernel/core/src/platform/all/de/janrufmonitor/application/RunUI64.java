@@ -185,10 +185,10 @@ public class RunUI64 {
 
 			boolean isJavaVersionOK = false;
 			String javaversion = System.getProperty("java.specification.version");
-			if ((javaversion!=null && javaversion.compareTo("1.6")>=0 && OSUtils.isMacOSX()) || (javaversion!=null && javaversion.compareTo("1.7")>=0) ) isJavaVersionOK = true;
+			if ((javaversion!=null && javaversion.compareTo("1.8")>=0) ) isJavaVersionOK = true;
 			
 			javaversion = System.getProperty("java.version").substring(0,3);
-			if ((!isJavaVersionOK && javaversion.compareTo("1.6")>=0 && OSUtils.isMacOSX()) || (!isJavaVersionOK && javaversion.compareTo("1.7")>=0) ) isJavaVersionOK = true;
+			if ((!isJavaVersionOK && javaversion.compareTo("1.8")>=0) ) isJavaVersionOK = true;
 			
 			if (!isJavaVersionOK) {
 				Thread t = new Thread () {
@@ -202,7 +202,7 @@ public class RunUI64 {
 									MessageBox messageBox = new MessageBox (shell, style);
 									String lang = System.getProperty("user.language");
 									if (lang==null) lang = "de";									
-									messageBox.setMessage (lang.equalsIgnoreCase("de") ? "jAnrufmonitor kann nicht gestartet werden, da Java nur in Version "+System.getProperty("java.specification.version")+" installiert ist. Es wird jedoch mindestens Java Version "+(OSUtils.isMacOSX() ? "1.6": "1.7")+" ben\u00F6tigt." : "jAnrufmonitor wrong Java version.");
+									messageBox.setMessage (lang.equalsIgnoreCase("de") ? "jAnrufmonitor kann nicht gestartet werden, da Java nur in Version "+System.getProperty("java.specification.version")+" installiert ist. Es wird jedoch mindestens Java Version 1.8 ben\u00F6tigt." : "jAnrufmonitor wrong Java version.");
 									messageBox.setText(lang.equalsIgnoreCase("de") ? "jAnrufmonitor - Fehler beim Programmstart": "jAnrufmonitor Error...");
 									if (messageBox.open () == SWT.OK) {
 										RunUI64.m_logger.severe("Emergency exit: Invalid Java Version: "+System.getProperty("java.specification.version"));

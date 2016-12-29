@@ -1,5 +1,26 @@
 ===
 
+jAnrufmonitor 5.0.69 (02.01.2017)
+---------------------------------
+Neu:
+- Zentrale Logverwaltung für MacOS X Version
+- MacOS X Version auf Java 8 (Oracle) migriert
+- neuer Appbundler von inifitekind für MacOS X Version
+- Unicode Kompatibilität zu Java 8 angepasst
+- Batch Skript zum automatischen Setzen der JAVA_HOME und PATH Variablen
+
+Bugfix:
+- Verbesserter Mehrbenutzerbetrieb
+- Entfernen des Defautl Benutzers beim Mehrbenutzerbetrieb
+
+Module:
+- Microsoft Outlook Kontaktverzeichnis: OLE -> ActiveX Unterstützung
+- PDF-Export-Filter: Kompatibilität mit Java 8 hergestellt
+- Excel Export-Filter: Kompatibilität mit Java 8 hergestellt
+- CSV Export-Filter: Kompatibilität mit Java 8 hergestellt
+
+===
+
 jAnrufmonitor 5.0.68 (17.11.2016)
 ---------------------------------
 Neu:

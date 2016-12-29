@@ -36,7 +36,7 @@
 	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module HTTP Commons/build"/>
 	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module HTTP Server/build"/>
 	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module IconBlinker/build"/>
-	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module iMac Address Book/build"/>
+	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module iMac Address Book/build" sourcepath="/jAnrufmonitor Module iMac Address Book/src"/>
 	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module LDAP/build"/>
 	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module Microsoft Outlook Contacts/build"/>
 	<classpathentry exported="true" kind="lib" path="/jAnrufmonitor Module MySQL/build"/>
