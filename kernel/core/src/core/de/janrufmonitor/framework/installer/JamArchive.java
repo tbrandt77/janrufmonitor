@@ -203,6 +203,19 @@ public class JamArchive implements InstallerConst {
 		}
 	}	
 	
+	public List getRootJarFiles() throws JamArchiveException {
+		try {
+			return
+				this.m_zip.list(new FilenameFilter() {
+					public boolean accept(File p, String entry) {
+						return (entry.toLowerCase().endsWith(JamArchive.EXTENSION_JAR));
+					}
+				});
+			} catch (ZipArchiveException e) {
+			throw new JamArchiveException(e);
+		}
+	}	
+	
 	public List getJarFiles() throws JamArchiveException {
 		try {
 			return

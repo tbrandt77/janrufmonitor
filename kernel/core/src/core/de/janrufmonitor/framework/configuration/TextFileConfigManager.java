@@ -778,8 +778,8 @@ public class TextFileConfigManager implements IConfigManager {
     }
 
 	public void startup() {
-		this.m_pathToSystemConfiguration = PathResolver.getInstance(PIMRuntime.getInstance()).getUserConfigDirectory() + this.SYSTEM_CONFIGURATION_FILE;
-		this.m_pathToUserConfiguration = PathResolver.getInstance(PIMRuntime.getInstance()).getUserConfigDirectory() + this.USER_CONFIGURATION_FILE;
+		this.m_pathToSystemConfiguration = PathResolver.getInstance(PIMRuntime.getInstance()).getConfigDirectory() + this.SYSTEM_CONFIGURATION_FILE;
+		this.m_pathToUserConfiguration = PathResolver.getInstance(PIMRuntime.getInstance()).getConfigDirectory() + this.USER_CONFIGURATION_FILE;
 		File usrConfigFile = new File(this.m_pathToUserConfiguration);
 		if (!usrConfigFile.exists()) {
 			usrConfigFile.getParentFile().mkdirs();

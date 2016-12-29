@@ -158,11 +158,16 @@ public class JamArchiveInstaller extends AbstractInstaller {
 			if (l.size()>0)
 				this.handleAddLib(p, l);
 
-			// copy jnilib files to MacOS location for Orcale Javav 8+ and MacOS X
+			// copy jnilib files to MacOS location for Oracle Java 8+ and MacOS X
 			if (OSUtils.isMacOSX() && System.getProperty("java.specification.version").compareTo("1.8")>=0) {
 				l = p.getJniLibFiles();
 				if (l.size()>0)
 					this.handleAddJniLib(p, l);
+			}
+			if (OSUtils.isMultiuserEnabled() && OSUtils.isMacOSX()) {
+				l = p.getRootJarFiles();
+				if (l.size()>0)
+					this.handleAddRootJar(p, l);
 			}
 			
 			l = p.getOtherFiles();
@@ -177,14 +182,6 @@ public class JamArchiveInstaller extends AbstractInstaller {
 			this.getFile().renameTo(renamedArchive);
 			this.m_logger.info("Created new failed installation module.");
 			throw new InstallerException("Installation failed for file: "+this.getFile()+", "+e.getMessage());
-		}
-		
-		if (OSUtils.isMultiuserEnabled() && this.isPropagateable(p)) {
-			try {
-				this.propagateToDefaultUser(p);
-			} catch (JamArchiveException e) {
-				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-			}
 		}
 		
 		renamedArchive.getParentFile().mkdirs();
@@ -235,6 +232,11 @@ public class JamArchiveInstaller extends AbstractInstaller {
 						if (l.size()>0)
 							this.handleRemoveJniLib(p, l);
 					}
+					if (OSUtils.isMultiuserEnabled() && OSUtils.isMacOSX()) {
+						l = p.getRootJarFiles();
+						if (l.size()>0)
+							this.handleRemoveRootJar(p, l);
+					}
 					
 					l = p.getOtherFiles();
 					this.handleRemoveFiles(p, l);
@@ -249,30 +251,6 @@ public class JamArchiveInstaller extends AbstractInstaller {
 			return true;
 		}
 		return false;
-	}
-	
-	private boolean isPropagateable(JamArchive p) {
-		if (p.getFilename().endsWith("init.jam.zip")) return true;
-		return Boolean.parseBoolean(System.getProperty("jam.propagate"));
-	}
-	
-	private void propagateToDefaultUser(JamArchive p) throws JamArchiveException{
-		p.open();
-		File defaultUserDir = new File(PathResolver.getInstance(this.getRuntime()).getInstallDirectory(), "users"+File.separator+"default");
-		p.extractTo(p.getI18nFiles(), defaultUserDir);
-		p.extractTo(p.getInfFiles(), defaultUserDir);
-		p.extractTo(p.getInitInfFiles(), defaultUserDir);
-		
-		// 2015/05/31: dirty hack: force countrycodes.db to be propagated to logged in user directory
-		if (p.getFilename().endsWith("init.jam.zip")) {
-			File loggedinUserDir = new File(PathResolver.getInstance(this.getRuntime()).getInstallDirectory(), "users"+File.separator+OSUtils.getLoggedInUser());
-			p.extractTo(p.getFiles(new FilenameFilter () {
-				public boolean accept(File dir, String name) {
-					if (name.startsWith("data")) return true;
-					return false;
-				}}), loggedinUserDir);
-		}
-		p.close();
 	}
 	
 	private void handleAddFiles(JamArchive p, List l) {
@@ -307,6 +285,22 @@ public class JamArchiveInstaller extends AbstractInstaller {
 		}	
 	}
 	
+	private void handleAddRootJar(JamArchive p, List l) {
+		String entry = null;
+		InputStream content = null;
+		RootJarHandler fh = new RootJarHandler();
+		for (int i=0,j=l.size();i<j;i++) {
+			entry = (String) l.get(i);
+			try {
+				content = p.getStream(entry);
+				if (content!=null)
+					fh.addJar(content, entry);
+			} catch (JamArchiveException e) {
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			}
+		}	
+	}
+	
 	private void handleRemoveJniLib(JamArchive p, List l) {
 		String entry = null;
 		InputStream content = null;
@@ -317,6 +311,22 @@ public class JamArchiveInstaller extends AbstractInstaller {
 				content = p.getStream(entry);
 				if (content!=null)
 					fh.removeJniLib(entry);
+			} catch (JamArchiveException e) {
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			}
+		}	
+	}
+	
+	private void handleRemoveRootJar(JamArchive p, List l) {
+		String entry = null;
+		InputStream content = null;
+		RootJarHandler fh = new RootJarHandler();
+		for (int i=0,j=l.size();i<j;i++) {
+			entry = (String) l.get(i);
+			try {
+				content = p.getStream(entry);
+				if (content!=null)
+					fh.removeJar(entry);
 			} catch (JamArchiveException e) {
 				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 			}

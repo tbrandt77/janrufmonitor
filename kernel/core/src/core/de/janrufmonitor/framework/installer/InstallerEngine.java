@@ -87,8 +87,8 @@ public class InstallerEngine {
 	private Logger m_logger;
 	private List m_installers;
 	private IRuntime m_runtime;
-	private File m_installDir;
-	private File m_userInstallDir;
+//	private File m_installDir;
+//	private File m_userInstallDir;
 	private Properties m_installedModules;
 		
 	private static InstallerEngine m_instance = null;
@@ -208,12 +208,13 @@ public class InstallerEngine {
     		// set system property for check of installer
     		System.setProperty(IJAMConst.SYSTEM_INSTALLER_RUN, "true");
     		
-            File directory = this.getDefaultInstallationDirectory();
+            File directory = new File(PathResolver.getInstance(this.getRuntime()).getInstallDirectory() + "install" + File.separator);
+            if (!directory.exists()) directory.mkdirs();
             if (directory.isDirectory()) {
             	IPropagator pg = this.addPropagator();
             	
             	boolean restart = false;
-            	// initializing is madatory before installing other modules
+            	// initializing is mandatory before installing other modules
         		File[] files = directory.listFiles(new GenericFileFilter(".init.jam.zip", false));
     			if (files.length>0) {
     				for (int k = files.length - 1; k >= 0; k--) {
@@ -229,28 +230,28 @@ public class InstallerEngine {
     			if (files.length>0) {
     				for (int k = files.length - 1; k >= 0; k--) {
     					try {
-							restart |= this.internal_install(files[k], true, false, false);
+							restart |= this.internal_install(files[k], true, false, OSUtils.isMultiuserEnabled());
 						} catch (InstallerException e) {
 							this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 						}
     				}
     			}
     			
-    			if (OSUtils.isMultiuserEnabled()) {
-    				directory = this.getUserInstallationDirectory();
-    				if (directory.isDirectory()) {
-    					files = directory.listFiles(new GenericFileFilter("", false));
-    	    			if (files.length>0) {
-    	    				for (int k = files.length - 1; k >= 0; k--) {
-    	    					try {
-    								restart |= this.internal_install(files[k], true, false, true);
-    							} catch (InstallerException e) {
-    								this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-    							}
-    	    				}
-    	    			}
-    				}
-    			}
+//    			if (OSUtils.isMultiuserEnabled()) {
+//    				directory = this.getUserInstallationDirectory();
+//    				if (directory.isDirectory()) {
+//    					files = directory.listFiles(new GenericFileFilter("", false));
+//    	    			if (files.length>0) {
+//    	    				for (int k = files.length - 1; k >= 0; k--) {
+//    	    					try {
+//    								restart |= this.internal_install(files[k], true, false, true);
+//    							} catch (InstallerException e) {
+//    								this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+//    							}
+//    	    				}
+//    	    			}
+//    				}
+//    			}
     			
     	    	if (pg!=null)
     	    		PropagationFactory.getInstance().remove(pg);
@@ -294,57 +295,57 @@ public class InstallerEngine {
     		
 			
 			// make MacOS X specific test
-			if (OSUtils.isMacOSX()) {
-				File infoPlist = new File (PathResolver.getInstance(getRuntime()).getInstallDirectory(), "../../Info.plist");
-				if (infoPlist.exists()) {
-					// read Info.plist
-					try {
-						FileInputStream in = new FileInputStream(infoPlist);
-						ByteArrayOutputStream out = new ByteArrayOutputStream();
-						Stream.copy(in, out, true);
-
-						String content = new String(out.toByteArray());
-						int start = content.indexOf("<key>ClassPath</key>");
-						int end = content.indexOf("</array>", (start>-1 ? start : 0))+8;
-						if (start>-1) {
-							StringBuffer sb = new StringBuffer();
-							sb.append(content.substring(0, start));
-							sb.append("<key>ClassPath</key>");
-							sb.append(IJAMConst.CRLF);
-							sb.append("<array>");
-							sb.append(IJAMConst.CRLF);
-							// add jar entries
-							File workingDir = new File(PathResolver.getInstance(getRuntime()).getInstallDirectory());
-							File[] jars = workingDir.listFiles(new GenericFileFilter(".jar", false));
-							for (int i=0;i<jars.length;i++) {
-								sb.append("<string>$JAVAROOT/");
-								sb.append(jars[i].getName());
-								sb.append("</string>");
-								sb.append(IJAMConst.CRLF);
-							}
-							File libDir = new File(PathResolver.getInstance(getRuntime()).getLibDirectory());
-							jars = libDir.listFiles(new GenericFileFilter(".jar", false));
-							for (int i=0;i<jars.length;i++) {
-								sb.append("<string>$JAVAROOT/lib/");
-								sb.append(jars[i].getName());
-								sb.append("</string>");
-								sb.append(IJAMConst.CRLF);
-							}
-							sb.append("</array>");
-							sb.append(IJAMConst.CRLF);
-							sb.append(content.substring(end));
-							
-							FileOutputStream fos = new FileOutputStream(infoPlist);
-							ByteArrayInputStream ins = new ByteArrayInputStream(sb.toString().getBytes());
-							Stream.copy(ins, fos, true);
-						}
-					} catch (FileNotFoundException e) {
-						this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-					} catch (IOException e) {
-						this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-					}
-				}
-			}
+//			if (OSUtils.isMacOSX()) {
+//				File infoPlist = new File (PathResolver.getInstance(getRuntime()).getInstallDirectory(), "../../Info.plist");
+//				if (infoPlist.exists()) {
+//					// read Info.plist
+//					try {
+//						FileInputStream in = new FileInputStream(infoPlist);
+//						ByteArrayOutputStream out = new ByteArrayOutputStream();
+//						Stream.copy(in, out, true);
+//
+//						String content = new String(out.toByteArray());
+//						int start = content.indexOf("<key>ClassPath</key>");
+//						int end = content.indexOf("</array>", (start>-1 ? start : 0))+8;
+//						if (start>-1) {
+//							StringBuffer sb = new StringBuffer();
+//							sb.append(content.substring(0, start));
+//							sb.append("<key>ClassPath</key>");
+//							sb.append(IJAMConst.CRLF);
+//							sb.append("<array>");
+//							sb.append(IJAMConst.CRLF);
+//							// add jar entries
+//							File workingDir = new File(PathResolver.getInstance(getRuntime()).getInstallDirectory());
+//							File[] jars = workingDir.listFiles(new GenericFileFilter(".jar", false));
+//							for (int i=0;i<jars.length;i++) {
+//								sb.append("<string>$JAVAROOT/");
+//								sb.append(jars[i].getName());
+//								sb.append("</string>");
+//								sb.append(IJAMConst.CRLF);
+//							}
+//							File libDir = new File(PathResolver.getInstance(getRuntime()).getLibDirectory());
+//							jars = libDir.listFiles(new GenericFileFilter(".jar", false));
+//							for (int i=0;i<jars.length;i++) {
+//								sb.append("<string>$JAVAROOT/lib/");
+//								sb.append(jars[i].getName());
+//								sb.append("</string>");
+//								sb.append(IJAMConst.CRLF);
+//							}
+//							sb.append("</array>");
+//							sb.append(IJAMConst.CRLF);
+//							sb.append(content.substring(end));
+//							
+//							FileOutputStream fos = new FileOutputStream(infoPlist);
+//							ByteArrayInputStream ins = new ByteArrayInputStream(sb.toString().getBytes());
+//							Stream.copy(ins, fos, true);
+//						}
+//					} catch (FileNotFoundException e) {
+//						this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+//					} catch (IOException e) {
+//						this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+//					}
+//				}
+//			}
     		
     		this.m_logger.info("Installed new file " + f.getName()+" with extension installer "+installer.getExtension());
     	} else {
@@ -554,23 +555,24 @@ public class InstallerEngine {
     }
 	
 	private boolean check() {
-		File directory = this.getDefaultInstallationDirectory();
+		File directory = new File(PathResolver.getInstance(this.getRuntime()).getInstallDirectory() + "install" + File.separator);
+		if (!directory.exists()) directory.mkdirs();
         if (directory.exists() && directory.isDirectory()) {
             File[] files = directory.listFiles();
             if (files.length>0) {
 				this.m_logger.info("New modules for installation found.");
 				return true;
             }
-            if (OSUtils.isMultiuserEnabled()) {
-	            directory = this.getUserInstallationDirectory();
-	            if (directory.exists() && directory.isDirectory()) {
-	                files = directory.listFiles();
-	                if (files.length>0) {
-	    				this.m_logger.info("New modules for installation found in user install directory.");
-	    				return true;
-	                }
-	            }
-            }
+//            if (OSUtils.isMultiuserEnabled()) {
+//	            directory = this.getUserInstallationDirectory();
+//	            if (directory.exists() && directory.isDirectory()) {
+//	                files = directory.listFiles();
+//	                if (files.length>0) {
+//	    				this.m_logger.info("New modules for installation found in user install directory.");
+//	    				return true;
+//	                }
+//	            }
+//            }
         } else {
             this.m_logger.warning(directory.getAbsolutePath()+" directory for new modules not found in install path. Please check the configuration file.");
             return false;
@@ -579,27 +581,27 @@ public class InstallerEngine {
         return false;
 	}
 	
-	private File getDefaultInstallationDirectory() {
-		if (this.m_installDir==null) {
-			this.m_installDir = new File(PathResolver.getInstance(this.getRuntime()).getInstallDirectory() + "install" + File.separator);
-			if (!this.m_installDir.exists()) {
-				this.m_logger.warning("Installation directory "+this.m_installDir.getAbsolutePath()+" does not exist. Please create directory structure manually.");
-				this.m_installDir.mkdirs();
-			}
-		}
-		return this.m_installDir;
-	}
-	
-	private File getUserInstallationDirectory() {
-		if (this.m_userInstallDir==null) {
-			this.m_userInstallDir = new File(PathResolver.getInstance(this.getRuntime()).getInstallDirectory() + "users" + File.separator + OSUtils.getLoggedInUser()+File.separator+"install");
-			if (!this.m_userInstallDir.exists()) {
-				this.m_logger.warning("User installation directory "+this.m_userInstallDir.getAbsolutePath()+" does not exist. Please create directory structure manually.");
-				this.m_userInstallDir.mkdirs();
-			}
-		}
-		return this.m_userInstallDir;
-	}
+//	private File getDefaultInstallationDirectory() {
+//		if (this.m_installDir==null) {
+//			this.m_installDir = new File(PathResolver.getInstance(this.getRuntime()).getInstallDirectory() + "install" + File.separator);
+//			if (!this.m_installDir.exists()) {
+//				this.m_logger.warning("Installation directory "+this.m_installDir.getAbsolutePath()+" does not exist. Please create directory structure manually.");
+//				this.m_installDir.mkdirs();
+//			}
+//		}
+//		return this.m_installDir;
+//	}
+//	
+//	private File getUserInstallationDirectory() {
+//		if (this.m_userInstallDir==null) {
+//			this.m_userInstallDir = new File(PathResolver.getInstance(this.getRuntime()).getInstallDirectory() + "users" + File.separator + OSUtils.getLoggedInUser()+File.separator+"install");
+//			if (!this.m_userInstallDir.exists()) {
+//				this.m_logger.warning("User installation directory "+this.m_userInstallDir.getAbsolutePath()+" does not exist. Please create directory structure manually.");
+//				this.m_userInstallDir.mkdirs();
+//			}
+//		}
+//		return this.m_userInstallDir;
+//	}
 	
     private IRuntime getRuntime() {
     	if (this.m_runtime==null){

@@ -19,7 +19,6 @@ import java.util.logging.Logger;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.repository.zip.ZipArchive;
 import de.janrufmonitor.repository.zip.ZipArchiveException;
-import de.janrufmonitor.util.io.OSUtils;
 import de.janrufmonitor.util.io.PathResolver;
 
 public class JamCacheMasterClassLoader extends ClassLoader {
@@ -255,10 +254,6 @@ public class JamCacheMasterClassLoader extends ClassLoader {
 	}
 	
 	private File getCacheFile() {
-		if (OSUtils.isMultiuserEnabled()) {
-			return new File(PathResolver.getInstance()
-					.getInstallDirectory()+"/users/"+OSUtils.getLoggedInUser()+"/lib/cache/classloader.cache");
-		}
 		return new File(PathResolver.getInstance()
 				.getLibDirectory()+"/cache/classloader.cache");
 	}
