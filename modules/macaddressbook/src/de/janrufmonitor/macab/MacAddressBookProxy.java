@@ -108,9 +108,14 @@ public class MacAddressBookProxy implements AddressBookChangeListener {
 		File cache = new File(MSO_IMAGE_CACHE_PATH);
 		if (!cache.exists()) cache.mkdirs();
 		
+		if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info("Created folder "+cache.getAbsolutePath());
+		
 		System.loadLibrary("AddressBook"); 
 		init();
-
+		if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info("Loaded libAddressBook.jnilib");
+		
 		this.m_categories = new HashMap();
 		this.m_rcategories = new HashMap();
 		List<Object> categories = getRawMacGroups();

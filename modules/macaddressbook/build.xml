@@ -15,6 +15,10 @@
     <target name="bundle_module" depends="distribute" description="bundle the module source to jam.zip archives" >
       <echo message="jAnrufmonitor Kernel framework compile..."/>
 
+        <!-- copy todir="${jam.modules.classes.dir}/${jam.mod.name}">
+            <fileset dir="${jam.modules.root}/${jam.mod.short}/deployment" includes="*jnilib"/>
+        </copy -->
+    	
       <jar jarfile="${jam.modules.lib.dir}/${jam.mod.name}/lib/${jam.mod.name}.jar" basedir="${jam.modules.classes.dir}/${jam.mod.name}"/>
       
     </target>

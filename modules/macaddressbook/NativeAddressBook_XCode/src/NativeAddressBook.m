@@ -455,7 +455,7 @@ JNIEXPORT jstring JNICALL Java_de_janrufmonitor_macab_MacAddressBookProxy_addPer
 		[newPerson setValue:coerceJavaMultiValue(address, env) forProperty:kABAddressProperty];
 	}
 	if(chat != nil){
-		[newPerson setValue:coerceJavaMultiValue(chat, env) forProperty:kABICQInstantProperty];
+		[newPerson setValue:coerceJavaMultiValue(chat, env) forProperty:kABInstantMessageServiceICQ];
 	}
 	
 	if(isPerson) {
