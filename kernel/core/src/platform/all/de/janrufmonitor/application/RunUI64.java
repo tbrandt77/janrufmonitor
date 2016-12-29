@@ -354,7 +354,13 @@ public class RunUI64 {
     public static void main(String[] args) { 
     	// added 2016/01/05: Display under Cocoa must be initialized with main-Thread
     	if (OSUtils.isMacOSX()) {
+    		Display.setAppName("jAnrufmonitor");
     		Display.getDefault();
+    		
+    		//if (SWT.getPlatform().equals("cocoa")) {
+    		//	new CocoaUIEnhancer().earlyStartup();
+    		//}
+
 			Extractor.prepareFilesystem();
     	}
     	
