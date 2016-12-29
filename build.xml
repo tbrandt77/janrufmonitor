@@ -412,7 +412,7 @@
 	  <property environment="env"/>
 
 	  <!-- Define the appbundler task -->
-	  <taskdef name="appbundler" classname="com.oracle.appbundler.AppBundlerTask" classpath="./ant/lib/appbundler-1.0.jar"/>
+	  <taskdef name="appbundler" classname="com.oracle.appbundler.AppBundlerTask" classpath="./ant/lib/infinitekind-appbundler-1.0ea.jar"/>
   
       <echo message="Publishing macosx64 fritzbox version..." />
       <copy todir="${jam.dist.dir}/jam50-macosx64-fritzbox">
@@ -461,7 +461,8 @@
         displayname="jAnrufmonitor - AVM FRITZ!Box Edition"
         identifier="de.janrufmonitor.core"
                 copyright="jAnrufmonitor 5.0, copyright 2008 - 2017"
-        icon="./kernel/core/deployment/macosx64/images/jam.icns" 
+        hidedockicon="true"
+        icon="./kernel/core/deployment/macosx64/images/jam.icns"
         shortversion="${jam.version}"
         applicationCategory="public.app-category.productivity"
         mainclassname="de/janrufmonitor/application/RunUI64">
