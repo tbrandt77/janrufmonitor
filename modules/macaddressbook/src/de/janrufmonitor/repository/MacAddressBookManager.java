@@ -16,13 +16,15 @@ import de.janrufmonitor.repository.filter.FilterType;
 import de.janrufmonitor.repository.filter.IFilter;
 import de.janrufmonitor.repository.filter.PhonenumberFilter;
 import de.janrufmonitor.repository.imexport.ITracker;
+import de.janrufmonitor.repository.search.ISearchTerm;
 import de.janrufmonitor.repository.types.IIdentifyCallerRepository;
 import de.janrufmonitor.repository.types.IReadCallerRepository;
 import de.janrufmonitor.repository.types.IRemoteRepository;
+import de.janrufmonitor.repository.types.ISearchableCallerRepository;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 
-public class MacAddressBookManager extends AbstractReadWriteCallerManager implements IRemoteRepository, ITracker {
+public class MacAddressBookManager extends AbstractReadWriteCallerManager implements IRemoteRepository, ITracker, ISearchableCallerRepository {
 
 	private static String ID = "MacAddressBookManager";
 	public static String NAMESPACE = "repository.MacAddressBookManager";
@@ -89,6 +91,28 @@ public class MacAddressBookManager extends AbstractReadWriteCallerManager implem
 				return getProxy().getContactsByCharAttribute(charAtt);
 			}
 			return getProxy().getContacts(null);
+		} catch (MacAddressBookProxyException e) {
+			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+		}
+		return getRuntime().getCallerFactory().createCallerList();
+	}
+
+	public ICallerList getCallers(IFilter[] filters, ISearchTerm[] searchTerms) {
+		try {
+			String searchTerm = "";
+			if (searchTerms != null) {
+				for (int i=0;i<searchTerms.length;i++) {
+					searchTerm +=" "+searchTerms[i].getSearchTerm();
+				}
+			}
+			if (filters!=null && filters[0]!=null) {
+				ICallerList cl = getRuntime().getCallerFactory().createCallerList();
+				cl.add(getProxy().findContacts(searchTerm.trim()));
+				this.applyFilters(cl, filters);
+				return cl;		
+			}
+			if (searchTerm.trim().length()==0) return this.getCallers(filters);
+			return getProxy().findContacts(searchTerm.trim());
 		} catch (MacAddressBookProxyException e) {
 			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 		}
@@ -174,7 +198,7 @@ public class MacAddressBookManager extends AbstractReadWriteCallerManager implem
 	}
 	
 	public boolean isSupported(Class c) {
-		return (c.equals(IIdentifyCallerRepository.class) || c.equals(IReadCallerRepository.class) || c.equals(IRemoteRepository.class));
+		return (c.equals(IIdentifyCallerRepository.class) || c.equals(IReadCallerRepository.class) || c.equals(IRemoteRepository.class) || c.equals(ISearchableCallerRepository.class));
 	}
 
 }

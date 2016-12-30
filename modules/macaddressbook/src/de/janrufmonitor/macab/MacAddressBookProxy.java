@@ -347,12 +347,65 @@ public class MacAddressBookProxy implements AddressBookChangeListener {
 	}
 	
 	@SuppressWarnings("unchecked")
+	public synchronized ICallerList findContacts(String searchTerm) throws MacAddressBookProxyException {
+		this.m_total = 0;
+		this.m_current = 0;
+		
+		final ICallerList callers = getRuntime().getCallerFactory().createCallerList();
+		List<Map<String, ?>> ac = this.findContactsByFullTextSearch(searchTerm);
+
+		if (ac==null) return callers;
+		
+		this.m_total = ac.size();
+		
+		ICaller businessCaller, privateCaller = null;
+		for (Object contact : ac) {
+			if (contact instanceof Map<?,?>) {
+				this.m_current++;
+				privateCaller = MacAddressBookMappingManager.getInstance().mapToJamCaller((Map<?, ?>) contact, new PrivateMacAddressBookMapping());
+				businessCaller = MacAddressBookMappingManager.getInstance().mapToJamCaller((Map<?, ?>) contact, new BusinessMacAddressBookMapping());
+	
+				if (privateCaller!=null && businessCaller!=null) {
+					// check if firstname, lastname or additional is filled or not
+					if (privateCaller.getAttribute(IJAMConst.ATTRIBUTE_NAME_FIRSTNAME)==null && privateCaller.getAttribute(IJAMConst.ATTRIBUTE_NAME_LASTNAME)==null && privateCaller.getAttribute(IJAMConst.ATTRIBUTE_NAME_ADDITIONAL)==null) {
+						((IMultiPhoneCaller)businessCaller).getPhonenumbers().addAll(((IMultiPhoneCaller)privateCaller).getPhonenumbers());
+						privateCaller=null;
+					}
+					if (businessCaller.getAttribute(IJAMConst.ATTRIBUTE_NAME_FIRSTNAME)==null && businessCaller.getAttribute(IJAMConst.ATTRIBUTE_NAME_LASTNAME)==null && businessCaller.getAttribute(IJAMConst.ATTRIBUTE_NAME_ADDITIONAL)==null) {
+						((IMultiPhoneCaller)privateCaller).getPhonenumbers().addAll(((IMultiPhoneCaller)businessCaller).getPhonenumbers());
+						businessCaller=null;
+					}
+				}
+				
+				if (businessCaller!=null) {
+					callers.add(businessCaller);
+				}
+				if (privateCaller!=null) {
+					callers.add(privateCaller);
+				}				
+			}
+		}
+		if (callers.size()>0) {
+			Thread updateDbhThread = new Thread() {
+				public void run() {
+					updateProxyDatabase(callers);
+				}
+			};
+			updateDbhThread.setName("JAM-MacAddressBookSync-Thread-(deamon)");
+			updateDbhThread.start();
+		}
+		return callers;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
 	public synchronized ICallerList getContacts(String f) throws MacAddressBookProxyException {
 		this.m_total = 0;
 		this.m_current = 0;
 		
 		final ICallerList callers = getRuntime().getCallerFactory().createCallerList();
 		List<Object> ac = null;
+
 		// category is set
 		if (f!=null && f.length()>0) {
 			if (this.m_logger.isLoggable(Level.INFO))
