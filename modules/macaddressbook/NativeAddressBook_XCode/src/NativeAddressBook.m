@@ -176,6 +176,9 @@ NSArray * coerceJavaList(jobject obj, JNIEnv * env) {
 }
 
 ABMutableMultiValue * coerceJavaMultiValue(jobject obj, JNIEnv * env) {
+	if(obj == nil) {
+		return nil;
+	}
 	
 	NSArray *array = coerceJavaList(obj, env);
 	ABMutableMultiValue *multi = [[[ABMutableMultiValue alloc] init] autorelease];
@@ -211,6 +214,13 @@ jobject coerceRecords(NSArray *records, JNIEnv *env) {
 	return [coercer coerceNSObject:records withEnv:env];
 }
 
+NSDate * parseDateString(NSString *dateString) {
+	NSDateFormatter* dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+	
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss ZZZ"];
+	return [dateFormatter dateFromString:dateString];
+}
+
 NSArray * getRecordsByUIDs(jobject uids, JNIEnv *env) {
 	if(uids == nil) {
 		return nil;
@@ -221,7 +231,8 @@ NSArray * getRecordsByUIDs(jobject uids, JNIEnv *env) {
 	
 	ABAddressBook *book = [ABAddressBook sharedAddressBook];
 	
-	for(NSString *uid in uidArray) {
+	for(NSUInteger i = 0; i < [uidArray count]; ++i) {
+        NSString *uid = [uidArray objectAtIndex:i];
 		ABRecord *rec = [book recordForUniqueId:uid];
 		if(rec != nil) {
 			[nativeRecords addObject:rec];
@@ -359,42 +370,6 @@ JNIEXPORT jobject JNICALL Java_de_janrufmonitor_macab_MacAddressBookProxy_getRec
 	return javaRecords;
 }
 
-JNIEXPORT jbyteArray JNICALL Java_de_janrufmonitor_macab_MacAddressBookProxy_getUserImage
-(JNIEnv *env, jclass clazz, jstring uid) {
-	jbyteArray byteArray = NULL;
-	
-	JNF_COCOA_ENTER(env);
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-	ABAddressBook *book = [ABAddressBook sharedAddressBook];
-	ABRecord *rec = [book recordForUniqueId:JNFJavaToNSString(env, uid)];
-	if([rec isKindOfClass: [ABPerson class]]) {
-		ABPerson *person = (ABPerson *)rec;
-		NSImage *anImage = [[NSImage alloc] initWithData: [person imageData]];
-		if(anImage != nil) {
-			NSArray *representations;
-			NSData *jpegData;
-			
-			representations = [anImage representations];
-			
-			jpegData = [NSBitmapImageRep representationOfImageRepsInArray:representations 
-																  usingType:NSPNGFileType properties:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:false] forKey:NSImageInterlaced]];
-			
-			if(jpegData != nil) {
-				NSUInteger len = [jpegData length];
-				
-				byteArray = (*env)->NewByteArray(env, len);
-				(*env)->SetByteArrayRegion(env, byteArray, 0, len, [jpegData bytes]);
-			}
-		}
-	}
-	
-	[pool release];
-	JNF_COCOA_EXIT(env);
-	
-	return byteArray;
-}
-
 JNIEXPORT void JNICALL Java_de_janrufmonitor_macab_MacAddressBookProxy_doBeginModification
 (JNIEnv *env, jclass clazz) {
 	dontSave = true;
@@ -415,8 +390,62 @@ JNIEXPORT void JNICALL Java_de_janrufmonitor_macab_MacAddressBookProxy_doEndModi
 	dontSave = false;
 }
 
+void setPropertiesForPerson (JNIEnv *env, ABPerson *record, jstring fName, jstring mName,jstring lName,jstring title, jstring org, jobject email, jobject phone, jobject address, jobject chat, jstring birthday, jboolean isPerson) {
+	if(fName != nil) {
+		[record setValue:JNFJavaToNSString(env, fName)
+				forProperty:kABFirstNameProperty];
+	}
+	
+	if(mName != nil) {
+		[record setValue:JNFJavaToNSString(env, mName)
+				forProperty:kABMiddleNameProperty];
+	}
+	
+	if(lName != nil) {
+		[record setValue:JNFJavaToNSString(env, lName)
+				forProperty:kABLastNameProperty];
+	}
+	
+	if(title != nil) {
+		[record setValue:JNFJavaToNSString(env, title)
+				forProperty:kABTitleProperty];
+	}
+	
+	if(org != nil) {
+		[record setValue:JNFJavaToNSString(env, org)
+				forProperty:kABOrganizationProperty];
+	}
+	
+	if(email != nil) {
+		[record setValue:coerceJavaMultiValue(email, env) forProperty:kABEmailProperty];
+	}
+	if(phone != nil) {
+		[record setValue:coerceJavaMultiValue(phone, env) forProperty:kABPhoneProperty];
+	}
+	if(address != nil) {
+		[record setValue:coerceJavaMultiValue(address, env) forProperty:kABAddressProperty];
+	}
+	if(chat != nil){
+#ifdef MAC_OS_X_VERSION_10_7
+		[record setValue:coerceJavaMultiValue(chat, env) forProperty:kABInstantMessageProperty];
+#else
+		[record setValue:coerceJavaMultiValue(chat, env) forProperty:kABICQInstantProperty];
+#endif
+	}
+	
+	if(birthday != nil){
+		[record setValue:parseDateString(JNFJavaToNSString(env, birthday)) forProperty:kABBirthdayProperty];
+	}
+	
+	if(isPerson) {
+		[record setValue:[NSNumber numberWithLong:kABShowAsPerson] forProperty:kABPersonFlags];
+	} else {
+		[record setValue:[NSNumber numberWithLong:kABShowAsCompany] forProperty:kABPersonFlags];
+	}
+}
+
 JNIEXPORT jstring JNICALL Java_de_janrufmonitor_macab_MacAddressBookProxy_addPerson
-(JNIEnv *env, jclass clazz, jstring fName, jstring mName,jstring lName,jstring title, jstring org, jobject email, jobject phone, jobject address, jobject chat, jboolean isPerson, jstring groupUID) {
+(JNIEnv *env, jclass clazz, jstring fName, jstring mName,jstring lName,jstring title, jstring org, jobject email, jobject phone, jobject address, jobject chat, jstring birthday, jboolean isPerson, jstring groupUID) {
 	jstring uid;
 	
 	JNF_COCOA_ENTER(env);
@@ -430,39 +459,7 @@ JNIEXPORT jstring JNICALL Java_de_janrufmonitor_macab_MacAddressBookProxy_addPer
 	
 	newPerson = [[[ABPerson alloc] init] autorelease];
 	
-	[newPerson setValue:JNFJavaToNSString(env, fName)
-			forProperty:kABFirstNameProperty];
-	
-	[newPerson setValue:JNFJavaToNSString(env, mName)
-			forProperty:kABMiddleNameProperty];
-	
-	[newPerson setValue:JNFJavaToNSString(env, lName)
-			forProperty:kABLastNameProperty];
-	
-	[newPerson setValue:JNFJavaToNSString(env, title)
-			forProperty:kABTitleProperty];
-	
-	[newPerson setValue:JNFJavaToNSString(env, org)
-			forProperty:kABOrganizationProperty];
-	
-	if(email != nil) {
-		[newPerson setValue:coerceJavaMultiValue(email, env) forProperty:kABEmailProperty];
-	}
-	if(phone != nil) {
-		[newPerson setValue:coerceJavaMultiValue(phone, env) forProperty:kABPhoneProperty];
-	}
-	if(address != nil) {
-		[newPerson setValue:coerceJavaMultiValue(address, env) forProperty:kABAddressProperty];
-	}
-	if(chat != nil){
-		[newPerson setValue:coerceJavaMultiValue(chat, env) forProperty:kABInstantMessageServiceICQ];
-	}
-	
-	if(isPerson) {
-		[newPerson setValue:[NSNumber numberWithLong:kABShowAsPerson] forProperty:kABPersonFlags];
-	} else {
-		[newPerson setValue:[NSNumber numberWithLong:kABShowAsCompany] forProperty:kABPersonFlags];
-	}
+	setPropertiesForPerson(env, newPerson, fName, mName, lName, title, org, email, phone, address, chat, birthday, isPerson);
 	
 	// Kontakt zum Adressbuch hinzufügen
 	[addressBook addRecord:newPerson];
@@ -488,37 +485,167 @@ JNIEXPORT jstring JNICALL Java_de_janrufmonitor_macab_MacAddressBookProxy_addPer
 	return uid;
 }
 
-JNIEXPORT jboolean JNICALL Java_de_janrufmonitor_macab_MacAddressBookProxy_addRecordToGroup
-(JNIEnv *env, jclass clazz, jstring recordUID, jstring groupUID) {
-	jboolean ret = false;
+JNIEXPORT jboolean JNICALL Java_de_janrufmonitor_macab_MacAddressBookProxy_setPersonProperty
+(JNIEnv *env, jclass clazz, jstring uid, jstring property, jstring newValue) {
+	jboolean ret = JNI_FALSE;
+	
+	JNF_COCOA_ENTER(env);
+	
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	ABAddressBook *addressBook;
+	ABRecord *record;
+	
+	addressBook = [ABAddressBook sharedAddressBook];
+	
+	record = [addressBook recordForUniqueId:JNFJavaToNSString(env, uid)];
+	if(record != nil && [record isKindOfClass:[ABPerson class]]) {
+		NSString *nsProperty = JNFJavaToNSString(env, property);
+		if(newValue == nil) {
+			[record setValue:nil forProperty:nsProperty];
+		} else {
+			if([nsProperty isEqualToString:kABBirthdayProperty]) {
+				[record setValue:parseDateString(JNFJavaToNSString(env, newValue))
+					 forProperty:nsProperty];
+			} else {
+				[record setValue:JNFJavaToNSString(env, newValue)
+					 forProperty:nsProperty];
+			}
+		}
+		if(!dontSave) {
+			[addressBook save];
+		}
+		ret = JNI_TRUE;
+	}
+	
+	[pool release];
+	
+	JNF_COCOA_EXIT(env);
+	
+	return ret;
+}
+
+JNIEXPORT jboolean JNICALL Java_de_janrufmonitor_macab_MacAddressBookProxy_setPersonFlag
+(JNIEnv *env, jclass clazz, jstring uid, jboolean newValue) {
+	jboolean ret = JNI_FALSE;
+	
 	JNF_COCOA_ENTER(env);
 	
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
 	ABAddressBook *addressBook = [ABAddressBook sharedAddressBook];
+	ABRecord *record = [addressBook recordForUniqueId:JNFJavaToNSString(env, uid)];
 	
-	ABRecord *shouldBeGroup = [addressBook recordForUniqueId:JNFJavaToNSString(env, groupUID)];
+	if(record != nil && [record isKindOfClass:[ABPerson class]]) {
+		NSNumber *newNum = [NSNumber numberWithBool:(newValue == JNI_TRUE ? YES : NO)];
+		
+		[record setValue:newNum forProperty:kABPersonFlags];
+		
+		if(!dontSave) {
+			[addressBook save];
+		}
+		ret = JNI_TRUE;
+	}
 	
-	if(shouldBeGroup != nil && [shouldBeGroup isKindOfClass:[ABGroup class]]) {
-		ABGroup *group = (ABGroup *)shouldBeGroup;
+	[pool release];
+	
+	JNF_COCOA_EXIT(env);
+	
+	return ret;
+}
+
+JNIEXPORT jboolean JNICALL Java_de_janrufmonitor_macab_MacAddressBookProxy_setPersonPropertyMulti
+(JNIEnv *env, jclass clazz, jstring uid, jstring property, jobject newValue) {
+	jboolean ret = JNI_FALSE;
+	
+	JNF_COCOA_ENTER(env);
+	
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	ABAddressBook *addressBook;
+	ABRecord *record;
+	
+	addressBook = [ABAddressBook sharedAddressBook];
+	
+	record = [addressBook recordForUniqueId:JNFJavaToNSString(env, uid)];
+	if(record != nil && [record isKindOfClass:[ABPerson class]]) {		
+		[record setValue:coerceJavaMultiValue(newValue, env)
+			 forProperty:JNFJavaToNSString(env, property)];
 		
-		ABRecord *rec = [addressBook recordForUniqueId:JNFJavaToNSString(env, recordUID)];
-		
-		if(rec != nil) {
-			if([rec isKindOfClass:[ABPerson class]]) {
-				[group addMember:(ABPerson*) rec];
-			} else {
-				[group addSubgroup:(ABGroup*) rec];
-			}
+		if(!dontSave) {
+			[addressBook save];
+		}
+		ret = JNI_TRUE;
+	}
+	
+	[pool release];
+	
+	
+	JNF_COCOA_EXIT(env);
+	
+	return ret;
+}
+
+JNIEXPORT jbyteArray JNICALL Java_de_janrufmonitor_macab_MacAddressBookProxy_getUserImage
+(JNIEnv *env, jclass clazz, jstring uid) {
+	jbyteArray byteArray = NULL;
+	
+	JNF_COCOA_ENTER(env);
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	ABAddressBook *book = [ABAddressBook sharedAddressBook];
+	ABRecord *rec = [book recordForUniqueId:JNFJavaToNSString(env, uid)];
+	if([rec isKindOfClass: [ABPerson class]]) {
+		ABPerson *person = (ABPerson *)rec;
+		NSImage *anImage = [[NSImage alloc] initWithData: [person imageData]];
+		if(anImage != nil) {
+			NSArray *representations;
+			NSData *jpegData;
 			
-			if(!dontSave) {
-				[addressBook save];
-			}
+			representations = [anImage representations];
 			
-			ret = true;
+			jpegData = [NSBitmapImageRep representationOfImageRepsInArray:representations 
+																usingType:NSPNGFileType properties:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:false] forKey:NSImageInterlaced]];
+			
+			if(jpegData != nil) {
+				NSUInteger len = [jpegData length];
+				
+				byteArray = (*env)->NewByteArray(env, len);
+				(*env)->SetByteArrayRegion(env, byteArray, 0, len, [jpegData bytes]);
+			}
 		}
 	}
 	
+	[pool release];
+	JNF_COCOA_EXIT(env);
+	
+	return byteArray;
+}
+
+JNIEXPORT jboolean JNICALL Java_de_janrufmonitor_macab_MacAddressBookProxy_modifyPerson
+(JNIEnv *env, jclass clazz, jstring uid, jstring fName, jstring mName,jstring lName,jstring title, jstring org, jobject email, jobject phone, jobject address, jobject chat, jstring birthday, jboolean isPerson) {
+	jboolean ret = JNI_FALSE;
+	
+	JNF_COCOA_ENTER(env);
+	
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	ABAddressBook *addressBook;
+	ABRecord *record;
+	
+	addressBook = [ABAddressBook sharedAddressBook];
+	
+	record = [addressBook recordForUniqueId:JNFJavaToNSString(env, uid)];
+	if(record != nil && [record isKindOfClass:[ABPerson class]]) {
+		ABPerson *person = (ABPerson *)record;
+		setPropertiesForPerson(env, person, fName, mName, lName, title, org, email, phone, address, chat, birthday, isPerson);
+	
+		if(!dontSave) {
+			[addressBook save];
+		}
+		ret = JNI_TRUE;
+	}
+		
 	[pool release];
 	
 	JNF_COCOA_EXIT(env);
@@ -566,6 +693,151 @@ JNIEXPORT jstring JNICALL Java_de_janrufmonitor_macab_MacAddressBookProxy_addGro
 	JNF_COCOA_EXIT(env);
 	
 	return uid;
+}
+
+JNIEXPORT jboolean JNICALL Java_de_janrufmonitor_macab_MacAddressBookProxy_removeRecord
+(JNIEnv *env, jclass clazz, jstring uid) {
+	jboolean ret = JNI_FALSE;
+	
+	JNF_COCOA_ENTER(env);
+	
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	ABAddressBook *addressBook;
+	ABRecord *record;
+	
+	addressBook = [ABAddressBook sharedAddressBook];
+	
+	record = [addressBook recordForUniqueId:JNFJavaToNSString(env, uid)];
+	if(record != nil) {
+		if([addressBook removeRecord:record]) {
+			if(!dontSave) {
+				[addressBook save];
+			}
+			ret = JNI_TRUE;
+		}
+	}
+	
+	[pool release];
+	
+	JNF_COCOA_EXIT(env);
+	
+	return ret;
+}
+
+JNIEXPORT jboolean JNICALL Java_corny_addressbook_data_Group_setGroupName
+(JNIEnv *env, jclass clazz, jstring uid, jstring newName) {
+	jboolean ret = JNI_FALSE;
+	
+	JNF_COCOA_ENTER(env);
+	
+	if(newName != nil) {
+		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+		
+		ABAddressBook *addressBook;
+		ABRecord *record;
+		
+		addressBook = [ABAddressBook sharedAddressBook];
+		
+		record = [addressBook recordForUniqueId:JNFJavaToNSString(env, uid)];
+		if(record != nil && [record isKindOfClass:[ABGroup class]]) {
+			[record setValue:JNFJavaToNSString(env, newName)
+					forProperty:kABGroupNameProperty];
+			
+			if(!dontSave) {
+				[addressBook save];
+			}
+			ret = JNI_TRUE;
+		}
+		
+		[pool release];
+	}
+	
+	JNF_COCOA_EXIT(env);
+	
+	return ret;
+}
+
+JNIEXPORT jboolean JNICALL Java_corny_addressbook_data_Group_addRecordToGroup
+(JNIEnv *env, jclass clazz, jstring uid, jstring newRecordUID) {
+	jboolean ret = JNI_FALSE;
+	
+	JNF_COCOA_ENTER(env);
+	
+	if(newRecordUID != nil) {
+		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+		
+		ABAddressBook *addressBook;
+		ABRecord *record;
+		
+		addressBook = [ABAddressBook sharedAddressBook];
+		
+		record = [addressBook recordForUniqueId:JNFJavaToNSString(env, uid)];
+		if(record != nil && [record isKindOfClass:[ABGroup class]]) {
+			ABRecord *recordToInsert = [addressBook recordForUniqueId:JNFJavaToNSString(env, newRecordUID)];
+			if(recordToInsert != nil && ![[recordToInsert uniqueId] isEqualToString:[record uniqueId]]) {
+				ABGroup *group = (ABGroup *)record;
+				
+				if([recordToInsert isKindOfClass:[ABPerson class]]) {
+					[group addMember:(ABPerson *)recordToInsert];
+				} else {
+					[group addSubgroup:(ABGroup *)recordToInsert];
+				}
+				
+				if(!dontSave) {
+					[addressBook save];
+				}
+				ret = JNI_TRUE;
+			}
+		}
+		
+		[pool release];
+	}
+	
+	JNF_COCOA_EXIT(env);
+	
+	return ret;
+}
+
+JNIEXPORT jboolean JNICALL Java_corny_addressbook_data_Group_removeRecordFromGroup
+(JNIEnv *env, jclass clazz, jstring uid, jstring recordToRemoveUID) {
+	jboolean ret = JNI_FALSE;
+	
+	JNF_COCOA_ENTER(env);
+	
+	if(recordToRemoveUID != nil) {
+		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+		
+		ABAddressBook *addressBook;
+		ABRecord *record;
+		
+		addressBook = [ABAddressBook sharedAddressBook];
+		
+		record = [addressBook recordForUniqueId:JNFJavaToNSString(env, uid)];
+		if(record != nil && [record isKindOfClass:[ABGroup class]]) {
+			ABRecord *recordToRemove = [addressBook recordForUniqueId:JNFJavaToNSString(env, recordToRemoveUID)];
+			if(recordToRemove != nil) {
+				ABGroup *group = (ABGroup *)record;
+				
+				if([recordToRemove isKindOfClass:[ABPerson class]]) {
+					[group removeMember:(ABPerson *)recordToRemove];
+				} else {
+					[group removeSubgroup:(ABGroup *)recordToRemove];
+				}
+				
+				if(!dontSave) {
+					[addressBook save];
+				}
+				ret = JNI_TRUE;
+			}
+		}
+		
+		[pool release];
+	}
+	
+	JNF_COCOA_EXIT(env);
+	
+	return ret;
 }
 
 /*
@@ -766,7 +1038,9 @@ JNIEXPORT void JNICALL Java_de_janrufmonitor_macab_MacAddressBookProxy_revealInA
 	NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 	
 	NSMutableArray *parentGroups = [[[NSMutableArray alloc] init] autorelease];
-	for(ABGroup *group in [person parentGroups]) {
+    NSArray *pGroups = [person parentGroups];
+	for(NSUInteger i = 0; i < [pGroups count]; ++i) {
+        ABGroup *group = [pGroups objectAtIndex:i];
 		[parentGroups addObject:[group uniqueId]];
 	}
 	[dict setValue:parentGroups forKey:@"parentGroups"];
@@ -774,7 +1048,8 @@ JNIEXPORT void JNICALL Java_de_janrufmonitor_macab_MacAddressBookProxy_revealInA
 	[dict setValue:[NSNumber numberWithBool:([person imageData] != nil)] forKey:@"hasPicture"];
 	
 	NSArray *props = [ABPerson properties];
-	for (NSString *propName in props) {
+	for (NSUInteger i = 0; i < [props count]; ++i) {
+        NSString *propName = [props objectAtIndex:i];
 		if (propName == nil) continue;
 		
 		id prop = [person valueForProperty:propName]; 
@@ -879,17 +1154,23 @@ JNIEXPORT void JNICALL Java_de_janrufmonitor_macab_MacAddressBookProxy_revealInA
 	NSMutableArray *values = [[[NSMutableArray alloc] init] autorelease];
 	
 	NSMutableArray *parentGroups = [[[NSMutableArray alloc] init] autorelease];
-	for(ABGroup *g in [group parentGroups]) {
+    NSArray *pGroups = [group parentGroups];
+    NSArray *sGroups = [group subgroups];
+    NSArray *mem = [group members];
+	for(NSUInteger i = 0; i < [pGroups count]; ++i) {
+        ABGroup *g = [pGroups objectAtIndex:i];
 		[parentGroups addObject:[g uniqueId]];
 	}
 	
 	NSMutableArray *subGroups = [[[NSMutableArray alloc] init] autorelease];
-	for(ABGroup *g in [group subgroups]) {
+	for(NSUInteger i = 0; i < [sGroups count]; ++i) {
+        ABGroup *g = [sGroups objectAtIndex:i];
 		[subGroups addObject:[g uniqueId]];
 	}
 	
 	NSMutableArray *contacts = [[[NSMutableArray alloc] init] autorelease];
-	for(ABPerson *p in [group members]) {
+	for(NSUInteger i = 0; i < [mem count]; ++i) {
+        ABPerson *p = [mem objectAtIndex:i];
 		[contacts addObject:[p uniqueId]];
 	}
 	
