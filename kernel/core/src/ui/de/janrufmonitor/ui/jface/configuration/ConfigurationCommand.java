@@ -54,8 +54,10 @@ public class ConfigurationCommand extends AbstractConfigurableCommand implements
 			
 			// create a PreferenceDialog
 			PreferenceDialog.setDefaultImage(SWTImageManager.getInstance(this.getRuntime()).get(IJAMConst.IMAGE_KEY_PIM_ICON));
-			PreferenceDialog dlg = new PreferenceDialog(new Shell(display), mgr);
+			Shell shell = new Shell(display);
+			PreferenceDialog dlg = new PreferenceDialog(shell, mgr);
 			dlg.setPreferenceStore(new PreferenceConfigManagerStore());
+			shell.forceActive();
 			dlg.open();
 
 		} catch (Throwable t) {
