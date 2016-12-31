@@ -57,7 +57,7 @@ public class ConfigurationCommand extends AbstractConfigurableCommand implements
 			Shell shell = new Shell(display);
 			PreferenceDialog dlg = new PreferenceDialog(shell, mgr);
 			dlg.setPreferenceStore(new PreferenceConfigManagerStore());
-			shell.forceActive();
+			DisplayManager.forceForeground(display, shell);
 			dlg.open();
 
 		} catch (Throwable t) {

@@ -47,7 +47,24 @@ public class DisplayManager {
 		if (t!=null) t = null;
 		isUIThread = false;
 	}
-	
+
+	/**
+	 * Force the underlying shell to be displayed on the foreground.
+	 * @param display Actual display
+	 * @param shell underlying shell
+	 */
+	public static void forceForeground(Display display, final Shell shell){
+		display.syncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				m_logger.info("Forcing window to foreground");
+				if (!shell.getMinimized()) shell.setMinimized(true);
+				shell.setMinimized(false);
+				shell.setActive();
+			}
+		});
+	}
 	private synchronized static void createUIThread() {
 		if (isUIThread) {
 			if (m_logger.isLoggable(Level.WARNING))
