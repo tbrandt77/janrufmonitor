@@ -1,17 +1,17 @@
 package de.janrufmonitor.ui.swt;
 
+import de.janrufmonitor.framework.IJAMConst;
+import de.janrufmonitor.util.io.OSUtils;
+import de.janrufmonitor.util.io.PathResolver;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
-
-import org.eclipse.swt.widgets.Display;
-
-import de.janrufmonitor.framework.IJAMConst;
-import de.janrufmonitor.util.io.OSUtils;
-import de.janrufmonitor.util.io.PathResolver;
 
 public class DisplayManager {
 	
