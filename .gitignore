@@ -9,9 +9,9 @@ build/**/*
 *build/*
 extlib/**/*
 dist/**/*
-internal/**/*
 published/**/*
 docs/**/*
 kernel/**/build/*
 modules/**/build/*
 modules/**/src_lib/*
+internal/**/*
