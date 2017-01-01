@@ -53,11 +53,11 @@ public class ConfigurationCommand extends AbstractConfigurableCommand implements
 			this.createPreferenceNodes(mgr);
 			
 			// create a PreferenceDialog
+			Shell s = new Shell(display);
 			PreferenceDialog.setDefaultImage(SWTImageManager.getInstance(this.getRuntime()).get(IJAMConst.IMAGE_KEY_PIM_ICON));
-			Shell shell = new Shell(display);
-			PreferenceDialog dlg = new PreferenceDialog(shell, mgr);
+			PreferenceDialog dlg = new PreferenceDialog(s, mgr);
 			dlg.setPreferenceStore(new PreferenceConfigManagerStore());
-			DisplayManager.forceForeground(display, shell);
+			s.forceActive();
 			dlg.open();
 
 		} catch (Throwable t) {
