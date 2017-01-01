@@ -1,17 +1,17 @@
 package de.janrufmonitor.ui.swt;
 
+import de.janrufmonitor.framework.IJAMConst;
+import de.janrufmonitor.util.io.OSUtils;
+import de.janrufmonitor.util.io.PathResolver;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
-
-import org.eclipse.swt.widgets.Display;
-
-import de.janrufmonitor.framework.IJAMConst;
-import de.janrufmonitor.util.io.OSUtils;
-import de.janrufmonitor.util.io.PathResolver;
 
 public class DisplayManager {
 	
@@ -47,7 +47,31 @@ public class DisplayManager {
 		if (t!=null) t = null;
 		isUIThread = false;
 	}
-	
+
+	/**
+	 * Force the shell to be displayed on the foreground.
+	 * @param shell underlying shell
+	 */
+	public static void forceForeground(Shell shell){
+		if (shell == null) return;
+		if (OSUtils.isMacOSX()){
+			// #20 forceActive() does not work on Cocoa (tested up to SWT 4.6.2)
+			// Workaround is to make the shell visible for a short time
+			if (!shell.getVisible()) {
+				shell.setVisible(true);
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					m_logger.warning("forceForeground() Thread was interrupted.");
+				}
+			}
+			shell.forceActive();
+			shell.setVisible(false);
+		} else {
+			shell.forceActive();
+		}
+	}
+
 	private synchronized static void createUIThread() {
 		if (isUIThread) {
 			if (m_logger.isLoggable(Level.WARNING))
