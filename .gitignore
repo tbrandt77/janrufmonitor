@@ -10,12 +10,8 @@ build/**/*
 extlib/**/*
 dist/**/*
 internal/**/*
-internal/*
 published/**/*
 docs/**/*
 kernel/**/build/*
 modules/**/build/*
 modules/**/src_lib/*
-/.idea
-
-*.gen
