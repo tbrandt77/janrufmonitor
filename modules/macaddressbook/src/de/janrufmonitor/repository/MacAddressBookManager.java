@@ -105,7 +105,7 @@ public class MacAddressBookManager extends AbstractReadWriteCallerManager implem
 					searchTerm +=" "+searchTerms[i].getSearchTerm();
 				}
 			}
-			if (filters!=null && filters[0]!=null) {
+			if (filters!=null && filters[0]!=null && searchTerm.trim().length()>0) {
 				ICallerList cl = getRuntime().getCallerFactory().createCallerList();
 				cl.add(getProxy().findContacts(searchTerm.trim()));
 				this.applyFilters(cl, filters);
