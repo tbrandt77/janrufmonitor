@@ -44,7 +44,9 @@ public class InfoCommand extends AbstractAsyncDisplayCommand implements IConfigu
 	}
 
 	public void asyncExecute() {
-		InfoDialog id = new InfoDialog(new Shell(DisplayManager.getDefaultDisplay()));
+		Shell s = new Shell(DisplayManager.getDefaultDisplay());
+		InfoDialog id = new InfoDialog(s);
+		DisplayManager.forceForeground(s);
 		id.open();
 	}
 

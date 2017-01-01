@@ -49,22 +49,29 @@ public class DisplayManager {
 	}
 
 	/**
-	 * Force the underlying shell to be displayed on the foreground.
-	 * @param display Actual display
+	 * Force the shell to be displayed on the foreground.
 	 * @param shell underlying shell
 	 */
-	public static void forceForeground(Display display, final Shell shell){
-		display.syncExec(new Runnable() {
-
-			@Override
-			public void run() {
-				m_logger.info("Forcing window to foreground");
-				if (!shell.getMinimized()) shell.setMinimized(true);
-				shell.setMinimized(false);
-				shell.setActive();
+	public static void forceForeground(Shell shell){
+		if (shell == null) return;
+		if (OSUtils.isMacOSX()){
+			// #20 forceActive() does not work on Cocoa (tested up to SWT 4.6.2)
+			// Workaround is to make the shell visible for a short time
+			if (!shell.getVisible()) {
+				shell.setVisible(true);
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					m_logger.warning("forceForeground() Thread was interrupted.");
+				}
 			}
-		});
+			shell.forceActive();
+			shell.setVisible(false);
+		} else {
+			shell.forceActive();
+		}
 	}
+
 	private synchronized static void createUIThread() {
 		if (isUIThread) {
 			if (m_logger.isLoggable(Level.WARNING))

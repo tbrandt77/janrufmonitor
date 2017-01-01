@@ -56,12 +56,14 @@ public class UpdatesCommand extends AbstractAsyncDisplayCommand implements IConf
 		try {
 			WizardDialog.setDefaultImage(SWTImageManager.getInstance(this.getRuntime()).get(IJAMConst.IMAGE_KEY_PIM_ICON));
 			UpdateWizard updates = new UpdateWizard(this.m_preload);
-		    WizardDialog dlg = new WizardDialog(new Shell(DisplayManager.getDefaultDisplay()), updates);
-		    dlg.open();
-		    this.m_preload = false;
-		    if (dlg.getReturnCode() == WizardDialog.OK) {
-		    	
-		    }
+			Shell s = new Shell(DisplayManager.getDefaultDisplay());
+			WizardDialog dlg = new WizardDialog(s, updates);
+			DisplayManager.forceForeground(s);
+			dlg.open();
+			this.m_preload = false;
+			if (dlg.getReturnCode() == WizardDialog.OK) {
+
+			}
 		} catch (Throwable t) {
 			this.m_logger.log(Level.SEVERE, t.getMessage(), t);
 			PropagationFactory.getInstance().fire(new Message(Message.ERROR, this.getNamespace(), t.toString().toLowerCase(), t));
