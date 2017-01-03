@@ -41,6 +41,7 @@ import de.janrufmonitor.ui.jface.application.journal.action.ImportAction;
 import de.janrufmonitor.ui.jface.application.rendering.IJournalCellRenderer;
 import de.janrufmonitor.ui.jface.application.rendering.IRenderer;
 import de.janrufmonitor.ui.swt.DisplayManager;
+import de.janrufmonitor.util.io.OSUtils;
 import de.janrufmonitor.util.io.PathResolver;
 
 public final class Journal extends AbstractTableApplication implements IEventSender, IEventReceiver, JournalConfigConst {
@@ -56,6 +57,15 @@ public final class Journal extends AbstractTableApplication implements IEventSen
 
 		public MenuManager createMenu() {
 			MenuManager master = new MenuManager();
+			
+			if (OSUtils.isMacOSX()) {
+				 master = new MenuManager(this.getI18nManager().getString(
+							this.m_app.getNamespace(),
+							"master",
+							"label",
+							this.getLanguage()
+						));
+			}
 			
 			// create file menu
 			MenuManager file = new MenuManager(
@@ -220,6 +230,11 @@ public final class Journal extends AbstractTableApplication implements IEventSen
 
 		public Menu createPopupMenu(Control c) {
 			MenuManager master = new MenuManager();
+			
+			if (OSUtils.isMacOSX()) {
+				master.add(this.createMenu());
+				this.addSeparator(master);
+			}
 			
 			this.addAction(master, "journal_assign");
 			this.addAction(master, "journal_reidentify");

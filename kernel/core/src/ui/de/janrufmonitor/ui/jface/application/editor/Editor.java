@@ -35,6 +35,7 @@ import de.janrufmonitor.ui.jface.application.dnd.IDropTargetHandler;
 import de.janrufmonitor.ui.jface.application.editor.action.ImportAction;
 import de.janrufmonitor.ui.jface.application.rendering.IEditorCellRenderer;
 import de.janrufmonitor.ui.jface.application.rendering.IRenderer;
+import de.janrufmonitor.util.io.OSUtils;
 import de.janrufmonitor.util.io.PathResolver;
 
 public class Editor extends AbstractTreeTableApplication implements EditorConfigConst {
@@ -52,6 +53,15 @@ public class Editor extends AbstractTreeTableApplication implements EditorConfig
 		public MenuManager createMenu() {
 			MenuManager master = new MenuManager();
 
+			if (OSUtils.isMacOSX()) {
+				 master = new MenuManager(this.getI18nManager().getString(
+							this.m_app.getNamespace(),
+							"master",
+							"label",
+							this.getLanguage()
+						));
+			}
+			
 			// create file menu
 			MenuManager file = new MenuManager(
 				this.getI18nManager().getString(
@@ -173,7 +183,10 @@ public class Editor extends AbstractTreeTableApplication implements EditorConfig
 
 		public Menu createPopupMenu(Control c) {
 			MenuManager master = new MenuManager();
-			
+			if (OSUtils.isMacOSX()) {
+				master.add(this.createMenu());
+				this.addSeparator(master);
+			}
 			this.addAction(master, "editor_new");
 			this.addAction(master, "editor_change");
 			this.addAction(master, "editor_combine");

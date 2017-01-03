@@ -13,6 +13,7 @@ ui.jface.application.dialog.Dialog\:assign\:label\:en=Add to address book...
 ui.jface.application.dialog.Dialog\:close\:label\:en=Close
 
 ui.jface.application.editor.Editor\:file\:label\:en=File
+ui.jface.application.editor.Editor\:master\:label\:en=Preferences
 ui.jface.application.editor.Editor\:label\:label\:en=Address book
 ui.jface.application.editor.Editor\:title\:label\:en=Address book
 ui.jface.application.editor.Editor\:items\:label\:en=\ contacts.
@@ -157,6 +158,7 @@ ui.jface.application.journal.Journal\:items\:label\:en=\ registered calls.
 ui.jface.application.journal.Journal\:items_filtered\:label\:en=\ view is filtered.
 ui.jface.application.journal.Journal\:view\:label\:en=View
 ui.jface.application.journal.Journal\:file\:label\:en=File
+ui.jface.application.journal.Journal\:master\:label\:en=Preferences
 ui.jface.application.journal.Journal\:current_view\:label\:en=Current view: 
 ui.jface.application.journal.Journal\:selected\:label\:en=selected call
 ui.jface.application.journal.Journal\:statistic\:label\:en=Statistic
