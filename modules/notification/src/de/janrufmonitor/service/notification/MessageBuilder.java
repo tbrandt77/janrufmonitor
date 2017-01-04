@@ -112,6 +112,12 @@ public class MessageBuilder {
 		message.setSubject(removeCRLF((translate(parse(templateProps.getProperty("subject"), call))))); 
         message.setSentDate(new Date()); 
         message.setHeader("X-Mailer", "jAnrufmonitor MailNotificator "+IJAMConst.VERSION_DISPLAY); 
+        
+        //AddHeader for each additional line in template.properties-file
+        for(String key : templateProps.stringPropertyNames()) {
+        	if(!(key.equalsIgnoreCase("subject") || key.equalsIgnoreCase("mimetype")))
+        		message.addHeader(key, removeCRLF((translate(parse(templateProps.getProperty(key), call)))));
+        }
 
         StringBuffer rawcontent = new StringBuffer((int) templateFile.length());
         
