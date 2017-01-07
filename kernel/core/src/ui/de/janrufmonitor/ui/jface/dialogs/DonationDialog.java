@@ -102,7 +102,7 @@ public class DonationDialog extends TitleAreaDialog {
 			public void widgetSelected(SelectionEvent e) {
 				getRuntime().getConfigManagerFactory().getConfigManager().setProperty("service.DonationService", "intervall", Integer.toString(200));
 				getRuntime().getConfigManagerFactory().getConfigManager().saveConfiguration();
-				Program.launch("http://www.janrufmonitor.de/donation.html");
+				Program.launch("https://www.janrufmonitor.de/ihre-unterstuetzung/");
 				close();
 			}});
 		
