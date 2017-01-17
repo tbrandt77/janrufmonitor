@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import de.janrufmonitor.framework.IAttribute;
@@ -83,12 +84,18 @@ public class NcidCallRaw extends AbstractNcidCall {
 				
 				// create call data
 				// added 2009/05/01
-				SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyyHHmm");
+				String dateformat =PIMRuntime.getInstance().getConfigManagerFactory().getConfigManager().getProperty(NcidMonitor.NAMESPACE, "dateformat");
+				if (dateformat == null || dateformat.trim().length()==0) dateformat = "ddMMyyyyHHmm";
+				
+				if (Logger.getLogger(IJAMConst.DEFAULT_LOGGER).isLoggable(Level.INFO))
+					Logger.getLogger(IJAMConst.DEFAULT_LOGGER).info("Setting date format to #"+dateformat+"#");
+				
+				SimpleDateFormat sdf = new SimpleDateFormat(dateformat);
 				Date date = new Date(0);
 				try {
 					date = sdf.parse(call[2]+call[4]);					
 				} catch (ParseException e) {
-					Logger.getLogger(IJAMConst.DEFAULT_LOGGER).severe("Wrong standard date format detected.");
+					Logger.getLogger(IJAMConst.DEFAULT_LOGGER).severe("Wrong standard date format detected. "+call[2]+call[4]+" does not match #"+dateformat+"#");
 				}
 
 				ICip cip = r.getCallFactory().createCip(getCip("sip"), "");
@@ -158,12 +165,18 @@ public class NcidCallRaw extends AbstractNcidCall {
 				
 				// create call data
 				// added 2009/05/27
-				SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyyHHmm");
+				String dateformat =PIMRuntime.getInstance().getConfigManagerFactory().getConfigManager().getProperty(NcidMonitor.NAMESPACE, "dateformat");
+				if (dateformat == null || dateformat.trim().length()==0) dateformat = "ddMMyyyyHHmm";
+				
+				if (Logger.getLogger(IJAMConst.DEFAULT_LOGGER).isLoggable(Level.INFO))
+					Logger.getLogger(IJAMConst.DEFAULT_LOGGER).info("Setting date format to #"+dateformat+"#");
+				
+				SimpleDateFormat sdf = new SimpleDateFormat(dateformat);
 				Date date = new Date(0);
 				try {
 					date = sdf.parse(call[2]+call[4]);				
 				} catch (ParseException e) {
-					Logger.getLogger(IJAMConst.DEFAULT_LOGGER).severe("Wrong standard date format detected.");
+					Logger.getLogger(IJAMConst.DEFAULT_LOGGER).severe("Wrong standard date format detected. "+call[2]+call[4]+" does not match #"+dateformat+"#");
 				}
 
 				ICip cip = r.getCallFactory().createCip(getCip("sip"), "");

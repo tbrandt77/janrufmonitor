@@ -8,3 +8,4 @@ monitor.NcidMonitor\:activemonitor\:type=boolean
 monitor.NcidMonitor\:retrymax\:value=3
 monitor.NcidMonitor\:autoreconnect\:value=true
 monitor.NcidMonitor\:autoreconnect\:type=boolean
+monitor.NcidMonitor\:dateformat\:value=ddMMyyyyHHmm
