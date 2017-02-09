@@ -58,6 +58,14 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
     private FirmwareManager() {
         this.m_logger = LogManager.getLogManager().getLogger(IJAMConst.DEFAULT_LOGGER);
         this.m_broker = getRuntime().getEventBroker();
+        this.m_broker.register(this);
+		this.m_broker.register(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_RESTARTED));
+		this.m_broker.register(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_NETWORK_UNAVAILABLE));
+		this.m_broker.register(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_UNKNOWN_HOST));
+		this.m_broker.register(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_CONNECTION_LOST));
+		this.m_broker.register(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_RECONNECTED_SUCCESS));
+		this.m_broker.register(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_UNSUPPORTED));
+		this.m_broker.register(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_REFUSED));
     }
     
     public static synchronized FirmwareManager getInstance() {
@@ -81,17 +89,6 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
     	
     	System.getProperties().setProperty("jam.fritzbox.tr064off", this.getFritzBoxTR064Off() ? "true": "false");
     	System.setProperty("jam.fritzbox.session.donotlogin", "false");
-    	
-		if (this.m_broker!=null) {
-			this.m_broker.register(this);
-			this.m_broker.register(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_RESTARTED));
-			this.m_broker.register(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_NETWORK_UNAVAILABLE));
-			this.m_broker.register(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_UNKNOWN_HOST));
-			this.m_broker.register(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_CONNECTION_LOST));
-			this.m_broker.register(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_RECONNECTED_SUCCESS));
-			this.m_broker.register(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_UNSUPPORTED));
-			this.m_broker.register(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_REFUSED));
-		}
 
 		this.m_isRunning = true;
     }
@@ -487,17 +484,6 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 
     
     public void shutdown() {
-		if (this.m_broker!=null) {
-			this.m_broker.unregister(this);
-			this.m_broker.unregister(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_RESTARTED));
-			this.m_broker.unregister(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_NETWORK_UNAVAILABLE));
-			this.m_broker.unregister(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_UNKNOWN_HOST));
-			this.m_broker.unregister(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_CONNECTION_LOST));
-			this.m_broker.unregister(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_RECONNECTED_SUCCESS));
-			this.m_broker.unregister(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_UNSUPPORTED));
-			this.m_broker.unregister(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_REFUSED));
-		}
-		
 		if (m_restartedThread!=null && m_restartedThread.isAlive()){
 			m_restartedThread.interrupt();
 		}
@@ -752,6 +738,7 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 				
 			} catch (FritzBoxLoginException e) {
 				// check for reason
+				m_logger.log(Level.WARNING, e.getMessage(), e);
 				if (m_logger.isLoggable(Level.INFO))
 					m_logger.info("Automatic re-connect to FritzBox failed...");
 			}

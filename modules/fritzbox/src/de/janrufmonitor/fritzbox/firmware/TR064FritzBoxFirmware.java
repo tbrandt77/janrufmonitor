@@ -191,7 +191,7 @@ public class TR064FritzBoxFirmware implements
 		if (!this.isInitialized()) throw new FritzBoxLoginException("Could not login to FritzBox: FritzBox firmware not initialized.");
 	}
 	
-	public boolean isTR064Enabled() {
+	public boolean isTR064Enabled() throws FritzBoxNotFoundException {
 		if (this.m_hasTR064Checkpassed) {
 			if (this.m_logger.isLoggable(Level.INFO))
 				this.m_logger.info("TR064 check already done. TR064 is "+(this.m_isTR064 ? "enabled" : "disabled")+".");
@@ -219,6 +219,8 @@ public class TR064FritzBoxFirmware implements
 		} catch (IOException e) {
 			if (this.m_logger.isLoggable(Level.SEVERE))
 				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			
+			if (e.getMessage().indexOf("timed out: connect")>0) throw new FritzBoxNotFoundException("FRITZ!Box "+this.m_server+" not reachable: "+e.getMessage());
 		}
 		if (this.m_logger.isLoggable(Level.WARNING))
 			this.m_logger.warning("FRITZ!Box "+this.m_server+" does not support TR064 or TR064 is disabled.");
@@ -226,7 +228,7 @@ public class TR064FritzBoxFirmware implements
 		return this.m_isTR064;
 	}
 
-	public boolean isPasswordValid() throws FritzBoxInitializationException {
+	public boolean isPasswordValid() throws FritzBoxInitializationException, FritzBoxNotFoundException {
 		try {			
 			if (this.isTR064Enabled()) {
 				this.m_useHttp = Boolean.parseBoolean(System.getProperty("jam.fritzbox.useHttp", "false"));	
