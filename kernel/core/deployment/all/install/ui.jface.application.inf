@@ -423,3 +423,7 @@ ui.jface.application.journal.Journal\:quicksearch\:value=true
 ui.jface.application.journal.Journal\:quicksearch\:type=boolean
 ui.jface.application.editor.Editor\:quicksearch\:value=true
 ui.jface.application.editor.Editor\:quicksearch\:type=boolean
+
+# added 5.0.70
+ui.jface.application.ActionRegistry\:action_clipboard_address\:value=de.janrufmonitor.ui.jface.application.action.ClipboardAddressAction
+ui.jface.application.ActionRegistry\:action_clipboard_address\:access=system

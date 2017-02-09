@@ -208,6 +208,7 @@ ui.jface.application.journal.action.NewJournalAction\:nocms\:label\:en=No active
 ui.jface.application.journal.action.NewJournalAction\:title\:label\:en=New
 ui.jface.application.journal.action.NewJournalAction\:override\:label\:en=This file already exists. Do you want to open the file now?
 ui.jface.application.action.ClipboardAction\:title\:label\:en=Copy number to clipboard
+ui.jface.application.action.ClipboardAddressAction\:title\:label\:en=Copy name and address to clipboard
 ui.jface.application.journal.action.NotesClipboardAction\:title\:label\:en=Copy comment to clipboard
 ui.jface.application.journal.action.FilterAction\:title\:label\:en=Filters
 ui.jface.application.journal.action.FilterAction\:edit\:label\:en=change

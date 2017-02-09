@@ -120,6 +120,7 @@ public final class Journal extends AbstractTableApplication implements IEventSen
 			this.addAction(selected, "journal_assign");
 			this.addAction(selected, "journal_websearch");
 			this.addAction(selected, "clipboard");
+			this.addAction(selected, "clipboard_address");
 			this.addAction(selected, "journal_delete");
 
 			
@@ -241,6 +242,7 @@ public final class Journal extends AbstractTableApplication implements IEventSen
 			this.addAction(master, "history");
 			this.addAction(master, "journal_websearch");
 			this.addAction(master, "clipboard");
+			this.addAction(master, "clipboard_address");
 			//this.addAction(master, "journal_notesclipboard");
 			this.addAction(master, "journal_delete");
 			this.addSeparator(master);

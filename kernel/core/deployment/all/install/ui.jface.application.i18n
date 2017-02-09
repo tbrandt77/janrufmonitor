@@ -217,6 +217,7 @@ ui.jface.application.journal.action.NewJournalAction\:nocms\:label\:de=Es sind k
 ui.jface.application.journal.action.NewJournalAction\:title\:label\:de=Neu
 ui.jface.application.journal.action.NewJournalAction\:override\:label\:de=Die angegebene Datei existiert bereits. M\u00F6chten Sie diese nun \u00F6ffnen?
 ui.jface.application.action.ClipboardAction\:title\:label\:de=Rufnummer in Zwischenablage kopieren
+ui.jface.application.action.ClipboardAddressAction\:title\:label\:de=Name und Adresse in Zwischenablage kopieren
 ui.jface.application.journal.action.NotesClipboardAction\:title\:label\:de=Kommentar in Zwischenablage kopieren
 ui.jface.application.journal.action.FilterAction\:title\:label\:de=Filter
 ui.jface.application.journal.action.FilterAction\:shorttext\:label\:de=Filter
