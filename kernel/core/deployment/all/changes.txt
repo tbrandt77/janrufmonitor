@@ -1,5 +1,22 @@
 ﻿===
 
+jAnrufmonitor 5.0.70 (02.03.2017)
+---------------------------------
+Neu:
+- Journal: Neue Funktion um Name und Adresse in die Zwischenablage zu kopieren
+- Journal und Adressbuch: Zusätzliches Optionen-Menü für MacOS X Version
+
+Bugfix:
+- Fokusierung des einstellungsdialoges korrigiert
+
+Module:
+- FRITZ!Box-Überwachung: Verbesserte Wiederverbindungoption bei Verbindungsabbruch
+- NCID-Überwachung: Unterstützung von alternativen Datumsformaten
+- Emailbenachrichtigung: Setzen von zusätzlichen Email-Headern per Template
+- Apple Mac Adressbuch: Verbesserte Suchfunktion bei Kontakten
+
+===
+
 jAnrufmonitor 5.0.69 (02.01.2017)
 ---------------------------------
 Neu:
@@ -11,7 +28,7 @@ Neu:
 
 Bugfix:
 - Verbesserter Mehrbenutzerbetrieb
-- Entfernen des Defautl Benutzers beim Mehrbenutzerbetrieb
+- Entfernen des Default Benutzers beim Mehrbenutzerbetrieb
 
 Module:
 - Microsoft Outlook Kontaktverzeichnis: OLE -> ActiveX Unterstützung
