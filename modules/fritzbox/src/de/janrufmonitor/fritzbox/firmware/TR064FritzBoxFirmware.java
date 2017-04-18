@@ -482,6 +482,7 @@ public class TR064FritzBoxFirmware implements
 			IOException {
 		if (!this.isInitialized()) throw new GetCallerImageException("Could not get caller image from FritzBox: FritzBox firmware not initialized.");
 		if (path==null) return null;
+		if (path.trim().length()==0) return null;
 		if (!path.startsWith("/")) path = "/" + path;
 
 		try {
