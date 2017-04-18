@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -23,7 +22,7 @@ import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
 import de.janrufmonitor.repository.imexport.ICallerExporter;
 import de.janrufmonitor.repository.imexport.IImExporter;
 import de.janrufmonitor.runtime.PIMRuntime;
-import de.janrufmonitor.util.string.StringEscapeUtils;
+import de.janrufmonitor.util.string.StringUtils;
 
 public class FritzBoxCallerExporter implements ICallerExporter {
 
@@ -50,29 +49,63 @@ public class FritzBoxCallerExporter implements ICallerExporter {
 	}
 
 	public boolean doExport() {
-		File db = new File(m_filename);
-		try {
-			FileWriter dbWriter = new FileWriter(db);
-			BufferedWriter bufWriter = new BufferedWriter(dbWriter);
-			StringBuffer xml = new StringBuffer();
-			xml.append("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>");xml.append(IJAMConst.CRLF);
-			xml.append("<phonebooks>");xml.append(IJAMConst.CRLF);
-			xml.append("<phonebook owner=\"1\" name=\"jAnrufmonitor Kontakte ("+new SimpleDateFormat("dd.MM.yyyy").format(new Date())+")\">");xml.append(IJAMConst.CRLF);
-			for (int i = 0; i < this.m_callerList.size(); i++) {
-				this.toXml(this.m_callerList.get(i), xml);
+		int splitcount = 0;
+		if (this.m_callerList.size()>299) {
+			splitcount = (this.m_callerList.size() / 300) + 1;
+		}
+		
+		if (splitcount==0) {
+			File db = new File(m_filename);
+			try {
+				FileWriter dbWriter = new FileWriter(db);
+				BufferedWriter bufWriter = new BufferedWriter(dbWriter);
+				StringBuffer xml = new StringBuffer();
+				xml.append("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>");xml.append(IJAMConst.CRLF);
+				xml.append("<phonebooks>");xml.append(IJAMConst.CRLF);
+				xml.append("<phonebook owner=\"1\" name=\"jAnrufmonitor Kontakte ("+new SimpleDateFormat("dd.MM.yyyy").format(new Date())+")\">");xml.append(IJAMConst.CRLF);
+				for (int i = 0; i < this.m_callerList.size(); i++) {
+					this.toXml(this.m_callerList.get(i), xml);
+				}
+				xml.append("</phonebook>");xml.append(IJAMConst.CRLF);
+				xml.append("</phonebooks>");
+				bufWriter.write(xml.toString());
+				bufWriter.flush();
+				bufWriter.close();
+				dbWriter.close();
+			} catch (FileNotFoundException ex) {
+				this.m_logger.severe("File not found: " + m_filename);
+				return false;
+			} catch (IOException ex) {
+				this.m_logger.severe("IOException on file " + m_filename);
+				return false;
 			}
-			xml.append("</phonebook>");xml.append(IJAMConst.CRLF);
-			xml.append("</phonebooks>");
-			bufWriter.write(xml.toString());
-			bufWriter.flush();
-			bufWriter.close();
-			dbWriter.close();
-		} catch (FileNotFoundException ex) {
-			this.m_logger.severe("File not found: " + m_filename);
-			return false;
-		} catch (IOException ex) {
-			this.m_logger.severe("IOException on file " + m_filename);
-			return false;
+		} else {
+			for (int i=0;i<splitcount;i++) {
+				File db = new File(m_filename+"-"+(i+1)+this.getExtension().substring(1));
+				try {
+					FileWriter dbWriter = new FileWriter(db);
+					BufferedWriter bufWriter = new BufferedWriter(dbWriter);
+					StringBuffer xml = new StringBuffer();
+					xml.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");xml.append(IJAMConst.CRLF);
+					xml.append("<phonebooks>");xml.append(IJAMConst.CRLF);
+					xml.append("<phonebook owner=\"1\" name=\"jAnrufmonitor Kontakte ("+new SimpleDateFormat("dd.MM.yyyy").format(new Date())+") Teil "+(i+1)+"/"+splitcount+"\">");xml.append(IJAMConst.CRLF);
+					for (int j = (i*300); j < this.m_callerList.size() && j < (i+1) * 300; j++) {
+						this.toXml(this.m_callerList.get(j), xml);
+					}
+					xml.append("</phonebook>");xml.append(IJAMConst.CRLF);
+					xml.append("</phonebooks>");
+					bufWriter.write(xml.toString());
+					bufWriter.flush();
+					bufWriter.close();
+					dbWriter.close();
+				} catch (FileNotFoundException ex) {
+					this.m_logger.severe("File not found: " + m_filename);
+					return false;
+				} catch (IOException ex) {
+					this.m_logger.severe("IOException on file " + m_filename);
+					return false;
+				}
+			}
 		}
 		return true;
 	}
@@ -83,9 +116,10 @@ public class FritzBoxCallerExporter implements ICallerExporter {
 		s.append("<person>");s.append(IJAMConst.CRLF);
 		s.append("<realName>");
 		try {
-			s.append(StringEscapeUtils.escapeXml(new String(c.getName().getFullname().getBytes("iso-8859-1"))));
-		} catch (UnsupportedEncodingException e) {
-			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			if (c.getName().getFullname().trim().length()==0) {
+				s.append(StringUtils.replaceString(c.getName().getAdditional(), "&", "&amp;"));
+			} else
+				s.append(StringUtils.replaceString(c.getName().getFullname(), "&", "&amp;"));
 		} catch (Exception e) {
 			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 		}
