@@ -8,7 +8,7 @@ ui.jface.dialogs.InfoDialog\:edition\:label\:de=(AVM FRITZ!Box Fon-Edition)
 repository.FritzBoxPhonebookManager\:title\:label\:de=AVM FRITZ!Box Fon Telefonbuch
 
 fritzbox.firmware.login\:title\:label\:de=AVM FRITZ!Box Fon Anmeldung
-fritzbox.firmware.login\:loginfailed\:label\:de=Die Anmeldung an der FRITZ!Box Fon ist fehlgeschlagen. Bitte pr\u00FCfen Sie das FRITZ!Box Fon-Passwort und ggf. den FRITZ!Box Fon-Benutzer unter Administration -> Einstellungen -> AVM FRITZ!Box Fon-Einstellungen.
+fritzbox.firmware.login\:loginfailed\:label\:de=Die Anmeldung an der FRITZ!Box Fon ist fehlgeschlagen. Bitte pr\u00FCfen Sie das FRITZ!Box Fon-Kennwort und ggf. den FRITZ!Box Fon-Benutzer unter Administration -> Einstellungen -> AVM FRITZ!Box Fon-Einstellungen.
 
 fritzbox.firmware.hardware\:title\:label\:de=AVM FRITZ!Box Fon Verbindungsmanager
 fritzbox.firmware.hardware\:unknownhost\:label\:de=Die AVM FRITZ!Box Fon mit dem Adresse {%1} ist nicht erreichbar. Bitte pr\u00FCfen Sie die IP-Adresse der AVM FRITZ!Box Fon unter Administration -> Einstellungen -> AVM FRITZ!Box Fon-Einstellungen.

@@ -72,12 +72,12 @@ ui.jface.application.fritzbox.action.statistic.CbcStatsAction\:dialogtitle\:labe
 ui.jface.application.fritzbox.action.statistic.CbcStatsAction\:dialogtitle\:description\:de=Zeigt eine Statistik \u00FCber die genutzten Call-by-Call Anbieter.
 ui.jface.application.fritzbox.action.statistic.CbcStatsAction\:current\:label\:de=Statistik f\u00FCr die Ansicht "{%1}":
 
-ui.jface.application.fritzbox.action.statistic.LineStatsAction\:title\:label\:de=Über welche Nebenstellen wird telefoniert?
+ui.jface.application.fritzbox.action.statistic.LineStatsAction\:title\:label\:de=\u00DCber welche Nebenstellen wird telefoniert?
 ui.jface.application.fritzbox.action.statistic.LineStatsAction\:line\:label\:de=Nebenstelle
 ui.jface.application.fritzbox.action.statistic.LineStatsAction\:calls\:label\:de=Anrufe
 ui.jface.application.fritzbox.action.statistic.LineStatsAction\:calculating\:label\:de=Ermittle Telefonate \u00FCber Nebenstellen...
 ui.jface.application.fritzbox.action.statistic.LineStatsAction\:createstatistic\:label\:de=Erzeuge Statistik...
-ui.jface.application.fritzbox.action.statistic.LineStatsAction\:dialogtitle\:label\:de=Über welche Nebenstellen wird telefoniert?
+ui.jface.application.fritzbox.action.statistic.LineStatsAction\:dialogtitle\:label\:de=\u00DCber welche Nebenstellen wird telefoniert?
 ui.jface.application.fritzbox.action.statistic.LineStatsAction\:dialogtitle\:description\:de=Zeigt eine Statistik \u00FCber die genutzten Fritz!box Fon Nebenstellen.
 ui.jface.application.fritzbox.action.statistic.LineStatsAction\:current\:label\:de=Statistik f\u00FCr die Ansicht "{%1}":
 
@@ -92,9 +92,9 @@ ui.jface.application.fritzbox.rendering.SpoofingNumber\:name\:label\:de=Spoofing
 ui.jface.application.fritzbox.rendering.SpoofingNumber\:label\:label\:de=Spoofingrufnummer (FRITZ!Box Fon)
 
 # added 5.0.65
-ui.jface.application.password.PasswordCommand\:label\:label\:de=Kein FRITZ!Box Fon Passwort hinterlegt
-ui.jface.application.password.PasswordCommand\:dialogtitle\:label\:de=Kein FRITZ!Box Fon Passwort hinterlegt
-ui.jface.application.password.PasswordCommand\:dialogtitle\:description\:de=Um jAnrufmonitor an der FRITZ!Box Fon anzumelden, muss ein Passwort angegeben werden.\nBitte geben Sie das aktuell g\u00FCltige Passwort ein.
-ui.jface.application.password.PasswordCommand\:password\:label\:de=FRITZ!Box Fon Passwort:
+ui.jface.application.password.PasswordCommand\:label\:label\:de=Kein FRITZ!Box Fon Kennwort hinterlegt
+ui.jface.application.password.PasswordCommand\:dialogtitle\:label\:de=Kein FRITZ!Box Fon Kennwort hinterlegt
+ui.jface.application.password.PasswordCommand\:dialogtitle\:description\:de=Um jAnrufmonitor an der FRITZ!Box Fon anzumelden, muss ein Kennwort angegeben werden.\nBitte geben Sie das aktuell g\u00FCltige Kennwort ein.
+ui.jface.application.password.PasswordCommand\:password\:label\:de=FRITZ!Box Fon Kennwort:
 ui.jface.application.password.PasswordCommand\:user\:label\:de=FRITZ!Box Fon Benutzer: {%1}
 
