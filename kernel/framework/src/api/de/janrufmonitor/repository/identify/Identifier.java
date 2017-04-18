@@ -115,7 +115,8 @@ public final class Identifier {
 		}
 		Collections.sort(activeManager, new RepositoryManagerComparator());
 
-		Identifier.logger.info("List with all active caller managers: "+allManagers.toString());		
+		Identifier.logger.info("List with all caller managers: "+allManagers.toString());	
+		Identifier.logger.info("List with all active caller managers: "+activeManager.toString());		
 		return activeManager;
 	}
 
