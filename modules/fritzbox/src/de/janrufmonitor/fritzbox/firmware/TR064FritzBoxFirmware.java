@@ -562,7 +562,7 @@ public class TR064FritzBoxFirmware implements
 		if (!this.isInitialized()) throw new DoBlockException("Could not block number "+number+" on FritzBox: FritzBox firmware not initialized.");
 		
 		String u = "http://" + this.m_server + ":" + this.m_port + "/fon_num/sperre_edit.lua"; 
-		String body = "mode_call=_in&rule_kind=rufnummer&rule_number="+number+"&current_rule=&current_mode=_new&backend_validation=false&apply=&sid="+ FritzBoxTR064Manager.getInstance().getSID(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server)), (this.m_useHttp ? "http" : "https"));
+		String body = "mode_call=_in&rule_kind=rufnummer&rule_number="+number+"&name=jAnrufmonitor+Sperre&current_rule=&current_mode=_new&backend_validation=false&apply=&sid="+ FritzBoxTR064Manager.getInstance().getSID(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server)), (this.m_useHttp ? "http" : "https"));
 		
 		doHttpCall(u, "POST", body, new String[][] { {"Content-Length", Integer.toString(body.length())} });
 		
