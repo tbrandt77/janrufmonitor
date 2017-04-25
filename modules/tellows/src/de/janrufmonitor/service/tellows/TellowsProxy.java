@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -144,16 +145,16 @@ public class TellowsProxy {
 	public IAttributeMap getTellowsData(String number, String country) throws Exception {
 		IAttributeMap m = getRuntime().getCallerFactory().createAttributeMap();
 		StringBuffer url_string = new StringBuffer();
-		url_string.append("http://www.tellows.");
-		if (country.equalsIgnoreCase("49")) {
-			url_string.append("de");
-		} else if (country.equalsIgnoreCase("43")) {
-			url_string.append("at");
-		} else if (country.equalsIgnoreCase("41")) {
-			url_string.append("ch");
-		} else {
-			url_string.append("de");
-		} 
+		url_string.append("https://www.tellows.de");
+//		if (country.equalsIgnoreCase("49")) {
+//			url_string.append("de");
+//		} else if (country.equalsIgnoreCase("43")) {
+//			url_string.append("at");
+//		} else if (country.equalsIgnoreCase("41")) {
+//			url_string.append("ch");
+//		} else {
+//			url_string.append("de");
+//		} 
 		url_string.append("/basic/num/");
 		url_string.append((number.startsWith("0") ? number : "0"+number));
 		url_string.append("?xml=1&partner=");
@@ -169,7 +170,10 @@ public class TellowsProxy {
 		try {
 			URL url = new URL(url_string.toString());
 			URLConnection c = url.openConnection();
-	
+			if (url.getProtocol().equalsIgnoreCase("https")) {
+				c = (HttpsURLConnection) url.openConnection();
+				((HttpsURLConnection)c).setRequestMethod("GET");
+			}
 			c.setDoInput(true);
 			c.setRequestProperty(
 				"User-Agent",
@@ -178,11 +182,11 @@ public class TellowsProxy {
 	
 			StringBuffer content = new StringBuffer();
 			
-			Object o = c.getContent();
-			if (o instanceof InputStream) {
+			InputStream o = c.getInputStream();
+			if (o != null) {
 				if (this.m_logger.isLoggable(Level.INFO))
 					this.m_logger.info("Content successfully retrieved from "+url.getHost()+"...");
-				InputStreamReader isr = new InputStreamReader((InputStream) o, "iso-8859-1");
+				InputStreamReader isr = new InputStreamReader(o, "iso-8859-1");
 				Thread.sleep(200);
 				
 				BufferedReader br = new BufferedReader(isr);
