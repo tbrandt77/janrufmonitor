@@ -1,5 +1,21 @@
 ﻿===
 
+jAnrufmonitor 5.0.71 (01.07.2017)
+---------------------------------
+Bugfix:
+- Sortierung der aktiven Telefonbücher gefixt
+- Logausgabe für Identifizierung von rufnummern angepasst
+
+Module:
+- FRITZ!Box-Überwachung: XML-Export in Dateijunks von 300 Kontakten aufgeteilt
+- FRITZ!Box-Überwachung: Überprüfung auf gültige Fotoadresse im Telefonbuch
+- FRITZ!Box-Überwachung: Telefonbuch-Export auf UTF-8 Kodierung geändert
+- FRITZ!Box-Überwachung: Korrektur von Unicode Fehlern bei der Übersetzung
+- FRITZ!Box-Überwachung: (nil) Einträge bei der Rufnummernsperre entfernt
+- tellows Rufnummer Scoring: Unterstützung für HTTPS Zugriffe
+
+===
+
 jAnrufmonitor 5.0.70 (02.03.2017)
 ---------------------------------
 Neu:
