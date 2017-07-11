@@ -86,7 +86,7 @@ public class FritzBoxCallerExporter implements ICallerExporter {
 					FileWriter dbWriter = new FileWriter(db);
 					BufferedWriter bufWriter = new BufferedWriter(dbWriter);
 					StringBuffer xml = new StringBuffer();
-					xml.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");xml.append(IJAMConst.CRLF);
+					xml.append("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>");xml.append(IJAMConst.CRLF);
 					xml.append("<phonebooks>");xml.append(IJAMConst.CRLF);
 					xml.append("<phonebook owner=\"1\" name=\"jAnrufmonitor Kontakte ("+new SimpleDateFormat("dd.MM.yyyy").format(new Date())+") Teil "+(i+1)+"/"+splitcount+"\">");xml.append(IJAMConst.CRLF);
 					for (int j = (i*300); j < this.m_callerList.size() && j < (i+1) * 300; j++) {
