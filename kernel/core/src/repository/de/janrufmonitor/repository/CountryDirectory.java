@@ -488,15 +488,15 @@ public class CountryDirectory extends AbstractReadOnlyDatabaseCallerManager {
 	}
 	
 	private void importAreacodeCsvFiles() {
-		String restart = System.getProperty("jam.installer.restart");
+		String restart = System.getProperty(IJAMConst.SYSTEM_INSTALLER_RESTART);
 		if (restart==null || restart.equalsIgnoreCase("true")) {
-			this.m_logger.info("Detected jam.installer.restart flag as: "+System.getProperty("jam.installer.restart"));
+			this.m_logger.info("Detected jam.installer.restart flag as: "+System.getProperty(IJAMConst.SYSTEM_INSTALLER_RESTART));
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 			}
 			
-			restart = System.getProperty("jam.installer.restart");
+			restart = System.getProperty(IJAMConst.SYSTEM_INSTALLER_RESTART);
 			if (restart !=null && restart.equalsIgnoreCase("true")) {
 				this.m_logger.info("Areacode update is not started, due to installation of new modules.");
 				return;

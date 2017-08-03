@@ -408,11 +408,10 @@ public class PIMRuntime implements IRuntime, IEventSender {
 					+ times.get(key) + " ms");
 		}
 		
-		Thread autoMonitorListenerReStarter = new Thread(new Runnable() {
-
-			public void run() {
-				String param = System.getProperty("jam.monitor.restart.interval");
-				if (param!= null && param.trim().length()>0) {
+		final String param = System.getProperty(IJAMConst.SYSTEM_MONITOR_RESTART_INTERVAL);
+		if (param!= null && param.trim().length()>0) {
+			Thread autoMonitorListenerReStarter = new Thread(new Runnable() {
+				public void run() {	
 					m_logger.info("jam.monitor.restart.interval is set to "+param);
 					int intervall = -1;
 					try {
@@ -434,11 +433,10 @@ public class PIMRuntime implements IRuntime, IEventSender {
 							PIMRuntime.getInstance().getMonitorListener().start();
 						}
 					}
-				}
-				
-			}});
-		autoMonitorListenerReStarter.setName("JAM-AutoRestartMonitorByInterval");
-		autoMonitorListenerReStarter.start();
+				}});
+			autoMonitorListenerReStarter.setName("JAM-AutoRestartMonitorByInterval");
+			autoMonitorListenerReStarter.start();
+		}
 
 		this.m_eventBroker.register(this);
 		this.m_eventBroker.send(this, this.m_eventBroker

@@ -174,9 +174,9 @@ public class InstallerEngine {
 			return false;
 		} finally {
   	    	// set system property for restart flag of installer
-    		System.setProperty("jam.installer.restart", Boolean.toString(restart));
+    		System.setProperty(IJAMConst.SYSTEM_INSTALLER_RESTART, Boolean.toString(restart));
 
-			m_logger.info("Flag jam.installer.restart set to "+System.getProperty("jam.installer.restart"));
+			m_logger.info("Flag jam.installer.restart set to "+System.getProperty(IJAMConst.SYSTEM_INSTALLER_RESTART));
 			
 	    	this.popupShutdown(restart);
 		}
