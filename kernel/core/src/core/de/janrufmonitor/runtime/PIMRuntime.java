@@ -407,6 +407,38 @@ public class PIMRuntime implements IRuntime, IEventSender {
 			this.m_logger.info("Startup time for component <" + key + ">: "
 					+ times.get(key) + " ms");
 		}
+		
+		Thread autoMonitorListenerReStarter = new Thread(new Runnable() {
+
+			public void run() {
+				String param = System.getProperty("jam.monitor.restart.interval");
+				if (param!= null && param.trim().length()>0) {
+					m_logger.info("jam.monitor.restart.interval is set to "+param);
+					int intervall = -1;
+					try {
+						intervall = Integer.parseInt(param);
+					} catch (Exception ex) {};
+					while (intervall > 0) {
+						try {
+							Thread.sleep((intervall * 60 * 1000));
+						} catch (InterruptedException e) {
+							intervall = -1;
+						}
+						if (PIMRuntime.getInstance().getMonitorListener().isRunning()) {
+							m_logger.info("Stopping monitor due to jam.monitor.restart.interval");
+							PIMRuntime.getInstance().getMonitorListener().stop();
+							try {
+								Thread.sleep(500);
+							} catch (InterruptedException e) {}
+							m_logger.info("Starting monitor due to jam.monitor.restart.interval");
+							PIMRuntime.getInstance().getMonitorListener().start();
+						}
+					}
+				}
+				
+			}});
+		autoMonitorListenerReStarter.setName("JAM-AutoRestartMonitorByInterval");
+		autoMonitorListenerReStarter.start();
 
 		this.m_eventBroker.register(this);
 		this.m_eventBroker.send(this, this.m_eventBroker
