@@ -1,5 +1,20 @@
 ﻿===
 
+jAnrufmonitor 5.0.72 (20.08.2017)
+---------------------------------
+Neu:
+- Überwachung kann per Zeitintervall neu gestartet werden
+- Neuer Start-Parameter -Djam.monitor.restart.interval zum Festlegen des Startintervalls der Überwachung
+
+Bugfix:
+- Schreibfehler in deutscher und englischer Übersetzung korrigiert
+
+Module:
+- FRITZ!Box-Überwachung: Telefonbuch-Export auf ISO-8859-1 Kodierung geändert
+- FRITZ!Box-Überwachung: Bugfix beim Telefonbuch-Export
+
+===
+
 jAnrufmonitor 5.0.71 (01.07.2017)
 ---------------------------------
 Bugfix:
