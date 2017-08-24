@@ -636,7 +636,7 @@
         
         <exec dir="." os="Mac OS X" executable="/bin/sh">
           <arg value="-c"/>
-        <arg value="./mkdmg.sh ./${jam.dist.dir}/appbundler/jam50-ncid/ ./${jam.pub.dir}/ jam50-macosx-client"/>
+        <arg value="./mkdmg.sh ./${jam.dist.dir}/appbundler/jam50-client/ ./${jam.pub.dir}/ jam50-macosx-client"/>
         </exec>
 	</target>
     
