@@ -780,48 +780,53 @@ public class TextFileConfigManager implements IConfigManager {
 	public void startup() {
 		this.m_pathToSystemConfiguration = PathResolver.getInstance(PIMRuntime.getInstance()).getConfigDirectory() + this.SYSTEM_CONFIGURATION_FILE;
 		this.m_pathToUserConfiguration = PathResolver.getInstance(PIMRuntime.getInstance()).getConfigDirectory() + this.USER_CONFIGURATION_FILE;
-		File usrConfigFile = new File(this.m_pathToUserConfiguration);
-		if (!usrConfigFile.exists()) {
-			usrConfigFile.getParentFile().mkdirs();
-			InputStream zerofile = new ByteArrayInputStream(new String("").getBytes());
-			try {
-				Stream.copy(zerofile, new FileOutputStream(usrConfigFile), true);
-			} catch (FileNotFoundException e) {
-				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-			} catch (IOException e) {
-				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+		
+		boolean isBackupEnabled = Boolean.parseBoolean(System.getProperty(IJAMConst.SYSTEM_CONFIG_BACKUP, "true"));
+		
+		if (isBackupEnabled) {
+			File usrConfigFile = new File(this.m_pathToUserConfiguration);
+			if (!usrConfigFile.exists()) {
+				usrConfigFile.getParentFile().mkdirs();
+				InputStream zerofile = new ByteArrayInputStream(new String("").getBytes());
+				try {
+					Stream.copy(zerofile, new FileOutputStream(usrConfigFile), true);
+				} catch (FileNotFoundException e) {
+					this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+				} catch (IOException e) {
+					this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+				}
+			} else {
+				File backupFolder = new File(usrConfigFile.getParent()+File.separator+"~backup"); backupFolder.mkdirs();
+				String ext = "." + new SimpleDateFormat("yyyyMMdd").format(new Date());
+				try {
+					Stream.copy(new FileInputStream(usrConfigFile), new FileOutputStream(backupFolder.getAbsolutePath() + File.separator + usrConfigFile.getName() + ext), true);
+				} catch (FileNotFoundException e) {
+					this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+				} catch (IOException e) {
+					this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+				}
 			}
-		} else {
-			File backupFolder = new File(usrConfigFile.getParent()+File.separator+"~backup"); backupFolder.mkdirs();
-			String ext = "." + new SimpleDateFormat("yyyyMMdd").format(new Date());
-			try {
-				Stream.copy(new FileInputStream(usrConfigFile), new FileOutputStream(backupFolder.getAbsolutePath() + File.separator + usrConfigFile.getName() + ext), true);
-			} catch (FileNotFoundException e) {
-				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-			} catch (IOException e) {
-				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-			}
-		}
-		File sysConfigFile = new File(this.m_pathToSystemConfiguration);
-		if (!sysConfigFile.exists()) {
-			sysConfigFile.getParentFile().mkdirs();
-			InputStream zerofile = new ByteArrayInputStream(new String("").getBytes());
-			try {
-				Stream.copy(zerofile, new FileOutputStream(sysConfigFile), true);
-			} catch (FileNotFoundException e) {
-				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-			} catch (IOException e) {
-				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-			}
-		} else {
-			File backupFolder = new File(sysConfigFile.getParent()+File.separator+"~backup"); backupFolder.mkdirs();
-			String ext = "." + new SimpleDateFormat("yyyyMMdd").format(new Date());
-			try {
-				Stream.copy(new FileInputStream(sysConfigFile), new FileOutputStream(backupFolder.getAbsolutePath() + File.separator + sysConfigFile.getName() + ext), true);
-			} catch (FileNotFoundException e) {
-				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-			} catch (IOException e) {
-				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			File sysConfigFile = new File(this.m_pathToSystemConfiguration);
+			if (!sysConfigFile.exists()) {
+				sysConfigFile.getParentFile().mkdirs();
+				InputStream zerofile = new ByteArrayInputStream(new String("").getBytes());
+				try {
+					Stream.copy(zerofile, new FileOutputStream(sysConfigFile), true);
+				} catch (FileNotFoundException e) {
+					this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+				} catch (IOException e) {
+					this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+				}
+			} else {
+				File backupFolder = new File(sysConfigFile.getParent()+File.separator+"~backup"); backupFolder.mkdirs();
+				String ext = "." + new SimpleDateFormat("yyyyMMdd").format(new Date());
+				try {
+					Stream.copy(new FileInputStream(sysConfigFile), new FileOutputStream(backupFolder.getAbsolutePath() + File.separator + sysConfigFile.getName() + ext), true);
+				} catch (FileNotFoundException e) {
+					this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+				} catch (IOException e) {
+					this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+				}
 			}
 		}
 		this.loadConfiguration();
