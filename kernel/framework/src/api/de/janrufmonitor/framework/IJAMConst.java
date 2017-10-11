@@ -155,6 +155,7 @@ public interface IJAMConst {
     public final static String SYSTEM_INSTALLER_RESTART = "jam.installer.restart"; // force a restart after installer is finished
     public final static String SYSTEM_INSTALLER_RUN = "jam.installer.run"; // set to true if a installer run should be simulated
     public final static String SYSTEM_MULTI_USER = "jam.multiuser"; // set to true if multiusermode is enabled
+    public final static String SYSTEM_CONFIG_BACKUP = "jam.config.backup"; // set to false to avoid a backup of all configuratiosn on startup
 
     // CONFIGURATION PARAMETERS
     

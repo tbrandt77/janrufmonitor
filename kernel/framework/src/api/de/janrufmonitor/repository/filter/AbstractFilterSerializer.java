@@ -1,8 +1,11 @@
 package de.janrufmonitor.repository.filter;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import de.janrufmonitor.framework.IAttribute;
@@ -276,6 +279,25 @@ public abstract class AbstractFilterSerializer {
 			filters[i] = this.getFilterFromString(filter.substring(0, filter.length()-1));
 			i++;
 		}
+		List sortList = new ArrayList(filters.length);
+		for (i=0;i<filters.length;i++) {
+			sortList.add(filters[i]);
+		}
+		sortList.sort(new Comparator() {
+
+			@Override
+			public int compare(Object o1, Object o2) {
+				if ((o1 instanceof IFilter)&& (o2 instanceof IFilter)) {
+					return -1 * getFilterToString((IFilter)o1).compareTo(getFilterToString((IFilter)o2));
+				}
+				return 0;
+			}
+			
+		});
+		for (i=0;i<sortList.size();i++) {
+			filters[i] = (IFilter) sortList.get(i);
+		}
+		
 		return filters;
 	}
 	
