@@ -1,5 +1,0 @@
-runtime.LauncherFactory\:launcher_win32app\:value=de.janrufmonitor.application.launcher.Win32Launcher
-runtime.LauncherFactory\:launcher_win32app\:access=system
-application.Win32Launcher\:filename\:value=loader.ini
-application.Win32Launcher\:separator\:value=;
-
