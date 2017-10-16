@@ -22,11 +22,6 @@ public class LauncherFactory implements IConfigurable {
 	Logger m_logger;
 	List m_launchers;
 	
-	String[] fallBackLaunchers = new String[] {
-		"de.janrufmonitor.application.launcher.Win32Launcher", 	
-		"de.janrufmonitor.application.launcher.ConsoleLauncher"
-	};
-	
 	private LauncherFactory() {
 		this.m_logger = LogManager.getLogManager().getLogger(IJAMConst.DEFAULT_LOGGER);
 		PIMRuntime.getInstance().getConfigurableNotifier().register(this);        
@@ -69,26 +64,6 @@ public class LauncherFactory implements IConfigurable {
 				}
 			}
 		}
-		
-		// fall back solution for win32
-		if (this.m_launchers.size()==0) {
-			for (int i=0;i<this.fallBackLaunchers.length;i++) {
-				String className = this.fallBackLaunchers[i];
-				try {
-					Class classObject = Thread.currentThread().getContextClassLoader().loadClass(className);
-					ILauncher l = (ILauncher) classObject.newInstance();
-					this.m_launchers.add(l);
-					return;
-				} catch (ClassNotFoundException ex) {
-					this.m_logger.warning("Could not find class: " + className);
-				} catch (InstantiationException ex) {
-					this.m_logger.warning("Could not instantiate class: " + className);
-				} catch (IllegalAccessException ex) {
-					this.m_logger.warning("Could not access class: " + className);
-				}
-			}
-		}
-		
 	} 
 	
 	public ILauncher getLauncher(String id) {
