@@ -75,7 +75,7 @@ public class RunUI {
 			String javaversion = System.getProperty("java.specification.version");
 			if ((javaversion!=null && javaversion.compareTo("1.8")>=0) ) isJavaVersionOK = true;
 			
-			javaversion = System.getProperty("java.version").substring(0,3);
+			javaversion = (System.getProperty("java.version").length()==1 ? System.getProperty("java.version") : System.getProperty("java.version").substring(0,3));
 			if ((!isJavaVersionOK && javaversion.compareTo("1.8")>=0) ) isJavaVersionOK = true;
 			
 			if (!isJavaVersionOK) {
