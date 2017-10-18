@@ -993,6 +993,7 @@
         <fileset dir="${jam.kernel.config.all}" excludes="*.*, images/**, config/**, data/**, install/*.lib.deploy"/>
         <fileset dir="${jam.kernel.config.all}" includes="changes.txt, license.txt"/>
         <fileset dir="${jam.kernel.config}/win32" excludes="*.*"/>
+        <fileset dir="${jam.kernel.config}/win-update-Java9" includes="*.*"/>
       </copy>
     </target>
     
