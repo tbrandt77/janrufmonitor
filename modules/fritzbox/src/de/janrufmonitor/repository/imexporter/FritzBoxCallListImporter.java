@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
@@ -22,6 +23,7 @@ import de.janrufmonitor.fritzbox.FritzBoxMonitor;
 import de.janrufmonitor.repository.imexport.ICallImporter;
 import de.janrufmonitor.repository.imexport.IImExporter;
 import de.janrufmonitor.runtime.PIMRuntime;
+import de.janrufmonitor.service.IModifierService;
 
 public class FritzBoxCallListImporter implements ICallImporter {
 	
@@ -94,6 +96,11 @@ public class FritzBoxCallListImporter implements ICallImporter {
 			this.m_logger.severe("IO Error on file " + m_filename
 					+ ": " + e.getMessage());
 		}
+		if (m_callList!=null && m_callList.size()>0) {
+			if (m_logger.isLoggable(Level.INFO))
+				m_logger.info("Processing modifier services on call list: "+PIMRuntime.getInstance().getServiceFactory().getModifierServices());
+			processModifierServices(m_callList);
+		}
 		return m_callList;
 	}
 	
@@ -115,6 +122,25 @@ public class FritzBoxCallListImporter implements ICallImporter {
 		bufReader.close();
 		in.close();
 		return result;
+	}
+	
+	private void processModifierServices(ICallList cl) {
+		if (cl!=null && cl.size()>0) {
+			List msvc = PIMRuntime.getInstance().getServiceFactory().getModifierServices();
+			IModifierService s = null;
+			for (int k=0,l=msvc.size();k<l;k++) {
+				s = (IModifierService) msvc.get(k);
+				if (s!=null && s.isEnabled()) {
+					if (m_logger.isLoggable(Level.INFO))
+						m_logger.info("Processing modifier service <"+s.getServiceID()+">");
+					ICall call = null;
+					for (int i=0,j=cl.size();i<j;i++) {
+						call = cl.get(i);
+						s.modifyObject(call);
+					}			
+				}
+			}
+		}
 	}
 
 	public int getType() {
