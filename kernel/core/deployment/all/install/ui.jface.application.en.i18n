@@ -265,7 +265,7 @@ ui.jface.application.journal.action.ReIdentifyAction\:nocms\:label\:en=No furthe
 
 
 ui.jface.application.journal.action.WebSearchAction\:title\:label\:en=Search the web...
-ui.jface.application.journal.action.DeleteAction\:title\:label\:en=Detele
+ui.jface.application.journal.action.DeleteAction\:title\:label\:en=Delete
 
 ui.jface.application.journal.action.CallerStatsAction\:title\:label\:en=Who is calling me?
 ui.jface.application.journal.action.CallerStatsAction\:dialogtitle\:label\:en=Who is calling me?
