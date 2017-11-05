@@ -1,5 +1,29 @@
 ﻿===
 
+jAnrufmonitor 5.0.73 (06.11.2017)
+---------------------------------
+Neu:
+- Java VM Option -Djam.config.backup=false zum Unterdrücken des Konfigurationsbackup
+- Alphabetisches Sortieren der Filtereinträge im Journal und unter Kontakte
+- Einstellungsmenü unter Letzten 10 Anrufe bei macOS hinzugefügt
+- Launch4J als neuer Java Starter
+- Java 9 Unterstützung
+- Win32Launcher und Fallback-Launcher entfernt
+- Java 9 Migration-Kit für ältere jAnrufmonitor Versionen mit Java 7 und 8
+- Erkennung von SMS-to-Speech Gateway der Deutschen Telekom hinzugefügt
+
+Bugfix:
+- Logkonfiguration für Java 9 angepasst
+- Java 9 Anpassungen und Codefixes
+- Schreibfehler bei der englischen Übersetzung korrigiert
+
+Module:
+- FRITZ!Box-Überwachung: Dienste-Verarbeitung beim XML Import im Journal hinzugefügt
+- Apple Mac Adressbuch: Anpassungen an macOS High Sierra
+
+===
+
+
 jAnrufmonitor 5.0.72 (20.08.2017)
 ---------------------------------
 Neu:
