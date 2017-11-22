@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
@@ -16,6 +17,8 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.runtime.IRuntime;
@@ -82,15 +85,22 @@ public class RegExpURLRequester extends AbstractURLRequester {
 	public void go() throws Exception {
 		List failure = new ArrayList();
 		URL url = new URL(this.url);
-		URLConnection c = url.openConnection();
+		
+		URLConnection c = null;
+		
+		if (url.getProtocol().equalsIgnoreCase("https")) {
+			c = (HttpsURLConnection) url.openConnection();
+			((HttpsURLConnection)c).setRequestMethod("GET");
+		} else {
+			c = (HttpURLConnection) url.openConnection();
+			((HttpURLConnection)c).setRequestMethod("GET");
+		}
 
 		c.setDoInput(true);
 		c.setRequestProperty(
 			"User-Agent",
 			this.m_ua); //"Mozilla/4.0 (compatible; MSIE; Windows NT)"
 		c.connect();
-
-		//Thread.sleep(100);
 
 		Object o = c.getInputStream();
 		if (o != null && o instanceof InputStream) {
