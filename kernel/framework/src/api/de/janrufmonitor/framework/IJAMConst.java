@@ -151,6 +151,7 @@ public interface IJAMConst {
     public final static String SYSTEM_UI_TRAYITEM = "jam.ui.trayitem"; // set to false disabled the tray item popups
     public final static String SYSTEM_UI_TOPLEVEL = "jam.ui.toplevel"; // true if jam runs as toplevel application, esp. journal and address book
     public final static String SYSTEM_UI_4K = "jam.ui.4k"; // set manually to true, if jam runs on a 4k monitor
+    public final static String SYSTEM_UI_STARTCOMMAND = "jam.ui.startcommand"; // list of ICommands to execute on startup e.g. -Djam.ui.startcommand=JournalCommand
     public final static String SYSTEM_UI_FORCEIMAGE = "jam.ui.forceimage"; // set to true forces an image to be rendered. If ImageHandler does not deliver one, the default (File system) ImageHandler is triggered.
     public final static String SYSTEM_INSTALLER_RESTART = "jam.installer.restart"; // force a restart after installer is finished
     public final static String SYSTEM_INSTALLER_RUN = "jam.installer.run"; // set to true if a installer run should be simulated

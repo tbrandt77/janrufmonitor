@@ -57,6 +57,23 @@ public class RunUI64 {
 				return sCommands;
     		}
     		return new String[0];
+    	}    
+    	
+    	public static String[] getStartupVMCommands() {
+    		String commandArg = System.getProperty(IJAMConst.SYSTEM_UI_STARTCOMMAND, "");
+    		
+    		if (commandArg!=null && commandArg.length()>0) {
+    			StringTokenizer st = new StringTokenizer(commandArg, ",");
+    			
+				String[] sCommands = new String[st.countTokens()];
+				int tc = 0;
+				while (st.hasMoreTokens()) {
+					sCommands[tc] = st.nextToken().trim();
+					tc++;
+				}
+				return sCommands;
+    		}
+    		return new String[0];
     	}    	
     }
     
@@ -400,6 +417,7 @@ public class RunUI64 {
 				public void run() {
 		    		RunUI64.go();
 		    		RunUI64.processStartupCommand(PIMCommandLine.getStartupCommands(args2));
+		    		RunUI64.processStartupCommand(PIMCommandLine.getStartupVMCommands());
 				}
     			
     		});
