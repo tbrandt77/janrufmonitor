@@ -108,7 +108,9 @@ public class RegExpURLRequester extends AbstractURLRequester {
 			this.m_logger.info("Content successfully retrieved from "+url.getHost()+"...");
 			InputStreamReader isr = new InputStreamReader((InputStream) o, this.m_config.getProperty(ENCODING,"iso-8859-1"));
 			Thread.sleep(200);
-			if (m_logger.isLoggable(Level.INFO)) {
+			boolean isBufferingActive = Boolean.parseBoolean(System.getProperty(IJAMConst.SYSTEM_CALLERMANAGER_WEB_BUFFERED, "false"));
+			
+			if (m_logger.isLoggable(Level.INFO) || isBufferingActive) {
 	
 				File dir = new File(PathResolver.getInstance(this.m_runtime).getLogDirectory(), "~"+this.m_ns.toLowerCase());
 				if (!dir.exists()) dir.mkdirs();
