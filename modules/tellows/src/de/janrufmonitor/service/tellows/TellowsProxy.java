@@ -5,6 +5,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -156,7 +157,9 @@ public class TellowsProxy {
 //			url_string.append("de");
 //		} 
 		url_string.append("/basic/num/");
-		url_string.append((number.startsWith("0") ? number : "0"+number));
+		url_string.append("00");
+		url_string.append(country);
+		url_string.append((number.startsWith("0") ? number.substring(1) : number));
 		url_string.append("?xml=1&partner=");
 		url_string.append(TELLOWS_PARTNER);
 		url_string.append("&apikey=");
@@ -169,7 +172,11 @@ public class TellowsProxy {
 	
 		try {
 			URL url = new URL(url_string.toString());
-			URLConnection c = url.openConnection();
+			URLConnection c = null; //url.openConnection();
+			if (url.getProtocol().equalsIgnoreCase("http")) {
+				c = (HttpURLConnection) url.openConnection();
+				((HttpURLConnection)c).setRequestMethod("GET");
+			}
 			if (url.getProtocol().equalsIgnoreCase("https")) {
 				c = (HttpsURLConnection) url.openConnection();
 				((HttpsURLConnection)c).setRequestMethod("GET");
