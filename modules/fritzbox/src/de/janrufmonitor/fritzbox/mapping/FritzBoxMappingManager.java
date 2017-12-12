@@ -260,7 +260,7 @@ public class FritzBoxMappingManager {
 			name+= attributes.get(IJAMConst.ATTRIBUTE_NAME_LASTNAME).getValue();
 			pe.addJamInfo(IJAMConst.ATTRIBUTE_NAME_LASTNAME, attributes.get(IJAMConst.ATTRIBUTE_NAME_LASTNAME).getValue());
 		}
-		pe.setName(name);
+		pe.setName(name.trim());
 		
 		if (attributes.contains(IJAMConst.ATTRIBUTE_NAME_STREET)) {
 			pe.addJamInfo(IJAMConst.ATTRIBUTE_NAME_STREET, attributes.get(IJAMConst.ATTRIBUTE_NAME_STREET).getValue());
