@@ -1,5 +1,18 @@
 ﻿===
 
+jAnrufmonitor 5.0.74 (05.01.2018)
+---------------------------------
+Neu:
+- HTTPS Unterstützung für Onlinetelefonauskünfte hinzugefügt
+- Systemparameter -Djam.ui.startcommand zum Starten von Commands beim Programmstart hinzugefügt
+- verbesserte Datenpufferung bei Onlinetelefonauskünfte
+
+Module:
+- FRITZ!Box-Überwachung: Führende Leerzeichen bei Kontakten in der Sortierung entfernt
+- tellows Rufnummer Scoring: Verbesserte Erkennung von Scores bei Ländercode 0043 und 0041
+
+===
+
 jAnrufmonitor 5.0.73 (06.11.2017)
 ---------------------------------
 Neu:
@@ -22,7 +35,6 @@ Module:
 - Apple Mac Adressbuch: Anpassungen an macOS High Sierra
 
 ===
-
 
 jAnrufmonitor 5.0.72 (20.08.2017)
 ---------------------------------
