@@ -37,7 +37,13 @@ public class DisplayManager {
 				m_logger.severe("Cannot create a new UI thread instance.");
 				// check if Win 64-bit
 				if (OSUtils.isWindows() && OSUtils.is64Bit()) {
-					m_logger.severe("Emergency exit: Wrong Java architecture for UI library SWT: Java is 64-bit but jAnrufmonitor is 32-bit.");
+					m_logger.severe("Emergency exit: Wrong Java architecture for UI library SWT: Java is 64-bit but jAnrufmonitor is 32-bit. Program will be closed.");
+					System.exit(0);
+				}
+				
+				// check if Win 32-bit
+				if (OSUtils.isWindows() && OSUtils.is32Bit()) {
+					m_logger.severe("Emergency exit: Wrong Java architecture for UI library SWT: Java is 32-bit but jAnrufmonitor is 64-bit. Program will be closed.");
 					System.exit(0);
 				}
 			}
