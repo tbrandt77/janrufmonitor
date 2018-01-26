@@ -133,17 +133,8 @@ public class MultiPhoneCallerPage extends AbstractPage {
 			phoneGroup.setLayout(new GridLayout(2, true));
 			phoneGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-//			final Label ial = new Label(phoneGroup, SWT.LEFT);
-//			ial.setText(m_i18n.getString(getNamespace(), "number", "label",
-//					m_language));
-//			ial.setToolTipText(m_i18n.getString(getNamespace(),
-//					"tooltipprefix", "label", m_language)
-//					+ IJAMConst.GLOBAL_VARIABLE_CALLERNUMBER);
-
 			GridData gd = new GridData();
 			gd.widthHint = 300 + ("true".equalsIgnoreCase(System.getProperty(IJAMConst.SYSTEM_UI_4K, "false")) ? 40 : 0);
-			
-			//new Label(phoneGroup, SWT.LEFT);
 
 			final Text number = new Text(phoneGroup, SWT.BORDER);
 			number.setLayoutData(gd);
@@ -187,15 +178,11 @@ public class MultiPhoneCallerPage extends AbstractPage {
 			}
 			typeCombo.setItems(typesText);
 			typeCombo.select(select);
-			typeCombo.setEnabled(!m_numberReadonly);
+			// changed: 2018/01/26
+			//typeCombo.setEnabled(!m_numberReadonly);
 
 			if (PhonenumberAnalyzer.getInstance(getRuntime()).isInternal(this.getPhoneNumber())) {
 				number.setText(this.getPhoneNumber().getCallNumber());
-//				number.setText(this.getPhoneNumber().getCallNumber().substring(
-//						0,
-//						Math.min(
-//								this.getPhoneNumber().getCallNumber().length(),
-//								PhonenumberInfo.maxInternalNumberLength())));
 			} else {
 				number.setText(Formatter.getInstance(getRuntime()).parse(
 						IJAMConst.GLOBAL_VARIABLE_CALLERNUMBER,
@@ -205,9 +192,6 @@ public class MultiPhoneCallerPage extends AbstractPage {
 			typeCombo.setEnabled(!m_numberReadonly
 					&& !PhonenumberAnalyzer.getInstance(getRuntime()).isInternal(number.getText())
 					&& !PhonenumberAnalyzer.getInstance(getRuntime()).isClired(number.getText()));
-
-			// changed 2015/07/12: 
-			// number.getText().length() > PhonenumberAnalyzer.getInstance(getRuntime()).getInternalNumberMaxLength());
 			
 			// Add the handler to update the name based on input
 			typeCombo.addModifyListener(new ModifyListener() {
@@ -537,12 +521,6 @@ public class MultiPhoneCallerPage extends AbstractPage {
 				new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent e) {				
 						m_useGRAVATAR = gravatar.getSelection();
-//						if (!m_useGRAVATAR) {
-//							setAttributeValue(IJAMConst.ATTRIBUTE_NAME_IMAGEPATH, "");
-//							image.setImage(getNewImage(""));
-//							image.setToolTipText(m_i18n.getString(getNamespace(), "pixel", "label",
-//									m_language));
-//						}
 						if (m_useGRAVATAR && m_caller.getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_EMAIL)) {
 							String email = m_caller.getAttribute(IJAMConst.ATTRIBUTE_NAME_EMAIL).getValue();
 							if (email != null && email.length()>0) {	

@@ -36,7 +36,7 @@ public class JournalCallerWizard extends AbstractWizard {
 			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 		}
 		this.m_pages = new AbstractPage[1];
-		this.m_pages[0] = new MultiPhoneCallerPage(clonedCaller, false, true, true);
+		this.m_pages[0] = new MultiPhoneCallerPage(clonedCaller, false, false, true);
 		
 		this.addPage(this.m_pages[0]);
 	}
