@@ -29,6 +29,8 @@ public class MacAddressBookManager extends AbstractReadWriteCallerManager implem
 	private static String ID = "MacAddressBookManager";
 	public static String NAMESPACE = "repository.MacAddressBookManager";
 	
+	public static String SYSTEM_MACAB_PRELOADTIME = "jam.macab.preloadtime";
+	
 	private IRuntime m_runtime;
 	private MacAddressBookProxy m_proxy;
 
@@ -180,7 +182,7 @@ public class MacAddressBookManager extends AbstractReadWriteCallerManager implem
 					try {
 						do {
 							try {
-								Thread.sleep(2000);
+								Thread.sleep(getPreloadTime());
 							} catch (InterruptedException e) {
 							}
 						} while(getRuntime().getCallerManagerFactory().getCallerManager("CountryDirectory")==null);
@@ -199,6 +201,10 @@ public class MacAddressBookManager extends AbstractReadWriteCallerManager implem
 	
 	public boolean isSupported(Class c) {
 		return (c.equals(IIdentifyCallerRepository.class) || c.equals(IReadCallerRepository.class) || c.equals(IRemoteRepository.class) || c.equals(ISearchableCallerRepository.class));
+	}
+	
+	private long getPreloadTime() {
+		return Long.parseLong(System.getProperty(SYSTEM_MACAB_PRELOADTIME, "3")) * 1000;
 	}
 
 }

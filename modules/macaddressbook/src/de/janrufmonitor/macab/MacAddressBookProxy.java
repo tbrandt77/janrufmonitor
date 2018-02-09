@@ -40,8 +40,6 @@ import de.janrufmonitor.util.uuid.UUID;
 
 public class MacAddressBookProxy implements AddressBookChangeListener {
 
-	public static String SYSTEM_IS_MACAB_INITIALIZED = "jam.macab.initialized";
-	
 	private Logger m_logger;
 	
 	private IRuntime m_runtime;
@@ -117,25 +115,13 @@ public class MacAddressBookProxy implements AddressBookChangeListener {
 		List<Object> categories = getRawMacGroups();
 		if (this.m_logger.isLoggable(Level.INFO))
 			this.m_logger.info("Category List size: "+categories.size());
-		
-		// 2017/10/11: init() failed work-a-around
-		if (categories.size()==0) {
-			if (this.m_logger.isLoggable(Level.INFO))
-				this.m_logger.info("Re-initializing...");
-			init();
-			categories = getRawMacGroups();
-			if (this.m_logger.isLoggable(Level.INFO))
-				this.m_logger.info("Category List size: "+categories.size());
-		}
-		
+
 		for (Object r : categories) {
 			if (r instanceof List<?>) {
 				this.m_categories.put(((List<?>) r).get(1), ((List<?>) r).get(0));
 				this.m_rcategories.put(((List<?>) r).get(0), ((List<?>) r).get(1));
 			}
 		}
-		
-		System.setProperty(SYSTEM_IS_MACAB_INITIALIZED, "true");
 	}
 	public static void invalidate() {
 		m_instance = null;
@@ -143,7 +129,6 @@ public class MacAddressBookProxy implements AddressBookChangeListener {
 	
 	@SuppressWarnings("unchecked")
 	private MacAddressBookProxy() {
-		System.setProperty(SYSTEM_IS_MACAB_INITIALIZED, "false");
 		this.m_logger = LogManager.getLogManager().getLogger(IJAMConst.DEFAULT_LOGGER);
 		File cache = new File(MSO_IMAGE_CACHE_PATH);
 		if (!cache.exists()) cache.mkdirs();
@@ -165,26 +150,6 @@ public class MacAddressBookProxy implements AddressBookChangeListener {
 	}
 	
 	public synchronized void start() {
-		int count = 0;
-		boolean isInitialized = Boolean.parseBoolean(System.getProperty(SYSTEM_IS_MACAB_INITIALIZED));
-		while (!isInitialized && count < 30) {
-			if (this.m_logger.isLoggable(Level.INFO)) {
-				this.m_logger.info(SYSTEM_IS_MACAB_INITIALIZED + " is set to "+Boolean.toString(isInitialized));
-				this.m_logger.info("Waited for "+count+" secs.");
-			}
-			
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-			}
-			isInitialized = Boolean.parseBoolean(System.getProperty(SYSTEM_IS_MACAB_INITIALIZED));
-			count ++;
-		}
-		if (this.m_logger.isLoggable(Level.INFO)) {
-			this.m_logger.info(SYSTEM_IS_MACAB_INITIALIZED + " is set to "+Boolean.toString(isInitialized));
-			this.m_logger.info("Skipped waiting after "+count+" secs.");
-		}
-		
 		if (this.m_dbh==null)  {
 			String db_path = PathResolver.getInstance(this.getRuntime())
 			.resolve(PathResolver.getInstance(this.getRuntime()).getDataDirectory()+ "macab_cache" + File.separator + "macab_mapping.db");
