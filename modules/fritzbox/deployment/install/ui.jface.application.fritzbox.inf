@@ -1,5 +1,5 @@
 +ui.jface.application.editor.Editor\:popup_actions\:value=fritzbox_clickdial,fritzbox_block,
-+ui.jface.application.journal.Journal\:popup_actions\:value=fritzbox_clickdial,fritzbox_block,-fb1,fritzbox_delete,fritzbox_refresh,
++ui.jface.application.journal.Journal\:popup_actions\:value=fritzbox_tamplay,fritzbox_tamdelete,-fb0,fritzbox_clickdial,-fb1,fritzbox_block,-fb2,fritzbox_delete,fritzbox_refresh,
 +ui.jface.application.last10calls.Last10Calls\:popup_actions\:value=fritzbox_clickdial,fritzbox_block,
 
 ui.jface.application.ActionRegistry\:action_fritzbox_clickdial\:value=de.janrufmonitor.ui.jface.application.fritzbox.action.ClickDialAction
@@ -34,6 +34,8 @@ service.ServiceFactory\:service_fbsynch\:value=de.janrufmonitor.service.fritzbox
 ui.jface.application.fritzbox.action.Refresh\:priority\:value=200
 ui.jface.application.fritzbox.action.Refresh\:syncdelete\:value=false
 ui.jface.application.fritzbox.action.Refresh\:syncdelete\:type=boolean
+ui.jface.application.fritzbox.action.Refresh\:synctam\:value=true
+ui.jface.application.fritzbox.action.Refresh\:synctam\:type=boolean
 ui.jface.application.fritzbox.action.Refresh\:syncstartup\:value=true
 ui.jface.application.fritzbox.action.Refresh\:syncstartup\:type=boolean
 ui.jface.application.fritzbox.action.Refresh\:syncclean\:value=true
@@ -82,3 +84,11 @@ ui.jface.application.RendererRegistry\:renderer_fritzboxspoofingnumber\:access=s
 #added 5.0.65
 command.CommandFactory\:command_passwordcommand\:value=de.janrufmonitor.ui.jface.application.password.PasswordCommand
 command.CommandFactory\:command_passwordcommand\:access=system
+
+#added 5.0.75
+ui.jface.application.RendererRegistry\:renderer_fritztam\:value=de.janrufmonitor.ui.jface.application.fritzbox.rendering.TamMessage
+ui.jface.application.RendererRegistry\:renderer_fritztam\:access=system
+ui.jface.application.ActionRegistry\:action_fritzbox_tamplay\:value=de.janrufmonitor.ui.jface.application.fritzbox.action.TamMessagePlay
+ui.jface.application.ActionRegistry\:action_fritzbox_tamplay\:access=system
+ui.jface.application.ActionRegistry\:action_fritzbox_tamdelete\:value=de.janrufmonitor.ui.jface.application.fritzbox.action.TamMessageDelete
+ui.jface.application.ActionRegistry\:action_fritzbox_tamdelete\:access=system

@@ -130,6 +130,8 @@ public interface IFritzBoxFirmware {
     
     public void doCall(String number, String extension) throws DoCallException, IOException;
     
+    public void collectTamMessages(long lastSyncTimestamp)  throws IOException;
+    
     public long getFirmwareTimeout();
     
     public long getSkipBytes();

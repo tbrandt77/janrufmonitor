@@ -42,7 +42,8 @@ ui.jface.configuration.pages.FritzBoxSynchronizer\:race\:label\:en=Re-syncronize
 ui.jface.configuration.pages.FritzBoxSynchronizer\:syncnotification\:label\:en=Send mail notification after syncronizing
 ui.jface.configuration.pages.FritzBoxSynchronizer\:synctimer\:label\:en=Timebased syncronizing [min]: 
 ui.jface.configuration.pages.FritzBoxSynchronizer\:synctime\:label\:en=Timestamp of last sync: 
-ui.jface.configuration.pages.FritzBoxSynchronizer\:syncall\:label\:en=Allways sync all calls from FRITZ!Box
+ui.jface.configuration.pages.FritzBoxSynchronizer\:syncall\:label\:en=Always sync all calls from FRITZ!Box
+ui.jface.configuration.pages.FritzBoxSynchronizer\:synctam\:label\:en=Always sync voice messages
 ui.jface.configuration.pages.FritzBoxSynchronizer\:startupdelay\:label\:en=Startup delay on syncronizing [sec]: 
 ui.jface.configuration.pages.FritzBoxSynchronizer\:syncdelete\:label\:en=Delete call list on FRITZ!Box Fon after synchronisation
 

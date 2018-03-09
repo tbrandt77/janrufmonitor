@@ -43,6 +43,7 @@ ui.jface.configuration.pages.FritzBoxSynchronizer\:syncnotification\:label\:de=E
 ui.jface.configuration.pages.FritzBoxSynchronizer\:synctimer\:label\:de=Intervallgesteuertes Synchronisieren (min.): 
 ui.jface.configuration.pages.FritzBoxSynchronizer\:synctime\:label\:de=Zeitstempel der letzten Synchronisation: 
 ui.jface.configuration.pages.FritzBoxSynchronizer\:syncall\:label\:de=Immer gesamte Anrufliste der AVM FRITZ!Box Fon synchronisieren
+ui.jface.configuration.pages.FritzBoxSynchronizer\:synctam\:label\:de=Sprachnachrichten synchronisieren
 ui.jface.configuration.pages.FritzBoxSynchronizer\:startupdelay\:label\:de=Startverz\u00F6gert Synchronisieren (sek.): 
 ui.jface.configuration.pages.FritzBoxSynchronizer\:syncdelete\:label\:de=Anrufliste der AVM FRITZ!Box Fon nach dem Synchronisieren l\u00F6schen
 ui.jface.configuration.pages.FritzBoxSynchronizer\:syncstartup\:label\:de=Beim Programmstart synchronisieren

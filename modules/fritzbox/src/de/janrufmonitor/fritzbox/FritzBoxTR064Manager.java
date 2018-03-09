@@ -1396,17 +1396,22 @@ public class FritzBoxTR064Manager {
 //			
 //			System.out.println(FritzBoxTR064Manager.getInstance().getPhonebookEntry("thilo.brandt", "Tb2743507", "fritz.box", "49443", "https", "0", "3"));
 //			
-			int size = FritzBoxTR064Manager.getInstance().getPhonebookSize("thilo.brandt", "Tb2743507", "fritz.box", "49443", "https", "1");
-			size -= 10;
-			System.out.println(size);
+			//System.out.println(FritzBoxTR064Manager.getInstance().getTelephoneAnsweringMachineList("thilo.brandt", "Tb2743507", "fritz.box", "49000", "http"));
+			//System.out.println(FritzBoxTR064Manager.getInstance().getTelephoneAnsweringMachineMessageList("thilo.brandt", "Tb2743507", "fritz.box", "49000", "http", "0"));
+			BufferedReader r = new BufferedReader(new InputStreamReader(FritzBoxTR064Manager.getInstance().getTelephoneAnsweringMachineMessageList("thilo.brandt", "Tb2743507", "fritz.box", "49000", "http", "0")));
+			while (r.ready())
+				System.out.println(r.readLine());
+//			int size = FritzBoxTR064Manager.getInstance().getPhonebookSize("thilo.brandt", "Tb2743507", "fritz.box", "49443", "https", "1");
+//			size -= 10;
+//			System.out.println(size);
+//			
+//			for (int i = 0;i<size; i++) {
+//				System.out.println(i);
+//				System.out.println();
+//				System.out.println(FritzBoxTR064Manager.getInstance().getPhonebookEntry("thilo.brandt", "Tb2743507", "fritz.box", "49443", "https", "1", Integer.toString(i)));
+//			}
 			
-			for (int i = 0;i<size; i++) {
-				System.out.println(i);
-				System.out.println();
-				System.out.println(FritzBoxTR064Manager.getInstance().getPhonebookEntry("thilo.brandt", "Tb2743507", "fritz.box", "49443", "https", "1", Integer.toString(i)));
-			}
-			
-			FritzBoxTR064Manager.getInstance().deletePhonebookEntry("thilo.brandt", "Tb2743507", "fritz.box", "49443", "https", "1", "20");
+			//FritzBoxTR064Manager.getInstance().deletePhonebookEntry("thilo.brandt", "Tb2743507", "fritz.box", "49443", "https", "1", "20");
 			
 			//System.out.print(FritzBoxTR064Manager.getInstance().getPhonebook("thilo.brandt", "Tb2743507", "fritz.box", "49443", "https", "0"));
 			//System.out.println(FritzBoxTR064Manager.getInstance().getPhonebookHash("admin", "Tb2743507", "fritz.box", "0"));

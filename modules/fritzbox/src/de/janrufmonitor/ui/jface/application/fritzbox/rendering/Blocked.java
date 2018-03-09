@@ -79,4 +79,8 @@ public class Blocked extends AbstractTableCellRenderer implements IJournalCellRe
 	public String getNamespace() {
 		return NAMESPACE;
 	}
+	
+	public boolean isRenderImage() {
+		return true;
+	}
 }

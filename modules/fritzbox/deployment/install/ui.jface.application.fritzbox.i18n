@@ -19,6 +19,7 @@ ui.jface.application.fritzbox.action.Refresh\:refreshprogress\:label\:de=FRITZ!B
 ui.jface.application.fritzbox.action.Refresh\:loginprogress\:label\:de=Anmeldung an FRITZ!Box Fon...
 ui.jface.application.fritzbox.action.Refresh\:getprogress\:label\:de=Anrufliste wird von FRITZ!Box Fon geholt...
 ui.jface.application.fritzbox.action.Refresh\:identifyprogress\:label\:de=Anrufer werden identifiziert...
+ui.jface.application.fritzbox.action.Refresh\:tamprogress\:label\:de=Sprachnachrichten werden synchronisiert...
 ui.jface.application.fritzbox.action.Refresh\:noresults\:label\:de=Keine neuen Anrufe in der FRITZ!Box Fon Anrufliste vorhanden...
 ui.jface.application.fritzbox.action.Refresh\:processing\:label\:de=Identifiziere Rufnummer 
 ui.jface.application.fritzbox.action.Refresh\:deleteprogress\:label\:de=FRITZ!Box Fon-Anrufliste wird gel\u00F6scht...
@@ -98,3 +99,11 @@ ui.jface.application.password.PasswordCommand\:dialogtitle\:description\:de=Um j
 ui.jface.application.password.PasswordCommand\:password\:label\:de=FRITZ!Box Fon Kennwort:
 ui.jface.application.password.PasswordCommand\:user\:label\:de=FRITZ!Box Fon Benutzer: {%1}
 
+# added 5.0.75
+ui.jface.application.fritzbox.rendering.TamMessage\:name\:label\:de=Sprachnachricht
+ui.jface.application.fritzbox.rendering.TamMessage\:label\:label\:de=Sprachnachricht (FRITZ!Box Fon)
+ui.jface.application.fritzbox.action.TamMessagePlay\:title\:label\:de=Sprachnachricht abspielen
+ui.jface.application.fritzbox.action.TamMessagePlay\:notam\:label\:de=Zu diesem Anruf liegt keine Sprachnachricht vor.
+ui.jface.application.fritzbox.action.TamMessageDelete\:title\:label\:de=Sprachnachricht entfernen
+ui.jface.application.fritzbox.action.TamMessageDelete\:delete\:label\:de=Sprachnachricht entfernen
+ui.jface.application.fritzbox.action.TamMessageDelete\:delete\:description\:de=Soll die Sprachnachricht zu diesem Anruf wirklich entfernt werden?

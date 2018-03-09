@@ -19,6 +19,7 @@ public interface FritzBoxConst {
 	public String CFG_SYNCTIME_OFFSET = "synctimeoffset";
 	public String CFG_SYNCSTARTUP = "syncstartup";
 	public String CFG_SYNCALL = "syncall";
+	public String CFG_SYNCTAM = "synctam";
 	public String CFG_SYNCDIALOG = "syncdialog";
 	public String CFG_SYNC_NOTIFICATION = "syncnotification";
 	public String CFG_SYNC_TIMER = "synctimer";

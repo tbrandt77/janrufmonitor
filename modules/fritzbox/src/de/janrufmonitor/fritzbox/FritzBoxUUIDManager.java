@@ -1,9 +1,16 @@
 package de.janrufmonitor.fritzbox;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import de.janrufmonitor.framework.IJAMConst;
+import de.janrufmonitor.framework.IMsn;
+import de.janrufmonitor.framework.IPhonenumber;
+import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
+import de.janrufmonitor.runtime.PIMRuntime;
 
 public class FritzBoxUUIDManager {
 
@@ -26,6 +33,36 @@ public class FritzBoxUUIDManager {
         	FritzBoxUUIDManager.m_instance = new FritzBoxUUIDManager();
         }
         return FritzBoxUUIDManager.m_instance;
+    }
+    
+    public String getUUID(String d, String n, String m) {
+    	Date date = null;
+
+    	SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yy HH:mm");
+		try {
+			date = sdf.parse(d);
+		} catch (ParseException e) {
+			return null;
+		}
+		
+		IPhonenumber pn = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toIdentifiedPhonenumber(n, true);
+    	IMsn msn = PIMRuntime.getInstance().getCallFactory().createMsn(m, "");
+    	return this.getUUID(date, pn, msn);
+    }
+    
+    public String getUUID(Date d, IPhonenumber n, IMsn msn) {
+    	StringBuffer uuid = new StringBuffer();
+		uuid.append(d.getTime());
+		uuid.append("-");
+		uuid.append(n.getTelephoneNumber());
+		uuid.append("-");
+		uuid.append(msn.getMSN());
+		// limit uuid to 32 chars
+		if (uuid.length()>31) {
+			// reduce byte length to append -1 for redundant calls max -1-1 --> 3 calls
+			uuid = new StringBuffer(uuid.substring(0,31));
+		}
+    	return uuid.toString();
     }
     
     public String calculateUUID(String uuid) {

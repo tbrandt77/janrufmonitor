@@ -380,6 +380,27 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 					}
 				}
 				
+				boolean synctam = SynchronizerService.this.m_configuration.getProperty(CFG_SYNCTAM, "false").equalsIgnoreCase("true");
+				if (synctam) {
+					if (m_logger.isLoggable(Level.INFO))
+						m_logger.info("Sync TAM recordings: "+Boolean.toString(synctam));
+					
+					if (progressMonitor!=null)
+						progressMonitor.setTaskName(getI18nManager()
+							.getString(getNamespace(),
+									"tamprogress", "label",
+									getLanguage()));
+					
+					fwm.collectTamMessages(synctime);
+					
+					try {
+						Thread.sleep((progressMonitor!=null ? 1000 : 100));
+					} catch (InterruptedException e1) {
+						m_logger.log(Level.SEVERE, e1.getMessage(), e1);
+					}
+				
+				}
+				
 				if (m_prefilteredList.size()>0) {
 					if (progressMonitor!=null)
 						progressMonitor.setTaskName(getI18nManager()
@@ -715,18 +736,7 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 				cloneCall = (ICall) c.clone();
 				cloneCall.setDate(new Date(c.getDate().getTime()-60000));
 				// create UUID
-				StringBuffer uuid = new StringBuffer();
-				uuid.append(cloneCall.getDate().getTime());
-				uuid.append("-");
-				uuid.append(cloneCall.getCaller().getPhoneNumber().getTelephoneNumber());
-				uuid.append("-");
-				uuid.append(cloneCall.getMSN().getMSN());
-				// limit uuid to 32 chars
-				if (uuid.length()>31) {
-					// reduce byte length to append -1 for redundant calls max -1-1 --> 3 calls
-					uuid = new StringBuffer(uuid.substring(0,31));
-				}
-				cloneCall.setUUID(uuid.toString());
+				cloneCall.setUUID(FritzBoxUUIDManager.getInstance().getUUID(cloneCall.getDate(), cloneCall.getCaller().getPhoneNumber(), cloneCall.getMSN()));
 				cl.add(c);
 				if (m_logger.isLoggable(Level.INFO))
 					m_logger.info("Cloned call with Date -60000 msec");

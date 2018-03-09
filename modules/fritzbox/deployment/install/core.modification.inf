@@ -1,6 +1,6 @@
 ui.jface.configuration.ConfigurationCommand\:page_reject\:mode=hidden
 ui.jface.configuration.ConfigurationCommand\:page_basic\:mode=hidden
-ui.jface.application.journal.Journal\:renderer\:value=status,date,flag,number,name,msn,fritzboxduration,callermanagerlogo
+ui.jface.application.journal.Journal\:renderer\:value=fritzboxtammessage,status,date,flag,number,name,msn,fritzboxduration,callermanagerlogo
 ui.jface.application.history.History\:renderer\:value=status,date,number,msn,fritzboxduration,callermanagerlogo
 -ui.jface.application.journal.Journal\:filter_rejected\:value=(5,rejected\=yes)
 -ui.jface.application.journal.Journal\:filter_rejected\:default=(5,rejected\=yes)

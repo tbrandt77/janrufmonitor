@@ -127,6 +127,12 @@ public class FritzBoxSynchronizer extends AbstractServiceFieldEditorConfigPage {
 		);
 		addField(sfe);
 		sfe = new BooleanFieldEditor(
+			this.getConfigNamespace()+SEPARATOR+"synctam",
+			this.m_i18n.getString(this.getNamespace(), "synctam", "label", this.m_language),
+			this.getFieldEditorParent()
+		);
+		addField(sfe);
+		sfe = new BooleanFieldEditor(
 			this.getConfigNamespace()+SEPARATOR+"syncdelete",
 			this.m_i18n.getString(this.getNamespace(), "syncdelete", "label", this.m_language),
 			this.getFieldEditorParent()

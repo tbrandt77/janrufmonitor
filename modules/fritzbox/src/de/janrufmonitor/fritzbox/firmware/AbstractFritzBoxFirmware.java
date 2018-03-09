@@ -518,6 +518,8 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 		return "No Fritz!Box firmware detected.";
 	}
 	
+	public void collectTamMessages(long lastSyncTimestamp) throws IOException {
+	}
 
 	private List parseHtml(StringBuffer parseBuffer) {
 		String content = parseBuffer.toString();

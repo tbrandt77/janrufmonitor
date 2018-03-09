@@ -222,27 +222,26 @@ public class FritzBoxCallCsv extends AbstractFritzBoxCall {
 					if (logger!=null && logger.isLoggable(Level.INFO))
 						logger.info("Set attributes to: "+am);
 					
-					// create UUID
-					StringBuffer uuid = new StringBuffer();
-					uuid.append(date.getTime());
-					uuid.append("-");
-					uuid.append(pn.getTelephoneNumber());
-					uuid.append("-");
-					uuid.append(msn.getMSN());
-					
-					if (logger!=null && logger.isLoggable(Level.INFO))
-						logger.info("Set UUID to: "+uuid);
-					
-					// limit uuid to 32 chars
-					if (uuid.length()>31) {
-						// reduce byte length to append -1 for redundant calls max -1-1 --> 3 calls
-						uuid = new StringBuffer(uuid.substring(0,31));
-						if (logger!=null && logger.isLoggable(Level.INFO))
-							logger.info("Reduce UUID to: "+uuid);
-					}
-					//uuid = new StringBuffer(FritzBoxUUIDManager.getInstance().calculateUUID(uuid.toString()));
-					
-					this.m_call = r.getCallFactory().createCall(uuid.toString(), caller, msn, cip, date);
+//					// create UUID
+//					StringBuffer uuid = new StringBuffer();
+//					uuid.append(date.getTime());
+//					uuid.append("-");
+//					uuid.append(pn.getTelephoneNumber());
+//					uuid.append("-");
+//					uuid.append(msn.getMSN());
+//					
+//					if (logger!=null && logger.isLoggable(Level.INFO))
+//						logger.info("Set UUID to: "+uuid);
+//					
+//					// limit uuid to 32 chars
+//					if (uuid.length()>31) {
+//						// reduce byte length to append -1 for redundant calls max -1-1 --> 3 calls
+//						uuid = new StringBuffer(uuid.substring(0,31));
+//						if (logger!=null && logger.isLoggable(Level.INFO))
+//							logger.info("Reduce UUID to: "+uuid);
+//					}
+
+					this.m_call = r.getCallFactory().createCall(FritzBoxUUIDManager.getInstance().getUUID(date, pn, msn), caller, msn, cip, date);
 					this.m_call.setAttributes(am);
 				}
 			} catch (NumberFormatException ex) {

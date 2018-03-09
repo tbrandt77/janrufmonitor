@@ -18,6 +18,7 @@ ui.jface.application.fritzbox.action.Refresh\:failedrefresh\:label\:en=FRITZ!Box
 ui.jface.application.fritzbox.action.Refresh\:refreshprogress\:label\:en=FRITZ!Box Fon call is synchronizing...
 ui.jface.application.fritzbox.action.Refresh\:loginprogress\:label\:en=Login to FRITZ!Box Fon...
 ui.jface.application.fritzbox.action.Refresh\:getprogress\:label\:en=Fetching call list from FRITZ!Box Fon...
+ui.jface.application.fritzbox.action.Refresh\:tamprogress\:label\:en=Looking for voice messages...
 ui.jface.application.fritzbox.action.Refresh\:identifyprogress\:label\:en=Identifiing callers...
 ui.jface.application.fritzbox.action.Refresh\:noresults\:label\:en=No new calls fetched from FRITZ!Box Fon...
 ui.jface.application.fritzbox.action.Refresh\:processing\:label\:en=Processing number 
@@ -95,3 +96,11 @@ ui.jface.application.password.PasswordCommand\:dialogtitle\:label\:en=No FRITZ!B
 ui.jface.application.password.PasswordCommand\:dialogtitle\:description\:en=No valid FRITZ!Box Fon password set to logon. Please enter the right password now.
 ui.jface.application.password.PasswordCommand\:password\:label\:en=FRITZ!Box Fon password
 ui.jface.application.password.PasswordCommand\:user\:label\:en=FRITZ!Box Fon user: {%1}
+
+# added 5.0.75
+ui.jface.application.fritzbox.rendering.TamMessage\:name\:label\:en=Voice message
+ui.jface.application.fritzbox.rendering.TamMessage\:label\:label\:en=Voice message (FRITZ!Box Fon)
+ui.jface.application.fritzbox.action.TamMessagePlay\:title\:label\:en=Play voice message
+ui.jface.application.fritzbox.action.TamMessageDelete\:title\:label\:en=Remove voice message
+ui.jface.application.fritzbox.action.TamMessageDelete\:delete\:label\:en=Remove voice message
+ui.jface.application.fritzbox.action.TamMessageDelete\:delete\:description\:en=Do you really want to remove the voice message assigned to this call?

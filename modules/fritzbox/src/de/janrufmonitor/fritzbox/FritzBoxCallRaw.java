@@ -86,23 +86,8 @@ public class FritzBoxCallRaw extends AbstractFritzBoxCall {
 				am.add(r.getCallFactory().createAttribute("fritzbox.key", call[2]));
 				am.add(r.getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CALLSTATUS
 						, IJAMConst.ATTRIBUTE_VALUE_MISSED));
-				
-				// create UUID
-				StringBuffer uuid = new StringBuffer();
-				uuid.append(date.getTime());
-				uuid.append("-");
-				uuid.append(pn.getTelephoneNumber());
-				uuid.append("-");
-				uuid.append(msn.getMSN());
-				
-				// limit uuid to 32 chars
-				if (uuid.length()>31) {
-					// reduce byte length to append -1 for redundant calls max -1-1 --> 3 calls
-					uuid = new StringBuffer(uuid.substring(0,31));
-				}
-				uuid = new StringBuffer(FritzBoxUUIDManager.getInstance().calculateUUID(uuid.toString()));
-				
-				this.m_call = r.getCallFactory().createCall(uuid.toString(), caller, msn, cip, date);
+
+				this.m_call = r.getCallFactory().createCall(FritzBoxUUIDManager.getInstance().calculateUUID(FritzBoxUUIDManager.getInstance().getUUID(date, pn, msn)), caller, msn, cip, date);
 				this.m_call.setAttributes(am);
 			}
 			if (call.length>=4 && call[1].equalsIgnoreCase("CALL")) {
@@ -175,23 +160,8 @@ public class FritzBoxCallRaw extends AbstractFritzBoxCall {
 				
 				if (callByCall!=null)
 					am.add(r.getCallFactory().createAttribute("fritzbox.callbycall", callByCall));
-								
-				// create UUID
-				StringBuffer uuid = new StringBuffer();
-				uuid.append(date.getTime());
-				uuid.append("-");
-				uuid.append(pn.getTelephoneNumber());
-				uuid.append("-");
-				uuid.append(msn.getMSN());
 				
-				// limit uuid to 32 chars
-				if (uuid.length()>31) {
-					// reduce byte length to append -1 for redundant calls max -1-1 --> 3 calls
-					uuid = new StringBuffer(uuid.substring(0,31));
-				}
-				uuid = new StringBuffer(FritzBoxUUIDManager.getInstance().calculateUUID(uuid.toString()));
-				
-				this.m_call = r.getCallFactory().createCall(uuid.toString(), caller, msn, cip, date);
+				this.m_call = r.getCallFactory().createCall(FritzBoxUUIDManager.getInstance().calculateUUID(FritzBoxUUIDManager.getInstance().getUUID(date, pn, msn)), caller, msn, cip, date);
 				this.m_call.setAttributes(am);
 			}
 		}
