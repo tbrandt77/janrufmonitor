@@ -80,9 +80,11 @@ public class TamMessagePlay extends AbstractAction implements FritzBoxConst {
 						    Clip clip = (Clip) AudioSystem.getLine(info);
 						    clip.open(stream);
 						    clip.start();
-						} catch (UnsupportedAudioFileException | IOException e) {
+						} catch (IOException e) {
 							this.m_logger.severe(e.getMessage());
 						} catch (LineUnavailableException e) {
+							this.m_logger.severe(e.getMessage());
+						} catch (UnsupportedAudioFileException e) {
 							this.m_logger.severe(e.getMessage());
 						}
 						
