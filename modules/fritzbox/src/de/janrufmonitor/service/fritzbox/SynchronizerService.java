@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -54,8 +56,8 @@ import de.janrufmonitor.util.formatter.Formatter;
 import de.janrufmonitor.util.io.PathResolver;
 import de.janrufmonitor.util.string.StringUtils;
 
-public class SynchronizerService extends AbstractReceiverConfigurableService implements FritzBoxConst, IEventSender {
-
+public class SynchronizerService extends AbstractReceiverConfigurableService implements FritzBoxConst, IEventSender, IModifierService {
+	
 	public static String ID = "SynchronizerService";
     private String NAMESPACE = "ui.jface.application.fritzbox.action.Refresh";
 	private IRuntime m_runtime;
@@ -64,6 +66,7 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 	private SyncTimerThread syncTimerThread;
 	
 	private boolean m_activeSync = false;
+	private Map m_tamMap = null;
 	
 	private class SyncTimerThread extends Thread {
 		private boolean isRunning;
@@ -274,6 +277,8 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 		if (m_logger.isLoggable(Level.INFO))
 			m_logger.info("--> Start Synchronizing ("+(progressMonitor==null ? "w/o progress monitor" : "with progress monitor")+")");
 		
+		if (this.m_tamMap==null) this.m_tamMap = new HashMap();
+		this.m_tamMap.clear();
 		
 		if (progressMonitor!=null) {
 			progressMonitor.beginTask(getI18nManager()
@@ -380,27 +385,6 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 					}
 				}
 				
-				boolean synctam = SynchronizerService.this.m_configuration.getProperty(CFG_SYNCTAM, "false").equalsIgnoreCase("true");
-				if (synctam) {
-					if (m_logger.isLoggable(Level.INFO))
-						m_logger.info("Sync TAM recordings: "+Boolean.toString(synctam));
-					
-					if (progressMonitor!=null)
-						progressMonitor.setTaskName(getI18nManager()
-							.getString(getNamespace(),
-									"tamprogress", "label",
-									getLanguage()));
-					
-					fwm.collectTamMessages(synctime);
-					
-					try {
-						Thread.sleep((progressMonitor!=null ? 1000 : 100));
-					} catch (InterruptedException e1) {
-						m_logger.log(Level.SEVERE, e1.getMessage(), e1);
-					}
-				
-				}
-				
 				if (m_prefilteredList.size()>0) {
 					if (progressMonitor!=null)
 						progressMonitor.setTaskName(getI18nManager()
@@ -469,6 +453,27 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 						Thread.sleep((progressMonitor!=null ? 1000 : 100));
 					} catch (InterruptedException e1) {
 						m_logger.log(Level.SEVERE, e1.getMessage(), e1);
+					}
+					
+					boolean synctam = SynchronizerService.this.m_configuration.getProperty(CFG_SYNCTAM, "false").equalsIgnoreCase("true");
+					if (synctam) {
+						if (m_logger.isLoggable(Level.INFO))
+							m_logger.info("Sync TAM recordings: "+Boolean.toString(synctam));
+						
+						if (progressMonitor!=null)
+							progressMonitor.setTaskName(getI18nManager()
+								.getString(getNamespace(),
+										"tamprogress", "label",
+										getLanguage()));
+						
+						this.m_tamMap.putAll(fwm.getTamMessages(synctime));
+						
+						try {
+							Thread.sleep((progressMonitor!=null ? 1000 : 100));
+						} catch (InterruptedException e1) {
+							m_logger.log(Level.SEVERE, e1.getMessage(), e1);
+						}
+					
 					}
 					
 					if (m_logger.isLoggable(Level.INFO))
@@ -818,6 +823,25 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 
 	public String getSenderID() {
 		return SynchronizerService.ID;
+	}
+
+	@Override
+	public void modifyObject(Object o) {
+		if (!(o instanceof ICall)) return;
+
+		boolean synctam = SynchronizerService.this.m_configuration.getProperty(CFG_SYNCTAM, "false").equalsIgnoreCase("true");
+		if (synctam) {
+			if (m_logger.isLoggable(Level.INFO))
+				m_logger.info("Sync TAM recordings: "+Boolean.toString(synctam));
+			String uuid = ((ICall)o).getUUID();
+			if (this.m_tamMap.containsKey(uuid)) {
+				List l = (List) this.m_tamMap.get(uuid);
+				if (l.size()==5) {
+					((ICall)o).getAttributes().add(this.getRuntime().getCallFactory().createAttribute("fritzbox.tamurl", (String) l.get(4)));
+					((ICall)o).getAttributes().add(this.getRuntime().getCallFactory().createAttribute("fritzbox.tamduration", (String) l.get(3)));
+				}
+			}
+		}
 	}
 
 

@@ -1,7 +1,5 @@
 package de.janrufmonitor.ui.jface.application.fritzbox.action;
 
-import java.io.File;
-
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
@@ -14,9 +12,9 @@ import de.janrufmonitor.fritzbox.FritzBoxConst;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.ui.jface.application.AbstractAction;
+import de.janrufmonitor.ui.jface.application.IExtendedApplicationController;
 import de.janrufmonitor.ui.swt.DisplayManager;
 import de.janrufmonitor.ui.swt.SWTExecuter;
-import de.janrufmonitor.util.io.PathResolver;
 
 public class TamMessageDelete extends AbstractAction implements FritzBoxConst {
 
@@ -59,15 +57,21 @@ public class TamMessageDelete extends AbstractAction implements FritzBoxConst {
 			if (!selection.isEmpty()) {
 				Object o = selection.getFirstElement();
 				if (o instanceof ICall) {
-					File tamMessage = new File(new File(PathResolver.getInstance(PIMRuntime.getInstance()).getDataDirectory() + File.separator + "fritzbox-messages"), ((ICall)o).getUUID()+".wav");
-					if (tamMessage.exists() && tamMessage.isFile() && tamMessage.length()>0) {
+					
+					if (((ICall)o).getAttributes().contains("fritzbox.tamurl")) {
 						if (MessageDialog.openConfirm(
 								new Shell(DisplayManager.getDefaultDisplay()),
 								this.getI18nManager().getString(this.getNamespace(), "delete", "label", this.getLanguage()),
 								this.getI18nManager().getString(this.getNamespace(), "delete", "description", this.getLanguage())
 							)) {
-							if (!tamMessage.delete()) tamMessage.deleteOnExit();
-							this.m_app.updateViews(false);
+							((ICall)o).getAttributes().remove("fritzbox.tamurl");
+							((ICall)o).getAttributes().remove("fritzbox.tamduration");
+							if (m_app.getController() instanceof IExtendedApplicationController) {
+								((IExtendedApplicationController)m_app.getController()).updateElement(((ICall)o), false);
+							} else {
+								m_app.getController().updateElement(((ICall)o));
+							}
+							this.m_app.updateViews(true);
 						}
 					} else {
 						new SWTExecuter() {

@@ -102,6 +102,8 @@ ui.jface.application.password.PasswordCommand\:user\:label\:de=FRITZ!Box Fon Ben
 # added 5.0.75
 ui.jface.application.fritzbox.rendering.TamMessage\:name\:label\:de=Sprachnachricht
 ui.jface.application.fritzbox.rendering.TamMessage\:label\:label\:de=Sprachnachricht (FRITZ!Box Fon)
+ui.jface.application.fritzbox.rendering.TamMessageDuration\:name\:label\:de=Dauer
+ui.jface.application.fritzbox.rendering.TamMessageDuration\:label\:label\:de=Dauer der Sprachnachricht (FRITZ!Box Fon)
 ui.jface.application.fritzbox.action.TamMessagePlay\:title\:label\:de=Sprachnachricht abspielen
 ui.jface.application.fritzbox.action.TamMessagePlay\:notam\:label\:de=Zu diesem Anruf liegt keine Sprachnachricht vor.
 ui.jface.application.fritzbox.action.TamMessageDelete\:title\:label\:de=Sprachnachricht entfernen

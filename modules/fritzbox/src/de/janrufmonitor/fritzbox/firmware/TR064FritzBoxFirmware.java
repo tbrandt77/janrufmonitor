@@ -4,8 +4,6 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -17,9 +15,9 @@ import java.net.URLConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -63,10 +61,8 @@ import de.janrufmonitor.fritzbox.firmware.exception.InvalidSessionIDException;
 import de.janrufmonitor.fritzbox.firmware.exception.SetCallerException;
 import de.janrufmonitor.fritzbox.mapping.FritzBoxMappingManager;
 import de.janrufmonitor.runtime.PIMRuntime;
-import de.janrufmonitor.util.io.Base64Decoder;
 import de.janrufmonitor.util.io.Base64Encoder;
 import de.janrufmonitor.util.io.OSUtils;
-import de.janrufmonitor.util.io.PathResolver;
 import de.janrufmonitor.util.io.Stream;
 import de.janrufmonitor.util.string.StringUtils;
 
@@ -81,6 +77,7 @@ public class TR064FritzBoxFirmware implements
 		private String m_number;
 		private String m_msn;
 		private String m_date;
+		private String m_dur;
 		
 		private long m_sync_time = -1L;
 		
@@ -101,6 +98,7 @@ public class TR064FritzBoxFirmware implements
 				this.m_number = null;
 				this.m_msn = null;
 				this.m_date = null;
+				this.m_dur = null;
 			}
 		}
 		
@@ -122,6 +120,10 @@ public class TR064FritzBoxFirmware implements
 				this.m_msn = (this.currentValue == null ? "" : this.currentValue);
 			}
 			
+			if (qname.equalsIgnoreCase("Duration")) {
+				this.m_dur = (this.currentValue == null ? "" : this.currentValue);
+			}
+			
 			if (qname.equalsIgnoreCase("Message")) {
 				if (this.m_date!=null && this.m_number!=null && this.m_msn!=null && this.m_url!=null && this.m_number.trim().length()>0) {
 					// only snyc if syn_time < entry tiem stamp
@@ -136,8 +138,12 @@ public class TR064FritzBoxFirmware implements
 					}
 					
 					String id = FritzBoxUUIDManager.getInstance().getUUID(this.m_date, this.m_number, this.m_msn);
-					if (id!=null)
-						m.put(id, this.m_url);
+					if (id!=null) {
+						List l = new ArrayList();
+						l.add(this.m_date); l.add(this.m_number); l.add(this.m_msn); l.add(this.m_dur); l.add(this.m_url);
+						m.put(id, l);
+					}
+						
 				}
 			}
 			
@@ -641,9 +647,9 @@ public class TR064FritzBoxFirmware implements
 		
 		return blockedNumbers;
 	}
-
-	public void collectTamMessages(long lastSyncTimestamp) throws IOException {
-		if (!this.isInitialized()) return;
+	
+	public Map getTamMessages(long lastSyncTimestamp) throws IOException {
+		if (!this.isInitialized()) return Collections.EMPTY_MAP;
 		
 		if (this.m_logger.isLoggable(Level.INFO))
 			this.m_logger.info("Collecting TAM (Telephon Answeriong Machine) recordings...");
@@ -657,56 +663,28 @@ public class TR064FritzBoxFirmware implements
 			} catch (IOException e) {
 			}
 		}
+		return allTamMessages;
+	}
+
+	public String getTamMessage(String url) throws IOException {
+		if (url==null || url.trim().length()==0) return null;
 		
+		if (!url.startsWith("/")) url = "/" + url;
+		
+		StringBuffer data = new StringBuffer();
+		String u = (this.m_useHttp ? "http://" : "https://")+this.m_server+":"+(this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server))+ url +"&sid="+FritzBoxTR064Manager.getInstance().getSID(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server)), (this.m_useHttp ? "http" : "https")); // + "&myabfile="+url;
 		if (this.m_logger.isLoggable(Level.INFO))
-			this.m_logger.info("# of TAM (Telephon Answering Machine) recordings found: "+allTamMessages.size());
-			
-		File tamMessageDir = new File(PathResolver.getInstance(PIMRuntime.getInstance()).getDataDirectory() + File.separator + "fritzbox-messages");
-		tamMessageDir.mkdirs();
-		if (tamMessageDir.exists() && tamMessageDir.isDirectory()) {
-			if (this.m_logger.isLoggable(Level.INFO))
-				this.m_logger.info("Storing TAM (Telephon Answering Machine) recordings in: "+tamMessageDir.getAbsolutePath());
-			
-			Iterator<String> iter = allTamMessages.keySet().iterator();
-			while (iter.hasNext()) {
-				String key = iter.next();
-				if (this.m_logger.isLoggable(Level.INFO))
-					this.m_logger.info("Check TAM (Telephon Answering Machine) recording for call UUID: "+key);
-				
-				File message_file = new File(tamMessageDir, key+".wav");
-				if (!message_file.exists()) {
-					String url = (String) allTamMessages.get(key);
-					if (url!=null) {
-						if (this.m_logger.isLoggable(Level.INFO))
-							this.m_logger.info("Get new TAM (Telephon Answering Machine) recording for call UUID: "+key +", URL: "+url);
-						
-						if (!url.startsWith("/")) url = "/" + url;
-		
-						StringBuffer data = new StringBuffer();
-						String u = (this.m_useHttp ? "http://" : "https://")+this.m_server+":"+(this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server))+ url +"&sid="+FritzBoxTR064Manager.getInstance().getSID(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server)), (this.m_useHttp ? "http" : "https")); // + "&myabfile="+url;
-						if (this.m_logger.isLoggable(Level.INFO))
-							this.m_logger.info("Downloading new TAM (Telephon Answering Machine) recording on URL: "+u);
-						try {
-							data.append(
-								doHttpCall(u, "GET", null, new String[][] {  }, true)
-							);
-	
-							ByteArrayInputStream bin = new ByteArrayInputStream(data.toString().getBytes());
-							Base64Decoder b64 = new Base64Decoder(bin);
-							FileOutputStream fos = new FileOutputStream(message_file);
-							Stream.copy(b64, fos);
-							fos.flush();
-							fos.close();
-						} catch (UnsupportedEncodingException e) {
-							this.m_logger.log(Level.WARNING, e.getMessage(), e);
-						} catch (IOException e) {
-							this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-						} 
-					}
-				}
-			}
-		}
-	
+			this.m_logger.info("Downloading new TAM (Telephon Answering Machine) recording on URL: "+u);
+		try {
+			data.append(
+				doHttpCall(u, "GET", null, new String[][] {  }, true)
+			);
+		} catch (UnsupportedEncodingException e) {
+			this.m_logger.log(Level.WARNING, e.getMessage(), e);
+		} catch (IOException e) {
+			this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+		} 
+		return data.toString();
 	}
 
 	public void doBlock(String number) throws DoBlockException, IOException {
@@ -956,4 +934,5 @@ public class TR064FritzBoxFirmware implements
 		}
 		return null;
 	}
+
 }

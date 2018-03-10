@@ -518,7 +518,12 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 		return "No Fritz!Box firmware detected.";
 	}
 	
-	public void collectTamMessages(long lastSyncTimestamp) throws IOException {
+	public Map getTamMessages(long lastSyncTimestamp) throws IOException {
+		return Collections.EMPTY_MAP;
+	}
+	
+	public String getTamMessage(String url) throws IOException {
+		return null;
 	}
 
 	private List parseHtml(StringBuffer parseBuffer) {
@@ -1024,5 +1029,6 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 	public boolean isRestarted() {
 		return false;
 	}
+
 	
 }

@@ -1,6 +1,8 @@
 package de.janrufmonitor.ui.jface.application.fritzbox.action;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.sound.sampled.AudioFormat;
@@ -19,6 +21,8 @@ import org.eclipse.swt.widgets.Shell;
 
 import de.janrufmonitor.framework.ICall;
 import de.janrufmonitor.fritzbox.FritzBoxConst;
+import de.janrufmonitor.fritzbox.firmware.FirmwareManager;
+import de.janrufmonitor.fritzbox.firmware.exception.FritzBoxLoginException;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.ui.jface.application.AbstractAction;
@@ -26,7 +30,9 @@ import de.janrufmonitor.ui.jface.application.ApplicationImageDescriptor;
 import de.janrufmonitor.ui.swt.DisplayManager;
 import de.janrufmonitor.ui.swt.SWTExecuter;
 import de.janrufmonitor.ui.swt.SWTImageManager;
+import de.janrufmonitor.util.io.Base64Decoder;
 import de.janrufmonitor.util.io.PathResolver;
+import de.janrufmonitor.util.io.Stream;
 
 public class TamMessagePlay extends AbstractAction implements FritzBoxConst {
 
@@ -71,10 +77,39 @@ public class TamMessagePlay extends AbstractAction implements FritzBoxConst {
 			if (!selection.isEmpty()) {
 				Object o = selection.getFirstElement();
 				if (o instanceof ICall) {
-					File tamMessage = new File(new File(PathResolver.getInstance(PIMRuntime.getInstance()).getDataDirectory() + File.separator + "fritzbox-messages"), ((ICall)o).getUUID()+".wav");
-					if (tamMessage.exists() && tamMessage.isFile() && tamMessage.length()>0) {
+					if (((ICall)o).getAttributes().contains("fritzbox.tamurl")) {
+						File message_file = null;
+						String url = ((ICall)o).getAttributes().get("fritzbox.tamurl").getValue();
+						
+						File tamMessageDir = new File(PathResolver.getInstance(PIMRuntime.getInstance()).getDataDirectory() + File.separator + "fritzbox-messages");
+						tamMessageDir.mkdirs();
+						if (tamMessageDir.exists() && tamMessageDir.isDirectory()) {
+						    message_file = new File(tamMessageDir, ((ICall)o).getUUID()+".wav");
+							if (!message_file.exists()) {
+								FirmwareManager fwm = FirmwareManager.getInstance();
+								try {
+									if (!fwm.isLoggedIn())
+										fwm.login();
+									
+									String data = fwm.getTamMessage(url);
+									if (data==null) return;
+									
+									ByteArrayInputStream bin = new ByteArrayInputStream(data.getBytes());
+									Base64Decoder b64 = new Base64Decoder(bin);
+									FileOutputStream fos = new FileOutputStream(message_file);
+									Stream.copy(b64, fos);
+									fos.flush();
+									fos.close();
+								} catch (IOException e) {
+									this.m_logger.warning(e.toString());
+								} catch (FritzBoxLoginException e) {
+									this.m_logger.warning(e.toString());
+								}
+							}
+						}
+
 						try {
-							AudioInputStream stream = AudioSystem.getAudioInputStream(tamMessage);
+							AudioInputStream stream = AudioSystem.getAudioInputStream(message_file);
 						    AudioFormat format = stream.getFormat();
 						    DataLine.Info info = new DataLine.Info(Clip.class, format);
 						    Clip clip = (Clip) AudioSystem.getLine(info);

@@ -100,6 +100,8 @@ ui.jface.application.password.PasswordCommand\:user\:label\:en=FRITZ!Box Fon use
 # added 5.0.75
 ui.jface.application.fritzbox.rendering.TamMessage\:name\:label\:en=Voice message
 ui.jface.application.fritzbox.rendering.TamMessage\:label\:label\:en=Voice message (FRITZ!Box Fon)
+ui.jface.application.fritzbox.rendering.TamMessageDuration\:name\:label\:en=Duration
+ui.jface.application.fritzbox.rendering.TamMessageDuration\:label\:label\:en=Duration of voice message (FRITZ!Box Fon)
 ui.jface.application.fritzbox.action.TamMessagePlay\:title\:label\:en=Play voice message
 ui.jface.application.fritzbox.action.TamMessageDelete\:title\:label\:en=Remove voice message
 ui.jface.application.fritzbox.action.TamMessageDelete\:delete\:label\:en=Remove voice message

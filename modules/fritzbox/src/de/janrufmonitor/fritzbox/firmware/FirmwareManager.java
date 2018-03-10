@@ -196,7 +196,7 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 		return this.m_fw.getMSNMap();
     }
     
-    public void collectTamMessages(long lastSyncTimestamp) throws IOException {
+    public String getTamMessage(String url) throws IOException {
     	if (this.m_fw==null)
 			try {
 				this.createFirmwareInstance();
@@ -212,7 +212,26 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 						e,
 						true));
 			}
-		this.m_fw.collectTamMessages(lastSyncTimestamp);
+		return this.m_fw.getTamMessage(url);
+    }
+    
+    public Map getTamMessages(long lastSyncTimestamp) throws IOException {
+    	if (this.m_fw==null)
+			try {
+				this.createFirmwareInstance();
+			} catch (FritzBoxInitializationException e) {
+			} catch (FritzBoxNotFoundException e) {
+				if (this.m_broker!=null)
+					this.m_broker.send(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_UNKNOWN_HOST));
+			} catch (InvalidSessionIDException e) {
+				PropagationFactory.getInstance().fire(
+						new Message(Message.ERROR,
+						"fritzbox.firmware.login",
+						"loginfailed",	
+						e,
+						true));
+			}
+		return this.m_fw.getTamMessages(lastSyncTimestamp);
     }
     
     public List getCallList(long lastSyncTimestamp) throws GetCallListException, IOException {
