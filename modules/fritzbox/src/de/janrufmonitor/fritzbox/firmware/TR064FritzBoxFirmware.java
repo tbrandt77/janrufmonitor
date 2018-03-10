@@ -78,11 +78,14 @@ public class TR064FritzBoxFirmware implements
 		private String m_msn;
 		private String m_date;
 		private String m_dur;
+		private String m_tam;
+		private Map m_tamMapx;
 		
 		private long m_sync_time = -1L;
 		
-		public XMLTamMessageHandler(long st) {
+		public XMLTamMessageHandler(long st, Map t) {
 			m = new HashMap();
+			this.m_tamMapx = t;
 			this.m_sync_time = st;
 		}
 		
@@ -99,6 +102,7 @@ public class TR064FritzBoxFirmware implements
 				this.m_msn = null;
 				this.m_date = null;
 				this.m_dur = null;
+				this.m_tam = null;
 			}
 		}
 		
@@ -123,6 +127,9 @@ public class TR064FritzBoxFirmware implements
 			if (qname.equalsIgnoreCase("Duration")) {
 				this.m_dur = (this.currentValue == null ? "" : this.currentValue);
 			}
+			if (qname.equalsIgnoreCase("Tam")) {
+				this.m_tam = (this.currentValue == null ? "" : this.currentValue);
+			}
 			
 			if (qname.equalsIgnoreCase("Message")) {
 				if (this.m_date!=null && this.m_number!=null && this.m_msn!=null && this.m_url!=null && this.m_number.trim().length()>0) {
@@ -141,6 +148,9 @@ public class TR064FritzBoxFirmware implements
 					if (id!=null) {
 						List l = new ArrayList();
 						l.add(this.m_date); l.add(this.m_number); l.add(this.m_msn); l.add(this.m_dur); l.add(this.m_url);
+						String t = (String) this.m_tamMapx.get(Integer.valueOf(this.m_tam)); 
+						if (t==null || t.trim().length()==0) t = this.m_tam;
+						l.add(t);
 						m.put(id, l);
 					}
 						
@@ -258,6 +268,7 @@ public class TR064FritzBoxFirmware implements
 	
 	private Map m_msnSipMapping;
 	private Map m_msnMap;
+	private Map m_tamMap;
 	private boolean m_useHttp;
 	
 	protected long m_loginUptime = -1L;
@@ -786,6 +797,18 @@ public class TR064FritzBoxFirmware implements
 		return "No FRITZ!Box firmware detected.";
 	}
 	
+	private Map getTamMap() {
+		if (!this.isInitialized()) return Collections.EMPTY_MAP;
+		if (this.m_tamMap==null) {
+			try {
+				this.m_tamMap = FritzBoxTR064Manager.getInstance().getTelephoneAnsweringMachineList(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server)), (this.m_useHttp ? "http" : "https"));
+			} catch (IOException e) {
+				this.m_tamMap = Collections.EMPTY_MAP;
+			}
+		}
+		return this.m_tamMap;
+	}
+	
 	private StringBuffer doHttpCall(String u, String method, String body, String[][] headers) throws IOException {
 		return this.doHttpCall(u, method, body, headers, null, null, false);
 	}
@@ -869,7 +892,7 @@ public class TR064FritzBoxFirmware implements
 	
 	private Map parseTamMessageMapXML(InputStream is, long st) {
 		try {
-			XMLTamMessageHandler handler = new XMLTamMessageHandler(st);
+			XMLTamMessageHandler handler = new XMLTamMessageHandler(st, this.getTamMap());
 			SAXParser p = SAXParserFactory.newInstance().newSAXParser();
 			p.parse(new BufferedInputStream(is), handler);
 			return handler.getMap();

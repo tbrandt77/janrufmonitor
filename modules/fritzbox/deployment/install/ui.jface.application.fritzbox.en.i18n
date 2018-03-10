@@ -98,6 +98,8 @@ ui.jface.application.password.PasswordCommand\:password\:label\:en=FRITZ!Box Fon
 ui.jface.application.password.PasswordCommand\:user\:label\:en=FRITZ!Box Fon user: {%1}
 
 # added 5.0.75
+ui.jface.application.fritzbox.rendering.TamName\:name\:label\:en=Answering Machine
+ui.jface.application.fritzbox.rendering.TamName\:label\:label\:en=Answering Machine (FRITZ!Box Fon)
 ui.jface.application.fritzbox.rendering.TamMessage\:name\:label\:en=Voice message
 ui.jface.application.fritzbox.rendering.TamMessage\:label\:label\:en=Voice message (FRITZ!Box Fon)
 ui.jface.application.fritzbox.rendering.TamMessageDuration\:name\:label\:en=Duration

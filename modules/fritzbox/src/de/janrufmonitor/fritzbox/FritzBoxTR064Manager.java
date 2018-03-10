@@ -987,14 +987,17 @@ public class FritzBoxTR064Manager {
 			content.append("<s:Body><u:GetInfo xmlns:u=\"urn:dslforum-org:service:X_AVM-DE_TAM:1\"><NewIndex>"+Integer.valueOf(count)+"</NewIndex>");
 			content.append("</u:GetInfo></s:Body></s:Envelope>");
 			
-			response = doHttpCall(protocol+"://"+server+":"+port+"/upnp/control/x_tam", "POST", content.toString(), new String[][] { 
-				{"Content-Type", "text/xml; charset=\"utf-8\""}, {"Content-Length", Integer.toString(content.length())}, {"SOAPACTION", "\"urn:dslforum-org:service:X_AVM-DE_TAM:1#GetInfo\""}, {"User-Agent", USER_AGENT}})
-			;
+			try {
+				response = doHttpCall(protocol+"://"+server+":"+port+"/upnp/control/x_tam", "POST", content.toString(), new String[][] { 
+					{"Content-Type", "text/xml; charset=\"utf-8\""}, {"Content-Length", Integer.toString(content.length())}, {"SOAPACTION", "\"urn:dslforum-org:service:X_AVM-DE_TAM:1#GetInfo\""}, {"User-Agent", USER_AGENT}})
+				;
+				
+				String pb_name = find(Pattern.compile(PATTERN_TAM_NAME, Pattern.UNICODE_CASE), response);
+				if (pb_name!=null && pb_name.trim().length()>0 && !m.containsValue(pb_name)) {
+					m.put(Integer.valueOf(count), pb_name);
+				}
+			} catch (IOException e){}; 
 			
-			String pb_name = find(Pattern.compile(PATTERN_TAM_NAME, Pattern.UNICODE_CASE), response);
-			if (pb_name!=null && pb_name.trim().length()>0 && !m.containsValue(pb_name)) {
-				m.put(Integer.valueOf(count), pb_name);
-			}
 			count++;
 		}
 		this.m_logger.info("Finished retrieving TAM list took "+(System.currentTimeMillis()-start)+"ms");
@@ -1396,7 +1399,7 @@ public class FritzBoxTR064Manager {
 //			
 //			System.out.println(FritzBoxTR064Manager.getInstance().getPhonebookEntry("thilo.brandt", "Tb2743507", "fritz.box", "49443", "https", "0", "3"));
 //			
-			//System.out.println(FritzBoxTR064Manager.getInstance().getTelephoneAnsweringMachineList("thilo.brandt", "Tb2743507", "fritz.box", "49000", "http"));
+			System.out.println(FritzBoxTR064Manager.getInstance().getTelephoneAnsweringMachineList("thilo.brandt", "Tb2743507", "fritz.box", "49000", "http"));
 			//System.out.println(FritzBoxTR064Manager.getInstance().getTelephoneAnsweringMachineMessageList("thilo.brandt", "Tb2743507", "fritz.box", "49000", "http", "0"));
 			BufferedReader r = new BufferedReader(new InputStreamReader(FritzBoxTR064Manager.getInstance().getTelephoneAnsweringMachineMessageList("thilo.brandt", "Tb2743507", "fritz.box", "49000", "http", "0")));
 			while (r.ready())

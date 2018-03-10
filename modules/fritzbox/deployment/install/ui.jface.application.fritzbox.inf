@@ -86,6 +86,8 @@ command.CommandFactory\:command_passwordcommand\:value=de.janrufmonitor.ui.jface
 command.CommandFactory\:command_passwordcommand\:access=system
 
 #added 5.0.75
+ui.jface.application.RendererRegistry\:renderer_fritztamn\:value=de.janrufmonitor.ui.jface.application.fritzbox.rendering.TamName
+ui.jface.application.RendererRegistry\:renderer_fritztamn\:access=system
 ui.jface.application.RendererRegistry\:renderer_fritztam\:value=de.janrufmonitor.ui.jface.application.fritzbox.rendering.TamMessage
 ui.jface.application.RendererRegistry\:renderer_fritztam\:access=system
 ui.jface.application.RendererRegistry\:renderer_fritztamdur\:value=de.janrufmonitor.ui.jface.application.fritzbox.rendering.TamMessageDuration

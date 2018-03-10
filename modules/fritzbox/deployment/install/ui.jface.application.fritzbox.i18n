@@ -100,6 +100,8 @@ ui.jface.application.password.PasswordCommand\:password\:label\:de=FRITZ!Box Fon
 ui.jface.application.password.PasswordCommand\:user\:label\:de=FRITZ!Box Fon Benutzer: {%1}
 
 # added 5.0.75
+ui.jface.application.fritzbox.rendering.TamName\:name\:label\:de=Anrufbeantworter
+ui.jface.application.fritzbox.rendering.TamName\:label\:label\:de=Anrufbeantworter (FRITZ!Box Fon)
 ui.jface.application.fritzbox.rendering.TamMessage\:name\:label\:de=Sprachnachricht
 ui.jface.application.fritzbox.rendering.TamMessage\:label\:label\:de=Sprachnachricht (FRITZ!Box Fon)
 ui.jface.application.fritzbox.rendering.TamMessageDuration\:name\:label\:de=Dauer
