@@ -1,4 +1,20 @@
-﻿===
+﻿
+jAnrufmonitor 5.0.75 (15.03.2018)
+---------------------------------
+Neu:
+- Bessere Erkennung der Bit-Architektur (32- /64-bit)
+- Editieren von Rufnummer und Rufnumemrtyp aus dem Journaleintrag möglich
+
+Bugfix:
+- Schreibfehler bei der englischen Übersetzung korrigiert
+
+Module:
+- FRITZ!Box-Überwachung: Erkennen von konfigurierten Anrufbeantwortern in der FRITZ!Box
+- FRITZ!Box-Überwachung: Sprachnachrichten mit Journal synchronisieren
+- FRITZ!Box-Überwachung: Sprachnachrichten aus dem Journal heraus abspielen
+- Apple Mac Adressbuch: Schnelleres Laden von Adressbücher mit mehr als 500 Kontakten
+
+===
 
 jAnrufmonitor 5.0.74 (05.01.2018)
 ---------------------------------
