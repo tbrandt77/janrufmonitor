@@ -3,7 +3,7 @@ jAnrufmonitor 5.0.75 (15.03.2018)
 ---------------------------------
 Neu:
 - Bessere Erkennung der Bit-Architektur (32- /64-bit)
-- Editieren von Rufnummer und Rufnumemrtyp aus dem Journaleintrag möglich
+- Editieren von Rufnummer und Rufnummertyp aus dem Journaleintrag möglich
 
 Bugfix:
 - Schreibfehler bei der englischen Übersetzung korrigiert

@@ -87,9 +87,13 @@ public class CountryDirectory extends AbstractReadOnlyDatabaseCallerManager {
 			
 			if (cl.size()>0) {
 				String countrycode = cl.get(0).getPhoneNumber().getIntAreaCode();
-				PreparedStatement ps = this.getStatement("DELETE_COUNTRY");
-				ps.setString(1, countrycode);
-				ps.execute();
+				// added 2018/03/17: delete all entries for country code XX unless first entry has 00 set as countrycode
+				if (countrycode!=null && !countrycode.equalsIgnoreCase("00")) {
+					PreparedStatement ps = this.getStatement("DELETE_COUNTRY");
+					ps.setString(1, countrycode);
+					ps.execute();
+					this.commit();
+				}			
 			}
 			
 			super.insertOrUpdateCallerList(cl);

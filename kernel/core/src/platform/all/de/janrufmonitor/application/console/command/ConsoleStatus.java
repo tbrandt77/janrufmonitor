@@ -28,7 +28,7 @@ public class ConsoleStatus extends AbstractConsoleCommand {
 		System.out.println("---------------------------");
 		System.out.println("");
 		// TODO: 2005/09/03: Work-a-round for 4.3.x, to be changed !
-		if (!PIMRuntime.getInstance().getMonitorListener().getDefaultMonitor().isStarted()) {
+		if (PIMRuntime.getInstance().getMonitorListener().getDefaultMonitor()==null || !PIMRuntime.getInstance().getMonitorListener().getDefaultMonitor().isStarted()) {
 			System.out.println("jAnrufmonitor is stopped.");
 			System.out.println("");
 			return;
