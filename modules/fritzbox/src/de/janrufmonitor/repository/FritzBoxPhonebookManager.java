@@ -29,12 +29,9 @@ import de.janrufmonitor.repository.db.hsqldb.HsqldbMultiPhoneCallerDatabaseHandl
 import de.janrufmonitor.repository.filter.IFilter;
 import de.janrufmonitor.repository.types.IRemoteRepository;
 import de.janrufmonitor.repository.types.IWriteCallerRepository;
-import de.janrufmonitor.repository.zip.ZipArchive;
-import de.janrufmonitor.repository.zip.ZipArchiveException;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.util.io.PathResolver;
-import de.janrufmonitor.util.string.StringUtils;
 
 public class FritzBoxPhonebookManager extends AbstractReadWriteCallerManager
 		implements IRemoteRepository {
@@ -71,9 +68,8 @@ public class FritzBoxPhonebookManager extends AbstractReadWriteCallerManager
 
 		private IRuntime m_runtime;
 
-		public FritzBoxPhonebookManagerHandler(String driver, String connection,
-				String user, String password, boolean initialize) {
-			super(driver, connection, user, password, initialize);
+		public FritzBoxPhonebookManagerHandler(String db) {
+			super(db);
 		}
 
 		protected IRuntime getRuntime() {
@@ -493,31 +489,20 @@ public class FritzBoxPhonebookManager extends AbstractReadWriteCallerManager
 		if (this.m_dbh == null) {
 			String db_path = PathResolver.getInstance(this.getRuntime())
 					.resolve(FBP_CACHE_PATH + "fritzbox_data_cache.db");
-			db_path = StringUtils.replaceString(db_path, "\\", "/");
-			File db = new File(db_path + ".properties");
-			boolean initialize = false;
-			if (!db.exists()) {
-				initialize = true;
-				db.getParentFile().mkdirs();
-				try {
-					File db_raw = new File(db_path);
-					if (!db_raw.exists()) {
-						ZipArchive z = new ZipArchive(db_path);
-						z.open();
-						z.close();
-					}
-				} catch (ZipArchiveException e) {
-					this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-				}
-			}
-			this.m_dbh = new FritzBoxPhonebookManagerHandler(
-					"org.hsqldb.jdbcDriver", "jdbc:hsqldb:file:" + db_path,
-					"sa", "", initialize);
+			
+			this.m_dbh = new FritzBoxPhonebookManagerHandler(db_path);
 			this.m_dbh.setCommitCount(Integer.parseInt(m_configuration
 					.getProperty(CFG_COMMIT_COUNT, "10")));
 			this.m_dbh.setKeepAlive((m_configuration.getProperty(
 					CFG_KEEP_ALIVE, "true").equalsIgnoreCase("true") ? true
 					: false));
+			try {
+				this.m_dbh.connect();
+			} catch (ClassNotFoundException e) {
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			} catch (SQLException e) {
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			}
 		}
 		return this.m_dbh;
 	}

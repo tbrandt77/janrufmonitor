@@ -3,8 +3,6 @@ package de.janrufmonitor.repository;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.Date;
@@ -25,8 +23,6 @@ import de.janrufmonitor.repository.zip.ZipArchiveException;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.util.io.PathResolver;
-import de.janrufmonitor.util.io.Stream;
-import de.janrufmonitor.util.string.StringUtils;
 
 public class ArchiveJournal extends AbstractDatabaseCallManager implements ILocalRepository {
 
