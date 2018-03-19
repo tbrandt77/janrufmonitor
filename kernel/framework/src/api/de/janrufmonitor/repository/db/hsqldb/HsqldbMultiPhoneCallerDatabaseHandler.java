@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -29,6 +30,8 @@ import de.janrufmonitor.repository.filter.CharacterFilter;
 import de.janrufmonitor.repository.filter.FilterType;
 import de.janrufmonitor.repository.filter.IFilter;
 import de.janrufmonitor.repository.search.ISearchTerm;
+import de.janrufmonitor.repository.zip.ZipArchive;
+import de.janrufmonitor.repository.zip.ZipArchiveException;
 import de.janrufmonitor.util.io.Base64Decoder;
 import de.janrufmonitor.util.io.Base64Encoder;
 import de.janrufmonitor.util.io.IImageProvider;
@@ -108,6 +111,127 @@ public abstract class HsqldbMultiPhoneCallerDatabaseHandler extends AbstractMult
 	}
 
 	protected IImageProvider m_ip;
+	
+	public HsqldbMultiPhoneCallerDatabaseHandler(String db) {
+		super("org.hsqldb.jdbcDriver", "jdbc:hsqldb:file:"+StringUtils.replaceString(db, "\\", "/"), "sa", "", false);
+		File db_raw = new File(db);
+		if (db_raw.exists()) {
+			if (this.m_logger.isLoggable(Level.INFO))
+				this.m_logger.info("Database file found: "+db_raw.getAbsolutePath());
+			
+			if (this.m_logger.isLoggable(Level.INFO))
+				this.m_logger.info("Database file size: "+db_raw.length());
+			
+			if (db_raw.isFile()) {
+				File props = new File(db + ".properties");
+				File script = new File(db + ".script");
+				
+				if (this.m_logger.isLoggable(Level.INFO) && !props.exists())
+					this.m_logger.info("Database .properties file missing: "+props.getAbsolutePath());
+				
+				if (this.m_logger.isLoggable(Level.INFO) && !script.exists())
+					this.m_logger.info("Database .script file missing: "+script.getAbsolutePath());
+				
+				if (!props.exists() || !script.exists()) {
+					ZipArchive z = new ZipArchive(db_raw.getAbsolutePath());
+					try {
+						z.open();
+						if (z.isCreatedByCurrentVersion()) {
+							InputStream in = z.get(props.getName());
+							if (in!=null) {
+								FileOutputStream out = new FileOutputStream(props);
+								Stream.copy(in, out, true);
+								if (this.m_logger.isLoggable(Level.INFO))
+									this.m_logger.info("Extracted .properties file from .db: "+props.getAbsolutePath());
+							}
+							in = z.get(script.getName());
+							if (in!=null) {
+								FileOutputStream out = new FileOutputStream(script);
+								Stream.copy(in, out, true);
+								if (this.m_logger.isLoggable(Level.INFO))
+									this.m_logger.info("Extracted .script file from .db: "+script.getAbsolutePath());
+							} else {
+								this.setInitializing(true);
+							}						
+						}
+					} catch (ZipArchiveException e) {
+						this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+					} catch (FileNotFoundException e) {
+						this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+					} catch (IOException e) {
+						this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+					} finally {
+						try {
+							if (z.available())
+								z.close();
+							if (this.m_logger.isLoggable(Level.INFO))
+								this.m_logger.info("Database file size: "+db_raw.length());
+						} catch (ZipArchiveException e) {
+							this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+						}
+					}
+				} else {
+					if (this.m_logger.isLoggable(Level.INFO) && !props.exists())
+						this.m_logger.info("Found database .properties file: "+props.getAbsolutePath());
+					
+					if (this.m_logger.isLoggable(Level.INFO) && !script.exists())
+						this.m_logger.info("Found database .script file: "+script.getAbsolutePath());
+					
+					ZipArchive z = new ZipArchive(db_raw.getAbsolutePath());
+					try {
+						z.open();
+						String[] entries = new String[] { db_raw.getName()+".properties", db_raw.getName()+".script" };
+						InputStream[] ins = new InputStream[] { new FileInputStream(db_raw.getAbsolutePath()+".properties"),new FileInputStream(db_raw.getAbsolutePath()+".script") };
+						z.add(entries, ins);
+						if (this.m_logger.isLoggable(Level.INFO))
+							this.m_logger.info("Added .properties file to .db: "+props.getAbsolutePath());
+						if (this.m_logger.isLoggable(Level.INFO))
+							this.m_logger.info("Added .script file to .db: "+script.getAbsolutePath());
+					} catch (ZipArchiveException e) {
+						this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+					} catch (FileNotFoundException e) {
+						this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+					} finally {
+						try {
+							if (z.available())
+								z.close();
+							if (this.m_logger.isLoggable(Level.INFO))
+								this.m_logger.info("Database file size: "+db_raw.length());
+						} catch (ZipArchiveException e) {
+							this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+						}
+					}
+				}		
+			}
+		} else {
+			if (this.m_logger.isLoggable(Level.INFO))
+				this.m_logger.info("Database file does not exist: "+db_raw.getAbsolutePath());
+			
+			this.setInitializing(true);
+			
+			if (this.m_logger.isLoggable(Level.INFO))
+				this.m_logger.info("Checking and creating directory structure: "+db_raw.getParentFile().getAbsolutePath());
+			
+			db_raw.getParentFile().mkdirs();
+			ZipArchive z = new ZipArchive(db_raw.getAbsolutePath());
+			try {
+				z.open();
+				if (this.m_logger.isLoggable(Level.INFO))
+					this.m_logger.info("New database file created: "+db_raw.getAbsolutePath());
+			} catch (ZipArchiveException e) {
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			} finally {
+				try {
+					if (z.available())
+						z.close();
+					if (this.m_logger.isLoggable(Level.INFO))
+						this.m_logger.info("Database file size: "+db_raw.length());
+				} catch (ZipArchiveException e) {
+					this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+				}
+			}
+		}
+	}
 	
 	public HsqldbMultiPhoneCallerDatabaseHandler(String driver, String connection, String user, String password, boolean initialize) {
 		super(driver, connection, user, password, initialize);

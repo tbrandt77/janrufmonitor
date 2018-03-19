@@ -3,8 +3,6 @@ package de.janrufmonitor.repository;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,14 +22,11 @@ import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.repository.db.ICallerDatabaseHandler;
 import de.janrufmonitor.repository.db.hsqldb.HsqldbCallerDatabaseHandler;
 import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
-import de.janrufmonitor.repository.zip.ZipArchive;
-import de.janrufmonitor.repository.zip.ZipArchiveException;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.util.io.PathResolver;
 import de.janrufmonitor.util.io.Serializer;
 import de.janrufmonitor.util.io.SerializerException;
-import de.janrufmonitor.util.io.Stream;
 import de.janrufmonitor.util.string.StringUtils;
 import de.janrufmonitor.util.uuid.UUID;
 
@@ -58,9 +53,8 @@ public class CountryDirectory extends AbstractReadOnlyDatabaseCallerManager {
 
 		private IRuntime m_runtime;
 
-		public CountryDirectoryHandler(String driver, String connection,
-				String user, String password, boolean initialize) {
-			super(driver, connection, user, password, initialize);
+		public CountryDirectoryHandler(String db) {
+			super(db);
 		}
 
 		protected IRuntime getRuntime() {
@@ -424,70 +418,7 @@ public class CountryDirectory extends AbstractReadOnlyDatabaseCallerManager {
 	}
 
 	public void startup() {
-		String root = PathResolver.getInstance(this.getRuntime()).resolve(
-				this.m_configuration.getProperty(CFG_DB, PathResolver
-						.getInstance(this.getRuntime()).getDataDirectory()
-						+ "/countrycodes.db"));
-
-		File props = new File(root + ".properties");
-		if (!props.exists()) {
-			props.getParentFile().mkdirs();
-			try {
-				File db_raw = new File(root);
-				if (db_raw.exists()) {
-					// exctract old data
-					ZipArchive z = new ZipArchive(root);
-					z.open();
-					if (z.isCreatedByCurrentVersion()) {
-						InputStream in = z
-								.get(db_raw.getName() + ".properties");
-						if (in != null) {
-							FileOutputStream out = new FileOutputStream(db_raw
-									.getAbsolutePath()
-									+ ".properties");
-							Stream.copy(in, out, true);
-						}
-						in = z.get(db_raw.getName() + ".script");
-						if (in != null) {
-							FileOutputStream out = new FileOutputStream(db_raw
-									.getAbsolutePath()
-									+ ".script");
-							Stream.copy(in, out, true);
-						}
-					}
-					z.close();
-				}
-			} catch (ZipArchiveException e) {
-				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-			} catch (FileNotFoundException e) {
-				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-			} catch (IOException e) {
-				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-			}
-		} else {
-			try {
-				File db_raw = new File(root);
-				ZipArchive z = new ZipArchive(root);
-				z.open();
-				String[] entries = new String[] {
-						db_raw.getName() + ".properties",
-						db_raw.getName() + ".script" };
-				InputStream[] ins = new InputStream[] {
-						new FileInputStream(db_raw.getAbsolutePath()
-								+ ".properties"),
-						new FileInputStream(db_raw.getAbsolutePath()
-								+ ".script") };
-				z.add(entries, ins);
-				z.close();
-			} catch (ZipArchiveException e) {
-				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-			} catch (FileNotFoundException e) {
-				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-			}
-		}
-
 		super.startup();
-
 		this.importAreacodeCsvFiles();
 	}
 	
@@ -635,25 +566,8 @@ public class CountryDirectory extends AbstractReadOnlyDatabaseCallerManager {
 									PathResolver.getInstance(this.getRuntime())
 											.getDataDirectory()
 											+ "/countrycodes.db"));
-			db_path = StringUtils.replaceString(db_path, "\\", "/");
-			File db = new File(db_path + ".properties");
-			boolean initialize = false;
-			if (!db.exists()) {
-				initialize = true;
-				db.getParentFile().mkdirs();
-				try {
-					File db_raw = new File(db_path);
-					if (!db_raw.exists()) {
-						ZipArchive z = new ZipArchive(db_path);
-						z.open();
-						z.close();
-					}
-				} catch (ZipArchiveException e) {
-					this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-				}
-			}
-			this.m_dbh = new CountryDirectoryHandler("org.hsqldb.jdbcDriver",
-					"jdbc:hsqldb:file:" + db_path, "sa", "", initialize);
+			
+			this.m_dbh = new CountryDirectoryHandler(db_path);
 			this.m_dbh.setCommitCount(Integer.parseInt(m_configuration
 					.getProperty(CFG_COMMIT_COUNT, "50")));
 			this.m_dbh.setKeepAlive((m_configuration.getProperty(

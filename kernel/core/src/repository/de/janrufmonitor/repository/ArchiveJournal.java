@@ -34,8 +34,8 @@ public class ArchiveJournal extends AbstractDatabaseCallManager implements ILoca
 
 		private IRuntime m_runtime;
 		
-		public ArchiveJournalHandler(String driver, String connection, String user, String password, boolean initialize) {
-			super(driver, connection, user, password, initialize);
+		public ArchiveJournalHandler(String db) {
+			super(db);
 		}
 
 		protected IRuntime getRuntime() {
@@ -83,56 +83,7 @@ public class ArchiveJournal extends AbstractDatabaseCallManager implements ILoca
 	
 	
 	public void startup() {
-		String root = PathResolver.getInstance(this.getRuntime()).resolve(this.m_configuration.getProperty(CFG_DB, PathResolver.getInstance(this.getRuntime()).getDataDirectory()+"/journal.archive"));
-		
-		File props = new File(root + ".properties");
-		if (!props.exists())  {
-			props.getParentFile().mkdirs();
-			try {
-				File db_raw = new File(root);
-				if (db_raw.exists()) {
-					// exctract old data
-					ZipArchive z = new ZipArchive(root);
-					z.open();
-					if (z.isCreatedByCurrentVersion()) {
-						InputStream in = z.get(db_raw.getName()+".properties");
-						if (in!=null) {
-							FileOutputStream out = new FileOutputStream(db_raw.getAbsolutePath()+".properties");
-							Stream.copy(in, out, true);
-						}
-						in = z.get(db_raw.getName()+".script");
-						if (in!=null) {
-							FileOutputStream out = new FileOutputStream(db_raw.getAbsolutePath()+".script");
-							Stream.copy(in, out, true);
-						}						
-					} 
-					z.close();
-				}
-			} catch (ZipArchiveException e) {
-				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-			} catch (FileNotFoundException e) {
-				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-			} catch (IOException e) {
-				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-			}
-		} else {
-			try {
-				File db_raw = new File(root);
-				ZipArchive z = new ZipArchive(root);
-				z.open();
-				String[] entries = new String[] { db_raw.getName()+".properties", db_raw.getName()+".script" };
-				InputStream[] ins = new InputStream[] { new FileInputStream(db_raw.getAbsolutePath()+".properties"),new FileInputStream(db_raw.getAbsolutePath()+".script") };
-				z.add(entries, ins);
-				z.close();
-			} catch (ZipArchiveException e) {
-				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-			} catch (FileNotFoundException e) {
-				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-			}
-		}
-
-		super.startup();	
-		
+		super.startup();
 		startArchiving();
 	}
 
@@ -255,26 +206,16 @@ public class ArchiveJournal extends AbstractDatabaseCallManager implements ILoca
 	protected ICallDatabaseHandler getDatabaseHandler() {
 		if (this.m_dbh==null) {
 			String db_path = PathResolver.getInstance(this.getRuntime()).resolve(this.m_configuration.getProperty(CFG_DB, PathResolver.getInstance(this.getRuntime()).getDataDirectory()+"journal.archive"));
-			db_path = StringUtils.replaceString(db_path, "\\", "/");
-			File db = new File(db_path + ".properties");
-			boolean initialize = false;
-			if (!db.exists())  {
-				initialize = true;
-				db.getParentFile().mkdirs();
-				try {
-					File db_raw = new File(db_path);
-					if (!db_raw.exists()) {
-						ZipArchive z = new ZipArchive(db_path);
-						z.open();
-						z.close();
-					}
-				} catch (ZipArchiveException e) {
-					this.m_logger.log(Level.SEVERE, e.getMessage(), e);
-				}
-			}	
-			this.m_dbh = new ArchiveJournalHandler("org.hsqldb.jdbcDriver", "jdbc:hsqldb:file:"+db_path, "sa", "", initialize);
+			this.m_dbh = new ArchiveJournalHandler(db_path);
 			this.m_dbh.setCommitCount(Integer.parseInt(m_configuration.getProperty(CFG_COMMIT_COUNT, "50")));
 			this.m_dbh.setKeepAlive((m_configuration.getProperty(CFG_KEEP_ALIVE, "true").equalsIgnoreCase("true")? true : false));
+			try {
+				this.m_dbh.connect();
+			} catch (ClassNotFoundException e) {
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			} catch (SQLException e) {
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			}
 		}	
 		return this.m_dbh;
 	}
