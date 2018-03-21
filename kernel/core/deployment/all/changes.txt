@@ -1,4 +1,27 @@
 ﻿
+jAnrufmonitor 5.0.76 (02.04.2018)
+---------------------------------
+Neu:
+- Unterstützung für Java 10
+- Unterstützung für JRE Einstellungen in der Windows Registry (ab Windows 8)
+
+Bugfix:
+- Problem mit korrupten Journal- und Adressbuch-Dateien behoben
+- Problem mit Speicherung von Anruferdaten in Journal-Dateien behoben
+- Verbesserter Zugriff auf Journal-Daten mit vielen (> 5000) Anrufen 
+- Datenübernahme aus PowerISDNMonitor 4.5 entfernt
+- Datenübernahme aus PowerISDNMonitor 4.0 entfernt
+- Expertenkonfiguration für Java Umgebungsvariablen entfernt
+- Java Code Re-Engineerin bei hSQLDB Funktionen
+- Korrigierte Java Versionsprüfung ab Java 10
+- Diverse Schreibfehler in der Vorwahldatenbank korrigiert
+
+Module:
+- FRITZ!Box-Überwachung: Verbessertes Caching für das FRITZ!Box Telefonbuch
+- FRITZ!Box-Überwachung: Unterstützung für neuen Login auf FRITZ!Box 7590
+
+===
+
 jAnrufmonitor 5.0.75 (15.03.2018)
 ---------------------------------
 Neu:
