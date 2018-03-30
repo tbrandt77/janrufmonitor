@@ -12,7 +12,7 @@ Bugfix:
 - Datenübernahme aus PowerISDNMonitor 4.5 entfernt
 - Datenübernahme aus PowerISDNMonitor 4.0 entfernt
 - Expertenkonfiguration für Java Umgebungsvariablen entfernt
-- Java Code Re-Engineerin bei hSQLDB Funktionen
+- Java Code Re-Engineering bei hSQLDB Funktionen
 - Korrigierte Java Versionsprüfung ab Java 10
 - Diverse Schreibfehler in der Vorwahldatenbank korrigiert
 
