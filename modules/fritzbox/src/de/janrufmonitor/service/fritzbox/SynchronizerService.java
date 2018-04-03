@@ -834,7 +834,7 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 			if (m_logger.isLoggable(Level.INFO))
 				m_logger.info("Sync TAM recordings: "+Boolean.toString(synctam));
 			String uuid = ((ICall)o).getUUID();
-			if (this.m_tamMap.containsKey(uuid)) {
+			if (this.m_tamMap!=null && this.m_tamMap.containsKey(uuid)) {
 				List l = (List) this.m_tamMap.get(uuid);
 				if (l.size()==6) {
 					((ICall)o).getAttributes().add(this.getRuntime().getCallFactory().createAttribute("fritzbox.tamurl", (String) l.get(4)));
