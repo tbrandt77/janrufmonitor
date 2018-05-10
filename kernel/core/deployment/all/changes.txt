@@ -1,4 +1,19 @@
 ﻿
+jAnrufmonitor 5.0.77 (12.05.2018)
+---------------------------------
+Neu:
+- Anpassungen bzgl. der ab 25.5. rechtskräftigen DSVGO
+
+Bugfix:
+- Codeanpassungen bzgl. Java 10
+- Startverhalten bei Windows 32-bit optimiert
+
+Module:
+- FRITZ!Box-Überwachung: Bug beim Zuweisen von FRITZ!Box Kontakten im Journal behoben
+- Apple Mac Adressbuch: Anpassungen für macOS High Sierra 10.13.4
+
+===
+
 jAnrufmonitor 5.0.76 (02.04.2018)
 ---------------------------------
 Neu:
