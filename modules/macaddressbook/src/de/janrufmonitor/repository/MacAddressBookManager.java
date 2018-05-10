@@ -30,6 +30,7 @@ public class MacAddressBookManager extends AbstractReadWriteCallerManager implem
 	public static String NAMESPACE = "repository.MacAddressBookManager";
 	
 	public static String SYSTEM_MACAB_PRELOADTIME = "jam.macab.preloadtime";
+	public static String CFG_PRELOAD = "preload";
 	
 	private IRuntime m_runtime;
 	private MacAddressBookProxy m_proxy;
@@ -204,6 +205,9 @@ public class MacAddressBookManager extends AbstractReadWriteCallerManager implem
 	}
 	
 	private long getPreloadTime() {
+		if (this.m_configuration!=null && this.m_configuration.containsKey(CFG_PRELOAD)) {
+			return Long.parseLong(this.m_configuration.getProperty(CFG_PRELOAD)) * 1000; 
+		}
 		return Long.parseLong(System.getProperty(SYSTEM_MACAB_PRELOADTIME, "3")) * 1000;
 	}
 
