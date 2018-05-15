@@ -1,8 +1,8 @@
-﻿
+
 jAnrufmonitor 5.0.77 (12.05.2018)
 ---------------------------------
 Neu:
-- Anpassungen bzgl. der ab 25.5. rechtskräftigen DSVGO
+- Anpassungen bzgl. der ab 25.5. rechtskräftigen DSGVO
 
 Bugfix:
 - Codeanpassungen bzgl. Java 10
