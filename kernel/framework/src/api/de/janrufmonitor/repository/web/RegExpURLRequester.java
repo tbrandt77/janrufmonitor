@@ -97,10 +97,12 @@ public class RegExpURLRequester extends AbstractURLRequester {
 		}
 
 		c.setDoInput(true);
+		c.setUseCaches(false);
 		c.setRequestProperty(
 			"User-Agent",
 			this.m_ua); //"Mozilla/4.0 (compatible; MSIE; Windows NT)"
 		c.connect();
+		c.setReadTimeout(10000);
 
 		Object o = c.getInputStream();
 		if (o != null && o instanceof InputStream) {
@@ -120,8 +122,9 @@ public class RegExpURLRequester extends AbstractURLRequester {
 				
 				FileOutputStream fos = new FileOutputStream(log);
 				BufferedReader br = new BufferedReader(isr);
-				while(br.ready()) {
-					fos.write(br.readLine().getBytes());
+				String s = null;
+				while ((s = br.readLine()) != null) {
+					fos.write(s.getBytes());
 					fos.write(IJAMConst.CRLF.getBytes());
 				}
 				fos.flush();
@@ -137,12 +140,31 @@ public class RegExpURLRequester extends AbstractURLRequester {
 				br.skip(this.m_skip);
 
 			StringBuffer content = new StringBuffer();
-			while (br.ready()) {
-				content.append(br.readLine());
+			String s = null;
+			while ((s = br.readLine()) != null) {
+				content.append(s);
 			}
 			
 			br.close();
 			isr.close();
+			
+			if (this.m_logger.isLoggable(Level.FINE)) {
+				this.m_logger.log(Level.FINE, content.toString());
+			}
+			
+			if (content.toString().trim().length()<10) {
+				this.m_logger.warning("Content is less than 10 chars: "+content.toString().trim());
+				failure.add(REGEXP_LASTNAME);
+				failure.add(REGEXP_FIRSTNAME);
+				failure.add(REGEXP_ADDITIONAL);
+				failure.add(REGEXP_STREET);
+				failure.add(REGEXP_STREETNO);
+				failure.add(REGEXP_POSTALCODE);
+				failure.add(REGEXP_CITY);	
+				failure.add(REGEXP_AREACODE);	
+				failure.add(REGEXP_PHONE);	
+				throw new RegExpURLRequesterException("Content from "+this.url+" is too short.", failure);
+			}
 
 			String group = null;
 			String patternString = null;
