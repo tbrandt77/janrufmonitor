@@ -72,8 +72,8 @@ public class PDFHistoryAction extends AbstractAction {
 							Class pdfclass = Thread.currentThread().getContextClassLoader().loadClass("de.janrufmonitor.ui.jface.application.comment.action.PDFCreator");
 							Constructor con = pdfclass.getConstructor(new Class[] {ICommentCaller.class, String.class});
 							Object pdfcreator = con.newInstance(new Object[] {cc, filename});
-							Method m = pdfclass.getMethod("createPdf", (Class)null);
-							m.invoke(pdfcreator, (Object)null);
+							Method m = pdfclass.getMethod("createPdf");
+							m.invoke(pdfcreator);
 						} catch (ClassNotFoundException e) {
 							this.m_logger.log(Level.SEVERE, e.getMessage(), e);
 						} catch (SecurityException e) {
