@@ -1,4 +1,17 @@
 
+jAnrufmonitor 5.0.78 (01.07.2018)
+---------------------------------
+Neu:
+- Flagge für Thailand +0066 hinzugefügt
+- Verarbeitung der Rufnummernerkennung bei Online-Telefonauskünften anpepasst
+- Verarbeiten von versteckten Informationen aus Online-Telefonauskünften 
+
+Module:
+- Notizen: Bug beim Speichern von Notizen im PDF Format behoben
+- MySQL Adressbuch / Journal: Fehlemeldung beim Wiederverbinden mit der MySQL Datenbank entfernt
+
+===
+
 jAnrufmonitor 5.0.77 (12.05.2018)
 ---------------------------------
 Neu:
