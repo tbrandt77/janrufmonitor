@@ -8,8 +8,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.logging.Level;
 
-import de.janrufmonitor.exception.Message;
-import de.janrufmonitor.exception.PropagationFactory;
 import de.janrufmonitor.framework.IAttribute;
 import de.janrufmonitor.framework.IAttributeMap;
 import de.janrufmonitor.framework.ICallList;
@@ -62,17 +60,6 @@ public class MySqlJournal extends AbstractDatabaseCallManager implements IRemote
 				this.m_runtime = PIMRuntime.getInstance();
 			return this.m_runtime;
 		}
-		
-		public void connect() throws SQLException, ClassNotFoundException {
-			try {
-				super.connect();
-			} catch (SQLException e) {
-				PropagationFactory.getInstance().fire(
-					new Message(Message.ERROR, NAMESPACE, "connecterror", e));
-				throw e;
-			}
-			
-		}
 
 		protected void createTables() throws SQLException {
 			if (!isConnected()) throw new SQLException ("Database is disconnected.");
@@ -91,8 +78,6 @@ public class MySqlJournal extends AbstractDatabaseCallManager implements IRemote
 			
 			stmt.execute("CREATE TABLE attributes (ref VARCHAR(36), name VARCHAR(64), value VARCHAR(2048));");
 			stmt.execute("CREATE TABLE calls (uuid VARCHAR(36) PRIMARY KEY, cuuid VARCHAR(36), country VARCHAR(8), areacode VARCHAR(16), number VARCHAR(64), msn VARCHAR(16), cip VARCHAR(4), cdate BIGINT, ndate TIMESTAMP, content TEXT("+Short.MAX_VALUE+"));");
-
-//			super.createTables();
 		}
 		
 		protected boolean isInitializing() {
