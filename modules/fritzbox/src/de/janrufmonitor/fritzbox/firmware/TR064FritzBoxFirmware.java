@@ -723,7 +723,14 @@ public class TR064FritzBoxFirmware implements
 		
 		String u = "http://" + this.m_server +":" + this.m_port;
 		
-		if (this.m_firmware!=null && this.m_firmware.getMajor()>=6 && this.m_firmware.getMinor()>=30) {
+		if (this.m_firmware!=null && this.m_firmware.getMajor()>=7) {
+			try {
+				FritzBoxTR064Manager.getInstance().dial(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server)), (this.m_useHttp ? "http" : "https"), number);
+			} catch (IOException e) {
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+				throw new DoCallException("Could not dial numer on FritzBox: "+e.getMessage());
+			}
+		} else if (this.m_firmware!=null && this.m_firmware.getMajor()>=6 && this.m_firmware.getMinor()>=30) {
 			try {
 				String body = "sid="+FritzBoxTR064Manager.getInstance().getSID(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server)), (this.m_useHttp ? "http" : "https"))+"&clicktodial=on&port="+extension+"&btn_apply=";
 				if (this.m_logger.isLoggable(Level.INFO))

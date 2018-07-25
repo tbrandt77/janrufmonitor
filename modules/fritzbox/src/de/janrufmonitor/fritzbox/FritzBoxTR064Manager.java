@@ -238,7 +238,7 @@ public class FritzBoxTR064Manager {
 			{"Content-Type", "text/xml; charset=\"utf-8\""}, {"Content-Length", Integer.toString(content.length())}, {"SOAPACTION", "\"urn:dslforum-org:service:X_VoIP:1#X_AVM-DE_Hangup\""}, {"User-Agent", USER_AGENT}});
     }
     
-    public void _dial(String usr, String passwd, String server, String port, String protocol, String number) throws IOException {
+    public void dial(String usr, String passwd, String server, String port, String protocol, String number) throws IOException {
     	String user = new String(usr.getBytes("utf-8"));
 		
     	StringBuffer content = new StringBuffer();
@@ -269,38 +269,14 @@ public class FritzBoxTR064Manager {
 		content.append("<UserID>"+user+"</UserID>");
 		content.append("<Realm>"+realm+"</Realm>");
 		content.append("</h:ClientAuth></s:Header>");
-		content.append("<s:Body><u:X_AVM-DE_DialGetConfig xmlns:u=\"urn:dslforum-org:service:X_VoIP:1\">");
-		content.append("</u:X_AVM-DE_DialGetConfig></s:Body></s:Envelope>");
-		
-		response = doHttpCall(protocol+"://"+server+":"+port+"/upnp/control/x_voip", "POST", content.toString(), new String[][] { 
-			{"Content-Type", "text/xml; charset=\"utf-8\""}, {"Content-Length", Integer.toString(content.length())}, {"SOAPACTION", "\"urn:dslforum-org:service:X_VoIP:1#X_AVM-DE_DialGetConfig\""}, {"User-Agent", USER_AGENT}});
-		
-		for (int i=1; i<99; i++) {
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
-		content = new StringBuffer();
-		content.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
-		content.append("<s:Envelope s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"");
-		content.append("xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" >");
-		content.append("<s:Header><h:ClientAuth xmlns:h=\"http://soap-authentication.org/digest/2001/10/\" s:mustUnderstand=\"1\">");
-		content.append("<Nonce>"+nonce+"</Nonce>");
-		content.append("<Auth>"+auth+"</Auth>");
-		content.append("<UserID>"+user+"</UserID>");
-		content.append("<Realm>"+realm+"</Realm>");
-		content.append("</h:ClientAuth></s:Header>");
-		content.append("<s:Body><u:X_AVM-DE_GetPhonePort xmlns:u=\"urn:dslforum-org:service:X_VoIP:1\"><NewIndex>"+i+"</NewIndex>");
-		content.append("</u:X_AVM-DE_GetPhonePort></s:Body></s:Envelope>");
+		content.append("<s:Body><u:X_AVM-DE_DialNumber xmlns:u=\"urn:dslforum-org:service:X_VoIP:1\"><NewX_AVM-DE_PhoneNumber>"+number+"</NewX_AVM-DE_PhoneNumber>");
+		content.append("</u:X_AVM-DE_DialNumber></s:Body></s:Envelope>");
 		
 		try {
 			response = doHttpCall(protocol+"://"+server+":"+port+"/upnp/control/x_voip", "POST", content.toString(), new String[][] { 
-				{"Content-Type", "text/xml; charset=\"utf-8\""}, {"Content-Length", Integer.toString(content.length())}, {"SOAPACTION", "\"urn:dslforum-org:service:X_VoIP:1#X_AVM-DE_GetPhonePort\""}, {"User-Agent", USER_AGENT}});
-			System.out.println(i);
+				{"Content-Type", "text/xml; charset=\"utf-8\""}, {"Content-Length", Integer.toString(content.length())}, {"SOAPACTION", "\"urn:dslforum-org:service:X_VoIP:1#X_AVM-DE_DialNumber\""}, {"User-Agent", USER_AGENT}});
 		}catch (Exception e) {
-			
-		}
+			throw new IOException(e);
 		}
     }
     
@@ -1386,6 +1362,10 @@ public class FritzBoxTR064Manager {
 	public static void main(String[] args) {
 		try {
 			LoggingInitializer.run();
+			
+			
+			FritzBoxTR064Manager.getInstance().dial("thilo.brandt", "Tb2743507", "fritz.box", "49000", "http", "01608896404");
+			
 			//System.out.print(FritzBoxTR064Manager.getInstance().getCallList("thilo.brandt", "Tb2743507", "fritz.box", "49000", "http", -1));
 			//System.out.print(FritzBoxTR064Manager.getInstance().getPhonebookList("thilo.brandt", "Tb2743507", "fritz.box", "49000"));
 //			BufferedReader r = new BufferedReader(new InputStreamReader(FritzBoxTR064Manager.getInstance().getPhonebook("thilo.brandt", "Tb2743507", "fritz.box", "49443", "https", "0")));
@@ -1399,11 +1379,11 @@ public class FritzBoxTR064Manager {
 //			
 //			System.out.println(FritzBoxTR064Manager.getInstance().getPhonebookEntry("thilo.brandt", "Tb2743507", "fritz.box", "49443", "https", "0", "3"));
 //			
-			System.out.println(FritzBoxTR064Manager.getInstance().getTelephoneAnsweringMachineList("thilo.brandt", "Tb2743507", "fritz.box", "49000", "http"));
+//			System.out.println(FritzBoxTR064Manager.getInstance().getTelephoneAnsweringMachineList("thilo.brandt", "Tb2743507", "fritz.box", "49000", "http"));
 			//System.out.println(FritzBoxTR064Manager.getInstance().getTelephoneAnsweringMachineMessageList("thilo.brandt", "Tb2743507", "fritz.box", "49000", "http", "0"));
-			BufferedReader r = new BufferedReader(new InputStreamReader(FritzBoxTR064Manager.getInstance().getTelephoneAnsweringMachineMessageList("thilo.brandt", "Tb2743507", "fritz.box", "49000", "http", "0")));
-			while (r.ready())
-				System.out.println(r.readLine());
+//			BufferedReader r = new BufferedReader(new InputStreamReader(FritzBoxTR064Manager.getInstance().getTelephoneAnsweringMachineMessageList("thilo.brandt", "Tb2743507", "fritz.box", "49000", "http", "0")));
+//			while (r.ready())
+//				System.out.println(r.readLine());
 //			int size = FritzBoxTR064Manager.getInstance().getPhonebookSize("thilo.brandt", "Tb2743507", "fritz.box", "49443", "https", "1");
 //			size -= 10;
 //			System.out.println(size);
