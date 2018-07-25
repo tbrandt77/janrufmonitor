@@ -417,7 +417,7 @@ public class VcfParser30 {
 		IPhonenumber pn = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toInternalPhonenumber(PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).normalize(n.trim()));
 		if (pn!=null) return pn;
 			
-		pn = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toIdentifiedPhonenumber(n.trim());
+		pn = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toIdentifiedPhonenumber(PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).normalize(n.trim()));
 		if (pn != null) return pn;
 		
 		return null;
