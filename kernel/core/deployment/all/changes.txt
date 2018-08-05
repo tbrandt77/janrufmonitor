@@ -1,4 +1,16 @@
 
+jAnrufmonitor 5.0.79 (05.08.2018)
+---------------------------------
+Bugfix:
+- VCF Import Anpassungen an vCard 3.0 Format
+- Korrektur in Vorwahldatenbank für Mannheim/Ludwigshafen
+
+Module:
+- FRITZ!Box-Überwachung: Anpassungen an FRITZ!OS 7
+- FRITZ!Box-Überwachung: Neue Wählhilfeunterstützung von FRITZ!OS 7
+
+===
+
 jAnrufmonitor 5.0.78 (01.07.2018)
 ---------------------------------
 Neu:
