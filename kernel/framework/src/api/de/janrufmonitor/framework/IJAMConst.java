@@ -685,6 +685,11 @@ public interface IJAMConst {
 	public final static String IMAGE_KEY_FILTER_GIF = "filter.gif";
 	
 	/**
+	 * Image key of SWTImageManager for filterx.gif
+	 */
+	public final static String IMAGE_KEY_FILTER_REMOVE_GIF = "filterx.gif";
+	
+	/**
 	 * Image key of SWTImageManager for export.gif
 	 */
 	public final static String IMAGE_KEY_EXPORT_GIF = "export.gif";

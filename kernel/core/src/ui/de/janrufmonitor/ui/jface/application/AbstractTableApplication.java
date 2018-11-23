@@ -455,20 +455,25 @@ public abstract class AbstractTableApplication extends AbstractBaseApplication i
 					search.add((String) sh.get(i));
 			}
 			
+			final Button removeFilter = new Button(view, SWT.PUSH);
+			
 			search.select(0);
 			search.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e) {
 					action.setData(search.getText());
+					if (search.getText().length()>0) removeFilter.setEnabled(true);
 					action.run();
 				}
 			});
 			search.setToolTipText(this.getI18nManager().getString(
 					this.getNamespace(), "quicksearch", "description",
 					this.getLanguage()));
+			
 			search.addKeyListener(new KeyAdapter() {
 				public void keyPressed(KeyEvent e){
 					if (e.character == 13) {
 						action.setData(search.getText());
+						if (search.getText().length()>0) removeFilter.setEnabled(true);
 						if (!sh.contains(search.getText())) {
 							sh.add(search.getText());
 							search.add(search.getText());
@@ -478,6 +483,28 @@ public abstract class AbstractTableApplication extends AbstractBaseApplication i
 					}
 				}	
 			});
+			
+			removeFilter.addSelectionListener(
+					new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent e) {
+							removeFilter.setEnabled(false);
+							if (!sh.contains(search.getText())) {
+								sh.add("");
+							}
+							search.add(""); 
+							search.select(0);
+							setSearchHistory(sh);
+							action.setData("");
+							action.run();
+						}
+					}		
+			);
+			removeFilter.setImage(SWTImageManager.getInstance(this.getRuntime()).get(IJAMConst.IMAGE_KEY_FILTER_REMOVE_GIF));
+			removeFilter.pack();	
+			
+			removeFilter.setEnabled(false);
+			if (search.getText().length()>0) removeFilter.setEnabled(true);
+			
 		}
 		
 		viewer = new TableViewer(composite, SWT.FULL_SELECTION | SWT.BORDER | SWT.MULTI | SWT.VIRTUAL);
