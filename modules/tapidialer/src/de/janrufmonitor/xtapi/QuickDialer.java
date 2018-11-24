@@ -1,11 +1,14 @@
 package de.janrufmonitor.xtapi;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.LogManager;
 
 import net.xtapi.serviceProvider.IXTapiCallBack;
-import net.xtapi.serviceProvider.MSTAPI;
+import net.xtapi.serviceProvider.TapiFactory;
+import net.xtapi.serviceProvider.TapiFactory.TapiHandle;
 import de.janrufmonitor.framework.IJAMConst;
 import de.janrufmonitor.framework.IPhonenumber;
 import de.janrufmonitor.repository.identify.PhonenumberAnalyzer;
@@ -14,42 +17,27 @@ import de.janrufmonitor.runtime.PIMRuntime;
 public class QuickDialer implements IXTapiCallBack {
 	
 	public static synchronized String[] getAllExtensions() throws Exception {
-		List l = new ArrayList();
-		final MSTAPI m_tapi = new MSTAPI();
-		int n = m_tapi.init(new QuickDialer());
-		StringBuffer nameOfLine = null;
+		if (!TapiFactory.getInstance().isInitialized()) throw new Exception("TAPI is not initialized. Extensions could not be retrieved.");
 		
-		for (int i = 0; i < n; i++) {
-			nameOfLine = new StringBuffer();
-			int m_lineHandle = m_tapi.openLineTapi(i, nameOfLine);
-			if (m_lineHandle != 0) {
-				l.add(nameOfLine.toString());
-			}
+		List l = new ArrayList();
+		
+		Iterator i = TapiFactory.getInstance().getTapiHandles().entrySet().iterator();
+		while (i.hasNext()) {
+			TapiHandle th = (TapiHandle) ((Map.Entry) i.next()).getValue();
+			l.add(th.getName());
 		}
 		
-		Thread t = new Thread() {
-			
-			public void run() {
-				try {
-					Thread.sleep(30000);
-				} catch (InterruptedException e) {
-				}
-				try {
-					m_tapi.shutdownTapi();
-				} catch (Exception e) {}
-			}
-		};
-		t.setName("JAM-XTapiGetAllExtension-Thread-(non-deamon)");
-		t.start();
-		
+
 		String[] r = new String[l.size()];
-		for (int i=0;i<r.length;i++) {
-			r[i] = (String) l.get(i);
+		for (int j=0;j<r.length;j++) {
+			r[j] = (String) l.get(j);
 		}
 		return r;		
 	}
 	
 	public static void dial(IPhonenumber number, String ext) throws Exception {
+		if (!TapiFactory.getInstance().isInitialized()) throw new Exception("TAPI is not initialized. Dialing not possible.");
+		
 		if (number.isClired()) throw new Exception ("no number provided");
 		
 		if (ext==null || ext.trim().length()==0) throw new Exception ("no extension provided");
@@ -60,40 +48,24 @@ public class QuickDialer implements IXTapiCallBack {
 			dial = PIMRuntime.getInstance().getConfigManagerFactory().getConfigManager().getProperty(IJAMConst.GLOBAL_NAMESPACE, IJAMConst.GLOBAL_DIAL_PREFIX).trim() + dial;
 		}
 		
-		final MSTAPI m_tapi = new MSTAPI();
-		int n = m_tapi.init(new QuickDialer());
-		int callhandle = 0;
+		
+		Iterator i = TapiFactory.getInstance().getTapiHandles().entrySet().iterator();
+		TapiHandle th = null;
 		int line = 0;
-		StringBuffer nameOfLine = null;
-
-		for (int i = 0; i < n; i++) {
-			nameOfLine = new StringBuffer();
-			int m_lineHandle = m_tapi.openLineTapi(i, nameOfLine);
-			if (m_lineHandle > 0 && nameOfLine.toString().equalsIgnoreCase(ext)) {
-				callhandle = m_lineHandle;
-				line = i;
+		while (i.hasNext()) {
+			th = (TapiHandle) ((Map.Entry) i.next()).getValue();
+			if (th.getID() > 0 && th.getName().toString().equalsIgnoreCase(ext)) {
 				break;
 			}
+			line++;
 		}
 		
-		if (callhandle>0) {
-			LogManager.getLogManager().getLogger(IJAMConst.DEFAULT_LOGGER).info("dialing line "+line+", number "+dial+", handle "+callhandle);
-			m_tapi.connectCallTapi(line, dial, callhandle);
+		if (th!=null && th.getID() > 0) {
+			LogManager.getLogManager().getLogger(IJAMConst.DEFAULT_LOGGER).info("dialing line "+line+", number "+dial+", handle "+th.getID());
+			TapiFactory.getInstance().getTapi().connectCallTapi(line, dial, th.getID());
 		} else {
 			throw new Exception("extension ["+ext+"] not found.");
 		}
-		Thread t = new Thread() {
-			
-			public void run() {
-				try {
-					Thread.sleep(30000);
-				} catch (InterruptedException e) {
-				}
-				m_tapi.shutdownTapi();
-			}
-		};
-		t.setName("JAM-XTapiCallto-Thread-(non-deamon)");
-		t.start();
 	}
 
 	public void callback(int dwDevice, int dwMessage, int dwInstance,

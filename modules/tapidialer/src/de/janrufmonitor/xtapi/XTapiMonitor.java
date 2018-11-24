@@ -17,7 +17,8 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import net.xtapi.serviceProvider.IXTapiCallBack;
-import net.xtapi.serviceProvider.MSTAPI;
+import net.xtapi.serviceProvider.TapiFactory;
+import net.xtapi.serviceProvider.TapiFactory.TapiHandle;
 import de.janrufmonitor.exception.Message;
 import de.janrufmonitor.exception.PropagationFactory;
 import de.janrufmonitor.framework.IAttribute;
@@ -54,27 +55,6 @@ public class XTapiMonitor implements IMonitor, IConfigurable, XTapiConst {
 
 	private IMonitorListener m_ml;
 
-	private class TapiHandle {
-
-		int m_id;
-
-		String m_name;
-
-		public TapiHandle(int id, String name) {
-			this.m_id = id;
-			this.m_name = name;
-		}
-
-		public String getName() {
-			return this.m_name;
-		}
-
-		public String toString() {
-			return "TAPI handle: " + this.m_id + " - " + this.m_name;
-		}
-
-	}
-
 	protected class XTapiMonitorNotifier implements Runnable, IEventReceiver, IEventSender,
 			IXTapiCallBack {
 
@@ -89,61 +69,26 @@ public class XTapiMonitor implements IMonitor, IConfigurable, XTapiConst {
 		private IRuntime m_runtime;
 
 		private Map m_connections;
-
-		private MSTAPI m_tapi;
-
-		private Map m_tapiHandles;
 		
 		private List m_proceededCalls;
-
-		private int m_lineHandle;
 		
-		private int[] m_deviceIDMapping;
 
 		public void run() {
 			try {
-				m_tapiHandles = new HashMap();
+	
 				m_connections = new HashMap(2);
 				m_proceededCalls = new ArrayList(16);
 				
-				m_tapi = new MSTAPI();
-				int n = m_tapi.init(this);
 				
-				if (n>=0)
-					m_deviceIDMapping = new int[n];
-				else {
-					if (m_logger!=null && m_logger.isLoggable(Level.SEVERE))
-						m_logger.severe("TAPI provided no lines to observe. Lines count: "+n);
+				if (!TapiFactory.getInstance().isInitialized()) {
+					TapiFactory.getInstance().init(this);
 				}
-
-				IEventBroker broker = this.getRuntime().getEventBroker();
-				broker.register(this, broker
-						.createEvent(IEventConst.EVENT_TYPE_IDENTIFIED_CALL));
-				broker.register(this, broker
-						.createEvent(IEventConst.EVENT_TYPE_IDENTIFIED_OUTGOING_CALL));
-
-				StringBuffer nameOfLine = null;
-
-				for (int i = 0; i < n; i++) {
-					nameOfLine = new StringBuffer();
-					m_lineHandle = m_tapi.openLineTapi(i, nameOfLine);
-					m_deviceIDMapping[i] = -1;
-					if (m_lineHandle > 0) {
-						m_logger.info("Opening line #" + m_lineHandle);
-						m_logger.info("Opening line name "
-								+ nameOfLine.toString());
-						m_tapiHandles.put(new Integer(m_lineHandle),
-								new TapiHandle(m_lineHandle, nameOfLine
-										.toString()));
-						
-						m_deviceIDMapping[i] = Integer.valueOf("0"+nameOfLine.toString().replaceAll("[^0-9]+", ""));
-						
-						m_logger.info("Device mapping ID["+i+"]: " + m_deviceIDMapping[i]);
-					}
-				}
-
+				
+				int n = TapiFactory.getInstance().getLinesCount();
+				
 				if (n > 0) {
-					while (isRunning) {
+					this.isRunning = true;
+					while (this.isRunning) {
 						try {
 							Thread.sleep(250);
 						} catch (InterruptedException e) {
@@ -187,13 +132,8 @@ public class XTapiMonitor implements IMonitor, IConfigurable, XTapiConst {
 		}
 
 		public void disconnect() {
-			if (this.m_tapi != null)
-				m_tapi.shutdownTapi();
-
-			if (m_tapiHandles != null)
-				m_tapiHandles.clear();
-			m_tapiHandles = null;
-
+			if (TapiFactory.getInstance().isInitialized())
+				TapiFactory.getInstance().shutdown();
 			this.isRunning = false;
 		}
 
@@ -227,7 +167,7 @@ public class XTapiMonitor implements IMonitor, IConfigurable, XTapiConst {
 		}
 
 		protected void reject(short cause) {
-			if (this.m_tapi != null) {
+			if (TapiFactory.getInstance().isInitialized()) {
 				Iterator i = this.m_connections.entrySet().iterator();
 				while (i.hasNext()) {
 					ICall th = (ICall) ((Map.Entry) i.next()).getValue();
@@ -237,7 +177,7 @@ public class XTapiMonitor implements IMonitor, IConfigurable, XTapiConst {
 						if (deviceAttribute!=null) {
 							String shandle = deviceAttribute.getValue();
 							int handle = Integer.parseInt(shandle);
-							m_tapi.dropCallTapi(handle);
+							TapiFactory.getInstance().getTapi().dropCallTapi(handle);
 						}
 					}
 				}
@@ -245,7 +185,7 @@ public class XTapiMonitor implements IMonitor, IConfigurable, XTapiConst {
 		}
 
 		private String[] getCallerInfoFromTapi(int device) {
-			String[] callerInfo = this.m_tapi.getCallInfoTapi(device);
+			String[] callerInfo = TapiFactory.getInstance().getTapi().getCallInfoTapi(device);
 			if (callerInfo == null) {
 				m_logger.warning("Could not get a valid caller info from TAPI.");
 				return null;
@@ -257,7 +197,7 @@ public class XTapiMonitor implements IMonitor, IConfigurable, XTapiConst {
 					Thread.sleep(150);
 				} catch (InterruptedException e) {
 				}
-				callerInfo = this.m_tapi.getCallInfoTapi(device);
+				callerInfo = TapiFactory.getInstance().getTapi().getCallInfoTapi(device);
 				count++;
 			}
 			return callerInfo;
@@ -310,9 +250,9 @@ public class XTapiMonitor implements IMonitor, IConfigurable, XTapiConst {
 
 			ICall c = null;
 			if (callerInfo.length>3) {
-				m_logger.info("Called extension from TAPI: "+(this.useDeviceIDasMSN() ? getDeviceIDNumber(dwInstance): callerInfo[1]));
+				m_logger.info("Called extension from TAPI: "+(this.useDeviceIDasMSN() ? TapiFactory.getInstance().getDeviceIDNumber(dwInstance): callerInfo[1]));
 				c = new XTapiCall(dwDevice, dwInstance,
-						removeSpecialChars(callerInfo[3]), (this.useDeviceIDasMSN() ? getDeviceIDNumber(dwInstance): callerInfo[1]), this.m_configuration).toCall();
+						removeSpecialChars(callerInfo[3]), (this.useDeviceIDasMSN() ? TapiFactory.getInstance().getDeviceIDNumber(dwInstance): callerInfo[1]), this.m_configuration).toCall();
 				
 				c.setAttribute(getRuntime().getCallFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CALLSTATUS, IJAMConst.ATTRIBUTE_VALUE_OUTGOING));
 				if (this.useDeviceIDasMSN()) {
@@ -346,9 +286,9 @@ public class XTapiMonitor implements IMonitor, IConfigurable, XTapiConst {
 			ICall c = null;
 			if (callerInfo.length>3) {
 				if (m_logger.isLoggable(Level.INFO))
-					m_logger.info("Called extension from TAPI: "+(this.useDeviceIDasMSN() ? getDeviceIDNumber(dwInstance): callerInfo[3]));
+					m_logger.info("Called extension from TAPI: "+(this.useDeviceIDasMSN() ? TapiFactory.getInstance().getDeviceIDNumber(dwInstance): callerInfo[3]));
 				c = new XTapiCall(dwDevice, dwInstance,
-						removeSpecialChars(callerInfo[1]), (this.useDeviceIDasMSN() ? getDeviceIDNumber(dwInstance): callerInfo[3]), this.m_configuration).toCall();
+						removeSpecialChars(callerInfo[1]), (this.useDeviceIDasMSN() ? TapiFactory.getInstance().getDeviceIDNumber(dwInstance): callerInfo[3]), this.m_configuration).toCall();
 				if (this.useDeviceIDasMSN()) {
 					c.setAttribute(getRuntime().getCallFactory().createAttribute("tapi.callednumber", callerInfo[3]));
 				}
@@ -371,20 +311,6 @@ public class XTapiMonitor implements IMonitor, IConfigurable, XTapiConst {
 			if (n.startsWith("+")) 
 				StringUtils.replaceString(n, "+", "00");
 			return n;
-		}
-		
-		private String getDeviceIDNumber(int instance) {
-			if (m_logger.isLoggable(Level.INFO))
-				m_logger.info("try to determine DeviceIDNumber from instance #"+instance);
-			
-			if (this.m_deviceIDMapping.length > instance && this.m_deviceIDMapping[instance]>=0) {
-				if (m_logger.isLoggable(Level.INFO))
-					m_logger.info("DeviceIDNumber found for instance #"+instance+" = "+this.m_deviceIDMapping[instance]);
-				return Integer.toString(this.m_deviceIDMapping[instance]);
-			}
-			if (m_logger.isLoggable(Level.INFO))
-				m_logger.info("No DeviceIDNumber found for instance #"+instance);
-			return Integer.toString(instance);
 		}
 		
 		private boolean useDeviceIDasMSN(){
@@ -413,6 +339,8 @@ public class XTapiMonitor implements IMonitor, IConfigurable, XTapiConst {
 		
 		private void detectTapiPattern(int dwDevice, int dwMessage, int dwInstance,
 				int dwParam1, int dwParam2, int dwParam3) {
+			
+				if (this.m_runtime==null || this.m_runtime.getConfigManagerFactory()==null || this.m_runtime.getConfigManagerFactory().getConfigManager() ==null) return;
 			
 				IConfigManager cfg = this.m_runtime.getConfigManagerFactory().getConfigManager();
 				SimpleDateFormat formatter
@@ -559,10 +487,10 @@ public class XTapiMonitor implements IMonitor, IConfigurable, XTapiConst {
 		}
 
 		public String[] getDescription() {
-			String[] info = new String[this.m_tapiHandles.entrySet().size() + 2];
+			String[] info = new String[TapiFactory.getInstance().getTapiHandles().entrySet().size() + 2];
 			info[0] = "XTapiMonitor Module 1.0";
 			info[1] = "Detected TAPI devices:";
-			Iterator i = this.m_tapiHandles.entrySet().iterator();
+			Iterator i = TapiFactory.getInstance().getTapiHandles().entrySet().iterator();
 			int j = 2;
 			while (i.hasNext()) {
 				TapiHandle th = (TapiHandle) ((Map.Entry) i.next()).getValue();
