@@ -1,4 +1,23 @@
 
+jAnrufmonitor 5.0.80 (30.11.2018)
+---------------------------------
+Neu:
+- Button zum Entfernen des Ansichtfilters im Journal hinzugefügt
+
+Bugfix:
+- Fehler bei Umlauten in der Journal-Suche behoben
+- Fehler in Spaltenkofiguration bei Anrufhistorie in Kontakten behoben
+
+Module:
+- TAPI-Überwachung: Unterstützung für Single-Line-TAPI Anwendungen
+- TAPI-Überwachung: Wählen von Rufnummern auf einem Client mit TAPI-Server möglich
+- TAPI-Überwachung: TAPI-Verbindungsabbruch bei Client-Anmeldung behoben
+- TAPI-Überwachung: Zentrale TAPI Factory zur Überwachung der Lines eines TAPI-Anschlusses
+- TAPI-Überwachung: Mehrere TAPI Nebenstellen parallel überwachen
+- TAPI-Überwachung: Nebenstellen-ID mit Line-ID verknüpfen
+
+===
+
 jAnrufmonitor 5.0.79 (05.08.2018)
 ---------------------------------
 Bugfix:
