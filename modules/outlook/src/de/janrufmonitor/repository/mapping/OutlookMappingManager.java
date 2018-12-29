@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 
 import com.jacob.com.ComFailException;
 import com.jacob.com.Dispatch;
+import com.jacob.com.Variant;
 
 import de.janrufmonitor.framework.IAttribute;
 import de.janrufmonitor.framework.IAttributeMap;
@@ -414,9 +415,9 @@ public class OutlookMappingManager {
 	}
 	
 	private boolean isPhoneAlreadyInUse(Dispatch contact, String phone) {
-		String p = Dispatch.get(contact, phone).toString();
+		Variant p = Dispatch.get(contact, phone); 
 		if (p!=null) {
-			return p.length()>0;
+			return p.toString().length()>0;
 		}
 		return false;
 	}
