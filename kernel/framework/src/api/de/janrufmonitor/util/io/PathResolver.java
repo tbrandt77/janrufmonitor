@@ -149,6 +149,28 @@ public class PathResolver {
 	private String getBaseCurrentUserDirectory() {
 		if (!OSUtils.isMultiuserEnabled()) return null;
 		if (OSUtils.isMacOSX()) return new File(this.getUserhomeDirectory(), "Library"+File.separator+"Application Support"+File.separator+"jAnrufmonitor").getAbsolutePath() + File.separator;
+		
+		File usersRootPath = null;
+		
+		File pathFile = new File(this.getAppRoot(), ".paths");
+		if (pathFile.exists() && pathFile.isFile()) {
+			try {
+				FileInputStream in = new FileInputStream(pathFile);
+				Properties paths = new Properties();
+				paths.load(in);
+				in.close();
+				
+				if (paths.containsKey(IJAMConst.PATHKEY_USERSROOTPATH)) {
+					usersRootPath = new File(paths.getProperty(IJAMConst.PATHKEY_USERSROOTPATH, Long.toString(System.currentTimeMillis())));
+					if (!usersRootPath.exists()) usersRootPath = null;
+				}
+			} catch (FileNotFoundException e) {
+			} catch (IOException e) {
+			}
+		} 
+		if (usersRootPath!=null) {
+			return new File(usersRootPath, OSUtils.getLoggedInUser()).toString() + File.separator;
+		}
 		return new File(this.getAppRoot(), "users"+File.separator+OSUtils.getLoggedInUser()).toString() + File.separator;
 	}
 	

@@ -142,6 +142,12 @@ public interface IJAMConst {
      *  Wildcard for photo path
      */
     public final static String PATHKEY_PHOTOPATH = "%photopath%";
+    
+    /**
+     *  Wildcard for users root path
+     */
+    public final static String PATHKEY_USERSROOTPATH = "%usersrootpath%";
+    
  
     // SYSTEM PARAMETERS FOR JAVA VM 
     
