@@ -50,7 +50,7 @@ public class PathResolver {
 	 * Gets an instance of the PathResolver depending on the runtime.
 	 * 
 	 * @param runtime the current runtime.
-	 * @return a valif PathResolver object
+	 * @return a valid PathResolver object
 	 */
 	public static PathResolver getInstance(IRuntime runtime) {
 		if (m_instance==null || m_instance.m_runtime==null) {
@@ -64,7 +64,7 @@ public class PathResolver {
 	 * Gets an instance of the PathResolver without runtime dependency.
 	 * 
 	 * @param runtime the current runtime.
-	 * @return a valif PathResolver object
+	 * @return a valid PathResolver object
 	 */
 	public static PathResolver getInstance() {
 		if (m_instance==null) {
@@ -88,7 +88,7 @@ public class PathResolver {
 	}
 	
 	/**
-	 * Resolves the path to a valid String obejct.
+	 * Resolves the path to a valid String object.
 	 */
 	public String resolve(String path) {
 		path = StringUtils.replaceString(path, IJAMConst.PATHKEY_INSTALLPATH, this.getInstallDirectory());
@@ -168,6 +168,16 @@ public class PathResolver {
 			} catch (IOException e) {
 			}
 		} 
+		boolean useAppData = Boolean.parseBoolean(System.getProperty(IJAMConst.SYSTEM_MULTI_USER_USEAPPDATA, "false"));
+		if (usersRootPath==null && useAppData && OSUtils.isWindows()) {
+			String appData = System.getenv("APPDATA");
+			if (appData!=null && appData.trim().length()>0) {
+				File appDataFile = new File(appData);
+				if (appDataFile.exists()) {
+					usersRootPath = new File(appDataFile, "jAnrufmonitor"+ File.separator+"users"+File.separator);
+				}
+			}
+		}
 		if (usersRootPath!=null) {
 			return new File(usersRootPath, OSUtils.getLoggedInUser()).toString() + File.separator;
 		}
@@ -332,7 +342,7 @@ public class PathResolver {
 				
 			} 
 			if (this.userDataPath==null){
-				this.userDataPath = new File(this.getUserhomeDirectory(), "Documents/jAnrufmonitor");
+				this.userDataPath = new File(this.getUserhomeDirectory(), "Documents"+File.separator+"jAnrufmonitor");
 				Properties paths = new Properties();
 				if (pathFile.exists() && pathFile.isFile()) {
 					try {
