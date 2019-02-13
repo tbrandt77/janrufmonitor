@@ -122,9 +122,17 @@ public class FritzBoxCallCsv extends AbstractFritzBoxCall {
 						// assume it is an international format 4971657110
 						boolean onlyNumbers = call[3].matches("[+-]?[0-9]+");
 						if (!call[3].startsWith("0") && onlyNumbers) {
-							if (logger!=null && logger.isLoggable(Level.INFO))
-								logger.info("Assuming international call: "+call[3]);
-							call[3] = "00"+call[3];
+							if (PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).hasMissingAreaCode(call[3])) {
+								if (logger!=null && logger.isLoggable(Level.INFO))
+									logger.info("Assuming number "+call[3]+" has missing areacode.");
+								call[3] = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).getAreaCode() + call[3];
+								if (logger!=null && logger.isLoggable(Level.INFO))
+									logger.info("Added areacode to number "+call[3]);
+							} else {
+								if (logger!=null && logger.isLoggable(Level.INFO))
+									logger.info("Assuming international call: "+call[3]);
+								call[3] = "00"+call[3];
+							}
 						}
 						pn = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toPhonenumber(call[3].trim(), msn.getMSN());
 					}
@@ -140,7 +148,7 @@ public class FritzBoxCallCsv extends AbstractFritzBoxCall {
 						if (pn==null) {
 							// added 2011/01/13: added areacode additional on special FritzBox mode. Having no leading 0, 
 							// requires addition of areacode
-							if (!call[3].startsWith("0")) {
+							if (!call[3].startsWith("0") && PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).hasMissingAreaCode(call[3])) {
 								if (logger!=null && logger.isLoggable(Level.INFO))
 									logger.info("Assuming number "+call[3]+" has missing areacode.");
 								

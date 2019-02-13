@@ -591,16 +591,14 @@ public class PhonenumberAnalyzer {
 		String number = pn.getTelephoneNumber();
 
 		if (number.trim().length() == 0) {
-			number = pn.getCallNumber();
-		}
-
-		if (number.length() <= getInternalNumberMaxLength()
-				|| pn.getIntAreaCode()
-						.equalsIgnoreCase(IJAMConst.INTERNAL_CALL)) {
 			if (this.m_logger.isLoggable(Level.INFO))
 				this.m_logger
-						.info("PhonenumberAnalyzer detetced number as internal number: ["
+						.info("PhonenumberAnalyzer detetced telephone number not set: ["
 								+ number + "]");
+			number = pn.getCallNumber();
+		}
+		
+		if (this.isInternal(number) || pn.getIntAreaCode().equalsIgnoreCase(IJAMConst.INTERNAL_CALL)) {
 			return true;
 		}
 		return false;
@@ -616,8 +614,7 @@ public class PhonenumberAnalyzer {
 	 *         internal numbers
 	 */
 	public boolean isInternal(String number) {
-		if (number.trim().length() >= 1
-				&& number.trim().length() <= getInternalNumberMaxLength()) {
+		if (number!=null && number.trim().length() > 0 && number.trim().length() <= getInternalNumberMaxLength()) {
 			if (this.m_logger.isLoggable(Level.INFO))
 				this.m_logger
 						.info("PhonenumberAnalyzer detetced number as internal number: ["
@@ -797,6 +794,85 @@ public class PhonenumberAnalyzer {
 	}
 
 	/**
+	 * Checks whether a phone number as String representation lacks an area
+	 * code.
+	 * 
+	 * @param num
+	 *            a String representation of a phone number to check
+	 * @return true if area code is missing
+	 */
+	public boolean hasMissingAreaCode(String num) {
+		if (num==null) {
+			if (this.m_logger.isLoggable(Level.INFO))
+				this.m_logger
+						.info("PhonenumberAnalyzer detects number as: [" + num + "]");
+			return false;
+		}
+		if (num.length()==0){
+			if (this.m_logger.isLoggable(Level.INFO))
+				this.m_logger
+						.info("PhonenumberAnalyzer detects number as: [" + num + "]");
+			return false;
+		}
+		if (num.startsWith("0")) {
+			if (this.m_logger.isLoggable(Level.INFO))
+				this.m_logger
+						.info("PhonenumberAnalyzer detects number as: [" + num + "]");
+			return false;
+		}
+		if (this.isClired(num)) {
+			if (this.m_logger.isLoggable(Level.INFO))
+				this.m_logger
+						.info("PhonenumberAnalyzer detects number as: [" + num + "]");
+			return false;
+		}
+		if (this.isInternal(num)) {
+			if (this.m_logger.isLoggable(Level.INFO))
+				this.m_logger
+						.info("PhonenumberAnalyzer detects number as: [" + num + "]");
+			return false;
+		}
+
+		if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger
+					.info("PhonenumberAnalyzer detects number length: [" + num.length() + "]");
+		
+		int min_length = this.getInternalNumberMaxLength();
+		
+		if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger
+					.info("PhonenumberAnalyzer detects min length of number for areacode: [" + min_length + "]");
+		
+		int max_length = -1;
+
+		String areacodeaddlenth = this
+					.getRuntime()
+					.getConfigManagerFactory()
+					.getConfigManager()
+					.getProperty(IJAMConst.GLOBAL_NAMESPACE,
+							IJAMConst.GLOBAL_AREACODE_ADD_LENGTH);
+		if (areacodeaddlenth != null && areacodeaddlenth.trim().length() > 0) {
+			max_length = Integer.parseInt(areacodeaddlenth);
+		}
+			
+		if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger
+					.info("PhonenumberAnalyzer detects max length of number for areacode: [" + max_length + "]");
+		
+		if (min_length < max_length) {
+			if (this.m_logger.isLoggable(Level.INFO))
+				this.m_logger
+						.info("PhonenumberAnalyzer detects missing areacode: [" + num + "]");
+			return (num.length() > min_length && num.length() <= max_length);
+		}
+		
+		if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger
+					.info("PhonenumberAnalyzer did NOT detects missing areacode: [" + num + "]");
+		return false;
+	}
+
+	/**
 	 * Checks if a number starts with the international prefix
 	 * 
 	 * @param number
@@ -830,37 +906,6 @@ public class PhonenumberAnalyzer {
 							.info("PhonenumberAnalyzer detects internal prefix: ["
 									+ ts_prefix + ", " + num + "]");
 				return num.startsWith(ts_prefix);
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Checks whether a phone number as String representation lacks an area
-	 * code.
-	 * 
-	 * @param num
-	 *            a String representation of a phone number to check
-	 * @return true if area code is missing
-	 */
-	private boolean hasMissingAreaCode(String num) {
-		if (num != null && !isClired(num) && !isInternal(num)) {
-			int min_length = this.getInternalNumberMaxLength();
-			;
-			int max_length = -1;
-
-			String areacodeaddlenth = this
-					.getRuntime()
-					.getConfigManagerFactory()
-					.getConfigManager()
-					.getProperty(IJAMConst.GLOBAL_NAMESPACE,
-							IJAMConst.GLOBAL_AREACODE_ADD_LENGTH);
-			if (areacodeaddlenth != null
-					&& areacodeaddlenth.trim().length() > 0) {
-				max_length = Integer.parseInt(areacodeaddlenth);
-			}
-			if (min_length < max_length) {
-				return (num.length() > min_length && num.length() <= max_length);
 			}
 		}
 		return false;
