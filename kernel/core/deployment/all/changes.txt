@@ -1,4 +1,22 @@
 
+jAnrufmonitor 5.0.81 (28.02.2019)
+---------------------------------
+Neu:
+- Unterstützung für %APPDATA% Verzeichnis auf Windows CITRIX Servern
+- Unterstützung für %usersrootpath% im Multi-User Betrieb
+
+Bugfix:
+- jam.exe startet mit Java 11 ohne REG-Patch
+- VCF Importfilter importiert internationale Rufnummern mit +XX beginnend
+
+Module:
+- FRITZ!Box-Überwachung: Erkennung von eingehenden Rufnummern ohne Vorwahl
+- MySQL Adressbuch / Journal: Support für MySQL Community Server 8 und Connector/J 8
+- Apple Mac Adressbuch: Anpassungen für macOS Mojave
+- Microsoft Outlook Kontaktverzeichnis: Fehler beim Speichern von Kontakten ohne Rufnummern behoben
+
+===
+
 jAnrufmonitor 5.0.80 (30.11.2018)
 ---------------------------------
 Neu:
