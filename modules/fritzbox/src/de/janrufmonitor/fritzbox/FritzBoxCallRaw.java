@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import de.janrufmonitor.framework.IAttribute;
@@ -53,7 +54,17 @@ public class FritzBoxCallRaw extends AbstractFritzBoxCall {
 					// assume it is an international format 4971657110
 					boolean onlyNumbers = call[3].matches("[+-]?[0-9]+");
 					if (!call[3].startsWith("0")&& onlyNumbers) {
-						call[3] = "00"+call[3];
+						if (PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).hasMissingAreaCode(call[3])) {
+							if (Logger.getLogger(IJAMConst.DEFAULT_LOGGER)!=null && Logger.getLogger(IJAMConst.DEFAULT_LOGGER).isLoggable(Level.INFO))
+								Logger.getLogger(IJAMConst.DEFAULT_LOGGER).info("Assuming number "+call[3]+" has missing areacode.");
+							call[3] = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).getAreaCode() + call[3];
+							if (Logger.getLogger(IJAMConst.DEFAULT_LOGGER)!=null && Logger.getLogger(IJAMConst.DEFAULT_LOGGER).isLoggable(Level.INFO))
+								Logger.getLogger(IJAMConst.DEFAULT_LOGGER).info("Added areacode to number "+call[3]);
+						} else {
+							if (Logger.getLogger(IJAMConst.DEFAULT_LOGGER)!=null && Logger.getLogger(IJAMConst.DEFAULT_LOGGER).isLoggable(Level.INFO))
+								Logger.getLogger(IJAMConst.DEFAULT_LOGGER).info("Assuming international call: "+call[3]);
+							call[3] = "00"+call[3];
+						}
 					}
 					pn = PhonenumberAnalyzer.getInstance(PIMRuntime.getInstance()).toPhonenumber(call[3].trim(), msn.getMSN());
 				}
