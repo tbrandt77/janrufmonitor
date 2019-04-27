@@ -868,7 +868,7 @@ public class PhonenumberAnalyzer {
 		
 		if (this.m_logger.isLoggable(Level.INFO))
 			this.m_logger
-					.info("PhonenumberAnalyzer did NOT detects missing areacode: [" + num + "]");
+					.info("PhonenumberAnalyzer did NOT detect missing areacode: [" + num + "]");
 		return false;
 	}
 

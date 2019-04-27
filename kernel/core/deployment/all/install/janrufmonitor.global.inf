@@ -18,5 +18,5 @@ janrufmonitor.global\:autodetectinternational\:value=false
 janrufmonitor.global\:autodetectinternational\:type=boolean
 
 # added 5.0.28
-%janrufmonitor.global\:areacodeaddlength\:default=6
+%janrufmonitor.global\:areacodeaddlength\:default=7
 %janrufmonitor.global\:areacodeaddlength\:type=integer
