@@ -158,7 +158,7 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
 		return this.m_fw.toString();
     }
     
-    public String getMSNFromSIP2(String idx) throws IOException {
+    public String getMSNFromSIP(String idx) throws IOException {
     	if (this.m_fw==null)
 			try {
 				this.createFirmwareInstance();
