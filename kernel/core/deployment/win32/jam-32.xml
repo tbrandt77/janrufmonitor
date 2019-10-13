@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch4jConfig>
+  <dontWrapJar>true</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>.</jar>
+  <outfile>C:\jAnrufmonitor\jam.exe</outfile>
+  <errTitle></errTitle>
+  <cmdLine></cmdLine>
+  <chdir>.</chdir>
+  <priority>normal</priority>
+  <downloadUrl>http://java.com/download</downloadUrl>
+  <supportUrl></supportUrl>
+  <stayAlive>false</stayAlive>
+  <restartOnCrash>false</restartOnCrash>
+  <manifest></manifest>
+  <icon>C:\jAnrufmonitor\images\jam.ico</icon>
+  <classPath>
+    <mainClass>de.janrufmonitor.application.RunUI</mainClass>
+    <cp>*.jar</cp>
+  </classPath>
+  <jre>
+    <path>%JAVA_HOME%</path>
+    <bundledJre64Bit>false</bundledJre64Bit>
+    <bundledJreAsFallback>true</bundledJreAsFallback>
+    <minVersion>1.8.0</minVersion>
+    <maxVersion></maxVersion>
+    <jdkPreference>preferJre</jdkPreference>
+    <runtimeBits>32</runtimeBits>
+  </jre>
+  <messages>
+    <startupErr>Fehler beim Starten der Anwendung jAnrufmonitor</startupErr>
+    <bundledJreErr>Es konnte keine Java Umgebung zum Starten des jAnrufmonitors auf Ihrem PC gefunden werden.</bundledJreErr>
+    <jreVersionErr>Diese Anwendung startet nur mit einer Java Umgebung ab Version</jreVersionErr>
+    <launcherErr>Die Windows Registry zeigt auf eine nicht vorhandene oder defekte Java Umgebung.</launcherErr>
+    <instanceAlreadyExistsMsg>Diese Anwendung ist bereits aktiv und kann nicht erneut gestartet werden.</instanceAlreadyExistsMsg>
+  </messages>
+</launch4jConfig>
