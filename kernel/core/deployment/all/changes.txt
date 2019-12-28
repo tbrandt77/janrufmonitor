@@ -1,4 +1,20 @@
 
+jAnrufmonitor 5.0.82 (02.01.2020)
+---------------------------------
+Neu:
+- jam.exe für Windows 32-bit/64-bit neu kompiliert
+- Deutsche Fehlermeldung bei Anmeldeprobleme
+
+Bugfix:
+- Fehler beim Finden der JRE gefixt
+
+Module:
+- FRITZ!Box-Überwachung: Erkennung von ausgehenden Rufnummern ohne Vorwahl
+- FRITZ!Box-Überwachung: NPE gefixt im FirmwareManager
+- FRITZ!Box-Überwachung: Erkennung von OEM Firmware mit FRITZ!OS 7
+
+===
+
 jAnrufmonitor 5.0.81 (28.02.2019)
 ---------------------------------
 Neu:
