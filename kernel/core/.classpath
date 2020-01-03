@@ -71,5 +71,7 @@
 	<classpathentry exported="true" kind="var" path="JAM_LIB/modules/httpclient.jar"/>
 	<classpathentry exported="true" kind="var" path="JAM_LIB/modules/log-api.jar"/>
 	<classpathentry exported="true" kind="var" path="JAM_LIB/modules/log.jar"/>
+	<classpathentry kind="var" path="JAM_LIB/modules/sqlite.jar"/>
+	<classpathentry kind="lib" path="/jAnrufmonitor Module SQLite/build" sourcepath="/jAnrufmonitor Module SQLite/src"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

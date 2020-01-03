@@ -235,7 +235,7 @@ public abstract class AbstractCallDatabaseHandler extends AbstractDatabaseHandle
 		psa.executeBatch();
 	}	
 	
-	private void internalDeleteCallList(ICallList cl) throws SQLException {
+	protected void internalDeleteCallList(ICallList cl) throws SQLException {
 		if (!isConnected())
 			try {
 				this.connect();

@@ -106,7 +106,7 @@ public class CallerDirectory
 
 	protected ICallerDatabaseHandler getDatabaseHandler() {
 		if (this.m_dbh==null) {
-			String db_path = PathResolver.getInstance(this.getRuntime()).resolve(this.m_configuration.getProperty(CFG_DB, PathResolver.getInstance(this.getRuntime()).getDataDirectory()+"/addressbook.db"));
+			String db_path = PathResolver.getInstance(this.getRuntime()).resolve(this.m_configuration.getProperty(CFG_DB, PathResolver.getInstance(this.getRuntime()).getUserDataDirectory()+"/phonebook.db"));
 			this.m_dbh = new CallerDirectoryHandler(db_path);
 			this.m_dbh.setCommitCount(Integer.parseInt(m_configuration.getProperty(CFG_COMMIT_COUNT, "50")));
 			this.m_dbh.setKeepAlive((m_configuration.getProperty(CFG_KEEP_ALIVE, "true").equalsIgnoreCase("true")? true : false));
@@ -122,7 +122,7 @@ public class CallerDirectory
 	}
 
 	public String getFile() {
-		return PathResolver.getInstance(this.getRuntime()).resolve(this.m_configuration.getProperty(CFG_DB, PathResolver.getInstance(this.getRuntime()).getDataDirectory()+"/addressbook.db"));
+		return PathResolver.getInstance(this.getRuntime()).resolve(this.m_configuration.getProperty(CFG_DB, PathResolver.getInstance(this.getRuntime()).getUserDataDirectory()+"/phonebook.db"));
 	}
 	
 	public String getFileType() {

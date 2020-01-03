@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
@@ -87,8 +88,19 @@ public abstract class AbstractDatabaseHandler implements IDatabaseHandler {
 	public void connect() throws SQLException, ClassNotFoundException {
 		if (m_con!=null) throw new SQLException ("Database already connected.");
 		
-		Class.forName(this.m_driver);
-		m_con = DriverManager.getConnection(this.m_connection, this.m_user, this.m_pass);
+		if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info("JDBC driver set to "+this.m_driver); 
+		
+		if (this.m_driver!=null)
+			Class.forName(this.m_driver);
+		
+		if ((this.m_user==null || this.m_user.trim().length()==0) && (this.m_pass==null || this.m_pass.trim().length()==0)){
+			if (this.m_logger.isLoggable(Level.INFO))
+				this.m_logger.info("JDBC driver user and password not set."); 
+			m_con = DriverManager.getConnection(this.m_connection);
+		} else {
+			m_con = DriverManager.getConnection(this.m_connection, this.m_user, this.m_pass);
+		}
 
 		// create tables if required
 		if (isInitializing()) {
@@ -97,7 +109,8 @@ public abstract class AbstractDatabaseHandler implements IDatabaseHandler {
 		
 		// prepare statements
 		this.addPreparedStatements();
-		this.m_logger.info("DatabaseHandler successfully connected.");
+		if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info("DatabaseHandler successfully connected.");
 	}
 	
 	/**
@@ -182,7 +195,8 @@ public abstract class AbstractDatabaseHandler implements IDatabaseHandler {
 		if (this.m_con==null) throw new SQLException ("Database already disconnected.");
 		m_con.close();
 		m_con = null;
-		this.m_logger.info("DatabaseHandler successfully disconnected.");
+		if (this.m_logger.isLoggable(Level.INFO))
+			this.m_logger.info("DatabaseHandler successfully disconnected.");
 	}
 	
 	public void setCommitCount(int c) {
