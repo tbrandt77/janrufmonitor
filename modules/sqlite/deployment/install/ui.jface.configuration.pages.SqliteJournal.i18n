@@ -1,17 +1,7 @@
-ui.jface.configuration.pages.SqliteJournal\:title\:label\:de=Sqlite Datenbank Journal
-ui.jface.configuration.pages.SqliteJournal\:description\:label\:de=Das Sqlite Datenbank Journal speichert alle eingehenden Anrufe mit ihren Informationen in einer Datenbank.
-ui.jface.configuration.pages.SqliteJournal\:dbserver\:label\:de=Datenbank-Server: 
-ui.jface.configuration.pages.SqliteJournal\:dbdb\:label\:de=Datenbank-Name: 
-ui.jface.configuration.pages.SqliteJournal\:dbport\:label\:de=Datenbank-Port: 
-ui.jface.configuration.pages.SqliteJournal\:dbuser\:label\:de=Datenbank-Benutzer: 
-ui.jface.configuration.pages.SqliteJournal\:dbpassword\:label\:de=Datenbank-Passwort: 
+ui.jface.configuration.pages.SqliteJournal\:title\:label\:de=SQLite Journal
+ui.jface.configuration.pages.SqliteJournal\:description\:label\:de=Das SQLite Journal speichert alle eingehenden Anrufe mit ihren Informationen in einer Datenbank.
 ui.jface.configuration.pages.SqliteJournal\:enabled\:label\:de=Datenablage aktiviert
 
-ui.jface.configuration.pages.SqliteAddressbook\:title\:label\:de=Sqlite Datenbank Adressbuch
-ui.jface.configuration.pages.SqliteAddressbook\:description\:label\:de=Das Sqlite Datenbank Adressbuch speichert Kontakt-Informationen in einer Datenbank.
-ui.jface.configuration.pages.SqliteAddressbook\:dbserver\:label\:de=Datenbank-Server: 
-ui.jface.configuration.pages.SqliteAddressbook\:dbdb\:label\:de=Datenbank-Name: 
-ui.jface.configuration.pages.SqliteAddressbook\:dbuser\:label\:de=Datenbank-Benutzer: 
-ui.jface.configuration.pages.SqliteAddressbook\:dbpassword\:label\:de=Datenbank-Passwort: 
+ui.jface.configuration.pages.SqliteAddressbook\:title\:label\:de=SQLite Adressbuch
+ui.jface.configuration.pages.SqliteAddressbook\:description\:label\:de=Das SQLite Adressbuch speichert Kontakt-Informationen in einer Datenbank.
 ui.jface.configuration.pages.SqliteAddressbook\:enabled\:label\:de=Datenablage aktiviert
-ui.jface.configuration.pages.SqliteAddressbook\:dbport\:label\:de=Datenbank-Port: 

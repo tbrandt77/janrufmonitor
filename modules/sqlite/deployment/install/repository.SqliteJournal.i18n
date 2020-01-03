@@ -1,4 +1,4 @@
-repository.SqliteJournal\:title\:label\:de=Sqlite-Datenbank Journal
-repository.SqliteJournal\:connecterror\:label\:de=Verbindung zum Sqlite-Server konnte nicht hergestellt werden. \u00DCberpr\u00FCfen Sie die angegebenen Verbindungseinstellungen.
-repository.SqliteAddressbook\:title\:label\:de=Sqlite-Datenbank Adressbuch
-repository.SqliteAddressbook\:connecterror\:label\:de=Verbindung zum Sqlite-Server konnte nicht hergestellt werden. \u00DCberpr\u00FCfen Sie die angegebenen Verbindungseinstellungen.
+repository.SqliteJournal\:title\:label\:de=SQLite Journal
+repository.SqliteJournal\:connecterror\:label\:de=Verbindung zur SQLite Datei konnte nicht hergestellt werden. \u00DCberpr\u00FCfen Sie die angegebenen Verbindungseinstellungen.
+repository.SqliteAddressbook\:title\:label\:de=SQLite Adressbuch
+repository.SqliteAddressbook\:connecterror\:label\:de=Verbindung zur SQLite Datei konnte nicht hergestellt werden. \u00DCberpr\u00FCfen Sie die angegebenen Verbindungseinstellungen.
