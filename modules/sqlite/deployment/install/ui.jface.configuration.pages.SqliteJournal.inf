@@ -1,0 +1,5 @@
+ui.jface.configuration.ConfigurationCommand\:page_Sqlite_callmanager\:value=de.janrufmonitor.ui.jface.configuration.pages.SqliteJournal
+ui.jface.configuration.ConfigurationCommand\:page_Sqlite_callmanager\:access=system
+
+ui.jface.configuration.ConfigurationCommand\:page_Sqlite_callermanager\:value=de.janrufmonitor.ui.jface.configuration.pages.SqliteAddressbook
+ui.jface.configuration.ConfigurationCommand\:page_Sqlite_callermanager\:access=system

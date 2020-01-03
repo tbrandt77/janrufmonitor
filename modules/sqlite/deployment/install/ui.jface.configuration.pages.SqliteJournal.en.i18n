@@ -1,0 +1,16 @@
+ui.jface.configuration.pages.SqliteJournal\:title\:label\:en=Sqlite Database Journal
+ui.jface.configuration.pages.SqliteJournal\:description\:label\:en=The Sqlite Database Journal stores all incoming call data in the configured database.
+ui.jface.configuration.pages.SqliteJournal\:dbserver\:label\:en=Database server: 
+ui.jface.configuration.pages.SqliteJournal\:dbdb\:label\:en=Database name: 
+ui.jface.configuration.pages.SqliteJournal\:dbport\:label\:en=Database port: 
+ui.jface.configuration.pages.SqliteJournal\:dbuser\:label\:en=Database user: 
+ui.jface.configuration.pages.SqliteJournal\:dbpassword\:label\:en=Database password: 
+ui.jface.configuration.pages.SqliteJournal\:enabled\:label\:en=Repository enabled
+
+ui.jface.configuration.pages.SqliteAddressbook\:title\:label\:en=Sqlite Database Addressbook
+ui.jface.configuration.pages.SqliteAddressbook\:description\:label\:en=The Sqlite Database Addressbook stores all contact information in the configured database.
+ui.jface.configuration.pages.SqliteAddressbook\:dbserver\:label\:en=Database server: 
+ui.jface.configuration.pages.SqliteAddressbook\:dbdb\:label\:en=Database name: 
+ui.jface.configuration.pages.SqliteAddressbook\:dbuser\:label\:en=Database user: 
+ui.jface.configuration.pages.SqliteAddressbook\:dbpassword\:label\:en=Database password: 
+ui.jface.configuration.pages.SqliteAddressbook\:enabled\:label\:en=Repository enabled

@@ -1,0 +1,4 @@
+repository.SqliteJournal\:title\:label\:en=Sqlite-Database Journal
+repository.SqliteJournal\:connecterror\:label\:en=Connection to Sqlite server could not be established. Please check the connection settings.
+repository.SqliteAddressbook\:title\:label\:en=Sqlite-Database Addressbook
+repository.SqliteAddressbook\:connecterror\:label\:en=Connection to Sqlite server could not be established. Please check the connection settings.
