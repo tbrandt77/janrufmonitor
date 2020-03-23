@@ -89,6 +89,8 @@ public class CallerManagerFactory implements ICallerManagerFactory,
 
 	private Properties m_configuration;
 
+	private boolean m_isCallerManagerFactoryStarted = false;
+
 	private CallerManagerFactory() {
 		this.m_logger = LogManager.getLogManager().getLogger(
 				IJAMConst.DEFAULT_LOGGER);
@@ -163,6 +165,18 @@ public class CallerManagerFactory implements ICallerManagerFactory,
 	public ICallerManager getDefaultCallerManager() {
 		ICallerManager defaultCallerManager = this
 				.getCallerManager(this.defaultManager);
+		
+		int c = 0;
+		while (!this.m_isCallerManagerFactoryStarted && c < 4) {
+			this.m_logger.warning("CallerManagerFactory not fully started. Retry in 1 sec.");
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				this.m_logger.log(Level.SEVERE, e.getMessage(), e);
+			}
+			c++;
+		}
+		
 		if (defaultCallerManager == null) {
 			this.m_logger
 					.severe("Default caller manager is invalid. Taking fallback...");
@@ -174,6 +188,8 @@ public class CallerManagerFactory implements ICallerManagerFactory,
 	public void startup() {
 		this.m_logger.entering(CallerManagerFactory.class.getName(), "startup");
 
+		this.m_isCallerManagerFactoryStarted = false;
+		
 		PIMRuntime.getInstance().getConfigurableNotifier().register(this);
 
 		this.m_callerManagers = Collections.synchronizedMap(new HashMap());
@@ -238,6 +254,9 @@ public class CallerManagerFactory implements ICallerManagerFactory,
 		}
 		this.m_logger.info("Set default caller manager to <" + defaultManager
 				+ ">.");
+		
+		this.m_isCallerManagerFactoryStarted = true;
+		
 		this.m_logger.exiting(CallerManagerFactory.class.getName(), "startup");
 	}
 
@@ -284,6 +303,7 @@ public class CallerManagerFactory implements ICallerManagerFactory,
 
 		PIMRuntime.getInstance().getConfigurableNotifier().unregister(this);
 		m_instance = null;
+		this.m_isCallerManagerFactoryStarted = false;
 		this.m_logger.exiting(CallerManagerFactory.class.getName(), "shutdown");
 	}
 
