@@ -23,7 +23,7 @@ public class SqliteJournal extends AbstractDatabaseCallManager implements ILocal
 		private IRuntime m_runtime;
 
 		public SqliteHandler(String db) {
-			super(null, "jdbc:sqlite:"+StringUtils.replaceString(db, "\\", "/"), null, null, false);
+			super("org.sqlite.JDBC", "jdbc:sqlite:"+StringUtils.replaceString(db, "\\", "/"), null, null, false);
 			File db_raw = new File(db);
 			if (db_raw.exists()) {
 				if (this.m_logger.isLoggable(Level.INFO))
