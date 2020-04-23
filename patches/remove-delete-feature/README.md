@@ -1,0 +1,1 @@
+This patch removed all delete and import features from the journal. Its intend is to provide revision safetyness for journals.
