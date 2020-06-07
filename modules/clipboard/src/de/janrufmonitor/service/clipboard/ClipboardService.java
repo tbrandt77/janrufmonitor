@@ -66,22 +66,41 @@ public class ClipboardService extends AbstractReceiverConfigurableService {
 					this.m_logger.info("Caller number is clired. Not copied to clipboard: "+aCall);
 					return;
 				}
-				Clipboard cb = new Clipboard(DisplayManager.getDefaultDisplay());
-				String textData = "";
-				if (this.isRawnumberFormat()) {
-					if (PhonenumberAnalyzer.getInstance(this.getRuntime()).getIntAreaPrefix().equalsIgnoreCase(aCall.getCaller().getPhoneNumber().getIntAreaCode())) {
-						// recognized national call
-						this.m_logger.info("Recognized national call: "+aCall);
-						textData = "0" + aCall.getCaller().getPhoneNumber().getAreaCode() + aCall.getCaller().getPhoneNumber().getCallNumber();
-					} else {
-						this.m_logger.info("Recognized international call: "+aCall);
-						textData = "00" + aCall.getCaller().getPhoneNumber().getIntAreaCode()+ aCall.getCaller().getPhoneNumber().getAreaCode() + aCall.getCaller().getPhoneNumber().getCallNumber();
-					}
-				} else 
-					textData = Formatter.getInstance(this.getRuntime()).parse(IJAMConst.GLOBAL_VARIABLE_CALLERNUMBER, aCall);
 				
-				TextTransfer textTransfer = TextTransfer.getInstance();
-				cb.setContents(new Object[]{(textData!=null ? textData : "")}, new Transfer[]{textTransfer});	
+				Thread thread = new Thread () {
+					public void run () {
+						DisplayManager.getDefaultDisplay().asyncExec(
+							new Runnable() {
+								public void run() {
+									Clipboard cb = new Clipboard(DisplayManager.getDefaultDisplay());
+									String textData = "";
+									if (isRawnumberFormat()) {
+										if (getRuntime().getConfigManagerFactory().getConfigManager().getProperty(IJAMConst.GLOBAL_NAMESPACE, IJAMConst.GLOBAL_INTAREA).equalsIgnoreCase(aCall.getCaller().getPhoneNumber().getIntAreaCode())) {
+											// recognized national call
+											m_logger.info("Recognized national call: "+aCall);
+											textData = "0" + aCall.getCaller().getPhoneNumber().getAreaCode() + aCall.getCaller().getPhoneNumber().getCallNumber();
+										} else {
+											m_logger.info("Recognized international call: "+aCall);
+											textData = "0"+ PhonenumberAnalyzer.getInstance(getRuntime()).getIntAreaPrefix() + aCall.getCaller().getPhoneNumber().getIntAreaCode()+ aCall.getCaller().getPhoneNumber().getAreaCode() + aCall.getCaller().getPhoneNumber().getCallNumber();
+										}
+									} else 
+										textData = Formatter.getInstance(getRuntime()).parse(IJAMConst.GLOBAL_VARIABLE_CALLERNUMBER, aCall);
+									
+									TextTransfer textTransfer = TextTransfer.getInstance();
+									cb.setContents(new Object[]{(textData!=null ? textData : "")}, new Transfer[]{textTransfer});
+								}
+							}
+						);
+					}
+				};
+				thread.setName(this.getID());
+				thread.start();
+				try {
+					thread.join();
+				} catch (InterruptedException e) {
+					this.m_logger.severe(e.getMessage());
+				}
+	
 			} else {
 				this.m_logger.info("No rule assigned to execute this service for call: "+aCall);
 			}

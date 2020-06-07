@@ -1,7 +1,7 @@
 service.ServiceFactory\:service_clipboard\:access=system
 service.ServiceFactory\:service_clipboard\:value=de.janrufmonitor.service.clipboard.ClipboardService
 service.ClipboardService\:priority\:value=200
-service.ClipboardService\:enabled\:value=false
+service.ClipboardService\:enabled\:value=true
 service.ClipboardService\:enabled\:type=boolean
 service.ClipboardService\:priority\:type=integer
 rules.RuleEngine\:clipboard_rule\:value=ClipboardService%*%*%true%*%*
