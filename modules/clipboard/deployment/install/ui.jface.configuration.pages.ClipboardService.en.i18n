@@ -1,0 +1,4 @@
+ui.jface.configuration.pages.ClipboardService\:title\:label\:en=Clipboard Service
+ui.jface.configuration.pages.ClipboardService\:description\:label\:en=This service copies the caller number into the clipboard while ringing.
+ui.jface.configuration.pages.ClipboardService\:enabled\:label\:en=Service enabled
+ui.jface.configuration.pages.ClipboardService\:rawnumber\:label\:en=Copy caller number in raw format (03012345678)

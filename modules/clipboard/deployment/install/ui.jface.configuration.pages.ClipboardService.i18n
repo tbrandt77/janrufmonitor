@@ -1,0 +1,4 @@
+ui.jface.configuration.pages.ClipboardService\:title\:label\:de=Zwischenablage
+ui.jface.configuration.pages.ClipboardService\:description\:label\:de=Dieser Dienst kopiert die Rufnummer des Anrufers beim Klingeln in die Zwischenablage.
+ui.jface.configuration.pages.ClipboardService\:enabled\:label\:de=Dienst aktiviert
+ui.jface.configuration.pages.ClipboardService\:rawnumber\:label\:de=Rufnummer im Rohformat (03012345678) kopieren.

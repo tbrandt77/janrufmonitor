@@ -1,0 +1,2 @@
+ui.jface.configuration.ConfigurationCommand\:page_clipboard\:value=de.janrufmonitor.ui.jface.configuration.pages.ClipboardService
+ui.jface.configuration.ConfigurationCommand\:page_clipboard\:access=system
