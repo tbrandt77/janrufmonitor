@@ -59,7 +59,7 @@ public class ClipboardService extends AbstractReceiverConfigurableService {
 
 	public void receivedIdentifiedCall(IEvent event) {
 		super.receivedIdentifiedCall(event);
-		ICall aCall = (ICall)event.getData();
+		final ICall aCall = (ICall)event.getData();
 		if (aCall!=null) {
 			if (getRuntime().getRuleEngine().validate(this.getID(), aCall.getMSN(), aCall.getCIP(), aCall.getCaller().getPhoneNumber())) {
 				if (PhonenumberAnalyzer.getInstance(this.getRuntime()).isClired(aCall.getCaller().getPhoneNumber())) {
