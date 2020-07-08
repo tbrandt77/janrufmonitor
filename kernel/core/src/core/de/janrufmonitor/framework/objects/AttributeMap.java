@@ -1,8 +1,8 @@
 package de.janrufmonitor.framework.objects;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import de.janrufmonitor.framework.IAttribute;
 import de.janrufmonitor.framework.IAttributeMap;
@@ -18,7 +18,7 @@ public class AttributeMap implements IAttributeMap {
 	}
 
 	public AttributeMap(int capacity) {
-		this.m_map = new HashMap(capacity);
+		this.m_map = new ConcurrentHashMap(capacity);
 	}
 
 	public boolean contains(IAttribute att) {
