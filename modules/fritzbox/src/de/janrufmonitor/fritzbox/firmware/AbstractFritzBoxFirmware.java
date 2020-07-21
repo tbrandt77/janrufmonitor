@@ -1030,5 +1030,10 @@ public abstract class AbstractFritzBoxFirmware implements IFritzBoxFirmware {
 		return false;
 	}
 
+	@Override
+	public boolean isDeleteCallListSupported() {
+		return true;
+	}
+
 	
 }

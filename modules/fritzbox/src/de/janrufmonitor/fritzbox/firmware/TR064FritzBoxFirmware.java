@@ -897,6 +897,13 @@ public class TR064FritzBoxFirmware implements
 		return response;
 	}
 	
+	public boolean isDeleteCallListSupported() {
+		if (isInitialized()){
+			return !(this.m_firmware.getMajor()>=7 && this.m_firmware.getMinor()>=20);
+		}
+		return true;
+	}
+	
 	private Map parseTamMessageMapXML(InputStream is, long st) {
 		try {
 			XMLTamMessageHandler handler = new XMLTamMessageHandler(st, this.getTamMap());

@@ -84,6 +84,25 @@ public class FirmwareManager implements IEventReceiver, IEventSender {
     	return (this.m_fw!=null);
     }
     
+	public boolean isDeleteCallListSupported() {
+		if (this.m_fw==null)
+			try {
+				this.createFirmwareInstance();
+			} catch (FritzBoxInitializationException e) {
+			} catch (FritzBoxNotFoundException e) {
+				if (this.m_broker!=null)
+					this.m_broker.send(this, this.m_broker.createEvent(IEventConst.EVENT_TYPE_HARDWARE_UNKNOWN_HOST));
+			} catch (InvalidSessionIDException e) {
+				PropagationFactory.getInstance().fire(
+						new Message(Message.ERROR,
+						"fritzbox.firmware.login",
+						"loginfailed",	
+						e,
+						true));
+			}
+		return (this.m_fw == null ? true : this.m_fw.isDeleteCallListSupported());
+	}
+    
     public void startup() {
     	if (this.m_isRunning) return;
     	

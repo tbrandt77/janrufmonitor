@@ -137,5 +137,7 @@ public interface IFritzBoxFirmware {
     public long getFirmwareTimeout();
     
     public long getSkipBytes();
+    
+    public boolean isDeleteCallListSupported();
    
 }

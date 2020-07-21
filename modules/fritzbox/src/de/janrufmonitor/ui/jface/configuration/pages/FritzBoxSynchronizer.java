@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Label;
 
 import de.janrufmonitor.fritzbox.FritzBoxConst;
 import de.janrufmonitor.fritzbox.FritzBoxMonitor;
+import de.janrufmonitor.fritzbox.firmware.FirmwareManager;
 import de.janrufmonitor.runtime.IRuntime;
 import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.ui.jface.configuration.AbstractServiceFieldEditorConfigPage;
@@ -132,12 +133,16 @@ public class FritzBoxSynchronizer extends AbstractServiceFieldEditorConfigPage {
 			this.getFieldEditorParent()
 		);
 		addField(sfe);
-		sfe = new BooleanFieldEditor(
-			this.getConfigNamespace()+SEPARATOR+"syncdelete",
-			this.m_i18n.getString(this.getNamespace(), "syncdelete", "label", this.m_language),
-			this.getFieldEditorParent()
-		);
-		addField(sfe);
+		
+		FirmwareManager fwm = FirmwareManager.getInstance();
+		if (fwm.isLoggedIn() && fwm.isDeleteCallListSupported()) {
+			sfe = new BooleanFieldEditor(
+				this.getConfigNamespace()+SEPARATOR+"syncdelete",
+				this.m_i18n.getString(this.getNamespace(), "syncdelete", "label", this.m_language),
+				this.getFieldEditorParent()
+			);
+			addField(sfe);
+		}
 		sfe = new BooleanFieldEditor(
 			this.getConfigNamespace()+SEPARATOR+"syncdialog",
 			this.m_i18n.getString(this.getNamespace(), "syncdialog", "label", this.m_language),

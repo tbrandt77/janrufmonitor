@@ -589,13 +589,19 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 					if (syncDelete) {
 						if (m_logger.isLoggable(Level.INFO))
 							m_logger.info("Delete after sync (sync delete) option enabled.");
-						if (progressMonitor!=null)
-							progressMonitor.setTaskName(getI18nManager()
-								.getString(getNamespace(),
-										"deleteprogress", "label",
-										getLanguage()));
 						
-						fwm.deleteCallList();	
+						if (fwm.isDeleteCallListSupported()) {
+							if (progressMonitor!=null)
+								progressMonitor.setTaskName(getI18nManager()
+									.getString(getNamespace(),
+											"deleteprogress", "label",
+											getLanguage()));
+							
+							fwm.deleteCallList();	
+						} else {
+							if (m_logger.isLoggable(Level.WARNING))
+								m_logger.info("Delete after sync (sync delete) option not supported by FRITZ!OS.");
+						}
 					}
 					
 					// added 2009/01/07: send mail notification after sync with fritzbox
