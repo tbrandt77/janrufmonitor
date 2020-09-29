@@ -1,4 +1,20 @@
 
+jAnrufmonitor 5.0.83 (01.10.2020)
+---------------------------------
+Neu:
+- Option für revisionssicheres Löschen im Journal
+- Option zum Kopieren der Anrufernummer während des Klingelns
+
+Bugfix:
+- Icon verschwindet beim Starten, wenn Überwachung deaktiviert ist
+- Fehler ConcurrentModificatioNException beim Speichern von Kontakten behoben
+
+Module:
+- FRITZ!Box-Überwachung: Anpassungen für FRITZ!OS 7.20
+- FRITZ!Box-Überwachung: Fehler "Synchronisation deaktiviert Anrufliste in der FRITZ!Box" behoben
+
+===
+
 jAnrufmonitor 5.0.82 (02.01.2020)
 ---------------------------------
 Neu:
