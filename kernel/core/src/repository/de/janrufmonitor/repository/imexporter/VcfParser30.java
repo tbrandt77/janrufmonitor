@@ -30,6 +30,7 @@ import de.janrufmonitor.runtime.PIMRuntime;
 import de.janrufmonitor.util.io.Base64Decoder;
 import de.janrufmonitor.util.io.PathResolver;
 import de.janrufmonitor.util.io.Stream;
+import de.janrufmonitor.util.string.StringUtils;
 import de.janrufmonitor.util.uuid.UUID;
 
 public class VcfParser30 {
@@ -143,11 +144,12 @@ public class VcfParser30 {
 						value = line.split(":");
 						if (value.length>=2) {
 							this.m_logger.info("Set attribute organization.");
+							if (value[1].endsWith(";")) value[1] = value[1].substring(0, value[1].length()-1);
 							private_attributes.add(PIMRuntime.getInstance().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_ADDITIONAL, value[1]));
 							bussiness_attributes.add(PIMRuntime.getInstance().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_ADDITIONAL, value[1]));
 						}
 					}					
-					if (line.toLowerCase().startsWith(ADR)) {
+					if (line.toLowerCase().contains(ADR)) {
 						String[] tokens = line.split(":");
 						if (tokens.length==2) {
 							boolean isBusiness = false;
@@ -166,16 +168,43 @@ public class VcfParser30 {
 								}
 							}
 							
+							// clean parsing Mac vCard Export
+							if (tokens[1].contains("\\,")) tokens[1] = StringUtils.replaceString(tokens[1], "\\,", ",");
+							
 							value = tokens[1].split(";");
 							if (value.length>=6 && (value.length>6 ? value[6].trim().length()>0 : true) && value[3].trim().length()>0) {
+								// try to get street_no
+								String[] no = value[2].split(" ");
+								String street_no = null;
+								try {
+									// check if no is available
+									Integer.parseInt(no[no.length-1]);
+									street_no = no[no.length-1].trim();
+									value[2] = value[2].substring(0, value[2].length()-street_no.length()).trim();
+								} catch (NumberFormatException e) {
+									// check for number with postfix 10a or 10-12
+									try {
+										// check if no is available
+										Integer.parseInt(no[no.length-1].substring(0,1));
+										street_no = no[no.length-1].trim();
+										value[2] = value[2].substring(0, value[2].length()-street_no.length()).trim();
+									} catch (NumberFormatException e1) {
+										street_no = null;
+									}
+								}
+								
 								if (isBusiness) {
 									this.m_logger.info("Set attribute work address.");
+									if (street_no!=null && street_no.length()>0)
+										bussiness_attributes.add(PIMRuntime.getInstance().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_STREET_NO, street_no));
 									bussiness_attributes.add(PIMRuntime.getInstance().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_STREET, value[2]));
 									bussiness_attributes.add(PIMRuntime.getInstance().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_POSTAL_CODE, value[5]));
 									bussiness_attributes.add(PIMRuntime.getInstance().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CITY, value[3]+ (value[4].trim().length()>0 ? ", "+value[4]: "")));
 									bussiness_attributes.add(PIMRuntime.getInstance().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_COUNTRY, (value.length>6 ? value[6]: "")));
 								} else {
 									this.m_logger.info("Set attribute home address.");
+									if (street_no!=null && street_no.length()>0)
+										private_attributes.add(PIMRuntime.getInstance().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_STREET_NO, street_no));
 									private_attributes.add(PIMRuntime.getInstance().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_STREET, value[2]));
 									private_attributes.add(PIMRuntime.getInstance().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_POSTAL_CODE, value[5]));
 									private_attributes.add(PIMRuntime.getInstance().getCallerFactory().createAttribute(IJAMConst.ATTRIBUTE_NAME_CITY, value[3]+ (value[4].trim().length()>0 ? ", "+value[4]: "")));
@@ -236,7 +265,7 @@ public class VcfParser30 {
 							}							
 						}
 					}	
-					if (line.toLowerCase().startsWith(EMAIL)) {
+					if (line.toLowerCase().contains(EMAIL)) {
 						value = line.split(":");											
 						if (value.length==2 && value[1].trim().length()>0) {
 							boolean isBusiness = false;
