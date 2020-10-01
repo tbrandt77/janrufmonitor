@@ -93,6 +93,7 @@ public class GosWizard extends AbstractWizard {
 		inf.setProperty("repository."+id+":regexp.city:value", (String) data.get("city"));
 		inf.setProperty("repository."+id+":regexp.areacode:value", (String) data.get("area"));
 		inf.setProperty("repository."+id+":regexp.phone:value", (String) data.get("number"));
+		inf.setProperty("repository."+id+":regexp.phonetype:value", "");
 		inf.setProperty("repository."+id+":intareacode:value", (String) data.get("intarea"));
 		inf.setProperty("repository."+id+":locale:value", (String) data.get("locale"));
 		inf.setProperty("repository."+id+":regexp.a."+IJAMConst.ATTRIBUTE_NAME_ADDITIONAL+":value", "");

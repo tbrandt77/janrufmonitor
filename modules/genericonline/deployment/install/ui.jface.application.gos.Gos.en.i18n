@@ -16,6 +16,7 @@ ui.jface.application.gos.wizard.pages.GosPage\:postal\:label\:en=Pattern for pos
 ui.jface.application.gos.wizard.pages.GosPage\:city\:label\:en=Pattern for city:
 ui.jface.application.gos.wizard.pages.GosPage\:area\:label\:en=Pattern for areacode:
 ui.jface.application.gos.wizard.pages.GosPage\:number\:label\:en=Pattern for number:
+ui.jface.application.gos.wizard.pages.GosPage\:numbertype\:label\:en=Pattern for number type:
 ui.jface.application.gos.wizard.pages.GosPage\:intarea\:label\:en=International area code:
 ui.jface.application.gos.wizard.pages.GosPage\:locale\:label\:en=Locale:
 ui.jface.application.gos.wizard.pages.GosPage\:encoding\:label\:en=Encoding:

@@ -47,6 +47,7 @@ public class RegExpURLRequester extends AbstractURLRequester {
 	
 	public static String REGEXP_AREACODE = "regexp.areacode";
 	public static String REGEXP_PHONE = "regexp.phone";
+	public static String REGEXP_PHONETYPE = "regexp.phonetype";
 	
 	public static String REGEXP_ATTRIBUTE = "regexp.a.";
 	
@@ -178,6 +179,8 @@ public class RegExpURLRequester extends AbstractURLRequester {
 			// get name patterns
 			patternString = this.m_config.getProperty(REGEXP_LASTNAME);
 			if (patternString!=null && patternString.length()>0) {
+				if (this.m_logger.isLoggable(Level.INFO))
+					this.m_logger.info("Pattern for <"+REGEXP_LASTNAME+">: "+patternString);
 				group = this.find(Pattern.compile(patternString, Pattern.UNICODE_CASE), content);
 				if (group!=null && group.length()>0) {
 					//group = StringUtils.replaceString(group, "&amp;", "&");
@@ -189,6 +192,8 @@ public class RegExpURLRequester extends AbstractURLRequester {
 							this.m_logger.info("Still found HTML tags in pattern value: "+group);
 						group = StringEscapeUtils.unescapeHtml(group);
 					}
+					if (this.m_logger.isLoggable(Level.INFO))
+						this.m_logger.info("Value for <"+REGEXP_LASTNAME+">: "+group.trim());
 					this.m.add(
 						m_runtime.getCallerFactory().createAttribute(
 							IJAMConst.ATTRIBUTE_NAME_LASTNAME,
@@ -204,6 +209,8 @@ public class RegExpURLRequester extends AbstractURLRequester {
 			
 			patternString = this.m_config.getProperty(REGEXP_FIRSTNAME);
 			if (patternString!=null && patternString.length()>0) {
+				if (this.m_logger.isLoggable(Level.INFO))
+					this.m_logger.info("Pattern for <"+REGEXP_FIRSTNAME+">: "+patternString);
 				group = this.find(Pattern.compile(patternString, Pattern.UNICODE_CASE), content);
 				if (group!=null && group.length()>0) {
 					//group = StringUtils.replaceString(group, "&amp;", "&");
@@ -215,6 +222,8 @@ public class RegExpURLRequester extends AbstractURLRequester {
 							this.m_logger.info("Still found HTML tags in pattern value: "+group);
 						group = StringEscapeUtils.unescapeHtml(group);
 					}
+					if (this.m_logger.isLoggable(Level.INFO))
+						this.m_logger.info("Value for <"+REGEXP_FIRSTNAME+">: "+group.trim());
 					this.m.add(
 						m_runtime.getCallerFactory().createAttribute(
 							IJAMConst.ATTRIBUTE_NAME_FIRSTNAME,
@@ -231,6 +240,8 @@ public class RegExpURLRequester extends AbstractURLRequester {
 			
 			patternString = this.m_config.getProperty(REGEXP_ADDITIONAL);
 			if (patternString!=null && patternString.length()>0) {
+				if (this.m_logger.isLoggable(Level.INFO))
+					this.m_logger.info("Pattern for <"+REGEXP_ADDITIONAL+">: "+patternString);
 				group = this.find(Pattern.compile(patternString, Pattern.UNICODE_CASE), content);
 				if (group!=null && group.length()>0){
 					//group = StringUtils.replaceString(group, "&amp;", "&");
@@ -242,6 +253,8 @@ public class RegExpURLRequester extends AbstractURLRequester {
 							this.m_logger.info("Still found HTML tags in pattern value: "+group);
 						group = StringEscapeUtils.unescapeHtml(group);
 					}
+					if (this.m_logger.isLoggable(Level.INFO))
+						this.m_logger.info("Value for <"+REGEXP_ADDITIONAL+">: "+group.trim());
 					this.m.add(
 						m_runtime.getCallerFactory().createAttribute(
 							IJAMConst.ATTRIBUTE_NAME_ADDITIONAL,
@@ -259,6 +272,8 @@ public class RegExpURLRequester extends AbstractURLRequester {
 			// get address patterns
 			patternString = this.m_config.getProperty(REGEXP_STREET);
 			if (patternString!=null && patternString.length()>0) {
+				if (this.m_logger.isLoggable(Level.INFO))
+					this.m_logger.info("Pattern for <"+REGEXP_STREET+">: "+patternString);
 				group = this.find(Pattern.compile(patternString, Pattern.UNICODE_CASE), content);
 				if (group!=null && group.length()>0) {
 					//group = StringUtils.replaceString(group, "&amp;", "&");
@@ -270,6 +285,8 @@ public class RegExpURLRequester extends AbstractURLRequester {
 							this.m_logger.info("Still found HTML tags in pattern value: "+group);
 						group = StringEscapeUtils.unescapeHtml(group);
 					}
+					if (this.m_logger.isLoggable(Level.INFO))
+						this.m_logger.info("Value for <"+REGEXP_STREET+">: "+group.trim());
 					this.m.add(
 						m_runtime.getCallerFactory().createAttribute(
 							IJAMConst.ATTRIBUTE_NAME_STREET,
@@ -285,14 +302,19 @@ public class RegExpURLRequester extends AbstractURLRequester {
 			
 			patternString = this.m_config.getProperty(REGEXP_STREETNO);
 			if (patternString!=null && patternString.length()>0) {
+				if (this.m_logger.isLoggable(Level.INFO))
+					this.m_logger.info("Pattern for <"+REGEXP_STREETNO+">: "+patternString);
 				group = this.find(Pattern.compile(patternString, Pattern.UNICODE_CASE), content);
-				if (group!=null && group.length()>0)
+				if (group!=null && group.length()>0) {
+					if (this.m_logger.isLoggable(Level.INFO))
+						this.m_logger.info("Value for <"+REGEXP_STREETNO+">: "+group.trim());
 					this.m.add(
 						m_runtime.getCallerFactory().createAttribute(
 							IJAMConst.ATTRIBUTE_NAME_STREET_NO,
 							group.trim()
 						)
 					);
+				}
 				else {
 					failure.add(REGEXP_STREETNO);
 				}
@@ -302,14 +324,19 @@ public class RegExpURLRequester extends AbstractURLRequester {
 
 			patternString = this.m_config.getProperty(REGEXP_POSTALCODE);
 			if (patternString!=null && patternString.length()>0) {
+				if (this.m_logger.isLoggable(Level.INFO))
+					this.m_logger.info("Pattern for <"+REGEXP_POSTALCODE+">: "+patternString);
 				group = this.find(Pattern.compile(patternString, Pattern.UNICODE_CASE), content);
-				if (group!=null && group.length()>0)
+				if (group!=null && group.length()>0) {
+					if (this.m_logger.isLoggable(Level.INFO))
+						this.m_logger.info("Value for <"+REGEXP_POSTALCODE+">: "+group.trim());
+
 					this.m.add(
 						m_runtime.getCallerFactory().createAttribute(
 							IJAMConst.ATTRIBUTE_NAME_POSTAL_CODE,
-							group.trim()
-						)
-					);
+							group.trim())
+						);
+					}
 				else {
 					failure.add(REGEXP_POSTALCODE);
 				}
@@ -319,6 +346,8 @@ public class RegExpURLRequester extends AbstractURLRequester {
 
 			patternString = this.m_config.getProperty(REGEXP_CITY);
 			if (patternString!=null && patternString.length()>0) {
+				if (this.m_logger.isLoggable(Level.INFO))
+					this.m_logger.info("Pattern for <"+REGEXP_CITY+">: "+patternString);
 				group = this.find(Pattern.compile(patternString, Pattern.UNICODE_CASE), content);
 				if (group!=null && group.length()>0) {
 					//group = StringUtils.replaceString(group, "&amp;", "&");
@@ -330,6 +359,8 @@ public class RegExpURLRequester extends AbstractURLRequester {
 							this.m_logger.info("Still found HTML tags in pattern value: "+group);
 						group = StringEscapeUtils.unescapeHtml(group);
 					}
+					if (this.m_logger.isLoggable(Level.INFO))
+						this.m_logger.info("Value for <"+REGEXP_CITY+">: "+group.trim());
 					this.m.add(
 						m_runtime.getCallerFactory().createAttribute(
 							IJAMConst.ATTRIBUTE_NAME_CITY,
@@ -352,6 +383,8 @@ public class RegExpURLRequester extends AbstractURLRequester {
 			
 			patternString = this.m_config.getProperty(REGEXP_AREACODE);
 			if (patternString!=null && patternString.length()>0) {
+				if (this.m_logger.isLoggable(Level.INFO))
+					this.m_logger.info("Pattern for <"+REGEXP_AREACODE+">: "+patternString);
 				group = this.find(Pattern.compile(patternString, Pattern.UNICODE_CASE), content);
 				if (group!=null && group.length()>0) {
 					group = StringUtils.replaceString(group, " ", "");
@@ -359,16 +392,44 @@ public class RegExpURLRequester extends AbstractURLRequester {
 					this.pn = m_runtime.getCallerFactory().createPhonenumber(
 							false
 						);
+					if (this.m_logger.isLoggable(Level.INFO))
+						this.m_logger.info("Value for <"+REGEXP_AREACODE+">: "+group.trim());
+					
 					this.pn.setAreaCode((group.trim().startsWith("0") ? group.trim().substring(1) : group.trim()));
 					this.pn.setIntAreaCode(this.m_intareacode);
 					
 					patternString = this.m_config.getProperty(REGEXP_PHONE);
 					if (patternString!=null && patternString.length()>0) {
+						if (this.m_logger.isLoggable(Level.INFO))
+							this.m_logger.info("Pattern for <"+REGEXP_PHONE+">: "+patternString);
 						group = this.find(Pattern.compile(patternString, Pattern.UNICODE_CASE), content);
 						if (group!=null && group.length()>0) {
 							group = StringUtils.replaceString(group, " ", "");
 							group = group.replaceAll("\t", "");
+							
+							if (this.m_logger.isLoggable(Level.INFO))
+								this.m_logger.info("Value for <"+REGEXP_PHONE+">: "+group.trim());
 							this.pn.setCallNumber(group.trim());
+							
+							patternString = this.m_config.getProperty(REGEXP_PHONETYPE);
+							if (this.m_logger.isLoggable(Level.INFO))
+								this.m_logger.info("Pattern for <"+REGEXP_PHONETYPE+">: "+patternString);
+							if (patternString!=null && patternString.length()>0) {
+								group = this.find(Pattern.compile(patternString, Pattern.UNICODE_CASE), content);
+								if (group!=null && group.length()>0) {
+									group = StringUtils.replaceString(group, " ", "");
+									group = group.replaceAll("\t", "");
+									if (this.m_logger.isLoggable(Level.INFO))
+										this.m_logger.info("Value for <"+REGEXP_PHONETYPE+">: "+group.trim());
+									this.m.add(
+										m_runtime.getCallerFactory().createAttribute(
+												IJAMConst.ATTRIBUTE_NAME_NUMBER_TYPE+this.pn.getTelephoneNumber(),
+											group.trim()
+										)
+									);
+								}
+							}
+							
 						} else {
 							this.pn = null;
 							failure.add(REGEXP_PHONE);
@@ -397,12 +458,17 @@ public class RegExpURLRequester extends AbstractURLRequester {
 					
 					patternString = this.m_config.getProperty(REGEXP_ATTRIBUTE+att);
 					if (patternString!=null && patternString.length()>0) {
+						if (this.m_logger.isLoggable(Level.INFO))
+							this.m_logger.info("Pattern for attribute <%a:"+att+"%>: "+patternString);
+						
 						group = this.find(Pattern.compile(patternString, Pattern.UNICODE_CASE), content);
 						if (group!=null && group.length()>0) {
 							//group = StringUtils.replaceString(group, "&amp;", "&");
 							// added 2010/04/01: added HTML decoding routine
 							// added 2012/01/20: URLDecode
 							group = URLDecoder.decode(StringEscapeUtils.unescapeHtml(this.encodeNonUnicode(group)), this.m_config.getProperty(ENCODING,"iso-8859-1"));
+							if (this.m_logger.isLoggable(Level.INFO))
+								this.m_logger.info("Value for attribute <%a:"+att+"%>: "+group.trim());
 							this.m.add(
 								m_runtime.getCallerFactory().createAttribute(
 									att,

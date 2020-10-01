@@ -16,6 +16,7 @@ ui.jface.application.gos.wizard.pages.GosPage\:postal\:label\:de=Muster f\u00FCr
 ui.jface.application.gos.wizard.pages.GosPage\:city\:label\:de=Muster f\u00FCr Stadt:
 ui.jface.application.gos.wizard.pages.GosPage\:area\:label\:de=Muster f\u00FCr Vorwahl:
 ui.jface.application.gos.wizard.pages.GosPage\:number\:label\:de=Muster f\u00FCr Rufnummer:
+ui.jface.application.gos.wizard.pages.GosPage\:numbertype\:label\:de=Muster f\u00FCr Rufnummertyp:
 ui.jface.application.gos.wizard.pages.GosPage\:intarea\:label\:de=L\u00E4ndercode:
 ui.jface.application.gos.wizard.pages.GosPage\:locale\:label\:de=Landessprache:
 ui.jface.application.gos.wizard.pages.GosPage\:encoding\:label\:de=Zeichenkodierung:
