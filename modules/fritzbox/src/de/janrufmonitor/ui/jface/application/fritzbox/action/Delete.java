@@ -129,4 +129,9 @@ public class Delete extends AbstractAction implements FritzBoxConst {
 		return;
 	}
 
+	public boolean isEnabled() {
+		FirmwareManager fwm = FirmwareManager.getInstance();
+		return (fwm.isLoggedIn() && fwm.isDeleteCallListSupported()) ;
+	}
+	
 }

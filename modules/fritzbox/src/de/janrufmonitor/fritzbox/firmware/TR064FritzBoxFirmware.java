@@ -619,11 +619,20 @@ public class TR064FritzBoxFirmware implements
 	public void deleteCallList() throws DeleteCallListException, IOException {
 		if (!this.isInitialized()) throw new DeleteCallListException("Could not delete call list from FritzBox: FritzBox firmware not initialized.");
 		
-		String u = "http://" + this.m_server + ":" + this.m_port + "/fon_num/foncalls_list.lua"; 
-		String body = "usejournal=on&clear=&callstab=all&sid=" + FritzBoxTR064Manager.getInstance().getSID(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server)), (this.m_useHttp ? "http" : "https"));
+		if (this.m_firmware.getMajor()>=7 && this.m_firmware.getMinor()>=20) {
+			String u = "http://" + this.m_server + ":" + this.m_port + "/data.lua"; 
+			String body = "xhr=1&lang=de&no_sidrenew=&callstab=all&clear=&oldpage=%2Ffon_num%2Ffoncalls_list.lua&sid=" + FritzBoxTR064Manager.getInstance().getSID(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server)), (this.m_useHttp ? "http" : "https"));
+			if (this.m_logger.isLoggable(Level.INFO))
+				this.m_logger.info("Delete callist from FritzBox with URL: "+u+"?"+body);
+			doHttpCall(u, "POST", body, new String[][] { {"Content-Length", Integer.toString(body.length())} });
+		} else {
+			String u = "http://" + this.m_server + ":" + this.m_port + "/fon_num/foncalls_list.lua"; 
+			String body = "usejournal=on&clear=&callstab=all&sid=" + FritzBoxTR064Manager.getInstance().getSID(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server)), (this.m_useHttp ? "http" : "https"));
+			if (this.m_logger.isLoggable(Level.INFO))
+				this.m_logger.info("Delete callist from FritzBox with URL: "+u+"?"+body);
+			doHttpCall(u, "POST", body, new String[][] { {"Content-Length", Integer.toString(body.length())} });
+		}
 
-		doHttpCall(u, "POST", body, new String[][] { {"Content-Length", Integer.toString(body.length())} });
-		
 		if (this.m_logger.isLoggable(Level.INFO))
 			this.m_logger.info("Callist from FritzBox succuessfully deleted.");
 	}
@@ -898,9 +907,9 @@ public class TR064FritzBoxFirmware implements
 	}
 	
 	public boolean isDeleteCallListSupported() {
-		if (isInitialized()){
-			return !(this.m_firmware.getMajor()>=7 && this.m_firmware.getMinor()>=20);
-		}
+//		if (isInitialized()){ 
+//			return !(this.m_firmware.getMajor()>=7 && this.m_firmware.getMinor()>=20);
+//		}
 		return true;
 	}
 	
