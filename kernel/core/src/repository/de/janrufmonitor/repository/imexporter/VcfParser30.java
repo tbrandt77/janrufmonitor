@@ -56,6 +56,7 @@ public class VcfParser30 {
 	protected static final String PHOTO = "PHOTO;".toLowerCase();
 	protected static final String MS_CARDPICTURE = "X-MS-CARDPICTURE".toLowerCase();
 	protected static final String[] PHOTO_TYPES = {"value=uri", "value=url", "encoding=b", "type="};
+	protected static final String UID = "UID:JAM-UID-".toLowerCase();
 
 	protected String m_file = null;
 	protected Logger m_logger;
@@ -123,8 +124,18 @@ public class VcfParser30 {
 				// parse single entry
 				String line = null;
 				String[] value = null;
+				String uuid = null;
 				for (int j=0;j<lines.length;j++) {
 					line = lines[j];
+					
+					// check UUID
+					if (line.toLowerCase().contains(UID)) {
+						String[] tokens = line.split(":");
+						if (tokens.length==2) {
+							uuid = tokens[1].substring("JAM-UID-".length());
+						}
+					}
+					
 					// check name
 					if (line.toLowerCase().startsWith(N) || line.toLowerCase().startsWith(N2)) {
 						value = line.substring(line.indexOf(":")+1).split(";");
@@ -370,11 +381,13 @@ public class VcfParser30 {
 				if (private_phones.size()>0 && private_attributes.size()>0) {					
 					ICaller c = PIMRuntime.getInstance().getCallerFactory().createCaller(name, private_phones);
 					c.setAttributes(private_attributes);
+					if (uuid!=null && uuid.length()>0) c.setUUID(uuid);
 					cl.add(c);					
 				}
 				if (bussiness_phones.size()>0 && bussiness_attributes.size()>0) {					
 					ICaller c = PIMRuntime.getInstance().getCallerFactory().createCaller(name, bussiness_phones);
 					c.setAttributes(bussiness_attributes);
+					if (uuid!=null && uuid.length()>0) c.setUUID(uuid);
 					cl.add(c);					
 				}	
 			} catch (Exception e) {
