@@ -11,6 +11,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
@@ -46,6 +47,9 @@ public class RegExpURLRequester extends AbstractURLRequester {
 	
 	public static String REGEXP_AREACODE = "regexp.areacode";
 	public static String REGEXP_PHONE = "regexp.phone";
+	
+	public static String REGEXP_ATTRIBUTE = "regexp.a.";
+	
 	public static String ENCODING = "encoding";
 	
 	private IRuntime m_runtime;
@@ -381,7 +385,35 @@ public class RegExpURLRequester extends AbstractURLRequester {
 			else {
 				failure.add(REGEXP_AREACODE);
 			}
-
+			
+			// parse further customer attributes
+			Enumeration<Object> keys = this.m_config.keys();
+			while (keys.hasMoreElements()) {
+				String att = (String) keys.nextElement();
+				if (att.startsWith(REGEXP_ATTRIBUTE)) {
+					att = att.substring(REGEXP_ATTRIBUTE.length());
+					if (this.m_logger.isLoggable(Level.INFO))
+						this.m_logger.info("Attribute found for parsing: "+att);
+					
+					patternString = this.m_config.getProperty(REGEXP_ATTRIBUTE+att);
+					if (patternString!=null && patternString.length()>0) {
+						group = this.find(Pattern.compile(patternString, Pattern.UNICODE_CASE), content);
+						if (group!=null && group.length()>0) {
+							//group = StringUtils.replaceString(group, "&amp;", "&");
+							// added 2010/04/01: added HTML decoding routine
+							// added 2012/01/20: URLDecode
+							group = URLDecoder.decode(StringEscapeUtils.unescapeHtml(this.encodeNonUnicode(group)), this.m_config.getProperty(ENCODING,"iso-8859-1"));
+							this.m.add(
+								m_runtime.getCallerFactory().createAttribute(
+									att,
+									group.trim()
+								)
+							);
+						}
+					}
+				}
+			}
+			
 			if (this.m==null || this.pn==null || this.m.size()<2) {
 				throw new RegExpURLRequesterException("Identification with "+url.getHost()+" failed.", failure); 
 			}

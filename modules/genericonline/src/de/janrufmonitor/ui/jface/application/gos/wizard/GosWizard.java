@@ -95,6 +95,21 @@ public class GosWizard extends AbstractWizard {
 		inf.setProperty("repository."+id+":regexp.phone:value", (String) data.get("number"));
 		inf.setProperty("repository."+id+":intareacode:value", (String) data.get("intarea"));
 		inf.setProperty("repository."+id+":locale:value", (String) data.get("locale"));
+		inf.setProperty("repository."+id+":regexp.a."+IJAMConst.ATTRIBUTE_NAME_ADDITIONAL+":value", "");
+		inf.setProperty("repository."+id+":regexp.a."+IJAMConst.ATTRIBUTE_NAME_CATEGORY+":value", "");
+		inf.setProperty("repository."+id+":regexp.a."+IJAMConst.ATTRIBUTE_NAME_EMAIL+":value", "");
+		inf.setProperty("repository."+id+":regexp.a."+IJAMConst.ATTRIBUTE_NAME_GRAVATAR+":value", "");
+		inf.setProperty("repository."+id+":regexp.a."+IJAMConst.ATTRIBUTE_NAME_IMAGEBINARY+":value", "");
+		inf.setProperty("repository."+id+":regexp.a."+IJAMConst.ATTRIBUTE_NAME_IMAGEPATH+":value", "");
+		inf.setProperty("repository."+id+":regexp.a."+IJAMConst.ATTRIBUTE_NAME_IMAGEREF+":value", "");
+		inf.setProperty("repository."+id+":regexp.a."+IJAMConst.ATTRIBUTE_NAME_IMAGEURL+":value", "");
+		inf.setProperty("repository."+id+":regexp.a."+IJAMConst.ATTRIBUTE_NAME_NOTES+":value", "");
+		inf.setProperty("repository."+id+":regexp.a."+IJAMConst.ATTRIBUTE_NAME_NOTES_AUTHOR+":value", "");
+		inf.setProperty("repository."+id+":regexp.a."+IJAMConst.ATTRIBUTE_NAME_USER_ACCOUNT+":value", "");
+		inf.setProperty("repository."+id+":regexp.a."+IJAMConst.ATTRIBUTE_NAME_MACHINE_IP+":value", "");
+		inf.setProperty("repository."+id+":regexp.a."+IJAMConst.ATTRIBUTE_NAME_MACHINE_NAME+":value", "");
+		
+		// add custom attributes
 		inf.setProperty("repository."+id+":encoding:value", (String) data.get("encoding"));
 		
 		inf.setProperty("ui.jface.configuration.ConfigurationCommand:page_"+id+":value", "de.janrufmonitor.ui.jface.configuration.pages.DynamicWebCallerManager");
