@@ -95,3 +95,7 @@ repository.ImExportFactory\:export_gpx_caller\:access=system
 # added 5.0.31
 repository.ImExportFactory\:export_csv_caller\:value=de.janrufmonitor.repository.imexporter.CsvCallerImporter
 repository.ImExportFactory\:export_csv_caller\:access=system
+
+# added 5.0.84
+repository.ImExportFactory\:export_icalfile\:value=de.janrufmonitor.repository.imexporter.ICalFileCallExporter
+repository.ImExportFactory\:export_icalfile\:access=system

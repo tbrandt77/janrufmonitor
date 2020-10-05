@@ -20,6 +20,16 @@ repository.DatFileCallerImporter\:filtername\:label\:de=jAnrufmonitor Adressbuch
 
 repository.DatFileCallExporter\:filtername\:label\:de=jAnrufmonitor Journal (*.dat)
 
+repository.ICalFileCallExporter\:filtername\:label\:de=iCalendar Format (*.ics)
+repository.ICalFileCallExporter\:event_accepted\:label\:de=Telefonat mit %a:fn% %a:ln% aus %a:city%
+repository.ICalFileCallExporter\:event_missed\:label\:de=Verpasster Anruf von %a:fn% %a:ln% aus %a:city%
+repository.ICalFileCallExporter\:event_accepted_noname\:label\:de=Telefonat mit unbekanntem Anrufer aus %a:city%
+repository.ICalFileCallExporter\:event_missed_noname\:label\:de=Verpasster Anruf aus %a:city%
+repository.ICalFileCallExporter\:location_accepted\:label\:de=%callernumber% auf Nebenstelle %msnformat%
+repository.ICalFileCallExporter\:location_missed\:label\:de=%callernumber% auf Nebenstelle %msnformat%
+repository.ICalFileCallExporter\:description_accepted\:label\:de=Gespr\u00E4chsteilnehmer:\\n \\n%a:fn% %a:ln%\\n%a:add% \\n%a:str% %a:strno%\\n%a:pcode% %a:city%\\n%a:cntry%\\n%callernumber%
+repository.ICalFileCallExporter\:description_missed\:label\:de=Anrufer:\\n  \\n%callername%\\n%a:str% %a:strno%\\n%a:pcode% %a:city%\\n%a:cntry%\\n%callernumber%
+
 repository.DatFileCallImporter\:filtername\:label\:de=jAnrufmonitor Journal (*.dat)
 
 repository.ImExportFactory\:title\:label\:de=Import- und Export-Filter f\u00FCr Journal und Adressbuch

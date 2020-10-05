@@ -546,10 +546,13 @@ public class Formatter {
 			// find unparsed tokens and remove them
 			String unparsedAttribute = null;
 			while(text.indexOf(IJAMConst.GLOBAL_VARIABLE_ATTRIBUTE_PREFIX)>-1) {
+				try {
 				unparsedAttribute = text.substring(
 					text.indexOf(IJAMConst.GLOBAL_VARIABLE_ATTRIBUTE_PREFIX),
 					text.indexOf(IJAMConst.GLOBAL_VARIABLE_ATTRIBUTE_POSTFIX, text.indexOf(IJAMConst.GLOBAL_VARIABLE_ATTRIBUTE_PREFIX)+1) + IJAMConst.GLOBAL_VARIABLE_ATTRIBUTE_POSTFIX.length()	
 				);
+				} finally {};
+				
 				text = StringUtils.replaceString(text, unparsedAttribute, "");
 				text = this.cleanString(text.trim());
 				text = text.trim();

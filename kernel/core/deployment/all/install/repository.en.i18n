@@ -22,6 +22,16 @@ repository.DatFileCallExporter\:filtername\:label\:en=jAnrufmonitor Journal (*.d
 
 repository.DatFileCallImporter\:filtername\:label\:en=jAnrufmonitor Journal (*.dat)
 
+repository.ICalFileCallExporter\:filtername\:label\:en=iCalendar Format (*.ics)
+repository.ICalFileCallExporter\:event_accepted\:label\:en=Talked to %a:fn% %a:ln% from %a:city%
+repository.ICalFileCallExporter\:event_missed\:label\:en=Missed call from %a:fn% %a:ln%, %a:city%
+repository.ICalFileCallExporter\:event_accepted_noname\:label\:en=Talked to unknown caller from %a:city%
+repository.ICalFileCallExporter\:event_missed_noname\:label\:en=Missed call from %a:city%
+repository.ICalFileCallExporter\:location_accepted\:label\:en=%callernumber% on ext. %msnformat%
+repository.ICalFileCallExporter\:location_missed\:label\:en=%callernumber% aon ext. %msnformat%
+repository.ICalFileCallExporter\:description_accepted\:label\:en=Participant:\\n \\n%a:fn% %a:ln%\\n%a:add% \\n%a:str% %a:strno%\\n%a:pcode% %a:city%\\n%a:cntry%\\n%callernumber%
+repository.ICalFileCallExporter\:description_missed\:label\:en=Caller:\\n  \\n%callername%\\n%a:str% %a:strno%\\n%a:pcode% %a:city%\\n%a:cntry%\\n%callernumber%
+
 repository.ImExportFactory\:title\:label\:en=Import and export filter for journal and address book
 
 repository.OldDatFileCallerImporter\:filtername\:label\:en=PowerISDNMonitor caller file 3.3x (*.dat)
