@@ -115,6 +115,10 @@ public class ICalFileCallExporter implements ICallExporter {
 					bufWriter.write("LOCATION:"); bufWriter.write(this.escapeICal(f.parse(parseText, c))); bufWriter.newLine();
 				}
 				
+				if (c.getCaller().getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_GEO_LAT) && c.getCaller().getAttributes().contains(IJAMConst.ATTRIBUTE_NAME_GEO_LNG)) {
+					bufWriter.write("GEO:");bufWriter.write(c.getCaller().getAttribute(IJAMConst.ATTRIBUTE_NAME_GEO_LAT).getValue());bufWriter.write(";");bufWriter.write(c.getCaller().getAttribute(IJAMConst.ATTRIBUTE_NAME_GEO_LNG).getValue());bufWriter.newLine();
+				}
+				
 				bufWriter.write("DTSTAMP;TZID="); bufWriter.write(env.getProperty("user.timezone", "Europe/Berlin")); bufWriter.write(":");bufWriter.write(this.getICalDate(now));bufWriter.newLine();
 				bufWriter.write("DTSTART;TZID="); bufWriter.write(env.getProperty("user.timezone", "Europe/Berlin")); bufWriter.write(":");bufWriter.write(this.getICalDate(c.getDate()));bufWriter.newLine();
 				Calendar cal = Calendar.getInstance();
