@@ -1,4 +1,24 @@
 
+jAnrufmonitor 5.0.84 (01.11.2020)
+---------------------------------
+Neu:
+- vCard 3.0 Import für Apple Kontakte mit item# Tag
+- vCard 3.0 UUID parser
+- Journal: iCal Export für Journale
+- Journal: iCal Geo Tagging
+
+Bugfix:
+- vCard 3.0 (vcf) Importfilter verbessert
+
+Module:
+- FRITZ!Box-Überwachung: Anpassungen für FRITZ!OS 7.20
+- FRITZ!Box-Überwachung: Unterstützung zum Löschen der Anrufliste bei FRITZ!OS 7.20
+- Telefonauskunft Modul Assistent: Unterstützung für alle programminternen Attribute
+- Telefonauskunft Modul Assistent: Unterstützung für Rufnummerntyp
+- Telefonauskunft Modul Assistent: Unterstützung für eigene Attribute
+
+===
+
 jAnrufmonitor 5.0.83 (01.10.2020)
 ---------------------------------
 Neu:
