@@ -157,6 +157,12 @@
         <mkdir dir="${jam.kernel.extlib}/macosx/64"/>
         <get dest="${jam.kernel.extlib}/macosx/64">
             <url url="https://downloads.janrufmonitor.de/dev/5.0/lib/macosx/64/swt.jar"/> 
+            <url url="https://downloads.janrufmonitor.de/dev/5.0/lib/macosx/64/osgi.jar"/> 
+            <url url="https://downloads.janrufmonitor.de/dev/5.0/lib/macosx/64/runtime.jar"/> 
+            <url url="https://downloads.janrufmonitor.de/dev/5.0/lib/macosx/64/jface.jar"/> 
+            <url url="https://downloads.janrufmonitor.de/dev/5.0/lib/macosx/64/i18n.jar"/> 
+            <url url="https://downloads.janrufmonitor.de/dev/5.0/lib/macosx/64/common.jar"/> 
+            <url url="https://downloads.janrufmonitor.de/dev/5.0/lib/macosx/64/commands.jar"/> 
         </get>
         <create-bundle os="macosx" arch="64"/>
     </target>
@@ -460,7 +466,7 @@
         name="jAnrufmonitor - AVM FRITZ!Box Edition"
         displayname="jAnrufmonitor - AVM FRITZ!Box Edition"
         identifier="de.janrufmonitor.core"
-                copyright="jAnrufmonitor 5.0, copyright 2008 - 2017"
+                copyright="jAnrufmonitor 5.0, copyright 2008 - 2020"
         icon="./kernel/core/deployment/macosx64/images/jam.icns" 
 	  	hidedockicon="true" 
         shortversion="${jam.version}"
@@ -535,7 +541,7 @@
           name="jAnrufmonitor - NCID Server Edition"
           displayname="jAnrufmonitor - NCID Server Edition"
           identifier="de.janrufmonitor.core"
-                  copyright="jAnrufmonitor 5.0, copyright 2008 - 2017"
+                  copyright="jAnrufmonitor 5.0, copyright 2008 - 2020"
           icon="./kernel/core/deployment/macosx64/images/jam.icns" 
   		  hidedockicon="true" 
           shortversion="${jam.version}"
@@ -611,7 +617,7 @@
           name="jAnrufmonitor - Client Edition"
           displayname="jAnrufmonitor - Client Edition"
           identifier="de.janrufmonitor.core"
-                  copyright="jAnrufmonitor 5.0, copyright 2008 - 2017"
+                  copyright="jAnrufmonitor 5.0, copyright 2008 - 2020"
           icon="./kernel/core/deployment/macosx64/images/jam.icns" 
   	      hidedockicon="true" 
           shortversion="${jam.version}"
