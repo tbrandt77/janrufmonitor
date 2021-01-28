@@ -1,4 +1,17 @@
 
+
+jAnrufmonitor 5.0.85 (01.02.2021)
+---------------------------------
+
+Bugfix:
+- Journal: Sortierung nach Großbuchstaben fehlerhaft
+
+Module:
+- FRITZ!Box-Überwachung: Anpassungen für FRITZ!OS 7.24
+- FRITZ!Box-Überwachung: Anpassungen zum Anmeldeverfahren ab FRITZ!OS 7.24
+
+===
+
 jAnrufmonitor 5.0.84 (01.11.2020)
 ---------------------------------
 Neu:
