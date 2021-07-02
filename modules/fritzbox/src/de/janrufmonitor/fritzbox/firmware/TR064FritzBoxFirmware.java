@@ -675,7 +675,7 @@ public class TR064FritzBoxFirmware implements
 			this.m_logger.info("Collecting TAM (Telephon Answeriong Machine) recordings...");
 		
 		Map allTamMessages = new HashMap();
-		for (int count = 0;count<10;count++) {
+		for (int count = 0;count<5;count++) {
 			Map m = null;
 			try {
 				m = this.parseTamMessageMapXML(FritzBoxTR064Manager.getInstance().getTelephoneAnsweringMachineMessageList(this.m_user, this.m_password, this.m_server, (this.m_useHttp ? FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064Port() : FritzBoxTR064Manager.getInstance().getDefaultFritzBoxTR064SecurePort(this.m_server)), (this.m_useHttp ? "http" : "https"), Integer.toString(count)), lastSyncTimestamp);

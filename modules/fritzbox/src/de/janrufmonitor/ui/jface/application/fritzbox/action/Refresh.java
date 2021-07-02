@@ -67,7 +67,7 @@ public class Refresh extends AbstractAction implements FritzBoxConst {
 				}
 			};
 			pmd.setBlockOnOpen(false);
-			pmd.run(true, false, r);
+			pmd.run(true, true, r);
 
 			//ModalContext.run(r, true, pmd.getProgressMonitor(), DisplayManager.getDefaultDisplay());
 		} catch (InterruptedException e) {

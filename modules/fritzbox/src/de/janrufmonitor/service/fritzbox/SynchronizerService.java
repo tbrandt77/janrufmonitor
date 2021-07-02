@@ -296,9 +296,17 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 		}
 		
 		try {
-			Thread.sleep((progressMonitor!=null ? 500 : 100));
+			Thread.sleep((progressMonitor!=null ? 250 : 50));
 		} catch (InterruptedException e1) {
 			m_logger.log(Level.SEVERE, e1.getMessage(), e1);
+		}
+		
+		if (progressMonitor!=null && progressMonitor.isCanceled()) {
+			if (m_logger.isLoggable(Level.INFO))
+				m_logger.info("ProgressMonitor canceled before login.");
+			
+			this.m_activeSync = false;
+			return;
 		}
 		
 		FirmwareManager fwm = FirmwareManager.getInstance();
@@ -313,8 +321,15 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 							"getprogress", "label",
 							getLanguage()));
 			
+			if (progressMonitor!=null && progressMonitor.isCanceled()) {
+				if (m_logger.isLoggable(Level.INFO))
+					m_logger.info("ProgressMonitor canceled after login.");
+				this.m_activeSync = false;
+				return;
+			}
+			
 			try {
-				Thread.sleep((progressMonitor!=null ? 1500 : 100));
+				Thread.sleep((progressMonitor!=null ? 750 : 50));
 			} catch (InterruptedException e1) {
 				m_logger.log(Level.SEVERE, e1.getMessage(), e1);
 			}
@@ -347,6 +362,13 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 			
 			if (m_logger.isLoggable(Level.INFO))
 				m_logger.info("Call list size from FRITZ!Box: "+result.size());
+
+			if (progressMonitor!=null && progressMonitor.isCanceled()) {
+				if (m_logger.isLoggable(Level.INFO))
+					m_logger.info("ProgressMonitor canceled after retrieving call list from fritzbox.");
+				this.m_activeSync = false;
+				return;
+			}
 		
 			if (result.size()>0) {
 				ICallList m_callList = PIMRuntime.getInstance().getCallFactory().createCallList(result.size());
@@ -383,6 +405,12 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 						}
 						m_prefilteredList.add(call);
 					}
+					if (progressMonitor!=null && progressMonitor.isCanceled()) {
+						if (m_logger.isLoggable(Level.INFO))
+							m_logger.info("ProgressMonitor canceled while call parsing: "+call);
+						this.m_activeSync = false;
+						return;
+					}
 				}
 				
 				if (m_prefilteredList.size()>0) {
@@ -393,7 +421,7 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 									getLanguage()));
 				
 					try {
-						Thread.sleep((progressMonitor!=null ? 1000 : 100));
+						Thread.sleep((progressMonitor!=null ? 500 : 50));
 					} catch (InterruptedException e1) {
 						m_logger.log(Level.SEVERE, e1.getMessage(), e1);
 					}
@@ -440,17 +468,24 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 								}
 							}
 						}
+						if (progressMonitor!=null && progressMonitor.isCanceled()) {
+							if (m_logger.isLoggable(Level.INFO))
+								m_logger.info("ProgressMonitor canceled while call identification: "+c);
+							this.m_activeSync = false;
+							return;
+						}
 					}
 				}
 				
 				if (m_callList!=null && m_callList.size()>0) {
+
 					if (progressMonitor!=null)
 						progressMonitor.setTaskName(getI18nManager()
 							.getString(getNamespace(),
 									"geocodeprogress", "label",
 									getLanguage()));
 					try {
-						Thread.sleep((progressMonitor!=null ? 1000 : 100));
+						Thread.sleep((progressMonitor!=null ? 500 : 50));
 					} catch (InterruptedException e1) {
 						m_logger.log(Level.SEVERE, e1.getMessage(), e1);
 					}
@@ -468,14 +503,22 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 						
 						this.m_tamMap.putAll(fwm.getTamMessages(synctime));
 						
+						
+						if (progressMonitor!=null && progressMonitor.isCanceled()) {
+							if (m_logger.isLoggable(Level.INFO))
+								m_logger.info("ProgressMonitor canceled after syncing tam messages.");
+							this.m_activeSync = false;
+							return;
+						}
+						
 						try {
-							Thread.sleep((progressMonitor!=null ? 1000 : 100));
+							Thread.sleep((progressMonitor!=null ? 500 : 50));
 						} catch (InterruptedException e1) {
 							m_logger.log(Level.SEVERE, e1.getMessage(), e1);
 						}
 					
 					}
-					
+
 					if (m_logger.isLoggable(Level.INFO))
 						m_logger.info("Processing modifier services on call list: "+getRuntime().getServiceFactory().getModifierServices());
 					processModifierServices(m_callList, progressMonitor);
@@ -487,7 +530,7 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 									getLanguage()));
 					
 					try {
-						Thread.sleep((progressMonitor!=null ? 1000 : 100));
+						Thread.sleep((progressMonitor!=null ? 500 : 50));
 					} catch (InterruptedException e1) {
 						m_logger.log(Level.SEVERE, e1.getMessage(), e1);
 					}
@@ -515,7 +558,7 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 											getLanguage()));
 							
 							try {
-								Thread.sleep((progressMonitor!=null ? 500 : 100));
+								Thread.sleep((progressMonitor!=null ? 250 : 50));
 							} catch (InterruptedException e1) {
 								m_logger.log(Level.SEVERE, e1.getMessage(), e1);
 							}
@@ -543,9 +586,25 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 											m_logger.warning("Backup of cleaned call list failed: "+backupdir.getAbsolutePath());
 									}
 								}
+								
+								if (progressMonitor!=null && progressMonitor.isCanceled()) {
+									if (m_logger.isLoggable(Level.INFO))
+										m_logger.info("ProgressMonitor canceled after backing up sync clean calls.");
+									this.m_activeSync = false;
+									return;
+								}
+								
 								((IWriteCallRepository)cm).removeCalls(createRedundancyList(m_callList, synctime));
+								
+								if (progressMonitor!=null && progressMonitor.isCanceled()) {
+									if (m_logger.isLoggable(Level.INFO))
+										m_logger.info("ProgressMonitor canceled after sync clean.");
+									this.m_activeSync = false;
+									return;
+								}
+								
 								try {
-									Thread.sleep(500);
+									Thread.sleep(250);
 								} catch (InterruptedException e) {
 								}
 							}
@@ -561,7 +620,7 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 												"processing2", "label",
 												getLanguage()) + Formatter.getInstance(this.getRuntime()).parse(IJAMConst.GLOBAL_VARIABLE_CALLERNAME, ca));
 									try {
-										Thread.sleep(50);
+										Thread.sleep(25);
 									} catch (InterruptedException e1) {
 										m_logger.log(Level.SEVERE, e1.getMessage(), e1);
 									}
@@ -572,6 +631,13 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 							} catch (Exception e) {
 								if (m_logger.isLoggable(Level.WARNING))
 									m_logger.warning("Call already in repository (skipped): "+ca.toString());
+							}
+							
+							if (progressMonitor!=null && progressMonitor.isCanceled()) {
+								if (m_logger.isLoggable(Level.INFO))
+									m_logger.info("ProgressMonitor canceled while writing call: "+ca);
+								this.m_activeSync = false;
+								return;
 							}
 						}
 						
@@ -598,6 +664,14 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 											getLanguage()));
 							
 							fwm.deleteCallList();	
+							
+							if (progressMonitor!=null && progressMonitor.isCanceled()) {
+								if (m_logger.isLoggable(Level.INFO))
+									m_logger.info("ProgressMonitor canceled after delete call list on fritzbox.");
+								this.m_activeSync = false;
+								return;
+							}
+							
 						} else {
 							if (m_logger.isLoggable(Level.WARNING))
 								m_logger.info("Delete after sync (sync delete) option not supported by FRITZ!OS.");
@@ -618,6 +692,13 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 						for (int i=0,j=m_callList.size();i<j;i++) {
 							ca = m_callList.get(i);											
 							sendMailNotification(ca);
+							
+							if (progressMonitor!=null && progressMonitor.isCanceled()) {
+								if (m_logger.isLoggable(Level.INFO))
+									m_logger.info("ProgressMonitor canceled while send mail notification on call: "+ca);
+								this.m_activeSync = false;
+								return;
+							}
 						}
 					}
 				}
@@ -654,7 +735,7 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 
 				if (progressMonitor!=null)
 					try {
-						Thread.sleep(1000);
+						Thread.sleep(500);
 					} catch (InterruptedException e1) {
 						m_logger.log(Level.SEVERE, e1.getMessage(), e1);
 					}
@@ -667,7 +748,7 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 								getLanguage()));
 			
 				try {
-					Thread.sleep((progressMonitor!=null ? 1500 : 100));
+					Thread.sleep((progressMonitor!=null ? 1000 : 50));
 				} catch (InterruptedException e1) {
 					m_logger.log(Level.SEVERE, e1.getMessage(), e1);
 				}
@@ -710,7 +791,7 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 
 	private synchronized void synchronize(boolean isSuppressed) {
 		try {
-			Thread.sleep((isSuppressed ? 500 : 1000));
+			Thread.sleep((isSuppressed ? 250 : 1000));
 		} catch (InterruptedException e1) {
 			this.m_logger.log(Level.SEVERE, e1.getMessage(), e1);
 		}
@@ -726,7 +807,7 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 					}
 				};
 				pmd.setBlockOnOpen(false);
-				pmd.run(true, false, r);
+				pmd.run(true, true, r);
 			} catch (InterruptedException e) {
 				m_logger.log(Level.SEVERE, e.getMessage(), e);
 			} catch (InvocationTargetException e) {
@@ -815,12 +896,19 @@ public class SynchronizerService extends AbstractReceiverConfigurableService imp
 										"geocodeprogress2", "label",
 										getLanguage()) + Formatter.getInstance(this.getRuntime()).parse(IJAMConst.GLOBAL_VARIABLE_CALLERNAME, call));
 							try {
-								Thread.sleep(75);
+								Thread.sleep(25);
 							} catch (InterruptedException e1) {
 								m_logger.log(Level.SEVERE, e1.getMessage(), e1);
 							}
 						}
 						s.modifyObject(call);
+						
+						if (progressMonitor!=null && progressMonitor.isCanceled()) {
+							if (m_logger.isLoggable(Level.INFO))
+								m_logger.info("ProgressMonitor canceled while processing "+s.getServiceID()+": "+call);
+							this.m_activeSync = false;
+							return;
+						}
 					}			
 				}
 			}
