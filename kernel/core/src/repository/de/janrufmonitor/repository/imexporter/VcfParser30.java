@@ -185,6 +185,7 @@ public class VcfParser30 {
 							value = tokens[1].split(";");
 							if (value.length>=6 && (value.length>6 ? value[6].trim().length()>0 : true) && value[3].trim().length()>0) {
 								// try to get street_no
+								value[2] = value[2].trim();
 								String[] no = value[2].split(" ");
 								String street_no = null;
 								try {

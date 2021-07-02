@@ -9,5 +9,6 @@
 	<classpathentry kind="var" path="JAM_LIB/kernel/allui/jface.jar"/>
 	<classpathentry kind="var" path="JAM_LIB/kernel/allui/runtime.jar"/>
 	<classpathentry kind="var" path="JAM_LIB/modules/jacob.jar"/>
+	<classpathentry kind="var" path="JAM_LIB/kernel/allui/common.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>
