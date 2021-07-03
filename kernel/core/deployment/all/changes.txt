@@ -1,5 +1,19 @@
 
 
+jAnrufmonitor 5.0.86 (03.07.2021)
+---------------------------------
+
+Bugfix:
+- vCard 3.0 Import für Strassenzüge (Hausnummer 11-13) korrigiert
+
+Module:
+- FRITZ!Box-Überwachung: Anpassungen für FRITZ!OS 7.27, 7.28
+- FRITZ!Box-Überwachung: Anpassungen zum Anmeldeverfahren ab FRITZ!OS 7.27
+- FRITZ!Box-Überwachung: Verbesserte Abfrage von Sprachnachrichten
+- FRITZ!Box-Überwachung: Journal-Synchronisationsdialog überarbeitet, Synchronisation kann abgebrochen werden
+
+===
+
 jAnrufmonitor 5.0.85 (01.02.2021)
 ---------------------------------
 
