@@ -9,6 +9,6 @@
 	<classpathentry kind="var" path="JAM_LIB/kernel/allui/jface.jar"/>
 	<classpathentry kind="var" path="JAM_LIB/kernel/allui/runtime.jar"/>
 	<classpathentry kind="var" path="JAM_OSDEPENDEND_LIB/swt.jar"/>
-	<classpathentry kind="var" path="JAM_LIB/kernel/allui/common.jar"/>
+	<classpathentry kind="var" path="JAM_LIB/kernel/macosx/64/common.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>
